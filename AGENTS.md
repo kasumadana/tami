@@ -256,3 +256,20 @@ If `scripts/audit-i18n.ts` reports any violations, extract the detected strings 
 - **Strategic Spec:** [`PRODUCT.md`](file:///d:/Development/Lomba/tami/PRODUCT.md) — Product register (`product`), target users, brand personality (_Friendly, Inquisitive, Shielding_), anti-references, and design principles.
 - **Visual Design System:** [`DESIGN.md`](file:///d:/Development/Lomba/tami/DESIGN.md) — North Star ("_The Friendly Guardian Lab_"), design tokens, palette rules, typography hierarchy, component specifications, and guardrails.
 - **Live Variant Config:** [`.impeccable/live/config.json`](file:///d:/Development/Lomba/tami/.impeccable/live/config.json) & [`.impeccable/design.json`](file:///d:/Development/Lomba/tami/.impeccable/design.json).
+
+---
+
+## 9. Agent Skills
+
+### Issue Tracker
+
+GitHub Issues via `gh` CLI (`kasumadana/tami`). See [`docs/agents/issue-tracker.md`](file:///d:/Development/Lomba/tami/docs/agents/issue-tracker.md).
+
+### Triage Labels
+
+Canonical 5-role triage vocabulary (`needs-triage`, `needs-info`, `ready-for-agent`, `ready-for-human`, `wontfix`). See [`docs/agents/triage-labels.md`](file:///d:/Development/Lomba/tami/docs/agents/triage-labels.md).
+
+### Domain Docs
+
+Single-context layout (`CONTEXT.md` + `docs/adr/`). See [`docs/agents/domain.md`](file:///d:/Development/Lomba/tami/docs/agents/domain.md).
+
