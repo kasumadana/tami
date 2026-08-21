@@ -1,0 +1,117 @@
+{
+  "common": {
+    "appName": "tami",
+    "appTagline": "Your Safe Internet Media Companion",
+    "appShortDescription": "AI Smart Tutor & Cyber Defense Lab for Students and Families",
+    "login": "Sign In",
+    "logout": "Sign Out",
+    "guestMode": "Guest Mode",
+    "switchTheme": "Toggle Theme",
+    "switchLanguage": "Change Language",
+    "learnMore": "Learn More",
+    "startNow": "Get Started",
+    "openLab": "Open Lab",
+    "enterWorkspace": "Enter Workspace",
+    "backToHome": "Back to Home",
+    "labBadge": "Lab",
+    "eventBadge": "v0.1.0 • Bali AI Tech Fest 2026",
+    "socraticBadge": "Socratic AI",
+    "visionBadge": "Vision AI",
+    "interactiveBadge": "Interactive Lab",
+    "curriculumBadge": "Curriculum",
+    "familyBadge": "Educators & Families",
+    "heroBadge": "Hero Status"
+  },
+  "nav": {
+    "home": "Home",
+    "chat": "Socratic Tutor",
+    "detector": "Threat Inspector",
+    "practice": "Defense Lab",
+    "learn": "Curriculum",
+    "guide": "Family Guide",
+    "profile": "Hero Profile"
+  },
+  "sidebar": {
+    "overview": "Learning Space",
+    "tools": "Protection Tools",
+    "resources": "Curriculum & Guides",
+    "guestTurnsRemaining": "3 Guest Turns Left",
+    "guestDescription": "Try without signing in. Log in to save your permanent history.",
+    "toggleCollapse": "Toggle Sidebar"
+  },
+  "home": {
+    "hero": {
+      "badge": "Bali AI Tech Fest 2026",
+      "titleLead": "Sharpen Critical Thinking,",
+      "titleAction": "Shield Digital Traps.",
+      "subtitle": "An AI companion guiding students to identify social engineering, scams, and online traps through reflective inquiry and hands-on defense labs.",
+      "ctaPrimary": "Start Lab Exploration",
+      "ctaSecondary": "Try Threat Inspector",
+      "guestNotice": "Try 3 chat turns free without sign-in!"
+    },
+    "mascot": {
+      "name": "tami the Red Panda",
+      "role": "Friendly Cybersecurity Tutor",
+      "dialog": "Don't panic or blindly trust! Let's examine your suspicious message together in the lab with zero judgment."
+    },
+    "stickers": {
+      "safeStorage": "100% In-Memory",
+      "socratic": "Socratic Guidance",
+      "interactive": "Interactive Defense Lab",
+      "zeroJudgment": "Safe Space to Learn"
+    },
+    "features": {
+      "sectionTitle": "Four Pillars of Youth Digital Defense",
+      "sectionSubtitle": "Specially crafted for students ages 8–15 to build autonomous digital self-defense instincts.",
+      "chat": {
+        "title": "Socratic AI Tutor",
+        "description": "Instead of handing out lazy instant verdicts, tami asks guided reasoning questions so you uncover risk indicators yourself.",
+        "action": "Open Chat"
+      },
+      "detector": {
+        "title": "Visual Threat Inspector",
+        "description": "Upload message screenshots. Multimodal AI inspects domain typosquatting, counterfeit logos, and dark patterns in-memory.",
+        "action": "Inspect Image"
+      },
+      "practice": {
+        "title": "Interactive Defense Lab",
+        "description": "Put knowledge into action: audit phishing email headers, calculate password entropy, and configure firewall rules.",
+        "action": "Start Practice"
+      },
+      "learn": {
+        "title": "Curriculum & Family Guide",
+        "description": "Concise modules on Passwords, Data Privacy, Phishing, and Cyberbullying, complete with parent-educator discussion guides.",
+        "action": "Read Modules"
+      },
+      "demo": {
+        "chatUserSample": "I received a DM offering free game diamonds, just asked to login through this link.",
+        "chatTamiSample": "Look closely at the domain. Why would an official game domain never use free-login.xyz? What is the risk if you enter your password?",
+        "dropScreenshot": "Drop Screenshot Evidence Here",
+        "dropScreenshotHint": "100% In-Memory • Cleared Immediately After Analysis",
+        "passwordStrength": "Password Strength",
+        "passwordStrengthValue": "78 bit (Strong)",
+        "topicPasswords": "🔑 Passwords & 2FA",
+        "topicPhishing": "🎣 Phishing & Social Engineering",
+        "topicPrivacy": "🛡️ Digital Footprint Privacy",
+        "topicBullying": "🤝 Anti-Cyberbullying & Online Ethics"
+      }
+    },
+    "stats": {
+      "safeTitle": "100% Private & In-Memory",
+      "safeDesc": "Uploaded evidence images are cleared from RAM immediately after analysis, never saved to disk.",
+      "socraticTitle": "Pure Socratic Guidance",
+      "socraticDesc": "Trains analytical instincts without spoon-feeding answers or encouraging cognitive passivity.",
+      "certTitle": "Digital Hero Certificate",
+      "certDesc": "Earn skill badges and download an official verified certificate upon completing missions."
+    }
+  },
+  "footer": {
+    "description": "Interactive AI Smart Tutor & Cybersecurity Education Platform cultivating critical, empowered, and safe digital citizens.",
+    "linksTitle": "Quick Links",
+    "safetyTitle": "Safety & Standards",
+    "safetyZeroStorage": "Zero Image Storage Policy",
+    "safetySocratic": "Socratic Dialogue Standard",
+    "safetyAccessibility": "WCAG AA Accessibility",
+    "copyright": "© 2026 tami (Teman Aman Media Internet). Bali AI Tech Fest 2026."
+  }
+}

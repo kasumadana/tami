@@ -8,7 +8,7 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 <!-- END:nextjs-agent-rules -->
 
-Technical guide, architectural standards, and workflow instructions for AI coding agents developing the **tami (Teman Aman Media Internet)** platform.
+Technical guide, architectural standards, and workflow instructions for AI coding agents developing the **tami (teman aman media internet)** platform.
 
 ---
 
@@ -16,15 +16,16 @@ Technical guide, architectural standards, and workflow instructions for AI codin
 
 tami is an AI Smart Tutor and interactive cybersecurity education web platform for students and families. It is built using Next.js 16 (App Router), Kumo UI, Tailwind CSS v4, LangChain with Google Gemini 3.7 Flash, and Neon DB.
 
-### Core Stack
+### Core Stack & Standards
 
+- **Brand Naming:** Strictly **"tami"** (all lowercase).
 - **Framework:** Next.js 16 (App Router), React 19, TypeScript (Strict Mode).
 - **Design System & UI:** `@cloudflare/kumo` (v2.11.0+) + Base UI Primitives + `@phosphor-icons/react`.
-- **Styling & Theming:** Tailwind CSS v4, `next-themes` (Dark/Light mode support).
+- **Theme & Canvas Strategy:** Pure Canvas (Pure White `#ffffff` Light Mode, Pure Black `#000000` Dark Mode). Zero cream / zero beige policy.
 - **AI Orchestration:** `@langchain/google-genai`, `@langchain/core`, Gemini 3.7 Flash.
 - **Database & ORM:** Neon DB (Serverless PostgreSQL) + Drizzle ORM.
 - **Internationalization (i18n):** `next-intl` (Sub-path routing: Default `/` for ID, `/en` for EN).
-- **Markdown & Security:** `react-markdown`, `remark-gfm`, `rehype-sanitize`.
+- **Static Assets:** Real mascot and brand assets located in `/public/icon.svg` and `/public/shai-wave.png`.
 
 ---
 
@@ -51,23 +52,17 @@ GEMINI_API_KEY=your_gemini_3_7_flash_key
 DATABASE_URL=postgresql://user:password@ep-sample.ap-southeast-1.aws.neon.tech/tami?sslmode=require
 NEXTAUTH_SECRET=your_nextauth_secret
 NEXT_PUBLIC_APP_URL=http://localhost:3000
-
 ```
 
 ---
 
-## 3. Development Workflow
+## 3. Development Workflow & Routing
 
 - **Package Manager:** Strictly use `pnpm`.
 - **Dev Server URL:** `http://localhost:3000`
-- **Routing Conventions:** All application routes must use standard, clean English naming:
-- `/` -> Public Landing Page
-- `/chat` -> Socratic AI Tutor
-- `/detector` -> Visual Threat & Hoax Inspector
-- `/practice` -> Interactive Cyber Defense Lab
-- `/learn` -> Structured Curriculum & Reading Modules
-- `/profile` -> Progress, Badges, & Digital Hero Certificate
-- `/guide` -> Educator & Family Discussion Guide
+- **Two-Tier Navigation Architecture:**
+  1. **Public Landing Page (`/` and `/en`):** Ultra-clean header with tami logo, locale switcher, theme toggle, and a pill CTA button ("Buka Lab"). No crowded menu links.
+  2. **Interactive Workspace (`/chat`, `/detector`, `/practice`, `/learn`, `/guide`, `/profile`):** Powered by the official **Kumo `Sidebar`** system (`<Sidebar.Provider>`, `<Sidebar>`, `<Sidebar.MenuButton>`).
 
 ---
 
@@ -93,19 +88,31 @@ Tailwind CSS v4 does not scan `node_modules/` by default. You **must** include t
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  --tami-orange: #d87a4a;
-  --tami-orange-hover: #c2653a;
-  --tami-green: #3d7a6b;
-  --tami-cream: #faf5f0;
-  --tami-surface: #ffffff;
-  --tami-text: #2c2220;
-  --radius: 1rem;
+  --color-tami-canvas: #ffffff;
+  --color-tami-surface: #ffffff;
+  --color-tami-surface-subdued: #f4f4f5;
+  --color-tami-surface-muted: #e4e4e7;
+  --color-tami-text: #09090b;
+  --color-tami-text-muted: #52525b;
+  --color-tami-line: #e4e4e7;
+  --color-tami-orange: #ff5a00;
+  --color-tami-orange-hover: #e04f00;
+  --color-tami-yellow: #ffd80c;
+  --color-tami-green: #16a34a;
+  --color-tami-red: #fd4b38;
+  --color-tami-violet: #8a53ff;
 }
 
 .dark {
-  --tami-surface: #1a1a1f;
-  --tami-cream: #0f0f12;
-  --tami-text: #f5ede4;
+  --color-tami-canvas: #000000;
+  --color-tami-surface: #09090b;
+  --color-tami-surface-subdued: #18181b;
+  --color-tami-surface-muted: #27272a;
+  --color-tami-text: #f4f4f5;
+  --color-tami-text-muted: #a1a1aa;
+  --color-tami-line: #27272a;
+  --color-tami-orange: #ff5a00;
+  --color-tami-orange-hover: #ff6e1f;
 }
 ```
 
@@ -117,7 +124,10 @@ Tailwind CSS v4 does not scan `node_modules/` by default. You **must** include t
 import { Button } from "@cloudflare/kumo/components/button";
 import { Input } from "@cloudflare/kumo/components/input";
 import { Dialog } from "@cloudflare/kumo/components/dialog";
-import { LayerCard } from "@cloudflare/kumo";
+import { LayerCard } from "@cloudflare/kumo/components/layer-card";
+import { Sidebar, SidebarProvider, SidebarMenuButton } from "@cloudflare/kumo/components/sidebar";
+import { Badge } from "@cloudflare/kumo/components/badge";
+import { Banner } from "@cloudflare/kumo/components/banner";
 ```
 
 - Use **Base UI Primitives** when full unstyled control is needed:
@@ -133,26 +143,33 @@ import { Slider } from "@cloudflare/kumo/primitives/slider";
 import {
   ShieldCheck,
   ChatCircleDots,
-  WarningCircle,
+  ShieldWarning,
 } from "@phosphor-icons/react";
 ```
 
 - Wrap the app with Kumo `LinkProvider` in root providers to integrate with Next.js navigation:
 
 ```tsx
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { LinkProvider } from "@cloudflare/kumo";
 
 export function AppProviders({ children }: { children: React.ReactNode }) {
-  return <LinkProvider component="{Link}">{children}</LinkProvider>;
+  return <LinkProvider component={AppLink}>{children}</LinkProvider>;
 }
 ```
 
-### C. Impeccable UI/UX Standards
+### C. Anti-AI-Slop & Impeccable Design Standards
 
-- **Viewport Resilience:** Implement dynamic viewport height units (`100dvh`) and safe-area insets for mobile devices.
-- **Accessibility (A11y):** Meet WCAG AA contrast standards, provide accessible focus rings, and ensure all interactive elements have touch targets of at least 44x44px.
-- **Adaptive Theming:** Never use hardcoded color values like `bg-white` or `text-black` without dark mode variants (`dark:bg-...`). Always prefer semantic design tokens.
+- 🚫 **Banned: Pill / Eyebrow text in ALL-CAPS above headers.** (e.g. `<span className="uppercase text-xs tracking-widest">ABOUT US</span>`). Headings must be bold, confident, and sentence-case.
+- 🚫 **Banned: Arbitrary decorative section numbering (01 / 02 / 03 / 04)** on non-sequential cards.
+- 🚫 **Banned: Gradient text (`background-clip: text`)**. Use single solid, high-contrast colors.
+- 🚫 **Banned: Cream/sand/beige/parchment background monoculture**. Always use Pure White (`#ffffff`) or Pure Black (`#000000`).
+- 🚫 **Banned: Repetitive identical card grids**. Use varied layouts and real interactive simulators.
+- 🚫 **Banned: Sketchy SVG doodle illustrations**. Always use real assets (`/public/icon.svg`, `/public/shai-wave.png`).
+- 🚫 **Banned: "Ghost-card" syndrome (1px light border + 16px+ blurry drop shadow)**. Pick crisp `ring-1 ring-kumo-line` or defined background steps.
+- 🚫 **Banned: ALL-CAPS screaming headings**. Always use **sentence-case** ("Detektor ancaman siber").
+- **Universal 14px Text:** All content text—body, buttons, data—must be 14px in size (`text-sm`). 16px and above are restricted to headings.
+- **Immediate Hover Reaction:** Never transition color properties on hover (`hover:bg-kumo-tint`, immediate).
 
 ### D. Strict i18n Policy (Zero Hardcoded Strings)
 
@@ -185,91 +202,16 @@ Always run and pass all three verification commands before marking any task as c
 pnpm tsc --noEmit
 
 # 2. Strict AST i18n Audit (Must return 0 violations)
-pnpm tsx scripts/audit-i18n.ts
+pnpm audit:i18n
 
 # 3. Production Build Test
 pnpm build
-
-```
-
-If `scripts/audit-i18n.ts` reports any violations, extract the detected strings into `locales/id.json` and `locales/en.json` immediately.
-
----
-
-## 6. Directory Structure
-
-```text
-.
-├── app/
-│   ├── [locale]/
-│   │   ├── (main)/
-│   │   │   ├── chat/page.tsx
-│   │   │   ├── detector/page.tsx
-│   │   │   ├── practice/page.tsx
-│   │   │   ├── learn/page.tsx
-│   │   │   ├── profile/page.tsx
-│   │   │   └── guide/page.tsx
-│   │   ├── layout.tsx
-│   │   └── page.tsx
-│   ├── api/
-│   │   ├── chat/route.ts
-│   │   └── detector/route.ts
-│   └── globals.css
-├── components/
-│   ├── providers.tsx
-│   ├── navbar.tsx
-│   ├── socratic-chat.tsx
-│   ├── threat-detector.tsx
-│   └── markdown-renderer.tsx
-├── lib/
-│   ├── db/
-│   │   ├── schema.ts
-│   │   └── index.ts
-│   ├── langchain/
-│   │   ├── socratic-chain.ts
-│   │   └── vision-chain.ts
-│   └── utils.ts
-├── locales/
-│   ├── id.json
-│   └── en.json
-├── scripts/
-│   └── audit-i18n.ts
-├── drizzle.config.ts
-├── AGENTS.md
-└── PRD.md
-
 ```
 
 ---
 
-## 7. Pull Request & Commit Guidelines
-
-- **Commit Format:** `[type]: Brief description of changes`
-  Types: `feat`, `fix`, `refactor`, `style`, `docs`, `chore`.
-  Example: `[feat]: implement gemini 3.7 flash multimodal threat detector chain`
-- **Pre-flight Requirement:** Do not create a commit or PR if `pnpm tsc` or `pnpm tsx scripts/audit-i18n.ts` fails.
-
----
-
-## 8. Design & Impeccable Context
+## 6. Design & Architecture Specifications
 
 - **Strategic Spec:** [`PRODUCT.md`](file:///d:/Development/Lomba/tami/PRODUCT.md) — Product register (`product`), target users, brand personality (_Friendly, Inquisitive, Shielding_), anti-references, and design principles.
-- **Visual Design System:** [`DESIGN.md`](file:///d:/Development/Lomba/tami/DESIGN.md) — North Star ("_The Friendly Guardian Lab_"), design tokens, palette rules, typography hierarchy, component specifications, and guardrails.
+- **Visual Design System:** [`DESIGN.md`](file:///d:/Development/Lomba/tami/DESIGN.md) — Pure Canvas & Rounded Obsidian, design tokens, anti-AI-slop rules, Kumo UI component registry mapping.
 - **Live Variant Config:** [`.impeccable/live/config.json`](file:///d:/Development/Lomba/tami/.impeccable/live/config.json) & [`.impeccable/design.json`](file:///d:/Development/Lomba/tami/.impeccable/design.json).
-
----
-
-## 9. Agent Skills
-
-### Issue Tracker
-
-GitHub Issues via `gh` CLI (`kasumadana/tami`). See [`docs/agents/issue-tracker.md`](file:///d:/Development/Lomba/tami/docs/agents/issue-tracker.md).
-
-### Triage Labels
-
-Canonical 5-role triage vocabulary (`needs-triage`, `needs-info`, `ready-for-agent`, `ready-for-human`, `wontfix`). See [`docs/agents/triage-labels.md`](file:///d:/Development/Lomba/tami/docs/agents/triage-labels.md).
-
-### Domain Docs
-
-Single-context layout (`CONTEXT.md` + `docs/adr/`). See [`docs/agents/domain.md`](file:///d:/Development/Lomba/tami/docs/agents/domain.md).
-

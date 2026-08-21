@@ -1,4 +1,4 @@
-# Spec: TAMI (Teman Aman Media Internet)
+# Spec: tami (Teman Aman Media Internet)
 
 ## Problem Statement
 
@@ -6,11 +6,12 @@ Pelajar usia 8–15 tahun rentan terhadap manipulasi rekayasa sosial, tautan phi
 
 ## Solution
 
-TAMI adalah platform AI Smart Tutor dan laboratorium simulasi keamanan siber interaktif. Platform ini melatih insting pertahanan digital siswa melalui dialog Sokratik berbasis persona "Tami" (Panda Merah yang teliti dan bersahabat), inspeksi forensik visual multimodal terhadap bukti pesan digital, laboratorium simulasi keamanan deterministik, kurikulum terstruktur 4 topik utama, serta penerbitan E-Sertifikat Pahlawan Digital.
+tami adalah platform AI Smart Tutor dan laboratorium simulasi keamanan siber interaktif. Platform ini melatih insting pertahanan digital siswa melalui dialog Sokratik berbasis persona "tami" (Panda Merah yang teliti dan bersahabat), inspeksi forensik visual multimodal terhadap bukti pesan digital, laboratorium simulasi keamanan deterministik, kurikulum terstruktur 4 topik utama, serta penerbitan E-Sertifikat Pahlawan Digital.
 
 ## User Stories
 
 ### Persona Siswa / Pelajar (Ages 8–15)
+
 1. As a student, I want to consult a suspicious chat message with the Socratic AI Tutor, so that I can discover the risk indicators on my own through guided questions rather than instant answers.
 2. As a student, I want to stream AI tutor responses smoothly in real-time, so that the conversation feels engaging and responsive.
 3. As a guest student, I want to try up to 3 Socratic chat turns without logging in, so that I can explore the tutor safely before registering.
@@ -27,11 +28,13 @@ TAMI adalah platform AI Smart Tutor dan laboratorium simulasi keamanan siber int
 14. As a student, I want to generate and download a Digital Hero Certificate (PDF/PNG) upon completing the curriculum, so that I have a tangible record of my cybersecurity achievement.
 
 ### Persona Guru & Orang Tua (Educator & Parent)
-15. As an educator, I want to access open discussion guides and classroom case studies without mandatory login, so that I can easily integrate TAMI into my teaching syllabus.
+
+15. As an educator, I want to access open discussion guides and classroom case studies without mandatory login, so that I can easily integrate tami into my teaching syllabus.
 16. As a parent, I want practical family discussion prompts on digital safety, so that I can discuss screen time, game scams, and cyberbullying at home.
 17. As an educator, I want structured curriculum takeaways aligned with standard digital literacy competencies, so that students achieve measurable learning outcomes.
 
 ### Persona Pengguna Internasional & Aksesibilitas
+
 18. As an English-speaking user, I want the entire platform localized seamlessly into English (/en) with zero missing translations, so that I have an equitable learning experience.
 19. As a user with low vision or color blindness, I want high-contrast UI with icons paired with colors, so that I can distinguish risk states unambiguously.
 20. As a mobile touchscreen user, I want all buttons and inputs to have large touch targets (>=44x44px), so that I can interact comfortably on any device.
@@ -57,7 +60,7 @@ TAMI adalah platform AI Smart Tutor dan laboratorium simulasi keamanan siber int
 
 5. **Authentication & Open Access Guide (ADR 0005):**
    - Autentikasi 1-klik Google OAuth (Auth.js / NextAuth v5) untuk siswa dan guru.
-   - Rute `/guide` bersifat publik tanpa *login gatekeeper*.
+   - Rute `/guide` bersifat publik tanpa _login gatekeeper_.
 
 6. **UI System & Design Tokens (PRODUCT.md & DESIGN.md):**
    - `@cloudflare/kumo` primitives + Tailwind CSS v4.

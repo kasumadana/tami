@@ -1,26 +1,60 @@
+@source "../node_modules/@cloudflare/kumo/dist/**/*.{js,jsx,ts,tsx}";
+@import "@cloudflare/kumo/styles/tailwind";
 @import "tailwindcss";
 
+@custom-variant dark (&:is(.dark *));
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --color-tami-canvas: #ffffff;
+  --color-tami-surface: #ffffff;
+  --color-tami-surface-subdued: #f4f4f5;
+  --color-tami-surface-muted: #e4e4e7;
+  --color-tami-text: #09090b;
+  --color-tami-text-muted: #52525b;
+  --color-tami-line: #e4e4e7;
+  --color-tami-orange: #ff5a00;
+  --color-tami-orange-hover: #e04f00;
+  --color-tami-yellow: #ffd80c;
+  --color-tami-green: #16a34a;
+  --color-tami-red: #fd4b38;
+  --color-tami-violet: #8a53ff;
+
+  /* Backward-compatible alias tokens */
+  --tami-orange: var(--color-tami-orange);
+  --tami-orange-hover: var(--color-tami-orange-hover);
+  --tami-green: var(--color-tami-green);
+  --tami-cream: var(--color-tami-canvas);
+  --tami-surface: var(--color-tami-surface);
+  --tami-text: var(--color-tami-text);
+  --tami-border: var(--color-tami-line);
+  --radius: 1rem;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+.dark {
+  --color-tami-canvas: #000000;
+  --color-tami-surface: #09090b;
+  --color-tami-surface-subdued: #18181b;
+  --color-tami-surface-muted: #27272a;
+  --color-tami-text: #f4f4f5;
+  --color-tami-text-muted: #a1a1aa;
+  --color-tami-line: #27272a;
+  --color-tami-orange: #ff5a00;
+  --color-tami-orange-hover: #ff6e1f;
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  /* Backward-compatible alias tokens */
+  --tami-orange: var(--color-tami-orange);
+  --tami-orange-hover: var(--color-tami-orange-hover);
+  --tami-green: var(--color-tami-green);
+  --tami-cream: var(--color-tami-canvas);
+  --tami-surface: var(--color-tami-surface);
+  --tami-text: var(--color-tami-text);
+  --tami-border: var(--color-tami-line);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--color-tami-canvas);
+  color: var(--color-tami-text);
+  min-height: 100dvh;
+  font-family: var(--font-geist-sans), system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
 }

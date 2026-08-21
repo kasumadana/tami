@@ -1,4 +1,4 @@
-# TAMI (Teman Aman Media Internet)
+# tami (Teman Aman Media Internet)
 
 Platform web AI Smart Tutor dan edukasi literasi keamanan siber interaktif untuk melatih daya nalar kritis siswa (usia 8–15 tahun) dan keluarga.
 
@@ -7,7 +7,7 @@ Platform web AI Smart Tutor dan edukasi literasi keamanan siber interaktif untuk
 ### Interaksi AI & Dialog
 
 **Tutor Sokratik (Socratic Tutor)**:
-Agen AI dengan persona "Tami" yang membimbing siswa menemukan indikator bahaya siber melalui pertanyaan reflektif dan pemantik nalar kritis alih-alih menyuapi vonis instan.
+Agen AI dengan persona "tami" yang membimbing siswa menemukan indikator bahaya siber melalui pertanyaan reflektif dan pemantik nalar kritis alih-alih menyuapi vonis instan.
 _Avoid_: Chatbot biasa, bot penjawab instan, mesin vonis.
 
 **Giliran Dialog (Chat Turn)**:
@@ -57,7 +57,7 @@ _Avoid_: Ijazah formal, kartu skor biasa.
 ### Pengguna & Ekosistem Pendamping
 
 **Peran Pengguna (User Roles)**:
-Tipe entitas akun pada sistem TAMI: `student` (Siswa/Pelajar), `educator` (Guru/Pendidik), dan `parent` (Orang Tua/Keluarga).
+Tipe entitas akun pada sistem tami: `student` (Siswa/Pelajar), `educator` (Guru/Pendidik), dan `parent` (Orang Tua/Keluarga).
 _Avoid_: Subscription tier, privilege berjenjang rumit.
 
 **Panduan Pendampingan (Companion Guide)**:

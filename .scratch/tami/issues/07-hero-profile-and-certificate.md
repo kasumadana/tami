@@ -1,6 +1,6 @@
 # 07 — Digital Hero Profile & Certificate Generator (/profile)
 
-**What to build:** Halaman profil siswa di `/profile` yang menampilkan persentase penyelesaian kurikulum, perolehan lencana lab pertahanan, skor kumulatif latihan, riwayat inspeksi keamanan, serta generator E-Sertifikat Pahlawan Digital (format cetak PDF/PNG berkualitas tinggi dengan nama siswa, ID verifikasi unik, dan tanda tangan maskot Tami).
+**What to build:** Halaman profil siswa di `/profile` yang menampilkan persentase penyelesaian kurikulum, perolehan lencana lab pertahanan, skor kumulatif latihan, riwayat inspeksi keamanan, serta generator E-Sertifikat Pahlawan Digital (format cetak PDF/PNG berkualitas tinggi dengan nama siswa, ID verifikasi unik, dan tanda tangan maskot tami).
 
 **Blocked by:** 05 — Interactive Cyber Defense Lab (/practice) with Deterministic Evaluator, 06 — Authentication (NextAuth Google OAuth) & Guest Progress Auto-Merge Sync
 

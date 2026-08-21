@@ -1,0 +1,117 @@
+{
+  "common": {
+    "appName": "tami",
+    "appTagline": "Teman Aman Media Internet",
+    "appShortDescription": "AI Smart Tutor & Lab Keamanan Siber untuk Siswa dan Keluarga",
+    "login": "Masuk",
+    "logout": "Keluar",
+    "guestMode": "Mode Tamu",
+    "switchTheme": "Ubah Tema",
+    "switchLanguage": "Ganti Bahasa",
+    "learnMore": "Pelajari Selengkapnya",
+    "startNow": "Mulai Sekarang",
+    "openLab": "Buka Lab",
+    "enterWorkspace": "Masuk Ruang Kerja",
+    "backToHome": "Kembali ke Beranda",
+    "labBadge": "Lab",
+    "eventBadge": "v0.1.0 • Bali AI Tech Fest 2026",
+    "socraticBadge": "AI Sokratik",
+    "visionBadge": "AI Visual",
+    "interactiveBadge": "Lab Interaktif",
+    "curriculumBadge": "Kurikulum",
+    "familyBadge": "Pendidik & Keluarga",
+    "heroBadge": "Status Pahlawan"
+  },
+  "nav": {
+    "home": "Beranda",
+    "chat": "Tutor Sokratik",
+    "detector": "Detektor Ancaman",
+    "practice": "Lab Pertahanan",
+    "learn": "Kurikulum",
+    "guide": "Panduan Keluarga",
+    "profile": "Profil Pahlawan"
+  },
+  "sidebar": {
+    "overview": "Ruang Belajar",
+    "tools": "Alat Perlindungan",
+    "resources": "Materi & Panduan",
+    "guestTurnsRemaining": "Sisa 3 Giliran Tamu",
+    "guestDescription": "Coba tanpa login. Masuk untuk simpan riwayat permanen.",
+    "toggleCollapse": "Perkecil Sidebar"
+  },
+  "home": {
+    "hero": {
+      "badge": "Bali AI Tech Fest 2026",
+      "titleLead": "Asah Nalar Kritis,",
+      "titleAction": "Tangkal Jebakan Digital.",
+      "subtitle": "Teman belajar AI cerdas yang membimbingmu mengenali rekayasa sosial, tautan penipuan, dan jebakan internet melalui dialog reflektif dan simulasi langsung.",
+      "ctaPrimary": "Mulai Eksplorasi Lab",
+      "ctaSecondary": "Coba Detektor Ancaman",
+      "guestNotice": "Coba gratis 3 giliran pesan tanpa login!"
+    },
+    "mascot": {
+      "name": "tami si Panda Merah",
+      "role": "Tutor Keamanan Siber Ramah",
+      "dialog": "Jangan langsung panik atau percaya! Yuk kita bedah bareng pesan mencurigakanmu di lab tanpa takut dihakimi."
+    },
+    "stickers": {
+      "safeStorage": "100% In-Memory",
+      "socratic": "Bimbingan Sokratik",
+      "interactive": "Lab Siber Interaktif",
+      "zeroJudgment": "Ruang Aman Belajar"
+    },
+    "features": {
+      "sectionTitle": "Empat Pilar Pertahanan Digital Siswa",
+      "sectionSubtitle": "Dirancang khusus untuk pelajar usia 8–15 tahun agar tanggap dan mandiri di ruang siber.",
+      "chat": {
+        "title": "Tutor Sokratik AI",
+        "description": "Tidak sekadar memberi vonis instan, tami mengajukan pertanyaan pemantik agar kamu memahami tanda-tanda bahaya secara mandiri.",
+        "action": "Buka Obrolan"
+      },
+      "detector": {
+        "title": "Detektor Bukti Visual",
+        "description": "Unggah tangkapan layar pesan atau situs mencurigakan. AI akan mendeteksi typosquatting domain, logo palsu, dan tombol jebakan secara in-memory.",
+        "action": "Inspeksi Gambar"
+      },
+      "practice": {
+        "title": "Lab Simulasi Siber",
+        "description": "Uji kepekaanmu lewat simulasi nyata: audit email phishing, hitung entropi kata sandi, dan atur firewall proteksi data.",
+        "action": "Mulai Latihan"
+      },
+      "learn": {
+        "title": "Kurikulum & Panduan Keluarga",
+        "description": "Modul ringkas Keamanan Sandi, Privasi Data, Phishing, dan Cyberbullying lengkap dengan lembar diskusi hangat bersama orang tua dan guru.",
+        "action": "Baca Modul"
+      },
+      "demo": {
+        "chatUserSample": "Aku dapat DM hadiah diamond game gratis, cuma disuruh login lewat link ini.",
+        "chatTamiSample": "Coba perhatikan domainnya. Mengapa domain resmi game tidak pernah memakai akhiran gratis-login.xyz? Apa risiko jika kamu masukkan passwordmu?",
+        "dropScreenshot": "Drop Screenshot Bukti Di Sini",
+        "dropScreenshotHint": "100% In-Memory • Dihapus Seketika Pasca-Analisis",
+        "passwordStrength": "Kekuatan Sandi",
+        "passwordStrengthValue": "78 bit (Kuat)",
+        "topicPasswords": "🔑 Kata Sandi & 2FA",
+        "topicPhishing": "🎣 Deteksi Phishing & Rekayasa Sosial",
+        "topicPrivacy": "🛡️ Privasi Jejak Digital",
+        "topicBullying": "🤝 Anti-Cyberbullying & Etika Online"
+      }
+    },
+    "stats": {
+      "safeTitle": "100% Aman & Privasi Terjaga",
+      "safeDesc": "Foto bukti dihapus seketika dari RAM pasca-analisis tanpa disimpan di server.",
+      "socraticTitle": "Bimbingan Sokratik Murni",
+      "socraticDesc": "Melatih logika berpikir analitis tanpa membuat siswa bergantung pada jawaban instan.",
+      "certTitle": "Sertifikat Pahlawan Digital",
+      "certDesc": "Raih lencana kompetensi dan unduh sertifikat resmi setelah menuntaskan misi."
+    }
+  },
+  "footer": {
+    "description": "Platform AI Smart Tutor dan edukasi keamanan siber interaktif untuk menciptakan generasi digital Indonesia yang kritis, cakap, dan berdaya.",
+    "linksTitle": "Navigasi Cepat",
+    "safetyTitle": "Keamanan & Etika",
+    "safetyZeroStorage": "Kebijakan Zero Image Storage",
+    "safetySocratic": "Standar Dialog Sokratik",
+    "safetyAccessibility": "Aksesibilitas WCAG AA",
+    "copyright": "© 2026 tami (Teman Aman Media Internet). Bali AI Tech Fest 2026."
+  }
+}

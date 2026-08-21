@@ -1,224 +1,240 @@
----
-name: tami
-description: AI Smart Tutor and interactive cybersecurity defense platform
-colors:
-  primary: "#d87a4a"
-  primary-hover: "#c2653a"
-  secondary: "#3d7a6b"
-  surface: "#ffffff"
-  surface-dark: "#1a1a1f"
-  background: "#faf5f0"
-  background-dark: "#0f0f12"
-  text: "#2c2220"
-  text-dark: "#f5ede4"
-  safe: "#2e7d32"
-  warning: "#e65100"
-  danger: "#c62828"
-typography:
-  display:
-    fontFamily: "var(--font-geist-sans), system-ui, sans-serif"
-    fontSize: "clamp(2rem, 5vw, 3.25rem)"
-    fontWeight: 700
-    lineHeight: 1.15
-    letterSpacing: "-0.02em"
-  headline:
-    fontFamily: "var(--font-geist-sans), system-ui, sans-serif"
-    fontSize: "clamp(1.5rem, 3.5vw, 2.25rem)"
-    fontWeight: 600
-    lineHeight: 1.25
-    letterSpacing: "-0.015em"
-  title:
-    fontFamily: "var(--font-geist-sans), system-ui, sans-serif"
-    fontSize: "1.25rem"
-    fontWeight: 600
-    lineHeight: 1.4
-    letterSpacing: "normal"
-  body:
-    fontFamily: "var(--font-geist-sans), system-ui, sans-serif"
-    fontSize: "1rem"
-    fontWeight: 400
-    lineHeight: 1.6
-    letterSpacing: "normal"
-  label:
-    fontFamily: "var(--font-geist-mono), monospace"
-    fontSize: "0.875rem"
-    fontWeight: 500
-    lineHeight: 1.4
-    letterSpacing: "0.02em"
-rounded:
-  sm: "0.5rem"
-  md: "0.75rem"
-  lg: "1rem"
-  xl: "1.25rem"
-  full: "9999px"
-spacing:
-  xs: "0.25rem"
-  sm: "0.5rem"
-  md: "1rem"
-  lg: "1.5rem"
-  xl: "2rem"
-  xxl: "3rem"
-components:
-  button-primary:
-    backgroundColor: "{colors.primary}"
-    textColor: "{colors.surface}"
-    rounded: "{rounded.lg}"
-    padding: "0.75rem 1.5rem"
-  button-primary-hover:
-    backgroundColor: "{colors.primary-hover}"
-  button-secondary:
-    backgroundColor: "{colors.surface}"
-    textColor: "{colors.text}"
-    rounded: "{rounded.lg}"
-    padding: "0.75rem 1.5rem"
-  card-surface:
-    backgroundColor: "{colors.surface}"
-    textColor: "{colors.text}"
-    rounded: "{rounded.lg}"
-    padding: "1.5rem"
+# tami — Design System & Style Reference
+> Rounded Obsidian & Pure Canvas — a high-contrast, tactile cybersecurity laboratory where pure white and matte black surfaces are energized by saturated die-cut decal accents, expressive mascot storytelling (`/public/shai-wave.png`), and official `@cloudflare/kumo` primitives.
+
+**Name:** tami (selalu ditulis huruf kecil, kependekan dari *teman aman media internet*)  
+**Theme:** Adaptive Pure Canvas (Pure White `#ffffff` Light Mode & Pure Obsidian `#000000` / `#09090b` Dark Mode) — *Zero Cream / Zero Sand Policy*  
+**Design Personality:** Friendly, Inquisitive, Shielding (tami si Panda Merah)  
+**UI Stack:** `@cloudflare/kumo` (v2.11.0+ Component Registry-First) + Base UI Primitives + Tailwind CSS v4 + `@phosphor-icons/react`
+
 ---
 
-# Design System: tami (Teman Aman Media Internet)
+## 1. Executive Summary & Design Vision
 
-## 1. Overview
+tami menolak estetika klise "hacker gelap neon-matrix", dasbor korporat SaaS yang kaku membosankan, maupun monokultur AI berupa latar belakang krem/kuning gading (*cream/sand/beige/parchment*).
 
-**Creative North Star: "The Friendly Guardian Lab"**
+Sebagai gantinya, tami mengadopsi **The Rounded Obsidian & Pure Canvas Laboratory** (sintesis dari `Awesomic` dan `Fictional`):
 
-tami balances warm, welcoming educational companionship with clear, tactile cyber defense utilities. The design serves students (ages 8–15) by transforming complex digital security concepts into engaging Socratic discussions, interactive forensic inspections, and adaptive practice challenges. Rather than creating fear through hacker cliches or treating young learners like toddlers with babyish cartoon clutter, tami offers a grounded, reassuring workshop feel where curiosity is rewarded and mistakes are safe learning moments.
+1. **Pure Canvas & High Contrast:**
+   - Mode Terang berlatar belakang **Pure White (`#ffffff`)** bersih dan tajam.
+   - Mode Gelap berlatar belakang **Pure Black (`#000000`)** dan **Matte Obsidian (`#09090b`)**.
+   - Tidak ada warna krem, beige, atau paper warm. Kontras tinggi, keterbacaan tajam, dan elegan.
+2. **Saturated Decal & Tactile Personality (Fictional + Awesomic):**
+   - Aksen die-cut decal berenergi tinggi: *tami Fiery Orange* (`#ff5a00`), *Sunburst Yellow* (`#ffd80c`), *Electric Violet* (`#8a53ff`), dan *Lime Spark* (`#16a34a`).
+   - Badge stiker sedikit terotasi (-2° s.d. 2°) untuk menegaskan pesan kunci (*"100% In-Memory"*, *"Bimbingan Sokratik"*).
+   - Menghadirkan maskot nyata melalui aset resmi: [`/public/shai-wave.png`](file:///d:/Development/Lomba/tami/public/shai-wave.png) dan [`/public/icon.svg`](file:///d:/Development/Lomba/tami/public/icon.svg).
+3. **Arsitektur Navigasi Dua Tingkat (Two-Tier Navigation):**
+   - **Landing Page Publik (`/` dan `/en`):** Header minimalis tanpa menu tautan teks yang padat. Hanya memuat logo `tami`, pengalih bahasa (`ID/EN`), tombol tema, dan tombol pil CTA ("Buka Lab").
+   - **Ruang Kerja Aplikasi (`/chat`, `/detector`, `/practice`, `/learn`, `/guide`, `/profile`):** Menggunakan sistem **Kumo `Sidebar`** resmi (`<Sidebar.Provider>`, `<Sidebar>`, `<Sidebar.MenuButton>`) yang ergonomis dan bebas distraksi.
+4. **Maksimalisasi Kumo UI Registry-First:** Seluruh kontrol antarmuka memakai komponen resmi `@cloudflare/kumo` dengan impor granular dan mengikuti aturan *Cloudflare Design Guide*.
 
-The interface prioritizes clarity, high touch ergonomics, and immediate feedback. Visual hierarchy is crisp and structured, utilizing purposeful color anchors (Red Panda Amber for active learning engagement and Sage Teal for shielding protection) over neutral canvas backgrounds in both light and dark themes.
+---
 
-**Key Characteristics:**
+## 2. Tokens — Colors
 
-- **Approachable Confidence:** Warm, non-intimidating tones anchored by the inquisitive persona of Tami the Red Panda.
-- **Socratic Layout Flow:** Interfaces emphasize guided questions, progressive disclosures, and interactive inspection tools before displaying summary verdicts.
-- **Tactile State Semantics:** Unambiguous visual indicators for threat risk levels (`SAFE`, `SUSPICIOUS`, `DANGEROUS`) with multi-sensory feedback (badges, icons, and micro-animations).
-- **Adaptive Ergonomics:** Generous touch targets ($\ge 44 \times 44\text{px}$), dynamic viewport scaling (`100dvh`), and full dark mode compatibility.
+### Palet Warna Utama & Latar Belakang (Pure Canvas)
 
-## 2. Colors
+| Nama Token | Mode Terang | Mode Gelap | Token CSS | Peran & Penggunaan |
+| :--- | :--- | :--- | :--- | :--- |
+| **Canvas Pure** | `#ffffff` | `#000000` | `--color-tami-canvas` | Latar belakang dasar halaman — Pure White di Light, Pure Black di Dark |
+| **Surface Card** | `#ffffff` | `#09090b` | `--color-tami-surface` | Permukaan kartu utama, panel sidebar, dialog, dan balon pesan |
+| **Surface Subdued** | `#f4f4f5` | `#18181b` | `--color-tami-surface-subdued` | Latar kartu sekunder, blok kode, dan kontainer input |
+| **Surface Muted** | `#e4e4e7` | `#27272a` | `--color-tami-surface-muted` | Tag tidak aktif, divider tebal, dan hover state |
+| **Text Obsidian/Snow** | `#09090b` | `#f4f4f5` | `--color-tami-text` | Teks utama, judul display, dan label dengan kontras tertinggi |
+| **Text Slate/Steel** | `#52525b` | `#a1a1aa` | `--color-tami-text-muted` | Teks tubuh sekunder, petunjuk bantuan, dan deskripsi fitur |
+| **Hairline Line** | `#e4e4e7` | `#27272a` | `--color-tami-line` | Ring dan border tipis tajam pada kartu dan pemisah |
 
-The palette combines organic warm amber tones with protective sage greens and crisp high-contrast neutrals.
+### Saturated Decal Accents (Pop Energik)
 
-### Primary
+| Nama Aksen | Nilai Hex | Token CSS | Peran & Penggunaan |
+| :--- | :--- | :--- | :--- |
+| **tami Fiery Orange** | `#ff5a00` | `--color-tami-orange` | Aksen identitas utama tami, tombol CTA primer, sorotan maskot |
+| **tami Orange Hover** | `#e04f00` | `--color-tami-orange-hover` | Status aktif/hover tombol aksi utama |
+| **Sunburst Yellow** | `#ffd80c` | `--color-tami-yellow` | Ring aktif 2px solid, stiker peringatan, lencana streak, bintang poin |
+| **Lime Spark** | `#16a34a` | `--color-tami-green` | Status 100% aman, badge sukses terverifikasi, ceklis lab selesai |
+| **Coral Blaze** | `#fd4b38` | `--color-tami-red` | Deteksi ancaman berbahaya, bahaya phishing, aksi destruktif |
+| **Electric Violet** | `#8a53ff` | `--color-tami-violet` | Tag kurikulum siber, wawasan Sokratik, materi panduan keluarga |
 
-- **Red Panda Amber** (`#d87a4a` / `oklch(64.5% 0.145 42)`): Primary brand accent, primary buttons, interactive focus rings, active step indicators, and celebratory milestones.
-- **Deep Amber Hover** (`#c2653a` / `oklch(58.2% 0.155 41)`): Primary hover and active interaction state.
+---
 
-### Secondary
+## 3. Tokens — Typography
 
-- **Sage Shielding** (`#3d7a6b` / `oklch(52.8% 0.082 175)`): Protective security indicators, secondary actions, verified badges, and successful defense indicators.
-- **Sage Muted** (`#2b574c` / `oklch(41.5% 0.075 174)`): Dark mode secondary accent and borders.
+Tipografi menggunakan **Geist Sans** (teks UI & bacaan) dan **Geist Mono** (data teknis & URL forensik).
 
-### Tertiary & Semantic Status
+- **Ukuran Teks Konten:** Wajib **14px (`text-sm`)** untuk semua teks isi, tombol, dan data sesuai standar Kumo UI.
+- **Heading:** Wajib berformat **Sentence-case** (huruf kapital hanya di awal kalimat).
+- **Display Typography:** Menggunakan kontras bobot inline (*lightweight lead-in* + *bold action keyword*).
+- **Tracking:** Dilarang mengubah tracking secara berlebihan. Batas letter-spacing display $\ge -0.04\text{em}$.
 
-- **Risk Safe Green** (`#2e7d32` / `oklch(52.0% 0.145 142)`): Verified safe links, passed practice challenges, and validated security checks.
-- **Risk Suspicious Amber** (`#e65100` / `oklch(59.5% 0.185 55)`): Warning badges, potential social engineering triggers, and prompt questions.
-- **Risk Dangerous Red** (`#c62828` / `oklch(48.5% 0.210 28)`): Severe phishing indicators, dark pattern warnings, and malicious link detections.
+### Skala Tipografi
 
-### Neutral
+| Level | Ukuran | Line Height | Bobot | Penggunaan |
+| :--- | :--- | :--- | :--- | :--- |
+| **Display Hero** | `48px` / `56px` | `1.1` | `400` / `700` | Judul utama landing page |
+| **Display Number** | `36px` / `44px` | `1.0` | `700` | Angka skor lab, entropi password, penghitung kuota tamu |
+| **Heading 1** | `24px` / `28px` | `1.25` | `600` | Judul halaman ruang kerja (`/chat`, `/detector`, dll.) |
+| **Heading 2** | `18px` / `20px` | `1.3` | `600` | Judul kartu fitur, section lab, dialog modal |
+| **Heading 3** | `15px` / `16px` | `1.4` | `600` | Sub-seksi, label grup kontrol |
+| **Content Body** | `14px` (Standar Kumo) | `1.55` | `400` | Balon obrolan, deskripsi modul, teks bacaan |
+| **Control / Button** | `14px` | `1.0` | `500` | Tombol Kumo, item menu sidebar, input |
+| **Sticker / Badge** | `11px` / `12px` | `1.0` | `600` | Stiker decal, badge risiko, dot status |
+| **Mono Data** | `12px` / `13px` | `1.4` | `500` | Domain URL, alamat IP, header email, session token |
 
-- **Canvas Light** (`#faf5f0` / `oklch(96.8% 0.012 60)`): Warm off-white page background in light mode.
-- **Canvas Dark** (`#0f0f12` / `oklch(15.2% 0.008 280)`): Deep dark neutral page background in dark mode.
-- **Surface Light** (`#ffffff` / `oklch(100% 0 0)`): Elevated card and container background in light mode.
-- **Surface Dark** (`#1a1a1f` / `oklch(20.5% 0.010 280)`): Elevated card and container background in dark mode.
-- **Text Ink Light** (`#2c2220` / `oklch(24.5% 0.018 35)`): High-contrast primary body text in light mode.
-- **Text Ink Dark** (`#f5ede4` / `oklch(94.2% 0.012 60)`): High-contrast primary body text in dark mode.
-- **Border Subtle** (`#e7ded6` / `oklch(90.2% 0.012 60)`): Clean structural divider lines in light mode (`#2d2c33` in dark mode).
+---
 
-### Named Rules
+## 4. Tokens — Shapes & Elevation
 
-**The Protective Accent Rule.** Primary amber is reserved for active engagement, interactive decisions, and student achievements; Sage Green is reserved for protective shield status.
-**The High-Contrast Legibility Rule.** All text must exceed WCAG AA contrast (≥4.5:1 for body text, ≥3:1 for large display). Never use low-contrast muted gray for readable text.
+### Geometri & Radius Bentuk
 
-## 3. Typography
+| Elemen | Nilai Radius | Utility Tailwind | Peran |
+| :--- | :--- | :--- | :--- |
+| **Hero Panels & Large Cards** | `20px` – `24px` | `rounded-2xl` / `rounded-3xl` | Showcase kartu besar, dropzone detektor gambar |
+| **Standard Cards & Containers** | `14px` – `16px` | `rounded-xl` / `rounded-2xl` | Kartu modul latihan, layer card Kumo |
+| **Speech Bubbles** | `16px` – `20px` | `rounded-2xl` | Balon pesan tutor Sokratik tami |
+| **Buttons & Action Pills** | `10000px` (Pill) | `rounded-full` | Tombol CTA utama, tombol navigasi cepat |
+| **Stickers & Badges** | `8px` – `10px` | `rounded-lg` | Lencana status Kumo, tag die-cut decal |
 
-**Display Font:** Geist Sans (`var(--font-geist-sans)`, with `system-ui, sans-serif` fallback)
-**Body Font:** Geist Sans (`var(--font-geist-sans)`, with `system-ui, sans-serif` fallback)
-**Label/Mono Font:** Geist Mono (`var(--font-geist-mono)`, with `monospace` fallback)
+### Sistem Kedalaman (Elevation)
 
-**Character:** Clean, precise, and highly legible contemporary grotesque typography paired with a dedicated technical mono font for URLs, code snippets, and threat metadata.
+- **Card Elevation:** Menghilangkan drop shadow buram tebal yang klise. Kartu menggunakan batas transparan presisi: `ring-1 ring-kumo-line` atau `border border-[var(--color-tami-line)]`.
+- **Active / Focused Control Ring:** `ring-2 ring-[var(--color-tami-yellow)]` atau `ring-2 ring-[var(--color-tami-orange)]`.
+- **Tactile Pill Button:** Multi-layer pressed highlight `rgba(255, 255, 255, 0.3) 0px 1px 0px 0px inset, rgba(0, 0, 0, 0.12) 0px 2px 4px 0px`.
 
-### Hierarchy
+---
 
-- **Display** (Bold 700, `clamp(2rem, 5vw, 3.25rem)`, Line Height: 1.15, Letter Spacing: `-0.02em`): Hero landing titles and major celebration banners.
-- **Headline** (SemiBold 600, `clamp(1.5rem, 3.5vw, 2.25rem)`, Line Height: 1.25, Letter Spacing: `-0.015em`): Section headings and major feature titles.
-- **Title** (SemiBold 600, `1.25rem` / 20px, Line Height: 1.4, Letter Spacing: `normal`): Card titles, module headers, and modal headings.
-- **Body** (Regular 400, `1rem` / 16px, Line Height: 1.6, Letter Spacing: `normal`): Primary conversational AI text, curriculum reading content, and explanations. Capped at 65–75ch line length.
-- **Label / Code** (Medium 500, `0.875rem` / 14px, Line Height: 1.4, Letter Spacing: `0.02em`): Badges, risk level tags, timestamps, code snippets, URL forensic displays.
+## 5. Rules Anti-AI-Slop (Ketentuan Wajib Impeccable)
 
-### Named Rules
+Untuk menjaga kualitas antarmuka tetap berstandar studio kelas atas dan bebas dari pola generik AI:
 
-**The Balanced Reading Rule.** Apply `text-wrap: balance` on H1–H3 headings for even line distribution; apply `text-wrap: pretty` on educational articles to prevent orphans.
+1. 🚫 **Dilarang Teks Full-Kapital / Pill Eyebrow di Atas Setiap Heading:**
+   - *Salah:* `<span className="uppercase text-xs tracking-widest">ABOUT US</span>` atau pil all-caps di atas setiap kartu.
+   - *Benar:* Judul langsung to the point dengan format sentence-case yang percaya diri.
+2. 🚫 **Dilarang Penomoran Dekoratif Klise (01 / 02 / 03) pada Kartu Non-Sekuensial:**
+   - Nomor hanya boleh digunakan jika konten tersebut memang merupakan langkah tutorial berurutan yang nyata.
+3. 🚫 **Dilarang Gradient Text (`background-clip: text`):**
+   - Gunakan warna solid berbobot tinggi. Penekanan visual dilakukan melalui kontras bobot atau aksen warna tunggal.
+4. 🚫 **Dilarang Background Krem / Beige / Sand / Parchment:**
+   - Wajib menggunakan Pure White (`#ffffff`) atau Pure Black (`#000000` / `#09090b`).
+5. 🚫 **Dilarang Grid Kartu Identik Berulang:**
+   - Hindari layout malas berupa 3 kotak berukuran persis sama dengan icon + title + 2 baris teks. Gunakan komposisi asimetris, kartu interaktif langsung, atau panel cerita visual.
+6. 🚫 **Dilarang Ilustrasi Vektor Coretan / Doodling Kasar (Sketchy SVG):**
+   - Gunakan aset visual asli yang disediakan: [`/public/shai-wave.png`](file:///d:/Development/Lomba/tami/public/shai-wave.png) dan [`/public/icon.svg`](file:///d:/Development/Lomba/tami/public/icon.svg).
+7. 🚫 **Dilarang "Ghost-Card" (Border 1px + Shadow Blur $\ge 16\text{px}$):**
+   - Pilih salah satu: garis ring presisi `ring-1 ring-kumo-line` ATAU perbedaan warna bidang yang tegas.
+8. 🚫 **Dilarang Heading Huruf Besar Semua (ALL-CAPS):**
+   - Selalu gunakan format *sentence case* per Cloudflare Kumo Design Guide.
 
-## 4. Elevation
+---
 
-tami uses clean tonal layering and subtle 1px border framing rather than heavy, blurry drop shadows. Depth is communicated through surface lightness shifts and crisp ambient bounding borders.
+## 6. Maksimalisasi Kumo UI (`@cloudflare/kumo`)
 
-### Shadow Vocabulary
+Merujuk pada dokumentasi resmi [kumo-ui.com](https://kumo-ui.com/):
 
-- **Card Ambient** (`box-shadow: 0 2px 8px -2px rgba(44, 34, 32, 0.06)`): Default subtle lift for interactive cards in light mode.
-- **Floating Modal / Dropdown** (`box-shadow: 0 12px 32px -4px rgba(44, 34, 32, 0.12)`): High-priority dialogs, popovers, and floating inspector overlays.
-- **Dark Surface Glow** (`box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08)`): Clean perimeter border replacement for dark mode surfaces.
+### Konfigurasi Global CSS
 
-### Named Rules
+```css
+/* app/globals.css */
+@source "../node_modules/@cloudflare/kumo/dist/**/*.{js,jsx,ts,tsx}";
+@import "@cloudflare/kumo/styles/tailwind";
+@import "tailwindcss";
 
-**The Layer-Over-Shadow Rule.** Surfaces rest flat with clean 1px borders (`border-tami-border`). Shadows appear only on floating overlays (dialogs, popovers) or upon hover/focus elevation.
+@custom-variant dark (&:is(.dark *));
 
-## 5. Components
+:root {
+  --color-tami-canvas: #ffffff;
+  --color-tami-surface: #ffffff;
+  --color-tami-surface-subdued: #f4f4f5;
+  --color-tami-surface-muted: #e4e4e7;
+  --color-tami-text: #09090b;
+  --color-tami-text-muted: #52525b;
+  --color-tami-line: #e4e4e7;
+  --color-tami-orange: #ff5a00;
+  --color-tami-orange-hover: #e04f00;
+  --color-tami-yellow: #ffd80c;
+  --color-tami-green: #16a34a;
+  --color-tami-red: #fd4b38;
+  --color-tami-violet: #8a53ff;
+}
 
-Components are built on `@cloudflare/kumo` primitives combined with Tailwind CSS v4 tokens for high consistency.
+.dark {
+  --color-tami-canvas: #000000;
+  --color-tami-surface: #09090b;
+  --color-tami-surface-subdued: #18181b;
+  --color-tami-surface-muted: #27272a;
+  --color-tami-text: #f4f4f5;
+  --color-tami-text-muted: #a1a1aa;
+  --color-tami-line: #27272a;
+  --color-tami-orange: #ff5a00;
+  --color-tami-orange-hover: #ff6e1f;
+}
+```
 
-### Buttons
+### Panduan Penggunaan Komponen Kumo
 
-- **Shape:** Rounded corners (`1rem` / 16px radius, `rounded-2xl` / `rounded-xl`).
-- **Primary:** Background `var(--tami-orange)`, text `#ffffff`, padding `0.75rem 1.5rem`, font-weight 600.
-- **Hover / Focus:** Hover background `var(--tami-orange-hover)`, accessible outline focus ring (`2px solid var(--tami-orange)` with `2px offset`).
-- **Secondary / Outline:** Background `var(--tami-surface)`, border `1px solid var(--tami-border)`, text `var(--tami-text)`, hover background `var(--tami-cream)`.
-- **Ghost:** Transparent background, text `var(--tami-text)`, hover background `rgba(216, 122, 74, 0.08)`.
+1. **Button (`@cloudflare/kumo/components/button`):**
+   - `variant="primary"`: Latar hitam/oranye pekat dengan teks putih, bentuk pill `shape="base"` atau `rounded-full`.
+   - `variant="secondary"`: Latar `bg-kumo-base`, `ring ring-kumo-line`.
+   - Tidak menggunakan animasi transisi warna pada *hover* (reaksi instan per Kumo guidelines).
+2. **LayerCard (`@cloudflare/kumo/components/layer-card`):**
+   - Wadah elevasi konten utama. Dilarang menumpuk `LayerCard` di dalam `LayerCard` lain.
+   - Menggunakan padding asimetris optik (`px-6 py-5`).
+3. **Sidebar (`@cloudflare/kumo/components/sidebar`):**
+   - Struktur navigasi penuh di ruang kerja internal (`/chat`, `/detector`, dll.): `<Sidebar.Provider>`, `<Sidebar>`, `<Sidebar.Header>`, `<Sidebar.Content>`, `<Sidebar.Menu>`, `<Sidebar.MenuButton>`, `<Sidebar.Footer>`.
+4. **Badge (`@cloudflare/kumo/components/badge`):**
+   - `variant="warning" | "success" | "neutral" | "error"` dengan `appearance="dot"` atau `appearance="filled"`.
+5. **Banner (`@cloudflare/kumo/components/banner`):**
+   - Digunakan untuk pengingat kuota tamu dan notifikasi status keamanan.
+6. **Dialog (`@cloudflare/kumo/components/dialog`):**
+   - Selalu dikontrol lewat prop `open` (`<Dialog.Root open={open} onOpenChange={setOpen}>`), bukan conditionally unmounted di JSX.
 
-### Cards & LayerCards
+---
 
-- **Corner Style:** `1rem` (16px) radius (`rounded-2xl`).
-- **Background:** `var(--tami-surface)`.
-- **Border:** `1px solid var(--tami-border)` in light mode, `1px solid rgba(255, 255, 255, 0.1)` in dark mode.
-- **Internal Padding:** `1.5rem` (24px) for standard containers; `1rem` (16px) for compact mobile cards.
+## 7. Arsitektur Navigasi Dua Tingkat
 
-### Chat Streamer & Socratic Tutor Bubble
+```text
+1. Landing Page Publik (/) — Bersih & Lapang
+┌────────────────────────────────────────────────────────────────────────┐
+│  [🐾 tami]                 [ID/EN] [🌓 Tema] [🚀 Buka Lab (Pill CTA)]  │
+├────────────────────────────────────────────────────────────────────────┤
+│                                                                        │
+│   Asah nalar kritis, tangkal jebakan digital.                          │
+│                                                                        │
+│   [ 💬 Balon Dialog Maskot tami: "Yuk kita bedah bareng di lab!" ]     │
+│   [ 🖼️ Aset Maskot: /public/shai-wave.png ]                            │
+│                                                                        │
+│   [ 🚀 Masuk Ruang Belajar ]          [ 🔍 Detektor Bukti Visual ]     │
+│                                                                        │
+└────────────────────────────────────────────────────────────────────────┘
 
-- **Tami Persona Bubble:** Background `var(--tami-surface)`, border `1px solid var(--tami-border)`, subtle left avatar accent with Red Panda mascot badge. Rich Markdown rendering with sanitized HTML.
-- **User Bubble:** Background `var(--tami-orange)`, text `#ffffff`, aligned right, rounded with comfortable speech-bubble corners (`rounded-2xl rounded-br-sm`).
+2. Ruang Kerja Aplikasi (/chat, /detector, /practice, dll.) — Kumo Sidebar
+┌──────────────┬─────────────────────────────────────────────────────────┐
+│ 🐾 tami lab  │ Topbar: Breadcrumbs / Status Sesi Tamu                  │
+├──────────────┼─────────────────────────────────────────────────────────┤
+│ 🤖 Tutor     │                                                         │
+│ 🔍 Detektor  │                    WORKSPACE AREA                       │
+│ 🛡️ Latihan   │                                                         │
+│ 📚 Kurikulum │        (Socratic Chat Stream / Forensik Visual / Lab)   │
+│ 👨‍👩‍👧 Panduan  │                                                         │
+│ 🏆 Profil    │                                                         │
+├──────────────┤                                                         │
+│ 🌓 [ID/EN]   │                                                         │
+└──────────────┴─────────────────────────────────────────────────────────┘
+```
 
-### Threat Inspector Card (`/detector`)
+---
 
-- **Inspection View:** Dropzone with dashed border and drag-over highlight.
-- **Result Badge:** Pill chip (`rounded-full`, font-mono uppercase) with semantic risk coloring (`bg-green-100 text-green-800` for SAFE, `bg-amber-100 text-amber-900` for SUSPICIOUS, `bg-red-100 text-red-900` for DANGEROUS).
-- **OCR & Anomaly Highlights:** Interactive bounding boxes over suspicious visual regions with tooltip explanations.
-
-### Inputs & Fields
-
-- **Style:** Height `2.75rem` (44px min touch target), background `var(--tami-surface)`, border `1px solid var(--tami-border)`, radius `0.75rem` (12px).
-- **Focus:** Border `var(--tami-orange)`, subtle ring `0 0 0 3px rgba(216, 122, 74, 0.2)`.
-
-### Navigation & Top Bar
-
-- **Style:** Fixed or sticky top navigation with subtle backdrop-filter blur (`backdrop-blur-md bg-opacity-80`), brand logo with Tami mascot icon, locale switcher (`ID` / `EN`), and theme toggle.
-
-## 6. Do's and Don'ts
+## 8. Ringkasan Do's & Don'ts
 
 ### Do:
-
-- **Do** maintain strict WCAG AA contrast ratios (≥4.5:1 for body text) across both Light and Dark modes.
-- **Do** ensure all interactive buttons and inputs meet the minimum 44x44px touch target size.
-- **Do** frame AI chat interactions with Socratic guiding questions before giving any direct answers.
-- **Do** keep every user-facing string internationalized through `next-intl` (zero hardcoded strings).
-- **Do** use `@phosphor-icons/react` icons paired with clear text labels for status indicators.
-- **Do** respect `prefers-reduced-motion` across all transition effects.
+- ✅ Selalu sebut brand dengan nama **"tami"** (huruf kecil).
+- ✅ Gunakan latar belakang **Pure White (`#ffffff`)** atau **Pure Black (`#000000`)**.
+- ✅ Terapkan ukuran font konten 14px (`text-sm`) dan *sentence case* pada semua judul.
+- ✅ Gunakan aset asli [`/public/icon.svg`](file:///d:/Development/Lomba/tami/public/icon.svg) dan [`/public/shai-wave.png`](file:///d:/Development/Lomba/tami/public/shai-wave.png).
+- ✅ Terapkan navigasi dua tingkat: header bersih di landing page, Kumo `Sidebar` di ruang kerja.
+- ✅ Gunakan komponen resmi `@cloudflare/kumo` secara granular.
 
 ### Don't:
-
-- **Don't** use dark-hacker clichés (green terminal text, matrix rain, skull icons, scary cyber sirens).
-- **Don't** use generic AI cream/parchment monoculture with unreadable washed-out gray text.
-- **Don't** use decorative side-stripe borders (`border-l-4`) or gradient text fills (`bg-clip-text`).
-- **Don't** infantilize young teens (8–15 years) with toddler-level cartoon clutter or babyish language.
-- **Don't** display raw, unformatted cybersecurity acronyms without intuitive contextual definitions.
-- **Don't** invent arbitrary z-index values (use semantic z-index scale: dropdown, sticky, modal, toast).
+- ❌ Jangan gunakan warna krem / sand / beige / paper warm pada latar belakang.
+- ❌ Jangan gunakan pill teks all-caps di atas heading (anti-AI-slop).
+- ❌ Jangan gunakan gradient text atau efek kaca berlebihan.
+- ❌ Jangan buat tombol atau kartu buatan sendiri jika Kumo UI menyediakannya.
+- ❌ Jangan buat heading huruf besar semua (ALL-CAPS).

@@ -42,7 +42,7 @@ tami adalah platform web AI Smart Tutor yang melatih insting dan nalar kritis si
 
 - **Story:** Sebagai siswa, saya ingin berkonsultasi mengenai pesan atau situasi daring yang mencurigakan agar saya memahami indikator risikonya secara mandiri.
 - **Acceptance Criteria:**
-  - AI merespons menggunakan persona "Tami" (Panda Merah yang teliti, bersahabat, dan santun).
+  - AI merespons menggunakan persona "tami" (Panda Merah yang teliti, bersahabat, dan santun).
   - AI mengajukan 1–2 pertanyaan pemantik nalar kritis alih-alih memberi vonis biner langsung.
   - Respon teks ditampilkan secara real-time streaming dengan rendering Rich Markdown aman.
   - Pengguna tamu (guest) dibatasi maksimal 3 giliran pesan sebelum diarahkan masuk untuk menyimpan sesi.
@@ -141,7 +141,7 @@ LangChain + Gemini 3.7 Flash     Neon DB (Serverless Postgres)   Auth.js (NextAu
   - Implementasi `/learn` dan `/practice` berbasis data terkurasi.
   - Integrasi Neon DB + Drizzle ORM untuk autentikasi dan progres lencana.
   - Dukungan i18n (Bahasa Indonesia & English) serta Dark/Light Mode.
-- **Phase 2 (v1.1):** Fitur Text-to-Speech (Web Speech API) untuk pembacaan suara maskot Tami.
+- **Phase 2 (v1.1):** Fitur Text-to-Speech (Web Speech API) untuk pembacaan suara maskot tami.
 - **Phase 3 (v2.0):** Dasbor integrasi kelas untuk guru dan sekolah.
 
 ### Technical Risks & Mitigation
