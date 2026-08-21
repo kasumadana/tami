@@ -1,25 +1,27 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import { useTheme } from "next-themes";
+import React, { useSyncExternalStore } from "react";
+import { useTheme } from "./theme-provider";
 import { Sun, Moon } from "@phosphor-icons/react";
 import { useTranslations } from "next-intl";
 
+const emptySubscribe = () => () => {};
+
 export function ThemeToggle() {
   const { theme, setTheme, resolvedTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
+  const isMounted = useSyncExternalStore(
+    emptySubscribe,
+    () => true,
+    () => false
+  );
   const t = useTranslations("common");
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  if (!mounted) {
+  if (!isMounted) {
     return (
       <button
         type="button"
         aria-label={t("switchTheme")}
-        className="w-10 h-10 flex items-center justify-center rounded-xl border border-transparent opacity-0"
+        className="w-9 h-9 flex items-center justify-center rounded-xl border border-transparent opacity-0"
       >
         <span className="w-5 h-5" />
       </button>

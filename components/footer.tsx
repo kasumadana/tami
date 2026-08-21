@@ -4,7 +4,7 @@ import React from "react";
 import Image from "next/image";
 import { Link } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
-import { ShieldCheck, LockKey, Handshake, EyeSlash } from "@phosphor-icons/react";
+import { LockKey, Handshake, EyeSlash } from "@phosphor-icons/react";
 
 export function Footer() {
   const t = useTranslations("footer");
@@ -15,18 +15,16 @@ export function Footer() {
     <footer className="border-t border-[var(--color-tami-line)] bg-[var(--color-tami-surface)] mt-auto">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
-          {/* Brand & Purpose */}
+          {/* Brand & Purpose (Clean Unboxed Logo) */}
           <div className="md:col-span-2 space-y-3">
-            <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-xl overflow-hidden flex items-center justify-center bg-[var(--color-tami-surface-subdued)] ring-1 ring-[var(--color-tami-line)]">
-                <Image
-                  src="/icon.svg"
-                  alt="tami logo"
-                  width={32}
-                  height={32}
-                  className="w-full h-full object-cover"
-                />
-              </div>
+            <div className="flex items-center gap-2">
+              <Image
+                src="/icon.svg"
+                alt="tami logo"
+                width={26}
+                height={26}
+                className="w-6.5 h-6.5 shrink-0 object-contain"
+              />
               <span className="font-bold text-lg text-[var(--color-tami-text)]">
                 {tCommon("appName")}
               </span>
@@ -107,11 +105,8 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="pt-8 border-t border-[var(--color-tami-line)] flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[var(--color-tami-text-muted)]">
+        <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[var(--color-tami-text-muted)]">
           <p>{t("copyright")}</p>
-          <span className="font-mono text-[11px] px-2.5 py-1 rounded-full bg-[var(--color-tami-surface-subdued)] border border-[var(--color-tami-line)] text-[var(--color-tami-text)]">
-            {tCommon("eventBadge")}
-          </span>
         </div>
       </div>
     </footer>

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { forwardRef } from "react";
-import { ThemeProvider } from "next-themes";
+import { ThemeProvider } from "./theme-provider";
 import { LinkProvider } from "@cloudflare/kumo";
 import type { LinkComponentProps } from "@cloudflare/kumo";
 import { Link } from "@/i18n/navigation";
@@ -11,14 +11,15 @@ const AppLink = forwardRef<HTMLAnchorElement, LinkComponentProps>(
 );
 AppLink.displayName = "AppLink";
 
-export function AppProviders({ children }: { children: React.ReactNode }) {
+export function AppProviders({
+  children,
+  initialTheme,
+}: {
+  children: React.ReactNode;
+  initialTheme?: "light" | "dark" | "system";
+}) {
   return (
-    <ThemeProvider
-      attribute="class"
-      defaultTheme="system"
-      enableSystem
-      disableTransitionOnChange
-    >
+    <ThemeProvider initialTheme={initialTheme}>
       <LinkProvider component={AppLink}>{children}</LinkProvider>
     </ThemeProvider>
   );

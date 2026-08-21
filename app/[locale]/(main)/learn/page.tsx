@@ -26,28 +26,28 @@ function LearnPageContent() {
       <div className="flex items-center justify-between">
         <div className="space-y-1">
           <div className="flex items-center gap-2">
-            <h1 className="text-2xl font-semibold text-[var(--tami-text)]">
+            <h1 className="text-2xl font-bold text-[var(--color-tami-text)]">
               {tNav("learn")}
             </h1>
             <Badge variant="neutral" appearance="dot">
               {tCommon("curriculumBadge")}
             </Badge>
           </div>
-          <p className="text-sm text-neutral-500">
+          <p className="text-sm text-[var(--color-tami-text-muted)]">
             {tHome("features.learn.description")}
           </p>
         </div>
       </div>
 
-      <LayerCard className="rounded-[28px] p-8 min-h-[400px] flex flex-col items-center justify-center text-center space-y-4 shadow-sm">
-        <div className="w-16 h-16 rounded-2xl bg-blue-500/15 text-blue-600 dark:text-blue-400 flex items-center justify-center">
+      <LayerCard className="rounded-3xl p-8 min-h-[400px] flex flex-col items-center justify-center text-center space-y-4 bg-[var(--color-tami-surface)] border border-[var(--color-tami-line)]">
+        <div className="w-16 h-16 rounded-2xl bg-[var(--color-tami-violet)]/15 text-[var(--color-tami-violet)] flex items-center justify-center">
           <GraduationCap size={36} weight="fill" />
         </div>
-        <div className="space-y-1 max-w-md">
-          <h2 className="text-lg font-semibold text-[var(--tami-text)]">
+        <div className="space-y-1.5 max-w-md">
+          <h2 className="text-lg font-bold text-[var(--color-tami-text)]">
             {tHome("features.learn.title")}
           </h2>
-          <p className="text-sm text-neutral-600 dark:text-neutral-300">
+          <p className="text-sm text-[var(--color-tami-text-muted)]">
             {tHome("features.learn.description")}
           </p>
         </div>

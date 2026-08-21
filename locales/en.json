@@ -14,7 +14,6 @@
     "enterWorkspace": "Enter Workspace",
     "backToHome": "Back to Home",
     "labBadge": "Lab",
-    "eventBadge": "v0.1.0 • Bali AI Tech Fest 2026",
     "socraticBadge": "Socratic AI",
     "visionBadge": "Vision AI",
     "interactiveBadge": "Interactive Lab",
@@ -90,10 +89,10 @@
         "dropScreenshotHint": "100% In-Memory • Cleared Immediately After Analysis",
         "passwordStrength": "Password Strength",
         "passwordStrengthValue": "78 bit (Strong)",
-        "topicPasswords": "🔑 Passwords & 2FA",
-        "topicPhishing": "🎣 Phishing & Social Engineering",
-        "topicPrivacy": "🛡️ Digital Footprint Privacy",
-        "topicBullying": "🤝 Anti-Cyberbullying & Online Ethics"
+        "topicPasswords": "Passwords & 2FA",
+        "topicPhishing": "Phishing & Social Engineering",
+        "topicPrivacy": "Digital Footprint Privacy",
+        "topicBullying": "Anti-Cyberbullying & Online Ethics"
       }
     },
     "stats": {

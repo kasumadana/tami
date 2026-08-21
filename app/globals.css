@@ -2,9 +2,10 @@
 @import "@cloudflare/kumo/styles/tailwind";
 @import "tailwindcss";
 
-@custom-variant dark (&:is(.dark *));
+@custom-variant dark (&:where(.dark, .dark *));
 
 :root {
+  color-scheme: light;
   --color-tami-canvas: #ffffff;
   --color-tami-surface: #ffffff;
   --color-tami-surface-subdued: #f4f4f5;
@@ -31,6 +32,7 @@
 }
 
 .dark {
+  color-scheme: dark;
   --color-tami-canvas: #000000;
   --color-tami-surface: #09090b;
   --color-tami-surface-subdued: #18181b;

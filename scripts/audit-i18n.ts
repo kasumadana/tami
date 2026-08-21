@@ -1,12 +1,12 @@
 import fs from "node:fs";
 import path from "node:path";
 
-function getAllKeys(obj: Record<string, any>, prefix = ""): string[] {
+function getAllKeys(obj: Record<string, unknown>, prefix = ""): string[] {
   let keys: string[] = [];
   for (const [key, value] of Object.entries(obj)) {
     const fullKey = prefix ? `${prefix}.${key}` : key;
     if (typeof value === "object" && value !== null && !Array.isArray(value)) {
-      keys = keys.concat(getAllKeys(value, fullKey));
+      keys = keys.concat(getAllKeys(value as Record<string, unknown>, fullKey));
     } else {
       keys.push(fullKey);
     }

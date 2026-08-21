@@ -14,7 +14,6 @@
     "enterWorkspace": "Masuk Ruang Kerja",
     "backToHome": "Kembali ke Beranda",
     "labBadge": "Lab",
-    "eventBadge": "v0.1.0 • Bali AI Tech Fest 2026",
     "socraticBadge": "AI Sokratik",
     "visionBadge": "AI Visual",
     "interactiveBadge": "Lab Interaktif",
@@ -90,10 +89,10 @@
         "dropScreenshotHint": "100% In-Memory • Dihapus Seketika Pasca-Analisis",
         "passwordStrength": "Kekuatan Sandi",
         "passwordStrengthValue": "78 bit (Kuat)",
-        "topicPasswords": "🔑 Kata Sandi & 2FA",
-        "topicPhishing": "🎣 Deteksi Phishing & Rekayasa Sosial",
-        "topicPrivacy": "🛡️ Privasi Jejak Digital",
-        "topicBullying": "🤝 Anti-Cyberbullying & Etika Online"
+        "topicPasswords": "Kata Sandi & 2FA",
+        "topicPhishing": "Deteksi Phishing & Rekayasa Sosial",
+        "topicPrivacy": "Privasi Jejak Digital",
+        "topicBullying": "Anti-Cyberbullying & Etika Online"
       }
     },
     "stats": {
