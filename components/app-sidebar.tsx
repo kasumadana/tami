@@ -7,6 +7,7 @@ import { Link } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 import { ThemeToggle } from "./theme-toggle";
 import { LocaleSwitcher } from "./locale-switcher";
+import { AuthButton } from "./auth/auth-button";
 import {
   Sidebar,
   SidebarProvider,
@@ -25,12 +26,15 @@ import {
   Sparkle,
 } from "@phosphor-icons/react";
 
+import { useSession } from "next-auth/react";
+
 interface AppSidebarLayoutProps {
   children: React.ReactNode;
 }
 
 export function AppSidebarLayout({ children }: AppSidebarLayoutProps) {
   const pathname = usePathname();
+  const { data: session } = useSession();
   const t = useTranslations("sidebar");
   const tNav = useTranslations("nav");
   const tCommon = useTranslations("common");
@@ -75,24 +79,25 @@ export function AppSidebarLayout({ children }: AppSidebarLayoutProps) {
     <SidebarProvider defaultOpen>
       <div className="flex min-h-screen w-full bg-[var(--color-tami-canvas)] text-[var(--color-tami-text)]">
         <Sidebar className="border-r border-[var(--color-tami-line)] bg-[var(--color-tami-surface)]">
-          {/* Header (Clean Unboxed Logo) */}
-          <Sidebar.Header className="p-4 border-b border-[var(--color-tami-line)]">
-            <div className="flex items-center justify-between">
+          {/* Header (Clean Unboxed Logo + AuthButton) */}
+          <Sidebar.Header className="p-3.5 border-b border-[var(--color-tami-line)]">
+            <div className="flex items-center justify-between gap-2">
               <Link
                 href="/"
-                className="flex items-center gap-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-tami-orange)] rounded-lg"
+                className="flex items-center gap-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-tami-orange)] rounded-lg shrink-0"
               >
                 <Image
                   src="/icon.svg"
                   alt="tami"
-                  width={26}
-                  height={26}
-                  className="w-6.5 h-6.5 shrink-0 object-contain"
+                  width={24}
+                  height={24}
+                  className="w-6 h-6 shrink-0 object-contain"
                 />
-                <span className="font-bold text-lg tracking-tight text-[var(--color-tami-text)]">
+                <span className="font-bold text-base tracking-tight text-[var(--color-tami-text)]">
                   {tCommon("appName")}
                 </span>
               </Link>
+              <AuthButton />
             </div>
           </Sidebar.Header>
 
@@ -157,26 +162,28 @@ export function AppSidebarLayout({ children }: AppSidebarLayoutProps) {
             </div>
 
             {/* Guest Session Status Banner */}
-            <div className="pt-2">
-              <Banner variant="secondary" size="sm" className="rounded-xl border border-[var(--color-tami-line)] bg-[var(--color-tami-surface-subdued)]">
-                <div className="space-y-1 text-xs">
-                  <div className="flex items-center gap-1.5 font-semibold text-[var(--color-tami-text)]">
-                    <Sparkle size={14} className="text-[var(--color-tami-orange)]" weight="fill" />
-                    <span>{t("guestTurnsRemaining")}</span>
+            {!session?.user && (
+              <div className="pt-2">
+                <Banner variant="secondary" size="sm" className="rounded-xl border border-[var(--color-tami-line)] bg-[var(--color-tami-surface-subdued)]">
+                  <div className="space-y-1 text-xs">
+                    <div className="flex items-center gap-1.5 font-semibold text-[var(--color-tami-text)]">
+                      <Sparkle size={14} className="text-[var(--color-tami-orange)]" weight="fill" />
+                      <span>{t("guestTurnsRemaining")}</span>
+                    </div>
+                    <p className="text-[11px] text-[var(--color-tami-text-muted)] leading-normal">
+                      {t("guestDescription")}
+                    </p>
                   </div>
-                  <p className="text-[11px] text-[var(--color-tami-text-muted)] leading-normal">
-                    {t("guestDescription")}
-                  </p>
-                </div>
-              </Banner>
-            </div>
+                </Banner>
+              </div>
+            )}
           </Sidebar.Content>
 
           {/* Footer Controls */}
           <Sidebar.Footer className="p-3 border-t border-[var(--color-tami-line)] flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <Badge variant="warning" appearance="dot" className="text-xs">
-                {tCommon("guestMode")}
+              <Badge variant={session?.user ? "success" : "warning"} appearance="dot" className="text-xs">
+                {session?.user ? session.user.name || "Online" : tCommon("guestMode")}
               </Badge>
             </div>
             <div className="flex items-center gap-1.5">

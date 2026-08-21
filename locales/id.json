@@ -242,6 +242,16 @@
       "blocked": "DIBLOKIR"
     }
   },
+  "auth": {
+    "signIn": "Masuk",
+    "signOut": "Keluar",
+    "dialogTitle": "Masuk ke tami",
+    "dialogDesc": "Simpan kemajuan belajar, sinkronisasi lencana di semua perangkat, dan dapatkan sertifikat digital.",
+    "googleSignIn": "Masuk dengan Google",
+    "demoSignIn": "Masuk Cepat sebagai Siswa Demo",
+    "guestModeNotice": "Tetap lanjut sebagai tamu tanpa login",
+    "syncSuccess": "Progres tamu berhasil disinkronkan ke akunmu!"
+  },
   "home": {
     "hero": {
       "badge": "Bali AI Tech Fest 2026",

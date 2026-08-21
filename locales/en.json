@@ -242,6 +242,16 @@
       "blocked": "BLOCKED"
     }
   },
+  "auth": {
+    "signIn": "Sign in",
+    "signOut": "Sign out",
+    "dialogTitle": "Sign in to tami",
+    "dialogDesc": "Save your learning progress, sync badges across all devices, and claim your digital certificate.",
+    "googleSignIn": "Sign in with Google",
+    "demoSignIn": "Quick Sign in as Demo Student",
+    "guestModeNotice": "Continue as guest without sign-in",
+    "syncSuccess": "Guest progress successfully synced to your account!"
+  },
   "home": {
     "hero": {
       "badge": "Bali AI Tech Fest 2026",

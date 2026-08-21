@@ -6,6 +6,7 @@ import { Link } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 import { ThemeToggle } from "./theme-toggle";
 import { LocaleSwitcher } from "./locale-switcher";
+import { AuthButton } from "./auth/auth-button";
 import { Button } from "@cloudflare/kumo/components/button";
 import { ArrowRight } from "@phosphor-icons/react";
 
@@ -37,6 +38,7 @@ export function Navbar() {
         <div className="flex items-center gap-2.5">
           <LocaleSwitcher />
           <ThemeToggle />
+          <AuthButton />
 
           <Link href="/chat">
             <Button

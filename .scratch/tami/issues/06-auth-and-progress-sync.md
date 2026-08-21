@@ -4,10 +4,10 @@
 
 **Blocked by:** 01 — Core App Shell, Theme, i18n & Navigation Layout, 05 — Interactive Cyber Defense Lab (/practice) with Deterministic Evaluator
 
-**Status:** ready-for-agent
+**Status:** done
 
-- [ ] Definisi skema Drizzle ORM (`lib/db/schema.ts`) dan konfigurasi koneksi serverless Neon DB (`lib/db/index.ts`).
-- [ ] Konfigurasi NextAuth v5 dengan Google OAuth Provider dan Session Callback terproteksi.
-- [ ] Endpoint `/api/sync-progress` untuk melakukan *upsert* data capaian topik `/learn` dan lencana `/practice` dari klien saat event login terdeteksi.
-- [ ] UI status autentikasi di Navbar (Avatar pengguna, Tombol Masuk/Keluar, dan Modal Login).
-- [ ] Migrasi database berhasil diterapkan via `pnpm drizzle-kit push`.
+- [x] Definisi skema Drizzle ORM (`lib/db/schema.ts`) dan konfigurasi koneksi serverless Neon DB (`lib/db/index.ts`).
+- [x] Konfigurasi NextAuth v5 dengan Google OAuth Provider dan Session Callback terproteksi.
+- [x] Endpoint `/api/sync-progress` untuk melakukan *upsert* data capaian topik `/learn` dan lencana `/practice` dari klien saat event login terdeteksi.
+- [x] UI status autentikasi di Navbar (Avatar pengguna, Tombol Masuk/Keluar, dan Modal Login).
+- [x] Migrasi database berhasil diterapkan via `pnpm drizzle-kit push`.
