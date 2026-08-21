@@ -19,7 +19,8 @@
     "interactiveBadge": "Lab Interaktif",
     "curriculumBadge": "Kurikulum",
     "familyBadge": "Pendidik & Keluarga",
-    "heroBadge": "Status Pahlawan"
+    "heroBadge": "Status Pahlawan",
+    "profileBadge": "Profil Pahlawan"
   },
   "nav": {
     "home": "Beranda",
@@ -251,6 +252,58 @@
     "demoSignIn": "Masuk Cepat sebagai Siswa Demo",
     "guestModeNotice": "Tetap lanjut sebagai tamu tanpa login",
     "syncSuccess": "Progres tamu berhasil disinkronkan ke akunmu!"
+  },
+  "profile": {
+    "title": "Profil Pahlawan Digital",
+    "subtitle": "Pantau pencapaian, koleksi lencana pertahanan siber, dan klaim sertifikat digitalmu.",
+    "guestStudent": "Siswa Tamu (Belum Masuk)",
+    "guestBannerTitle": "Simpan Pencapaianmu Secara Permanen",
+    "guestBannerDesc": "Masuk dengan Google atau Siswa Demo untuk menyinkronkan sertifikat dan lencana ke semua perangkat.",
+    "guestSignInBtn": "Masuk Akun",
+    "rankNovice": "Penjelajah Pemula",
+    "rankApprentice": "Pelindung Digital Magang",
+    "rankHero": "Pahlawan Pertahanan Digital",
+    "stats": {
+      "totalXp": "Total Poin XP",
+      "modulesCompleted": "Modul Selesai",
+      "badgesCount": "Lencana Diraih",
+      "curriculumProgress": "Kelulusan Kurikulum"
+    },
+    "badgesSection": "Galeri Lencana Kehormatan",
+    "badges": {
+      "phishingTitle": "Phishing Sleuth",
+      "phishingDesc": "Mampu mendeteksi domain tiruan, manipulasi tautan, dan urgensi palsu.",
+      "passwordTitle": "Entropy Master",
+      "passwordDesc": "Menciptakan frasa sandi tak tertembus dengan nilai entropi minimal 80 bit.",
+      "firewallTitle": "Firewall Sentinel",
+      "firewallDesc": "Mengonfigurasi filter gateway untuk menangkis paket trojan dan probe SSH.",
+      "curriculumTitle": "Pakar Literasi Siber",
+      "curriculumDesc": "Menuntaskan seluruh 4 pilar kurikulum pertahanan siber tami.",
+      "locked": "Terkunci",
+      "unlocked": "Terbuka"
+    }
+  },
+  "certificate": {
+    "sectionTitle": "E-Sertifikat Pahlawan Digital",
+    "sectionDesc": "Sertifikat resmi kompetensi literasi siber untuk portofolio siswa dan keluarga.",
+    "studentNamePlaceholder": "Nama Lengkap Siswa",
+    "nameInputLabel": "Nama pada Sertifikat:",
+    "printPdfBtn": "Cetak / Unduh PDF",
+    "downloadPngBtn": "Unduh Gambar PNG",
+    "certTitle": "SERTIFIKAT KELULUSAN",
+    "certSubtitle": "Pahlawan Pertahanan Media Digital",
+    "presentedTo": "Diberikan dengan bangga kepada:",
+    "certBody": "Telah berhasil menuntaskan pelatihan nalar kritis pertahanan siber tami, menguasai 4 pilar keamanan digital (Keamanan Sandi & 2FA, Deteksi Phishing, Privasi Data, dan Etika Digital), serta lulus uji simulasi laboratorium taktil.",
+    "certDate": "Tanggal Terbit: {date}",
+    "certId": "ID Verifikasi: {id}",
+    "signatureLabel": "Tutor Cerdas AI tami",
+    "mascotSign": "tami si Panda Merah",
+    "eventBadge": "Bali AI Tech Fest 2026",
+    "skillPass": "Sandi & 2FA",
+    "skillPhish": "Deteksi Phishing",
+    "skillPriv": "Privasi Data",
+    "skillEthic": "Etika Siber",
+    "lockedNotice": "Selesaikan minimal 1 simulasi lab atau 1 modul kurikulum untuk mengaktifkan sertifikat digitalmu."
   },
   "home": {
     "hero": {

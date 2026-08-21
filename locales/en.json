@@ -19,7 +19,8 @@
     "interactiveBadge": "Interactive Lab",
     "curriculumBadge": "Curriculum",
     "familyBadge": "Educators & Families",
-    "heroBadge": "Hero Status"
+    "heroBadge": "Hero Status",
+    "profileBadge": "Hero Profile"
   },
   "nav": {
     "home": "Home",
@@ -251,6 +252,58 @@
     "demoSignIn": "Quick Sign in as Demo Student",
     "guestModeNotice": "Continue as guest without sign-in",
     "syncSuccess": "Guest progress successfully synced to your account!"
+  },
+  "profile": {
+    "title": "Digital Hero Profile",
+    "subtitle": "Track achievements, showcase cyber defense badges, and claim your digital certificate.",
+    "guestStudent": "Guest Student (Not Signed In)",
+    "guestBannerTitle": "Save Your Achievements Permanently",
+    "guestBannerDesc": "Sign in with Google or Demo Student to sync your certificate and badges across devices.",
+    "guestSignInBtn": "Sign In",
+    "rankNovice": "Novice Explorer",
+    "rankApprentice": "Apprentice Defender",
+    "rankHero": "Digital Defense Hero",
+    "stats": {
+      "totalXp": "Total XP Points",
+      "modulesCompleted": "Modules Completed",
+      "badgesCount": "Badges Earned",
+      "curriculumProgress": "Curriculum Completion"
+    },
+    "badgesSection": "Honor Badges Gallery",
+    "badges": {
+      "phishingTitle": "Phishing Sleuth",
+      "phishingDesc": "Skilled in spotting typosquatting domains, link spoofing, and false urgency.",
+      "passwordTitle": "Entropy Master",
+      "passwordDesc": "Crafted an unbreakable passphrase with at least 80 bits of entropy.",
+      "firewallTitle": "Firewall Sentinel",
+      "firewallDesc": "Configured gateway filters to repel trojans and brute-force probes.",
+      "curriculumTitle": "Cyber Literacy Scholar",
+      "curriculumDesc": "Mastered all 4 core digital defense pillars of the tami curriculum.",
+      "locked": "Locked",
+      "unlocked": "Unlocked"
+    }
+  },
+  "certificate": {
+    "sectionTitle": "Digital Hero E-Certificate",
+    "sectionDesc": "Official cyber literacy competency credential for students and families.",
+    "studentNamePlaceholder": "Student Full Name",
+    "nameInputLabel": "Name on Certificate:",
+    "printPdfBtn": "Print / Download PDF",
+    "downloadPngBtn": "Download PNG Image",
+    "certTitle": "CERTIFICATE OF ACHIEVEMENT",
+    "certSubtitle": "Digital Media Defense Hero",
+    "presentedTo": "Proudly presented to:",
+    "certBody": "Has successfully completed the tami Socratic cyber defense curriculum, mastered the 4 digital safety pillars (Password & 2FA, Phishing Detection, Data Privacy, and Online Ethics), and passed the interactive defense lab simulations.",
+    "certDate": "Issue Date: {date}",
+    "certId": "Verification ID: {id}",
+    "signatureLabel": "tami AI Smart Tutor",
+    "mascotSign": "tami the Red Panda",
+    "eventBadge": "Bali AI Tech Fest 2026",
+    "skillPass": "Password & 2FA",
+    "skillPhish": "Phishing Detection",
+    "skillPriv": "Data Privacy",
+    "skillEthic": "Cyber Ethics",
+    "lockedNotice": "Complete at least 1 lab simulation or 1 curriculum module to activate your digital certificate."
   },
   "home": {
     "hero": {
