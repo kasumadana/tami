@@ -38,6 +38,26 @@
     "guestDescription": "Coba tanpa login. Masuk untuk simpan riwayat permanen.",
     "toggleCollapse": "Perkecil Sidebar"
   },
+  "chat": {
+    "title": "Tutor Sokratik tami",
+    "subtitle": "Konsultasikan pesan atau situasi mencurigakan. tami akan memandumu mengasah logika deteksi ancaman digital.",
+    "placeholder": "Ketik pesan atau ceritakan situasi mencurigakanmu di sini...",
+    "send": "Kirim",
+    "thinking": "tami sedang menalar...",
+    "clear": "Hapus Obrolan",
+    "clearConfirm": "Apakah kamu yakin ingin menghapus seluruh riwayat obrolan ini?",
+    "guestQuotaNotice": "Giliran Tamu: {remaining} dari {max} tersisa",
+    "quotaExceededTitle": "Giliran Tamu Telah Habis",
+    "quotaExceededDesc": "Kamu telah menggunakan 3 giliran eksplorasi tamu. Masuk dengan Google untuk melanjutkan obrolan tanpa batas dan menyimpan pencapaian belajarmu.",
+    "signInToContinue": "Masuk dengan Google",
+    "startersTitle": "Pilih Topik Diskusi Cepat:",
+    "starter1": "Aku dapat DM diamond game gratis dari akun tak dikenal, minta login lewat link.",
+    "starter2": "Ada SMS mengabarkan aku menang undian ratusan juta dan disuruh transfer biaya admin.",
+    "starter3": "Temanku diejek dan fotonya diedit di grup WhatsApp kelas, apa yang harus kulakukan?",
+    "starter4": "Gimana cara bikin kata sandi yang panjang, kuat, tapi gampang kuingat?",
+    "disclaimer": "tami adalah AI Smart Tutor edukasi privasi dan keamanan digital. tami tidak menyimpan foto atau pesan pribadimu di server.",
+    "tamiWelcome": "Halo! Aku **tami**, teman aman media internetmu. 🐾\n\nAda pesan mencurigakan, tawaran game gratis yang aneh, atau situasi online yang bikin kamu bingung? Ceritakan di sini, yuk kita bedah logikanya bareng-bareng!"
+  },
   "home": {
     "hero": {
       "badge": "Bali AI Tech Fest 2026",

@@ -31,12 +31,32 @@
     "profile": "Hero Profile"
   },
   "sidebar": {
-    "overview": "Learning Space",
-    "tools": "Protection Tools",
+    "overview": "Learning Hub",
+    "tools": "Defense Tools",
     "resources": "Curriculum & Guides",
     "guestTurnsRemaining": "3 Guest Turns Left",
-    "guestDescription": "Try without signing in. Log in to save your permanent history.",
-    "toggleCollapse": "Toggle Sidebar"
+    "guestDescription": "Explore without signing in. Sign in to save permanent history.",
+    "toggleCollapse": "Collapse Sidebar"
+  },
+  "chat": {
+    "title": "tami Socratic AI Coach",
+    "subtitle": "Consult suspicious messages or digital situations. tami guides your critical thinking to spot cyber threats.",
+    "placeholder": "Type a message or describe a suspicious situation here...",
+    "send": "Send",
+    "thinking": "tami is reasoning...",
+    "clear": "Clear Chat",
+    "clearConfirm": "Are you sure you want to clear this chat history?",
+    "guestQuotaNotice": "Guest Turns: {remaining} of {max} remaining",
+    "quotaExceededTitle": "Guest Turns Exhausted",
+    "quotaExceededDesc": "You have used your 3 guest exploration turns. Sign in with Google to continue unlimited chat sessions and save your learning progress.",
+    "signInToContinue": "Sign In with Google",
+    "startersTitle": "Popular Discussion Starters:",
+    "starter1": "I received a DM for free game diamonds from an unknown account, asking me to login via a link.",
+    "starter2": "I got an SMS saying I won a huge prize and need to transfer admin fees to claim.",
+    "starter3": "My friend is being bullied with edited photos in our class WhatsApp group, what should I do?",
+    "starter4": "How can I make a strong passphrase that is hard to guess but easy for me to remember?",
+    "disclaimer": "tami is an educational AI Smart Tutor for digital safety. tami does not store personal photos or private messages on the server.",
+    "tamiWelcome": "Hello! I'm **tami**, your safe internet companion. 🐾\n\nDid you encounter a suspicious message, a weird free prize offer, or a confusing online situation? Tell me about it, and let's analyze the clues together!"
   },
   "home": {
     "hero": {
