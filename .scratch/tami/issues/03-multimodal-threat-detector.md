@@ -4,11 +4,11 @@
 
 **Blocked by:** 01 — Core App Shell, Theme, i18n & Navigation Layout
 
-**Status:** ready-for-agent
+**Status:** done
 
-- [ ] Area unggah drag-and-drop & paste gambar (PNG, JPG, WebP max 5MB) dengan preview lokal dan konversi ke Base64 buffer in-memory.
-- [ ] Endpoint `/api/detector` dengan validasi Zod Schema yang mengembalikan structured JSON: `riskLevel`, `summary`, `ocrText`, `anomaliesFound`, `reflectionQuestions`, dan `isRelevantDigitalMessage`.
-- [ ] Penanganan gambar non-digital (`IRRELEVANT_IMAGE`) dan gambar buram (`UNCLEAR_IMAGE`) dengan pesan edukatif ramah anak tanpa vonis palsu.
-- [ ] Tampilan kartu hasil analisis dengan lencana status semantik berkode warna (Hijau, Oranye, Merah), sorotan anomali, dan pertanyaan refleksi nalar kritis.
-- [ ] Tanpa penyimpanan berkas ke disk atau cloud storage (Zero Storage Privacy).
-- [ ] i18n lengkap untuk seluruh pesan deteksi dan label antarmuka.
+- [x] Area unggah drag-and-drop & paste gambar (PNG, JPG, WebP max 5MB) dengan preview lokal dan konversi ke Base64 buffer in-memory.
+- [x] Endpoint `/api/detector` dengan validasi Zod Schema yang mengembalikan structured JSON: `riskLevel`, `summary`, `ocrText`, `anomaliesFound`, `reflectionQuestions`, dan `isRelevantDigitalMessage`.
+- [x] Penanganan gambar non-digital (`IRRELEVANT_IMAGE`) dan gambar buram (`UNCLEAR_IMAGE`) dengan pesan edukatif ramah anak tanpa vonis palsu.
+- [x] Tampilan kartu hasil analisis dengan lencana status semantik berkode warna (Hijau, Oranye, Merah), sorotan anomali, dan pertanyaan refleksi nalar kritis.
+- [x] Tanpa penyimpanan berkas ke disk atau cloud storage (Zero Storage Privacy).
+- [x] i18n lengkap untuk seluruh pesan deteksi dan label antarmuka.
