@@ -28,13 +28,13 @@ function calculateEntropy(password: string): number {
   return Math.round(password.length * Math.log2(poolSize));
 }
 
-function getCrackTime(entropy: number): string {
-  if (entropy <= 0) return "0 detik";
-  if (entropy < 35) return "0.001 detik";
-  if (entropy < 50) return "5 menit - 2 hari";
-  if (entropy < 70) return "6 bulan - 25 tahun";
-  if (entropy < 80) return "800 - 10.000 tahun";
-  return "> 1.000.000 Tahun";
+function getCrackTime(entropy: number, tPwd: (key: string) => string): string {
+  if (entropy <= 0) return tPwd("timeZero");
+  if (entropy < 35) return tPwd("timeInstant");
+  if (entropy < 50) return tPwd("timeMinutes");
+  if (entropy < 70) return tPwd("timeMonths");
+  if (entropy < 80) return tPwd("timeCenturies");
+  return tPwd("timeMillions");
 }
 
 const SAMPLE_PASSPHRASES = [
@@ -52,7 +52,7 @@ export function PasswordSimulator() {
   const [hasCompleted, setHasCompleted] = useState(false);
 
   const entropy = useMemo(() => calculateEntropy(password), [password]);
-  const crackTime = useMemo(() => getCrackTime(entropy), [entropy]);
+  const crackTime = useMemo(() => getCrackTime(entropy, tPwd), [entropy, tPwd]);
 
   const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const val = e.target.value;

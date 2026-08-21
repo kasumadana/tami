@@ -18,6 +18,12 @@ import {
   Trophy,
   Sparkle,
 } from "@phosphor-icons/react";
+import {
+  subscribeLearn,
+  getLearnSnapshot,
+  SERVER_LEARN_SNAPSHOT,
+  toggleLearnModule,
+} from "@/lib/learn-store";
 
 const MODULES_DATA = [
   {
@@ -54,46 +60,14 @@ const MODULES_DATA = [
   },
 ];
 
-const STORAGE_KEY = "tami_learn_completed_modules";
-const listeners = new Set<() => void>();
-
-function notify() {
-  listeners.forEach((listener) => listener());
-}
-
-function subscribeModules(callback: () => void) {
-  listeners.add(callback);
-  if (typeof window !== "undefined") {
-    window.addEventListener("storage", callback);
-    return () => {
-      listeners.delete(callback);
-      window.removeEventListener("storage", callback);
-    };
-  }
-  return () => {
-    listeners.delete(callback);
-  };
-}
-
-function getModulesSnapshot(): string {
-  if (typeof window === "undefined") return "[]";
-  try {
-    return localStorage.getItem(STORAGE_KEY) || "[]";
-  } catch {
-    return "[]";
-  }
-}
-
-const SERVER_SNAPSHOT = "[]";
-
 export function LearnWorkspace() {
   const t = useTranslations("learn");
   const tCommon = useTranslations("common");
 
   const rawSnapshot = useSyncExternalStore(
-    subscribeModules,
-    getModulesSnapshot,
-    () => SERVER_SNAPSHOT
+    subscribeLearn,
+    getLearnSnapshot,
+    () => SERVER_LEARN_SNAPSHOT
   );
 
   let completedModules: string[] = [];
@@ -105,23 +79,7 @@ export function LearnWorkspace() {
 
   const toggleModuleComplete = useCallback(
     (moduleId: string) => {
-      let current: string[] = [];
-      try {
-        current = JSON.parse(getModulesSnapshot());
-      } catch {
-        current = [];
-      }
-
-      const updated = current.includes(moduleId)
-        ? current.filter((id) => id !== moduleId)
-        : [...current, moduleId];
-
-      try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
-      } catch {
-        // Ignore storage write error
-      }
-      notify();
+      toggleLearnModule(moduleId);
     },
     []
   );

@@ -22,29 +22,13 @@ import {
   SERVER_PRACTICE_SNAPSHOT,
   PracticeProgress,
 } from "@/lib/practice-store";
+import {
+  subscribeLearn,
+  getLearnSnapshot,
+  SERVER_LEARN_SNAPSHOT,
+} from "@/lib/learn-store";
 import { CertificateCard } from "@/components/profile/certificate-card";
 import { LoginDialog } from "@/components/auth/login-dialog";
-
-const LEARN_STORAGE_KEY = "tami_learn_completed_modules";
-
-function subscribeLearn(callback: () => void) {
-  if (typeof window !== "undefined") {
-    window.addEventListener("storage", callback);
-    return () => window.removeEventListener("storage", callback);
-  }
-  return () => {};
-}
-
-function getLearnSnapshot(): string {
-  if (typeof window === "undefined") return "[]";
-  try {
-    return localStorage.getItem(LEARN_STORAGE_KEY) || "[]";
-  } catch {
-    return "[]";
-  }
-}
-
-const SERVER_LEARN_SNAPSHOT = "[]";
 
 export function ProfileWorkspace() {
   const t = useTranslations("profile");

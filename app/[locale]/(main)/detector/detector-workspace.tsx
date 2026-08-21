@@ -371,11 +371,11 @@ export function DetectorWorkspace() {
                 <span className="absolute inset-0 rounded-full border-2 border-[var(--color-tami-orange)] animate-ping opacity-30" />
               </div>
               <div className="space-y-1">
-                <h3 className="font-bold text-base text-[var(--color-tami-text)]">
+                <h3 className="font-bold text-sm text-[var(--color-tami-text)]">
                   {t("analyzing")}
                 </h3>
                 <p className="text-xs text-[var(--color-tami-text-muted)] max-w-xs leading-relaxed">
-                  Memindai OCR teks, integritas domain URL, elemen tombol tiruan, dan rekayasa sosial...
+                  {t("analyzingSub")}
                 </p>
               </div>
             </LayerCard>

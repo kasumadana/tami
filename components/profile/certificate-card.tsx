@@ -111,7 +111,7 @@ export function CertificateCard({ initialName, isUnlocked }: CertificateCardProp
     ctx.textAlign = "right";
     ctx.font = "bold 16px sans-serif";
     ctx.fillStyle = "#ff5a00";
-    ctx.fillText("tami si Panda Merah", 1120, 680);
+    ctx.fillText(t("mascotSign"), 1120, 680);
     ctx.font = "13px sans-serif";
     ctx.fillStyle = "#71717a";
     ctx.fillText(t("signatureLabel"), 1120, 705);
@@ -185,8 +185,8 @@ export function CertificateCard({ initialName, isUnlocked }: CertificateCardProp
       >
         {/* Decorative corner ribbons */}
         <div className="absolute top-0 right-0 w-24 h-24 overflow-hidden pointer-events-none">
-          <div className="bg-[var(--color-tami-orange)] text-white text-[9px] font-bold py-1 text-center rotate-45 translate-x-7 translate-y-4 shadow-xs">
-            VERIFIED
+          <div className="bg-[var(--color-tami-orange)] text-white text-[9px] font-semibold py-1 text-center rotate-45 translate-x-7 translate-y-4 shadow-xs">
+            {t("verifiedBadge")}
           </div>
         </div>
 

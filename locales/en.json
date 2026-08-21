@@ -57,7 +57,8 @@
     "starter3": "My friend is being bullied with edited photos in our class WhatsApp group, what should I do?",
     "starter4": "How can I make a strong passphrase that is hard to guess but easy for me to remember?",
     "disclaimer": "tami is an educational AI Smart Tutor for digital safety. tami does not store personal photos or private messages on the server.",
-    "tamiWelcome": "Hello! I'm **tami**, your safe internet companion. 🐾\n\nDid you encounter a suspicious message, a weird free prize offer, or a confusing online situation? Tell me about it, and let's analyze the clues together!"
+    "tamiWelcome": "Hello! I'm **tami**, your safe internet companion. 🐾\n\nDid you encounter a suspicious message, a weird free prize offer, or a confusing online situation? Tell me about it, and let's analyze the clues together!",
+    "errorMessage": "*An error occurred while processing the response. Please check your internet connection or try again.*"
   },
   "detector": {
     "title": "Multimodal Threat Inspector",
@@ -67,6 +68,7 @@
     "pasteHint": "Tip: You can also press Ctrl+V to paste your screenshot directly!",
     "analyzeAction": "Analyze Threat Signals",
     "analyzing": "tami is inspecting visual & text signals...",
+    "analyzingSub": "Scanning OCR text, URL domain integrity, deceptive UI elements, and social engineering...",
     "reupload": "Change Image",
     "samplesTitle": "Or Try Sample Test Cases:",
     "sample1": "Lottery Phishing SMS",
@@ -215,12 +217,18 @@
       "bitsLabel": "Entropy Score",
       "crackTimeLabel": "Estimated Computer Crack Time",
       "passphraseHint": "Challenge Goal: Reach at least 80 bits of entropy using a long passphrase (e.g. 4 random words).",
-      "generatorBtn": "Generate Strong Passphrase Example",
-      "statusWeak": "Very Vulnerable (< 40 bits)",
+      "generatorBtn": "Generate Strong Sample",
+      "statusWeak": "Highly Vulnerable (< 40 bits)",
       "statusModerate": "Moderate (40 - 79 bits)",
-      "statusStrong": "Immense Defense (>= 80 bits)",
-      "successMsg": "Incredible! Your passphrase reached at least 80 bits of entropy. This would take supercomputers millions of years to crack!",
-      "badgeName": "Badge: Entropy Master"
+      "statusStrong": "Very Strong (>= 80 bits)",
+      "successMsg": "Outstanding! Your passphrase reached >= 80 bits of entropy. It would take millions of years for supercomputers to crack!",
+      "badgeName": "Badge: Entropy Master",
+      "timeZero": "0 seconds",
+      "timeInstant": "0.001 seconds",
+      "timeMinutes": "5 mins - 2 days",
+      "timeMonths": "6 months - 25 years",
+      "timeCenturies": "800 - 10,000 years",
+      "timeMillions": "> 1,000,000 Years"
     },
     "firewall": {
       "guardTitle": "Firewall Gateway Packet Stream Simulator",
@@ -251,7 +259,8 @@
     "googleSignIn": "Sign in with Google",
     "demoSignIn": "Quick Sign in as Demo Student",
     "guestModeNotice": "Continue as guest without sign-in",
-    "syncSuccess": "Guest progress successfully synced to your account!"
+    "syncSuccess": "Guest progress successfully synced to your account!",
+    "defaultStudent": "Student"
   },
   "profile": {
     "title": "Digital Hero Profile",
@@ -303,7 +312,8 @@
     "skillPhish": "Phishing Detection",
     "skillPriv": "Data Privacy",
     "skillEthic": "Cyber Ethics",
-    "lockedNotice": "Complete at least 1 lab simulation or 1 curriculum module to activate your digital certificate."
+    "lockedNotice": "Complete at least 1 lab simulation or 1 curriculum module to activate your digital certificate.",
+    "verifiedBadge": "Verified"
   },
   "home": {
     "hero": {

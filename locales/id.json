@@ -57,7 +57,8 @@
     "starter3": "Temanku diejek dan fotonya diedit di grup WhatsApp kelas, apa yang harus kulakukan?",
     "starter4": "Gimana cara bikin kata sandi yang panjang, kuat, tapi gampang kuingat?",
     "disclaimer": "tami adalah AI Smart Tutor edukasi privasi dan keamanan digital. tami tidak menyimpan foto atau pesan pribadimu di server.",
-    "tamiWelcome": "Halo! Aku **tami**, teman aman media internetmu. 🐾\n\nAda pesan mencurigakan, tawaran game gratis yang aneh, atau situasi online yang bikin kamu bingung? Ceritakan di sini, yuk kita bedah logikanya bareng-bareng!"
+    "tamiWelcome": "Halo! Aku **tami**, teman aman media internetmu. 🐾\n\nAda pesan mencurigakan, tawaran game gratis yang aneh, atau situasi online yang bikin kamu bingung? Ceritakan di sini, yuk kita bedah logikanya bareng-bareng!",
+    "errorMessage": "*Terjadi kesalahan saat memproses jawaban. Silakan periksa koneksi internet atau coba lagi.*"
   },
   "detector": {
     "title": "Detektor Ancaman Multimodal",
@@ -67,6 +68,7 @@
     "pasteHint": "Tip: Kamu juga bisa menekan Ctrl+V untuk menempel tangkapan layar langsung!",
     "analyzeAction": "Mulai Analisis Keamanan",
     "analyzing": "tami sedang menginspeksi visual & teks...",
+    "analyzingSub": "Memindai OCR teks, integritas domain URL, elemen tombol tiruan, dan rekayasa sosial...",
     "reupload": "Ganti Gambar",
     "samplesTitle": "Atau Coba Contoh Kasus Nyata:",
     "sample1": "SMS Phishing Undian Hadiah",
@@ -220,7 +222,13 @@
       "statusModerate": "Sedang (40 - 79 bit)",
       "statusStrong": "Sangat Kuat (>= 80 bit)",
       "successMsg": "Luar biasa! Frasa sandimu mencapai minimal 80 bit entropi. Pola ini membutuhkan jutaan tahun untuk diretasi oleh superkomputer manapun!",
-      "badgeName": "Lencana: Entropy Master"
+      "badgeName": "Lencana: Entropy Master",
+      "timeZero": "0 detik",
+      "timeInstant": "0.001 detik",
+      "timeMinutes": "5 menit - 2 hari",
+      "timeMonths": "6 bulan - 25 tahun",
+      "timeCenturies": "800 - 10.000 tahun",
+      "timeMillions": "> 1.000.000 Tahun"
     },
     "firewall": {
       "guardTitle": "Simulator Aliran Paket Gateway Firewall",
@@ -251,7 +259,8 @@
     "googleSignIn": "Masuk dengan Google",
     "demoSignIn": "Masuk Cepat sebagai Siswa Demo",
     "guestModeNotice": "Tetap lanjut sebagai tamu tanpa login",
-    "syncSuccess": "Progres tamu berhasil disinkronkan ke akunmu!"
+    "syncSuccess": "Progres tamu berhasil disinkronkan ke akunmu!",
+    "defaultStudent": "Siswa"
   },
   "profile": {
     "title": "Profil Pahlawan Digital",
@@ -303,7 +312,8 @@
     "skillPhish": "Deteksi Phishing",
     "skillPriv": "Privasi Data",
     "skillEthic": "Etika Siber",
-    "lockedNotice": "Selesaikan minimal 1 simulasi lab atau 1 modul kurikulum untuk mengaktifkan sertifikat digitalmu."
+    "lockedNotice": "Selesaikan minimal 1 simulasi lab atau 1 modul kurikulum untuk mengaktifkan sertifikat digitalmu.",
+    "verifiedBadge": "Terverifikasi"
   },
   "home": {
     "hero": {

@@ -172,8 +172,7 @@ export function ChatWorkspace({ initialTurnsRemaining }: ChatWorkspaceProps) {
           msg.id === assistantPlaceholderId
             ? {
                 ...msg,
-                content:
-                  "*Terjadi kesalahan saat memproses jawaban. Silakan periksa koneksi internet atau coba lagi.*",
+                content: t("errorMessage"),
               }
             : msg
         )

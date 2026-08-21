@@ -36,25 +36,27 @@ export function FirewallSimulator() {
   const t = useTranslations("practice");
   const tFw = useTranslations("practice.firewall");
 
-  const [rule443, setRule443] = useState<"ALLOW" | "BLOCK">("ALLOW");
-  const [rule4444, setRule4444] = useState<"ALLOW" | "BLOCK">("BLOCK");
-  const [rule22, setRule22] = useState<"ALLOW" | "BLOCK">("BLOCK");
+  const [rules, setRules] = useState<Record<number, "ALLOW" | "BLOCK">>({
+    443: "ALLOW",
+    4444: "BLOCK",
+    22: "BLOCK",
+  });
 
   const [isSimulating, setIsSimulating] = useState(false);
   const [simulationPackets, setSimulationPackets] = useState<PacketItem[]>(TEST_PACKETS);
   const [hasCompleted, setHasCompleted] = useState(false);
   const [feedbackMsg, setFeedbackMsg] = useState<string | null>(null);
 
+  const setPortRule = (port: number, action: "ALLOW" | "BLOCK") => {
+    setRules((prev) => ({ ...prev, [port]: action }));
+  };
+
   const handleRunSimulation = async () => {
     setIsSimulating(true);
     setFeedbackMsg(null);
 
     const evaluated: PacketItem[] = TEST_PACKETS.map((p) => {
-      let action: "ALLOW" | "BLOCK" = "ALLOW";
-      if (p.port === 443) action = rule443;
-      if (p.port === 4444) action = rule4444;
-      if (p.port === 22) action = rule22;
-
+      const action = rules[p.port] || "ALLOW";
       return {
         ...p,
         status: action === "ALLOW" ? "PASSED" : "BLOCKED",
@@ -64,7 +66,7 @@ export function FirewallSimulator() {
     setSimulationPackets(evaluated);
 
     // Verify rules: 443 must be ALLOW, 4444 must be BLOCK, 22 must be BLOCK
-    const isSuccess = rule443 === "ALLOW" && rule4444 === "BLOCK" && rule22 === "BLOCK";
+    const isSuccess = rules[443] === "ALLOW" && rules[4444] === "BLOCK" && rules[22] === "BLOCK";
 
     await new Promise((resolve) => setTimeout(resolve, 800));
     setIsSimulating(false);
@@ -82,7 +84,7 @@ export function FirewallSimulator() {
         // Ignore confetti error
       }
     } else {
-      if (rule443 === "BLOCK") {
+      if (rules[443] === "BLOCK") {
         setFeedbackMsg(tFw("feedback443"));
       } else {
         setFeedbackMsg(tFw("feedbackThreat"));
@@ -131,9 +133,9 @@ export function FirewallSimulator() {
             <div className="flex items-center gap-2">
               <button
                 type="button"
-                onClick={() => setRule443("ALLOW")}
+                onClick={() => setPortRule(443, "ALLOW")}
                 className={`flex-1 py-1.5 rounded-xl text-xs font-semibold border cursor-pointer ${
-                  rule443 === "ALLOW"
+                  rules[443] === "ALLOW"
                     ? "bg-[var(--color-tami-green)]/15 border-[var(--color-tami-green)] text-[var(--color-tami-green)]"
                     : "bg-[var(--color-tami-surface)] border-[var(--color-tami-line)] text-[var(--color-tami-text-muted)]"
                 }`}
@@ -142,9 +144,9 @@ export function FirewallSimulator() {
               </button>
               <button
                 type="button"
-                onClick={() => setRule443("BLOCK")}
+                onClick={() => setPortRule(443, "BLOCK")}
                 className={`flex-1 py-1.5 rounded-xl text-xs font-semibold border cursor-pointer ${
-                  rule443 === "BLOCK"
+                  rules[443] === "BLOCK"
                     ? "bg-red-500/15 border-red-500 text-[var(--color-tami-red)]"
                     : "bg-[var(--color-tami-surface)] border-[var(--color-tami-line)] text-[var(--color-tami-text-muted)]"
                 }`}
@@ -165,9 +167,9 @@ export function FirewallSimulator() {
             <div className="flex items-center gap-2">
               <button
                 type="button"
-                onClick={() => setRule4444("ALLOW")}
+                onClick={() => setPortRule(4444, "ALLOW")}
                 className={`flex-1 py-1.5 rounded-xl text-xs font-semibold border cursor-pointer ${
-                  rule4444 === "ALLOW"
+                  rules[4444] === "ALLOW"
                     ? "bg-[var(--color-tami-green)]/15 border-[var(--color-tami-green)] text-[var(--color-tami-green)]"
                     : "bg-[var(--color-tami-surface)] border-[var(--color-tami-line)] text-[var(--color-tami-text-muted)]"
                 }`}
@@ -176,9 +178,9 @@ export function FirewallSimulator() {
               </button>
               <button
                 type="button"
-                onClick={() => setRule4444("BLOCK")}
+                onClick={() => setPortRule(4444, "BLOCK")}
                 className={`flex-1 py-1.5 rounded-xl text-xs font-semibold border cursor-pointer ${
-                  rule4444 === "BLOCK"
+                  rules[4444] === "BLOCK"
                     ? "bg-red-500/15 border-red-500 text-[var(--color-tami-red)]"
                     : "bg-[var(--color-tami-surface)] border-[var(--color-tami-line)] text-[var(--color-tami-text-muted)]"
                 }`}
@@ -199,9 +201,9 @@ export function FirewallSimulator() {
             <div className="flex items-center gap-2">
               <button
                 type="button"
-                onClick={() => setRule22("ALLOW")}
+                onClick={() => setPortRule(22, "ALLOW")}
                 className={`flex-1 py-1.5 rounded-xl text-xs font-semibold border cursor-pointer ${
-                  rule22 === "ALLOW"
+                  rules[22] === "ALLOW"
                     ? "bg-[var(--color-tami-green)]/15 border-[var(--color-tami-green)] text-[var(--color-tami-green)]"
                     : "bg-[var(--color-tami-surface)] border-[var(--color-tami-line)] text-[var(--color-tami-text-muted)]"
                 }`}
@@ -210,9 +212,9 @@ export function FirewallSimulator() {
               </button>
               <button
                 type="button"
-                onClick={() => setRule22("BLOCK")}
+                onClick={() => setPortRule(22, "BLOCK")}
                 className={`flex-1 py-1.5 rounded-xl text-xs font-semibold border cursor-pointer ${
-                  rule22 === "BLOCK"
+                  rules[22] === "BLOCK"
                     ? "bg-red-500/15 border-red-500 text-[var(--color-tami-red)]"
                     : "bg-[var(--color-tami-surface)] border-[var(--color-tami-line)] text-[var(--color-tami-text-muted)]"
                 }`}

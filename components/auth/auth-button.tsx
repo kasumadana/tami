@@ -35,7 +35,7 @@ export function AuthButton() {
             <UserCircle size={18} className="text-[var(--color-tami-orange)]" />
           )}
           <span className="font-semibold text-[var(--color-tami-text)] max-w-[100px] truncate">
-            {session.user.name || "Siswa"}
+            {session.user.name || t("defaultStudent")}
           </span>
         </div>
 
