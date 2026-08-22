@@ -116,6 +116,16 @@ Tailwind CSS v4 does not scan `node_modules/` by default. You **must** include t
 }
 ```
 
+#### Kumo UI CLI & Component Docs
+
+```bash
+# List all available components
+npx @cloudflare/kumo ls
+
+# Get docs & usage examples for a specific component
+npx @cloudflare/kumo doc <ComponentName>
+```
+
 #### Component Import Rules
 
 - Use **Granular Imports** for optimal bundle size and tree-shaking:
@@ -123,11 +133,14 @@ Tailwind CSS v4 does not scan `node_modules/` by default. You **must** include t
 ```tsx
 import { Button } from "@cloudflare/kumo/components/button";
 import { Input } from "@cloudflare/kumo/components/input";
-import { Dialog } from "@cloudflare/kumo/components/dialog";
+import { Dialog, DialogRoot, DialogTitle, DialogDescription, DialogClose } from "@cloudflare/kumo/components/dialog";
 import { LayerCard } from "@cloudflare/kumo/components/layer-card";
 import { Sidebar, SidebarProvider, SidebarMenuButton } from "@cloudflare/kumo/components/sidebar";
 import { Badge } from "@cloudflare/kumo/components/badge";
 import { Banner } from "@cloudflare/kumo/components/banner";
+import { Tabs } from "@cloudflare/kumo/components/tabs";
+import { Empty } from "@cloudflare/kumo/components/empty";
+import { Loader } from "@cloudflare/kumo/components/loader";
 ```
 
 - Use **Base UI Primitives** when full unstyled control is needed:
@@ -195,16 +208,13 @@ Use `// i18n-ignore` strictly on lines declaring technical constants, IDs, or mo
 
 ## 5. Testing & Verification Instructions
 
-Always run and pass all three verification commands before marking any task as complete:
+Untuk verifikasi cepat pasca-perubahan rutin, jalankan pemeriksaan statis dan audit i18n (hindari menjalankan `pnpm build` terus menerus setiap selesai perubahan kecil):
 
 ```bash
-# 1. TypeScript Static Type Check
-pnpm tsc --noEmit
+# 1. TypeScript Static Type Check + AST i18n Audit + ESLint (Cepat & Ringan)
+pnpm tsc --noEmit; pnpm audit:i18n; pnpm lint
 
-# 2. Strict AST i18n Audit (Must return 0 violations)
-pnpm audit:i18n
-
-# 3. Production Build Test
+# 2. Production Build Test (Hanya saat pre-release / pre-deployment final)
 pnpm build
 ```
 

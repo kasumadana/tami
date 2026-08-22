@@ -168,6 +168,24 @@ Merujuk pada dokumentasi resmi [kumo-ui.com](https://kumo-ui.com/):
 }
 ```
 
+### Kumo UI CLI & Dokumentasi Komponen
+
+Gunakan perintah CLI resmi Kumo untuk inspeksi dan membaca dokumentasi:
+
+```bash
+# Menampilkan seluruh daftar komponen Kumo UI
+npx @cloudflare/kumo ls
+
+# Menampilkan dokumentasi & contoh kode komponen spesifik
+npx @cloudflare/kumo doc <ComponentName>
+# Contoh:
+# npx @cloudflare/kumo doc Button
+# npx @cloudflare/kumo doc Dialog
+# npx @cloudflare/kumo doc Tabs
+# npx @cloudflare/kumo doc Empty
+# npx @cloudflare/kumo doc Loader
+```
+
 ### Panduan Penggunaan Komponen Kumo
 
 1. **Button (`@cloudflare/kumo/components/button`):**
@@ -182,9 +200,15 @@ Merujuk pada dokumentasi resmi [kumo-ui.com](https://kumo-ui.com/):
 4. **Badge (`@cloudflare/kumo/components/badge`):**
    - `variant="warning" | "success" | "neutral" | "error"` dengan `appearance="dot"` atau `appearance="filled"`.
 5. **Banner (`@cloudflare/kumo/components/banner`):**
-   - Digunakan untuk pengingat kuota tamu dan notifikasi status keamanan.
+   - Digunakan untuk pengingat kuota tamu dan notifikasi status sesi.
 6. **Dialog (`@cloudflare/kumo/components/dialog`):**
-   - Selalu dikontrol lewat prop `open` (`<Dialog.Root open={open} onOpenChange={setOpen}>`), bukan conditionally unmounted di JSX.
+   - Menggunakan komponen komposit: `<DialogRoot open={open} onOpenChange={setOpen}>`, `<Dialog>`, `<DialogTitle>`, `<DialogDescription>`, `<DialogClose>`.
+7. **Tabs (`@cloudflare/kumo/components/tabs`):**
+   - Navigasi segmented untuk beralih mode/tab: `<Tabs variant="segmented" size="sm" value={val} onValueChange={setVal} tabs={items} />`.
+8. **Empty (`@cloudflare/kumo/components/empty`):**
+   - Tampilan status kosong terstandarisasi: `<Empty size="base" icon={...} title={...} description={...} />`.
+9. **Loader (`@cloudflare/kumo/components/loader`):**
+   - Indikator pemrosesan dan loading state beranimasi: `<Loader size="sm" | "base" | "lg" />`.
 
 ---
 
