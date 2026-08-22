@@ -7,6 +7,8 @@ import { Link } from "@/i18n/navigation";
 import { Button } from "@cloudflare/kumo/components/button";
 import { Badge } from "@cloudflare/kumo/components/badge";
 import { LayerCard } from "@cloudflare/kumo/components/layer-card";
+import { Empty } from "@cloudflare/kumo/components/empty";
+import { Loader } from "@cloudflare/kumo/components/loader";
 import {
   UploadSimple,
   ShieldWarning,
@@ -366,35 +368,32 @@ export function DetectorWorkspace() {
 
           {isLoading && (
             <LayerCard className="rounded-3xl p-8 bg-[var(--color-tami-surface)] border border-[var(--color-tami-line)] flex flex-col items-center justify-center text-center space-y-4 min-h-[380px]">
-              <div className="relative w-16 h-16 rounded-full bg-[var(--color-tami-orange)]/15 flex items-center justify-center text-[var(--color-tami-orange)]">
-                <ShieldWarning size={32} className="animate-pulse" weight="duotone" />
-                <span className="absolute inset-0 rounded-full border-2 border-[var(--color-tami-orange)] animate-ping opacity-30" />
-              </div>
-              <div className="space-y-1">
-                <h3 className="font-bold text-sm text-[var(--color-tami-text)]">
-                  {t("analyzing")}
-                </h3>
-                <p className="text-xs text-[var(--color-tami-text-muted)] max-w-xs leading-relaxed">
-                  {t("analyzingSub")}
-                </p>
+              <div className="flex flex-col items-center justify-center gap-3">
+                <Loader size="lg" />
+                <div className="space-y-1 mt-2">
+                  <h3 className="font-bold text-sm text-[var(--color-tami-text)]">
+                    {t("analyzing")}
+                  </h3>
+                  <p className="text-xs text-[var(--color-tami-text-muted)] max-w-xs leading-relaxed">
+                    {t("analyzingSub")}
+                  </p>
+                </div>
               </div>
             </LayerCard>
           )}
 
           {!isLoading && !result && !errorMsg && (
-            <LayerCard className="rounded-3xl p-8 bg-[var(--color-tami-surface)] border border-[var(--color-tami-line)] flex flex-col items-center justify-center text-center space-y-3 min-h-[380px]">
-              <div className="w-12 h-12 rounded-2xl bg-[var(--color-tami-surface-subdued)] border border-[var(--color-tami-line)] text-[var(--color-tami-text-muted)] flex items-center justify-center">
-                <FileText size={24} />
-              </div>
-              <div className="space-y-1 max-w-xs">
-                <h3 className="font-bold text-sm text-[var(--color-tami-text)]">
-                  {t("emptyTitle")}
-                </h3>
-                <p className="text-xs text-[var(--color-tami-text-muted)] leading-relaxed">
-                  {t("emptyDesc")}
-                </p>
-              </div>
-            </LayerCard>
+            <Empty
+              size="base"
+              className="rounded-3xl border border-[var(--color-tami-line)] bg-[var(--color-tami-surface)] min-h-[380px] justify-center p-8 text-center"
+              icon={
+                <div className="w-12 h-12 rounded-2xl bg-[var(--color-tami-surface-subdued)] border border-[var(--color-tami-line)] text-[var(--color-tami-text-muted)] flex items-center justify-center mb-1">
+                  <FileText size={24} />
+                </div>
+              }
+              title={t("emptyTitle")}
+              description={t("emptyDesc")}
+            />
           )}
 
           {!isLoading && result && (

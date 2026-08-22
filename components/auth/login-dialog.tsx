@@ -5,6 +5,13 @@ import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { Button } from "@cloudflare/kumo/components/button";
 import {
+  DialogRoot,
+  Dialog,
+  DialogTitle,
+  DialogDescription,
+  DialogClose,
+} from "@cloudflare/kumo/components/dialog";
+import {
   X,
   Sparkle,
   GoogleLogo,
@@ -19,8 +26,6 @@ interface LoginDialogProps {
 export function LoginDialog({ isOpen, onClose }: LoginDialogProps) {
   const t = useTranslations("auth");
 
-  if (!isOpen) return null;
-
   const handleGoogleSignIn = () => {
     signIn("google", { callbackUrl: window.location.href });
   };
@@ -30,16 +35,21 @@ export function LoginDialog({ isOpen, onClose }: LoginDialogProps) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs">
-      <div className="relative w-full max-w-md p-6 rounded-3xl bg-[var(--color-tami-surface)] border border-[var(--color-tami-line)] shadow-2xl space-y-5 animate-in fade-in zoom-in-95 duration-150">
+    <DialogRoot open={isOpen} onOpenChange={(open) => !open && onClose()}>
+      <Dialog size="base" className="rounded-3xl p-6 bg-[var(--color-tami-surface)] border border-[var(--color-tami-line)] shadow-2xl space-y-5">
         {/* Close Button */}
-        <button
-          type="button"
-          onClick={onClose}
-          className="absolute top-4 right-4 p-1.5 rounded-full text-[var(--color-tami-text-muted)] hover:text-[var(--color-tami-text)] hover:bg-[var(--color-tami-surface-subdued)] cursor-pointer"
-        >
-          <X size={16} weight="bold" />
-        </button>
+        <DialogClose
+          render={(props) => (
+            <button
+              {...props}
+              type="button"
+              className="absolute top-4 right-4 p-1.5 rounded-full text-[var(--color-tami-text-muted)] hover:text-[var(--color-tami-text)] hover:bg-[var(--color-tami-surface-subdued)] cursor-pointer"
+              aria-label="Close"
+            >
+              <X size={16} weight="bold" />
+            </button>
+          )}
+        />
 
         {/* Dialog Header with Mascot */}
         <div className="flex items-center gap-3">
@@ -51,12 +61,12 @@ export function LoginDialog({ isOpen, onClose }: LoginDialogProps) {
             className="w-11 h-11 object-contain shrink-0"
           />
           <div className="space-y-0.5">
-            <h2 className="font-bold text-base text-[var(--color-tami-text)]">
+            <DialogTitle className="font-bold text-base text-[var(--color-tami-text)]">
               {t("dialogTitle")}
-            </h2>
-            <p className="text-xs text-[var(--color-tami-text-muted)] leading-relaxed">
+            </DialogTitle>
+            <DialogDescription className="text-xs text-[var(--color-tami-text-muted)] leading-relaxed">
               {t("dialogDesc")}
-            </p>
+            </DialogDescription>
           </div>
         </div>
 
@@ -95,7 +105,7 @@ export function LoginDialog({ isOpen, onClose }: LoginDialogProps) {
             {t("guestModeNotice")}
           </button>
         </div>
-      </div>
-    </div>
+      </Dialog>
+    </DialogRoot>
   );
 }

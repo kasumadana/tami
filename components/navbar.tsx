@@ -6,12 +6,13 @@ import { Link } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 import { ThemeToggle } from "./theme-toggle";
 import { LocaleSwitcher } from "./locale-switcher";
-import { AuthButton } from "./auth/auth-button";
+import { useSession } from "next-auth/react";
 import { Button } from "@cloudflare/kumo/components/button";
-import { ArrowRight } from "@phosphor-icons/react";
+import { UserCircle, ArrowRight } from "@phosphor-icons/react";
 
 export function Navbar() {
   const tCommon = useTranslations("common");
+  const { data: session } = useSession();
 
   return (
     <header className="sticky top-0 z-40 w-full border-b border-[var(--color-tami-line)] bg-[var(--color-tami-canvas)]/90 backdrop-blur-md">
@@ -34,12 +35,35 @@ export function Navbar() {
           </span>
         </Link>
 
-        {/* Minimal Controls & Primary CTA */}
+        {/* Minimal Controls & Single Unified Primary CTA */}
         <div className="flex items-center gap-2.5">
           <LocaleSwitcher />
           <ThemeToggle />
-          <AuthButton />
 
+          {/* If Authenticated: Show User Avatar Pill */}
+          {session?.user && (
+            <Link
+              href="/profile"
+              className="flex items-center gap-2 px-2.5 py-1 rounded-full bg-[var(--color-tami-surface-subdued)] border border-[var(--color-tami-line)] hover:bg-[var(--color-tami-surface-muted)] text-xs transition-none"
+            >
+              {session.user.image ? (
+                <Image
+                  src={session.user.image}
+                  alt={session.user.name || "User"}
+                  width={20}
+                  height={20}
+                  className="w-5 h-5 rounded-full object-cover"
+                />
+              ) : (
+                <UserCircle size={18} className="text-[var(--color-tami-orange)]" />
+              )}
+              <span className="font-semibold text-[var(--color-tami-text)] max-w-[100px] truncate">
+                {session.user.name}
+              </span>
+            </Link>
+          )}
+
+          {/* Single Primary CTA Button ("Buka Lab") */}
           <Link href="/chat">
             <Button
               variant="primary"

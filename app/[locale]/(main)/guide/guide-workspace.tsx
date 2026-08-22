@@ -7,9 +7,9 @@ import { Link } from "@/i18n/navigation";
 import { Button } from "@cloudflare/kumo/components/button";
 import { Badge } from "@cloudflare/kumo/components/badge";
 import { LayerCard } from "@cloudflare/kumo/components/layer-card";
+import { Tabs } from "@cloudflare/kumo/components/tabs";
 import {
   ChalkboardTeacher,
-  Heart,
   Clock,
   Lightbulb,
   ArrowRight,
@@ -40,33 +40,18 @@ export function GuideWorkspace() {
           </p>
         </div>
 
-        {/* Tab Toggle Switcher */}
-        <div className="flex items-center p-1 rounded-2xl bg-[var(--color-tami-surface-subdued)] border border-[var(--color-tami-line)] self-start sm:self-auto">
-          <button
-            type="button"
-            onClick={() => setActiveTab("parents")}
-            className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-semibold cursor-pointer transition-none ${
-              activeTab === "parents"
-                ? "bg-[var(--color-tami-surface)] text-[var(--color-tami-text)] shadow-xs border border-[var(--color-tami-line)]"
-                : "text-[var(--color-tami-text-muted)] hover:text-[var(--color-tami-text)]"
-            }`}
-          >
-            <Heart size={15} weight={activeTab === "parents" ? "fill" : "regular"} className="text-[var(--color-tami-orange)]" />
-            <span>{t("tabParents")}</span>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => setActiveTab("educators")}
-            className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-semibold cursor-pointer transition-none ${
-              activeTab === "educators"
-                ? "bg-[var(--color-tami-surface)] text-[var(--color-tami-text)] shadow-xs border border-[var(--color-tami-line)]"
-                : "text-[var(--color-tami-text-muted)] hover:text-[var(--color-tami-text)]"
-            }`}
-          >
-            <ChalkboardTeacher size={15} weight={activeTab === "educators" ? "fill" : "regular"} className="text-[var(--color-tami-violet)]" />
-            <span>{t("tabEducators")}</span>
-          </button>
+        {/* Official Kumo Tabs Segmented Switcher */}
+        <div className="self-start sm:self-auto">
+          <Tabs
+            variant="segmented"
+            size="sm"
+            value={activeTab}
+            onValueChange={(val) => setActiveTab(val as "parents" | "educators")}
+            tabs={[
+              { value: "parents", label: t("tabParents") },
+              { value: "educators", label: t("tabEducators") },
+            ]}
+          />
         </div>
       </div>
 
