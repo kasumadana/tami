@@ -21,7 +21,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           id: "demo-student-01",
           name: "Siswa Perintis (Demo)",
           email: "student@tami.dev",
-          image: "/shai-wave.png",
+          image: "/icon.svg",
         };
       },
     }),

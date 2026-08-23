@@ -54,11 +54,11 @@ export function LoginDialog({ isOpen, onClose }: LoginDialogProps) {
         {/* Dialog Header with Mascot */}
         <div className="flex items-center gap-3">
           <Image
-            src="/shai-wave.png"
+            src="/icon.svg"
             alt="tami"
-            width={44}
-            height={44}
-            className="w-11 h-11 object-contain shrink-0"
+            width={36}
+            height={36}
+            className="w-9 h-9 object-contain shrink-0"
           />
           <div className="space-y-0.5">
             <DialogTitle className="font-bold text-base text-[var(--color-tami-text)]">

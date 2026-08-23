@@ -14,7 +14,6 @@ import {
   ShieldCheck,
   ShieldWarning,
   Key,
-  UserCircle,
   SignIn,
   Sparkle,
 } from "@phosphor-icons/react";
@@ -96,7 +95,7 @@ export function ProfileWorkspace() {
   const displayEmail = session?.user?.email || "guest@tami.local"; // i18n-ignore
 
   return (
-    <div className="flex flex-col h-full max-w-6xl mx-auto w-full p-3.5 sm:p-6 space-y-6">
+    <div className="flex flex-col w-full max-w-6xl mx-auto p-4 sm:p-6 space-y-6">
       {/* Header Bar */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[var(--color-tami-line)] print:hidden">
         <div className="space-y-0.5">
@@ -145,23 +144,17 @@ export function ProfileWorkspace() {
       {/* Hero Profile Card */}
       <LayerCard className="rounded-3xl p-5 sm:p-6 bg-[var(--color-tami-surface)] border border-[var(--color-tami-line)] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-xs print:hidden">
         <div className="flex items-center gap-4">
-          {session?.user?.image ? (
-            <Image
-              src={session.user.image}
-              alt={displayName}
-              width={56}
-              height={56}
-              className="w-14 h-14 rounded-2xl object-cover border border-[var(--color-tami-line)]"
-            />
-          ) : (
-            <div className="w-14 h-14 rounded-2xl bg-[var(--color-tami-surface-subdued)] border border-[var(--color-tami-line)] flex items-center justify-center text-[var(--color-tami-orange)]">
-              <UserCircle size={36} weight="bold" />
-            </div>
-          )}
+          <Image
+            src="/icon.svg"
+            alt={displayName}
+            width={48}
+            height={48}
+            className="w-12 h-12 object-contain shrink-0"
+          />
 
           <div className="space-y-1">
             <div className="flex flex-wrap items-center gap-2">
-              <h2 className="font-bold text-lg text-[var(--color-tami-text)]">
+              <h2 className="font-bold text-lg text-[var(--color-tami-text)] leading-tight">
                 {displayName}
               </h2>
               <Badge variant="warning" appearance="filled" className="text-xs">
@@ -174,7 +167,7 @@ export function ProfileWorkspace() {
           </div>
         </div>
 
-        <div className="flex items-center gap-2 self-end sm:self-center">
+        <div className="flex items-center gap-2 self-start sm:self-auto">
           <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-2xl bg-[var(--color-tami-surface-subdued)] border border-[var(--color-tami-line)]">
             <Trophy size={16} weight="fill" className="text-[var(--color-tami-yellow)]" />
             <span className="text-xs font-mono font-bold text-[var(--color-tami-orange)]">

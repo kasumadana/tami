@@ -267,11 +267,11 @@ export function CertificateCard({ initialName, isUnlocked }: CertificateCardProp
 
           <div className="flex items-center gap-3 self-end">
             <Image
-              src="/shai-wave.png"
+              src="/icon.svg"
               alt="tami Mascot"
-              width={40}
-              height={40}
-              className="w-10 h-10 object-contain shrink-0"
+              width={36}
+              height={36}
+              className="w-9 h-9 object-contain shrink-0"
             />
             <div className="text-right space-y-0.5">
               <span className="font-bold text-zinc-900 block text-xs">{t("mascotSign")}</span>

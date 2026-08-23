@@ -231,7 +231,7 @@ export function DetectorWorkspace() {
   };
 
   return (
-    <div className="flex flex-col h-full max-w-6xl mx-auto w-full p-3.5 sm:p-6 space-y-6">
+    <div className="flex flex-col w-full max-w-6xl mx-auto p-4 sm:p-6 space-y-6">
       {/* Header Bar */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[var(--color-tami-line)]">
         <div className="space-y-0.5">
@@ -454,11 +454,11 @@ export function DetectorWorkspace() {
                 <div className="p-5 rounded-3xl bg-[var(--color-tami-orange)]/10 border border-[var(--color-tami-orange)]/25 space-y-3">
                   <div className="flex items-center gap-2">
                     <Image
-                      src="/shai-wave.png"
+                      src="/icon.svg"
                       alt="tami"
-                      width={28}
-                      height={28}
-                      className="w-7 h-7 object-contain shrink-0"
+                      width={26}
+                      height={26}
+                      className="w-6.5 h-6.5 object-contain shrink-0"
                     />
                     <h3 className="font-bold text-xs text-[var(--color-tami-text)]">
                       {t("reflectionTitle")}

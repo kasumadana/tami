@@ -45,8 +45,8 @@ export async function POST(req: NextRequest) {
         .values({
           id: userId,
           name: session.user.name || "Siswa tami",
-          email: session.user.email || `${userId}@tami.dev`,
-          image: session.user.image || "/shai-wave.png",
+          email: session.user.email || "guest@tami.local",
+          image: session.user.image || "/icon.svg",
         })
         .onConflictDoNothing();
     } catch {

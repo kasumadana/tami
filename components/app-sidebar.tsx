@@ -25,7 +25,6 @@ import {
   Trophy,
   House,
   Sparkle,
-  UserCircle,
   SignOut,
   SignIn,
 } from "@phosphor-icons/react";
@@ -171,17 +170,13 @@ export function AppSidebarLayout({ children }: AppSidebarLayoutProps) {
                 /* Authenticated User Status Card */
                 <div className="p-3 rounded-2xl bg-[var(--color-tami-surface-subdued)] border border-[var(--color-tami-line)] flex items-center justify-between gap-2.5">
                   <Link href="/profile" className="flex items-center gap-2.5 min-w-0 flex-1 hover:opacity-85 transition-none">
-                    {session.user.image ? (
-                      <Image
-                        src={session.user.image}
-                        alt={session.user.name || "User"}
-                        width={30}
-                        height={30}
-                        className="w-7.5 h-7.5 rounded-full object-cover shrink-0 ring-1 ring-[var(--color-tami-orange)]/40"
-                      />
-                    ) : (
-                      <UserCircle size={30} className="text-[var(--color-tami-orange)] shrink-0" />
-                    )}
+                    <Image
+                      src={session.user.image || "/icon.svg"}
+                      alt={session.user.name || "User"}
+                      width={28}
+                      height={28}
+                      className="w-7 h-7 object-contain shrink-0"
+                    />
                     <div className="min-w-0 flex-1">
                       <p className="text-xs font-semibold text-[var(--color-tami-text)] truncate">
                         {session.user.name || tAuth("defaultStudent")}

@@ -22,7 +22,7 @@ export function GuideWorkspace() {
   const [activeTab, setActiveTab] = useState<"parents" | "educators">("parents");
 
   return (
-    <div className="flex flex-col h-full max-w-6xl mx-auto w-full p-3.5 sm:p-6 space-y-6">
+    <div className="flex flex-col w-full max-w-6xl mx-auto p-4 sm:p-6 space-y-6">
       {/* Header Bar */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[var(--color-tami-line)]">
         <div className="space-y-0.5">
@@ -55,11 +55,11 @@ export function GuideWorkspace() {
           {/* Reassurance Banner */}
           <div className="p-5 sm:p-6 rounded-3xl bg-[var(--color-tami-surface)] border border-[var(--color-tami-line)] flex flex-col sm:flex-row items-start sm:items-center gap-4">
             <Image
-              src="/shai-wave.png"
+              src="/icon.svg"
               alt="tami"
-              width={48}
-              height={48}
-              className="w-12 h-12 object-contain shrink-0"
+              width={40}
+              height={40}
+              className="w-10 h-10 object-contain shrink-0"
             />
             <div className="space-y-1">
               <h2 className="font-bold text-base text-[var(--color-tami-text)]">
