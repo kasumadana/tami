@@ -6,6 +6,7 @@ import { useTranslations, useLocale } from "next-intl";
 import { Button } from "@cloudflare/kumo/components/button";
 import { Badge } from "@cloudflare/kumo/components/badge";
 import { LayerCard } from "@cloudflare/kumo/components/layer-card";
+import { Input } from "@cloudflare/kumo/components/input";
 import {
   Printer,
   DownloadSimple,
@@ -167,14 +168,15 @@ export function CertificateCard({ initialName, isUnlocked }: CertificateCardProp
           <label htmlFor="cert-name" className="text-xs font-semibold text-[var(--color-tami-text)] min-w-[140px]">
             {t("nameInputLabel")}
           </label>
-          <input
-            id="cert-name"
-            type="text"
-            value={studentName}
-            onChange={(e) => setStudentName(e.target.value)}
-            placeholder={t("studentNamePlaceholder")}
-            className="flex-1 h-10 px-4 rounded-xl bg-[var(--color-tami-surface-subdued)] border border-[var(--color-tami-line)] text-xs font-semibold text-[var(--color-tami-text)] focus:outline-none focus:border-[var(--color-tami-orange)]"
-          />
+          <div className="flex-1">
+            <Input
+              id="cert-name"
+              size="sm"
+              value={studentName}
+              onChange={(e) => setStudentName(e.target.value)}
+              placeholder={t("studentNamePlaceholder")}
+            />
+          </div>
         </div>
       </LayerCard>
 

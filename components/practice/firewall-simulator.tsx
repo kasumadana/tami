@@ -131,28 +131,30 @@ export function FirewallSimulator() {
               </Badge>
             </div>
             <div className="flex items-center gap-2">
-              <button
-                type="button"
+              <Button
+                variant={rules[443] === "ALLOW" ? "primary" : "secondary"}
+                size="sm"
                 onClick={() => setPortRule(443, "ALLOW")}
-                className={`flex-1 py-1.5 rounded-xl text-xs font-semibold border cursor-pointer ${
+                className={`flex-1 rounded-xl text-xs font-semibold h-8 ${
                   rules[443] === "ALLOW"
-                    ? "bg-[var(--color-tami-green)]/15 border-[var(--color-tami-green)] text-[var(--color-tami-green)]"
-                    : "bg-[var(--color-tami-surface)] border-[var(--color-tami-line)] text-[var(--color-tami-text-muted)]"
+                    ? "!bg-[var(--color-tami-green)] !text-white"
+                    : "border border-[var(--color-tami-line)] bg-[var(--color-tami-surface)] text-[var(--color-tami-text-muted)]"
                 }`}
               >
                 {tFw("allow")}
-              </button>
-              <button
-                type="button"
+              </Button>
+              <Button
+                variant={rules[443] === "BLOCK" ? "primary" : "secondary"}
+                size="sm"
                 onClick={() => setPortRule(443, "BLOCK")}
-                className={`flex-1 py-1.5 rounded-xl text-xs font-semibold border cursor-pointer ${
+                className={`flex-1 rounded-xl text-xs font-semibold h-8 ${
                   rules[443] === "BLOCK"
-                    ? "bg-red-500/15 border-red-500 text-[var(--color-tami-red)]"
-                    : "bg-[var(--color-tami-surface)] border-[var(--color-tami-line)] text-[var(--color-tami-text-muted)]"
+                    ? "!bg-[var(--color-tami-red)] !text-white"
+                    : "border border-[var(--color-tami-line)] bg-[var(--color-tami-surface)] text-[var(--color-tami-text-muted)]"
                 }`}
               >
                 {tFw("block")}
-              </button>
+              </Button>
             </div>
           </div>
 
@@ -165,28 +167,30 @@ export function FirewallSimulator() {
               </Badge>
             </div>
             <div className="flex items-center gap-2">
-              <button
-                type="button"
+              <Button
+                variant={rules[4444] === "ALLOW" ? "primary" : "secondary"}
+                size="sm"
                 onClick={() => setPortRule(4444, "ALLOW")}
-                className={`flex-1 py-1.5 rounded-xl text-xs font-semibold border cursor-pointer ${
+                className={`flex-1 rounded-xl text-xs font-semibold h-8 ${
                   rules[4444] === "ALLOW"
-                    ? "bg-[var(--color-tami-green)]/15 border-[var(--color-tami-green)] text-[var(--color-tami-green)]"
-                    : "bg-[var(--color-tami-surface)] border-[var(--color-tami-line)] text-[var(--color-tami-text-muted)]"
+                    ? "!bg-[var(--color-tami-green)] !text-white"
+                    : "border border-[var(--color-tami-line)] bg-[var(--color-tami-surface)] text-[var(--color-tami-text-muted)]"
                 }`}
               >
                 {tFw("allow")}
-              </button>
-              <button
-                type="button"
+              </Button>
+              <Button
+                variant={rules[4444] === "BLOCK" ? "primary" : "secondary"}
+                size="sm"
                 onClick={() => setPortRule(4444, "BLOCK")}
-                className={`flex-1 py-1.5 rounded-xl text-xs font-semibold border cursor-pointer ${
+                className={`flex-1 rounded-xl text-xs font-semibold h-8 ${
                   rules[4444] === "BLOCK"
-                    ? "bg-red-500/15 border-red-500 text-[var(--color-tami-red)]"
-                    : "bg-[var(--color-tami-surface)] border-[var(--color-tami-line)] text-[var(--color-tami-text-muted)]"
+                    ? "!bg-[var(--color-tami-red)] !text-white"
+                    : "border border-[var(--color-tami-line)] bg-[var(--color-tami-surface)] text-[var(--color-tami-text-muted)]"
                 }`}
               >
                 {tFw("block")}
-              </button>
+              </Button>
             </div>
           </div>
 
@@ -199,28 +203,30 @@ export function FirewallSimulator() {
               </Badge>
             </div>
             <div className="flex items-center gap-2">
-              <button
-                type="button"
+              <Button
+                variant={rules[22] === "ALLOW" ? "primary" : "secondary"}
+                size="sm"
                 onClick={() => setPortRule(22, "ALLOW")}
-                className={`flex-1 py-1.5 rounded-xl text-xs font-semibold border cursor-pointer ${
+                className={`flex-1 rounded-xl text-xs font-semibold h-8 ${
                   rules[22] === "ALLOW"
-                    ? "bg-[var(--color-tami-green)]/15 border-[var(--color-tami-green)] text-[var(--color-tami-green)]"
-                    : "bg-[var(--color-tami-surface)] border-[var(--color-tami-line)] text-[var(--color-tami-text-muted)]"
+                    ? "!bg-[var(--color-tami-green)] !text-white"
+                    : "border border-[var(--color-tami-line)] bg-[var(--color-tami-surface)] text-[var(--color-tami-text-muted)]"
                 }`}
               >
                 {tFw("allow")}
-              </button>
-              <button
-                type="button"
+              </Button>
+              <Button
+                variant={rules[22] === "BLOCK" ? "primary" : "secondary"}
+                size="sm"
                 onClick={() => setPortRule(22, "BLOCK")}
-                className={`flex-1 py-1.5 rounded-xl text-xs font-semibold border cursor-pointer ${
+                className={`flex-1 rounded-xl text-xs font-semibold h-8 ${
                   rules[22] === "BLOCK"
-                    ? "bg-red-500/15 border-red-500 text-[var(--color-tami-red)]"
-                    : "bg-[var(--color-tami-surface)] border-[var(--color-tami-line)] text-[var(--color-tami-text-muted)]"
+                    ? "!bg-[var(--color-tami-red)] !text-white"
+                    : "border border-[var(--color-tami-line)] bg-[var(--color-tami-surface)] text-[var(--color-tami-text-muted)]"
                 }`}
               >
                 {tFw("block")}
-              </button>
+              </Button>
             </div>
           </div>
         </div>

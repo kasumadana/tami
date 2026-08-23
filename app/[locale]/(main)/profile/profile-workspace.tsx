@@ -6,6 +6,7 @@ import { useSession } from "next-auth/react";
 import { useTranslations } from "next-intl";
 import { Button } from "@cloudflare/kumo/components/button";
 import { Badge } from "@cloudflare/kumo/components/badge";
+import { Banner } from "@cloudflare/kumo/components/banner";
 import { LayerCard } from "@cloudflare/kumo/components/layer-card";
 import {
   Trophy,
@@ -15,6 +16,7 @@ import {
   Key,
   UserCircle,
   SignIn,
+  Sparkle,
 } from "@phosphor-icons/react";
 import {
   subscribePractice,
@@ -119,25 +121,24 @@ export function ProfileWorkspace() {
         )}
       </div>
 
-      {/* Guest Mode Callout */}
+      {/* Guest Mode Callout using Official Kumo Banner */}
       {!session?.user && (
-        <div className="p-4 rounded-2xl bg-[var(--color-tami-orange)]/10 border border-[var(--color-tami-orange)]/20 flex flex-col sm:flex-row sm:items-center justify-between gap-3 print:hidden">
-          <div className="space-y-0.5">
-            <h3 className="font-bold text-xs text-[var(--color-tami-text)]">
-              {t("guestBannerTitle")}
-            </h3>
-            <p className="text-[11px] text-[var(--color-tami-text-muted)]">
-              {t("guestBannerDesc")}
-            </p>
-          </div>
-          <Button
-            variant="secondary"
-            size="sm"
-            onClick={() => setIsLoginOpen(true)}
-            className="rounded-xl border border-[var(--color-tami-line)] bg-[var(--color-tami-surface)] text-[var(--color-tami-text)] hover:bg-[var(--color-tami-surface-subdued)] text-xs h-8 shrink-0"
-          >
-            {t("guestSignInBtn")}
-          </Button>
+        <div className="print:hidden">
+          <Banner
+            variant="alert"
+            title={t("guestBannerTitle")}
+            description={t("guestBannerDesc")}
+            action={
+              <Button
+                variant="secondary"
+                size="sm"
+                onClick={() => setIsLoginOpen(true)}
+                className="rounded-xl border border-[var(--color-tami-line)] bg-[var(--color-tami-surface)] text-[var(--color-tami-text)] hover:bg-[var(--color-tami-surface-subdued)] text-xs h-8 shrink-0"
+              >
+                {t("guestSignInBtn")}
+              </Button>
+            }
+          />
         </div>
       )}
 
@@ -159,7 +160,7 @@ export function ProfileWorkspace() {
           )}
 
           <div className="space-y-1">
-            <div className="flex items-center gap-2">
+            <div className="flex flex-wrap items-center gap-2">
               <h2 className="font-bold text-lg text-[var(--color-tami-text)]">
                 {displayName}
               </h2>
@@ -173,12 +174,10 @@ export function ProfileWorkspace() {
           </div>
         </div>
 
-        <div className="flex items-center gap-2">
-          <div className="p-2.5 rounded-2xl bg-[var(--color-tami-surface-subdued)] border border-[var(--color-tami-line)] text-right">
-            <span className="text-[10px] text-[var(--color-tami-text-muted)] block font-semibold">
-              {t("stats.totalXp")}
-            </span>
-            <span className="text-lg font-mono font-bold text-[var(--color-tami-orange)] block">
+        <div className="flex items-center gap-2 self-end sm:self-center">
+          <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-2xl bg-[var(--color-tami-surface-subdued)] border border-[var(--color-tami-line)]">
+            <Trophy size={16} weight="fill" className="text-[var(--color-tami-yellow)]" />
+            <span className="text-xs font-mono font-bold text-[var(--color-tami-orange)]">
               {totalPoints} XP
             </span>
           </div>
@@ -187,41 +186,53 @@ export function ProfileWorkspace() {
 
       {/* 4 Stats Grid */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 print:hidden">
-        <div className="p-4 rounded-2xl bg-[var(--color-tami-surface)] border border-[var(--color-tami-line)] space-y-1">
-          <span className="text-[11px] text-[var(--color-tami-text-muted)] block">
-            {t("stats.modulesCompleted")}
-          </span>
-          <span className="text-xl font-mono font-bold text-[var(--color-tami-text)]">
+        <LayerCard className="p-4 rounded-2xl bg-[var(--color-tami-surface)] border border-[var(--color-tami-line)] space-y-1.5">
+          <div className="flex items-center justify-between">
+            <span className="text-[11px] text-[var(--color-tami-text-muted)] block font-semibold">
+              {t("stats.modulesCompleted")}
+            </span>
+            <GraduationCap size={16} className="text-[var(--color-tami-orange)]" />
+          </div>
+          <span className="text-xl font-mono font-bold text-[var(--color-tami-text)] block">
             {completedModulesCount}/4
           </span>
-        </div>
+        </LayerCard>
 
-        <div className="p-4 rounded-2xl bg-[var(--color-tami-surface)] border border-[var(--color-tami-line)] space-y-1">
-          <span className="text-[11px] text-[var(--color-tami-text-muted)] block">
-            {t("stats.curriculumProgress")}
-          </span>
-          <span className="text-xl font-mono font-bold text-[var(--color-tami-yellow)]">
+        <LayerCard className="p-4 rounded-2xl bg-[var(--color-tami-surface)] border border-[var(--color-tami-line)] space-y-1.5">
+          <div className="flex items-center justify-between">
+            <span className="text-[11px] text-[var(--color-tami-text-muted)] block font-semibold">
+              {t("stats.curriculumProgress")}
+            </span>
+            <Sparkle size={16} weight="fill" className="text-[var(--color-tami-yellow)]" />
+          </div>
+          <span className="text-xl font-mono font-bold text-[var(--color-tami-yellow)] block">
             {curriculumPercent}%
           </span>
-        </div>
+        </LayerCard>
 
-        <div className="p-4 rounded-2xl bg-[var(--color-tami-surface)] border border-[var(--color-tami-line)] space-y-1">
-          <span className="text-[11px] text-[var(--color-tami-text-muted)] block">
-            {t("stats.badgesCount")}
-          </span>
-          <span className="text-xl font-mono font-bold text-[var(--color-tami-green)]">
+        <LayerCard className="p-4 rounded-2xl bg-[var(--color-tami-surface)] border border-[var(--color-tami-line)] space-y-1.5">
+          <div className="flex items-center justify-between">
+            <span className="text-[11px] text-[var(--color-tami-text-muted)] block font-semibold">
+              {t("stats.badgesCount")}
+            </span>
+            <ShieldCheck size={16} weight="fill" className="text-[var(--color-tami-green)]" />
+          </div>
+          <span className="text-xl font-mono font-bold text-[var(--color-tami-green)] block">
             {practiceProgress.unlockedBadges.length}/3
           </span>
-        </div>
+        </LayerCard>
 
-        <div className="p-4 rounded-2xl bg-[var(--color-tami-surface)] border border-[var(--color-tami-line)] space-y-1">
-          <span className="text-[11px] text-[var(--color-tami-text-muted)] block">
-            {t("stats.totalXp")}
-          </span>
-          <span className="text-xl font-mono font-bold text-[var(--color-tami-orange)]">
+        <LayerCard className="p-4 rounded-2xl bg-[var(--color-tami-surface)] border border-[var(--color-tami-line)] space-y-1.5">
+          <div className="flex items-center justify-between">
+            <span className="text-[11px] text-[var(--color-tami-text-muted)] block font-semibold">
+              {t("stats.totalXp")}
+            </span>
+            <Trophy size={16} weight="fill" className="text-[var(--color-tami-orange)]" />
+          </div>
+          <span className="text-xl font-mono font-bold text-[var(--color-tami-orange)] block">
             {totalPoints}
           </span>
-        </div>
+        </LayerCard>
       </div>
 
       {/* Honor Badges Showcase */}

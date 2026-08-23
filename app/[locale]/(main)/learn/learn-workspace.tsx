@@ -6,6 +6,7 @@ import { Link } from "@/i18n/navigation";
 import { Button } from "@cloudflare/kumo/components/button";
 import { Badge } from "@cloudflare/kumo/components/badge";
 import { LayerCard } from "@cloudflare/kumo/components/layer-card";
+import { Meter } from "@cloudflare/kumo/components/meter";
 import {
   GraduationCap,
   Key,
@@ -113,7 +114,7 @@ export function LearnWorkspace() {
       </div>
 
       {/* Curriculum Progress Header Card */}
-      <LayerCard className="rounded-3xl p-5 sm:p-6 bg-[var(--color-tami-surface)] border border-[var(--color-tami-line)] space-y-3.5 shadow-xs">
+      <LayerCard className="rounded-3xl p-5 sm:p-6 bg-[var(--color-tami-surface)] border border-[var(--color-tami-line)] space-y-4 shadow-xs">
         <div className="flex items-center justify-between gap-3">
           <div className="flex items-center gap-2.5">
             <div className="w-8 h-8 rounded-xl bg-[var(--color-tami-yellow)]/15 text-[var(--color-tami-yellow)] flex items-center justify-center shrink-0">
@@ -123,23 +124,21 @@ export function LearnWorkspace() {
               {t("progressTitle")}
             </h2>
           </div>
-          <div className="flex items-center gap-2">
-            <span className="text-xs font-mono font-bold text-[var(--color-tami-orange)] px-2.5 py-1 rounded-lg bg-[var(--color-tami-surface-subdued)] border border-[var(--color-tami-line)]">
-              {t("progressCompleted", {
-                completed: completedCount,
-                total: totalModules,
-                percent: progressPercent,
-              })}
-            </span>
-          </div>
+          <span className="text-xs font-mono font-bold text-[var(--color-tami-orange)] px-2.5 py-1 rounded-lg bg-[var(--color-tami-surface-subdued)] border border-[var(--color-tami-line)]">
+            {t("progressCompleted", {
+              completed: completedCount,
+              total: totalModules,
+              percent: progressPercent,
+            })}
+          </span>
         </div>
 
-        <div className="w-full bg-[var(--color-tami-surface-subdued)] h-2 rounded-full overflow-hidden border border-[var(--color-tami-line)]">
-          <div
-            className="bg-[var(--color-tami-orange)] h-full rounded-full transition-all duration-300"
-            style={{ width: `${progressPercent}%` }}
-          />
-        </div>
+        <Meter
+          label={t("progressTitle")}
+          showValue={false}
+          value={progressPercent}
+          className="w-full"
+        />
 
         {completedCount === totalModules && (
           <div className="flex items-center gap-1.5 pt-0.5 text-xs text-[var(--color-tami-green)] font-semibold">
