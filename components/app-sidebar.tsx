@@ -89,24 +89,19 @@ export function AppSidebarLayout({ children }: AppSidebarLayoutProps) {
           <Sidebar.Header className="p-4 border-b border-[var(--color-tami-line)] shrink-0">
             <Link
               href="/"
-              className="flex items-center justify-between gap-2.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-tami-orange)] rounded-lg w-full"
+              className="flex items-center gap-2.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-tami-orange)] rounded-lg w-full"
             >
-              <div className="flex items-center gap-2.5">
-                <Image
-                  src="/icon.svg"
-                  alt="tami"
-                  width={26}
-                  height={26}
-                  className="w-6.5 h-6.5 shrink-0 object-contain"
-                  priority
-                />
-                <span className="font-bold text-lg tracking-tight text-[var(--color-tami-text)]">
-                  {tCommon("appName")}
-                </span>
-              </div>
-              <Badge variant="warning" appearance="dot" className="text-[10px]">
-                {tCommon("labBadge")}
-              </Badge>
+              <Image
+                src="/icon.svg"
+                alt="tami"
+                width={26}
+                height={26}
+                className="w-6.5 h-6.5 shrink-0 object-contain"
+                priority
+              />
+              <span className="font-bold text-lg tracking-tight text-[var(--color-tami-text)]">
+                {tCommon("appName")}
+              </span>
             </Link>
           </Sidebar.Header>
 

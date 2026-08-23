@@ -206,7 +206,7 @@ export function PasswordSimulator() {
                 <span>{t("challengeSuccess")}</span>
               </div>
               <Badge variant="success" appearance="filled" className="text-xs">
-                {tPwd("badgeName")} 🏆
+                {tPwd("badgeName")}
               </Badge>
             </div>
             <p className="text-xs text-[var(--color-tami-text)] leading-relaxed">

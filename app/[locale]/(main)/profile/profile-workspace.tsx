@@ -32,7 +32,6 @@ import { LoginDialog } from "@/components/auth/login-dialog";
 
 export function ProfileWorkspace() {
   const t = useTranslations("profile");
-  const tCommon = useTranslations("common");
   const { data: session } = useSession();
 
   const [isLoginOpen, setIsLoginOpen] = useState(false);
@@ -99,14 +98,9 @@ export function ProfileWorkspace() {
       {/* Header Bar */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[var(--color-tami-line)] print:hidden">
         <div className="space-y-0.5">
-          <div className="flex items-center gap-2">
-            <h1 className="text-xl font-bold tracking-tight text-[var(--color-tami-text)]">
-              {t("title")}
-            </h1>
-            <Badge variant="neutral" appearance="dot" className="text-xs">
-              {tCommon("profileBadge")}
-            </Badge>
-          </div>
+          <h1 className="text-xl font-bold tracking-tight text-[var(--color-tami-text)]">
+            {t("title")}
+          </h1>
           <p className="text-xs text-[var(--color-tami-text-muted)] leading-relaxed">
             {t("subtitle")}
           </p>

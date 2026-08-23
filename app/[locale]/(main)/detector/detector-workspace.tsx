@@ -23,6 +23,7 @@ import {
   CheckCircle,
   XCircle,
   Image as ImageIcon,
+  CaretDown,
 } from "@phosphor-icons/react";
 import type { DetectorResult } from "@/lib/detector-schema";
 
@@ -50,7 +51,6 @@ const SAMPLE_PRESETS = [
 
 export function DetectorWorkspace() {
   const t = useTranslations("detector");
-  const tCommon = useTranslations("common");
   const locale = useLocale();
 
   const [imagePreview, setImagePreview] = useState<string | null>(null);
@@ -235,14 +235,9 @@ export function DetectorWorkspace() {
       {/* Header Bar */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[var(--color-tami-line)]">
         <div className="space-y-0.5">
-          <div className="flex items-center gap-2">
-            <h1 className="text-xl font-bold tracking-tight text-[var(--color-tami-text)]">
-              {t("title")}
-            </h1>
-            <Badge variant="success" appearance="dot" className="text-xs">
-              {tCommon("visionBadge")}
-            </Badge>
-          </div>
+          <h1 className="text-xl font-bold tracking-tight text-[var(--color-tami-text)]">
+            {t("title")}
+          </h1>
           <p className="text-xs text-[var(--color-tami-text-muted)] leading-relaxed">
             {t("subtitle")}
           </p>
@@ -517,9 +512,7 @@ export function DetectorWorkspace() {
                       <FileText size={15} />
                       <span>{t("ocrTitle")}</span>
                     </span>
-                    <span className="text-[10px] text-[var(--color-tami-text-muted)] group-open:rotate-180 transition-transform">
-                      ▼
-                    </span>
+                    <CaretDown size={14} className="text-[var(--color-tami-text-muted)] group-open:rotate-180 transition-transform shrink-0" />
                   </summary>
                   <p className="mt-2.5 p-2.5 rounded-xl bg-[var(--color-tami-surface)] border border-[var(--color-tami-line)] font-mono text-[11px] text-[var(--color-tami-text-muted)] whitespace-pre-wrap break-all break-words max-h-48 overflow-y-auto leading-relaxed">
                     {result.ocrText}

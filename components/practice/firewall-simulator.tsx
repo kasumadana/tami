@@ -277,7 +277,7 @@ export function FirewallSimulator() {
                 <span>{t("challengeSuccess")}</span>
               </div>
               <Badge variant="success" appearance="filled" className="text-xs">
-                {tFw("badgeName")} 🏆
+                {tFw("badgeName")}
               </Badge>
             </div>
             <p className="text-xs text-[var(--color-tami-text)] leading-relaxed">

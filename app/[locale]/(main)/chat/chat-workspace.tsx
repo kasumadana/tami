@@ -7,7 +7,6 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeSanitize from "rehype-sanitize";
 import { Button } from "@cloudflare/kumo/components/button";
-import { Badge } from "@cloudflare/kumo/components/badge";
 import { Banner } from "@cloudflare/kumo/components/banner";
 import { LayerCard } from "@cloudflare/kumo/components/layer-card";
 import {
@@ -37,7 +36,6 @@ function createMessageId(prefix: string): string {
 
 export function ChatWorkspace({ initialTurnsRemaining }: ChatWorkspaceProps) {
   const t = useTranslations("chat");
-  const tCommon = useTranslations("common");
 
   const [messages, setMessages] = useState<Message[]>(() => [
     {
@@ -212,18 +210,13 @@ export function ChatWorkspace({ initialTurnsRemaining }: ChatWorkspaceProps) {
   ];
 
   return (
-    <div className="flex flex-col h-full max-w-4xl mx-auto w-full p-3.5 sm:p-6 min-h-0 overflow-hidden">
+    <div className="flex flex-col h-full max-w-6xl mx-auto w-full p-3.5 sm:p-6 min-h-0 overflow-hidden">
       {/* Header Bar (Pinned Top) */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[var(--color-tami-line)] shrink-0">
         <div className="space-y-0.5">
-          <div className="flex items-center gap-2">
-            <h1 className="text-xl font-bold tracking-tight text-[var(--color-tami-text)]">
-              {t("title")}
-            </h1>
-            <Badge variant="warning" appearance="dot" className="text-xs">
-              {tCommon("socraticBadge")}
-            </Badge>
-          </div>
+          <h1 className="text-xl font-bold tracking-tight text-[var(--color-tami-text)]">
+            {t("title")}
+          </h1>
           <p className="text-xs text-[var(--color-tami-text-muted)] leading-relaxed">
             {t("subtitle")}
           </p>

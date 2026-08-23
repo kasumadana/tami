@@ -2,13 +2,13 @@
 
 import React, { useState, useSyncExternalStore } from "react";
 import { useTranslations } from "next-intl";
-import { Badge } from "@cloudflare/kumo/components/badge";
 import {
   ShieldCheck,
   EnvelopeSimple,
   Key,
   Trophy,
   Sparkle,
+  CheckCircle,
 } from "@phosphor-icons/react";
 import {
   subscribePractice,
@@ -22,7 +22,6 @@ import { FirewallSimulator } from "@/components/practice/firewall-simulator";
 
 export function PracticeWorkspace() {
   const t = useTranslations("practice");
-  const tCommon = useTranslations("common");
 
   const [activeTab, setActiveTab] = useState<"phishing" | "password" | "firewall">("phishing");
 
@@ -53,14 +52,9 @@ export function PracticeWorkspace() {
       {/* Header Bar */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[var(--color-tami-line)]">
         <div className="space-y-0.5">
-          <div className="flex items-center gap-2">
-            <h1 className="text-xl font-bold tracking-tight text-[var(--color-tami-text)]">
-              {t("title")}
-            </h1>
-            <Badge variant="neutral" appearance="dot" className="text-xs">
-              {tCommon("labBadge")}
-            </Badge>
-          </div>
+          <h1 className="text-xl font-bold tracking-tight text-[var(--color-tami-text)]">
+            {t("title")}
+          </h1>
           <p className="text-xs text-[var(--color-tami-text-muted)] leading-relaxed">
             {t("subtitle")}
           </p>
@@ -98,7 +92,7 @@ export function PracticeWorkspace() {
           />
           <span>{t("tabPhishing")}</span>
           {progress.completedChallenges.includes("phishing") && (
-            <span className="text-[10px]">✅</span>
+            <CheckCircle size={14} weight="fill" className="text-[var(--color-tami-green)] shrink-0" />
           )}
         </button>
 
@@ -118,7 +112,7 @@ export function PracticeWorkspace() {
           />
           <span>{t("tabPassword")}</span>
           {progress.completedChallenges.includes("password") && (
-            <span className="text-[10px]">✅</span>
+            <CheckCircle size={14} weight="fill" className="text-[var(--color-tami-green)] shrink-0" />
           )}
         </button>
 
@@ -138,7 +132,7 @@ export function PracticeWorkspace() {
           />
           <span>{t("tabFirewall")}</span>
           {progress.completedChallenges.includes("firewall") && (
-            <span className="text-[10px]">✅</span>
+            <CheckCircle size={14} weight="fill" className="text-[var(--color-tami-green)] shrink-0" />
           )}
         </button>
       </div>

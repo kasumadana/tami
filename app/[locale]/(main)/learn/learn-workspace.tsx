@@ -62,7 +62,6 @@ const MODULES_DATA = [
 
 export function LearnWorkspace() {
   const t = useTranslations("learn");
-  const tCommon = useTranslations("common");
 
   const rawSnapshot = useSyncExternalStore(
     subscribeLearn,
@@ -93,14 +92,9 @@ export function LearnWorkspace() {
       {/* Header Bar */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[var(--color-tami-line)]">
         <div className="space-y-0.5">
-          <div className="flex items-center gap-2">
-            <h1 className="text-xl font-bold tracking-tight text-[var(--color-tami-text)]">
-              {t("title")}
-            </h1>
-            <Badge variant="neutral" appearance="dot" className="text-xs">
-              {tCommon("curriculumBadge")}
-            </Badge>
-          </div>
+          <h1 className="text-xl font-bold tracking-tight text-[var(--color-tami-text)]">
+            {t("title")}
+          </h1>
           <p className="text-xs text-[var(--color-tami-text-muted)] leading-relaxed">
             {t("subtitle")}
           </p>
@@ -119,33 +113,37 @@ export function LearnWorkspace() {
       </div>
 
       {/* Curriculum Progress Header Card */}
-      <LayerCard className="rounded-3xl p-5 sm:p-6 bg-[var(--color-tami-surface)] border border-[var(--color-tami-line)] space-y-3 shadow-xs">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-          <div className="flex items-center gap-2">
-            <Trophy size={20} weight="fill" className="text-[var(--color-tami-yellow)] shrink-0" />
+      <LayerCard className="rounded-3xl p-5 sm:p-6 bg-[var(--color-tami-surface)] border border-[var(--color-tami-line)] space-y-3.5 shadow-xs">
+        <div className="flex items-center justify-between gap-3">
+          <div className="flex items-center gap-2.5">
+            <div className="w-8 h-8 rounded-xl bg-[var(--color-tami-yellow)]/15 text-[var(--color-tami-yellow)] flex items-center justify-center shrink-0">
+              <Trophy size={18} weight="fill" />
+            </div>
             <h2 className="font-bold text-sm text-[var(--color-tami-text)]">
               {t("progressTitle")}
             </h2>
           </div>
-          <span className="text-xs font-mono font-bold text-[var(--color-tami-orange)]">
-            {t("progressCompleted", {
-              completed: completedCount,
-              total: totalModules,
-              percent: progressPercent,
-            })}
-          </span>
+          <div className="flex items-center gap-2">
+            <span className="text-xs font-mono font-bold text-[var(--color-tami-orange)] px-2.5 py-1 rounded-lg bg-[var(--color-tami-surface-subdued)] border border-[var(--color-tami-line)]">
+              {t("progressCompleted", {
+                completed: completedCount,
+                total: totalModules,
+                percent: progressPercent,
+              })}
+            </span>
+          </div>
         </div>
 
-        <div className="w-full bg-[var(--color-tami-surface-subdued)] h-2.5 rounded-full overflow-hidden border border-[var(--color-tami-line)]">
+        <div className="w-full bg-[var(--color-tami-surface-subdued)] h-2 rounded-full overflow-hidden border border-[var(--color-tami-line)]">
           <div
-            className="bg-gradient-to-r from-[var(--color-tami-orange)] to-[var(--color-tami-yellow)] h-full rounded-full transition-all duration-300"
+            className="bg-[var(--color-tami-orange)] h-full rounded-full transition-all duration-300"
             style={{ width: `${progressPercent}%` }}
           />
         </div>
 
         {completedCount === totalModules && (
-          <div className="flex items-center gap-1.5 pt-1 text-xs text-[var(--color-tami-green)] font-semibold">
-            <Sparkle size={15} weight="fill" />
+          <div className="flex items-center gap-1.5 pt-0.5 text-xs text-[var(--color-tami-green)] font-semibold">
+            <Sparkle size={15} weight="fill" className="shrink-0" />
             <span>{t("allCompleted")}</span>
           </div>
         )}

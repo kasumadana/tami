@@ -56,9 +56,9 @@
     "starter2": "I got an SMS saying I won a huge prize and need to transfer admin fees to claim.",
     "starter3": "My friend is being bullied with edited photos in our class WhatsApp group, what should I do?",
     "starter4": "How can I make a strong passphrase that is hard to guess but easy for me to remember?",
-    "disclaimer": "tami is an educational AI Smart Tutor for digital safety. tami does not store personal photos or private messages on the server.",
-    "tamiWelcome": "Hello! I'm **tami**, your safe internet companion. 🐾\n\nDid you encounter a suspicious message, a weird free prize offer, or a confusing online situation? Tell me about it, and let's analyze the clues together!",
-    "errorMessage": "*An error occurred while processing the response. Please check your internet connection or try again.*"
+    "disclaimer": "tami is an educational AI Smart Tutor for digital privacy and cybersecurity. tami does not store your private photos or messages on servers.",
+    "tamiWelcome": "Hello! I am **tami**, your safe internet companion.\n\nGot a suspicious message, a weird free gaming offer, or an online situation that confuses you? Tell me here, let's break down the logic together!",
+    "errorMessage": "*An error occurred while generating a response. Please check your internet connection or try again.*"
   },
   "detector": {
     "title": "Multimodal Threat Inspector",

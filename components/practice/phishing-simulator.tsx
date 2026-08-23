@@ -184,7 +184,7 @@ export function PhishingSimulator() {
                 <span>{t("challengeSuccess")}</span>
               </div>
               <Badge variant="success" appearance="filled" className="text-xs">
-                {tPhishing("badgeName")} 🏆
+                {tPhishing("badgeName")}
               </Badge>
             </div>
             <p className="text-xs text-[var(--color-tami-text)] leading-relaxed">

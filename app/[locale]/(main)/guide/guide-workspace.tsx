@@ -18,7 +18,6 @@ import {
 
 export function GuideWorkspace() {
   const t = useTranslations("guide");
-  const tCommon = useTranslations("common");
 
   const [activeTab, setActiveTab] = useState<"parents" | "educators">("parents");
 
@@ -27,14 +26,9 @@ export function GuideWorkspace() {
       {/* Header Bar */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[var(--color-tami-line)]">
         <div className="space-y-0.5">
-          <div className="flex items-center gap-2">
-            <h1 className="text-xl font-bold tracking-tight text-[var(--color-tami-text)]">
-              {t("title")}
-            </h1>
-            <Badge variant="neutral" appearance="dot" className="text-xs">
-              {tCommon("familyBadge")}
-            </Badge>
-          </div>
+          <h1 className="text-xl font-bold tracking-tight text-[var(--color-tami-text)]">
+            {t("title")}
+          </h1>
           <p className="text-xs text-[var(--color-tami-text-muted)] leading-relaxed">
             {t("subtitle")}
           </p>
