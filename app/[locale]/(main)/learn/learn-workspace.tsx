@@ -89,7 +89,7 @@ export function LearnWorkspace() {
   const progressPercent = Math.round((completedCount / totalModules) * 100);
 
   return (
-    <div className="flex flex-col h-full max-w-5xl mx-auto w-full p-4 sm:p-6 space-y-6">
+    <div className="flex flex-col h-full max-w-6xl mx-auto w-full p-3.5 sm:p-6 space-y-6">
       {/* Header Bar */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[var(--color-tami-line)]">
         <div className="space-y-0.5">

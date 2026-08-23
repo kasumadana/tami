@@ -181,7 +181,7 @@ export function CertificateCard({ initialName, isUnlocked }: CertificateCardProp
       {/* Visual Certificate Card Frame */}
       <div
         ref={certRef}
-        className="relative w-full rounded-3xl p-6 sm:p-10 bg-white text-zinc-900 border-4 border-[var(--color-tami-orange)] shadow-xl space-y-6 overflow-hidden print:border-none print:shadow-none print:m-0 print:p-8"
+        className="relative w-full rounded-3xl p-4 sm:p-10 bg-white text-zinc-900 border-4 border-[var(--color-tami-orange)] shadow-xl space-y-6 overflow-hidden print:border-none print:shadow-none print:m-0 print:p-8"
       >
         {/* Decorative corner ribbons */}
         <div className="absolute top-0 right-0 w-24 h-24 overflow-hidden pointer-events-none">

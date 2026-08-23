@@ -212,9 +212,9 @@ export function ChatWorkspace({ initialTurnsRemaining }: ChatWorkspaceProps) {
   ];
 
   return (
-    <div className="flex flex-col h-full max-w-4xl mx-auto w-full p-4 sm:p-6 space-y-4">
-      {/* Header Bar */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[var(--color-tami-line)]">
+    <div className="flex flex-col h-full max-w-4xl mx-auto w-full p-3.5 sm:p-6 min-h-0 overflow-hidden">
+      {/* Header Bar (Pinned Top) */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[var(--color-tami-line)] shrink-0">
         <div className="space-y-0.5">
           <div className="flex items-center gap-2">
             <h1 className="text-xl font-bold tracking-tight text-[var(--color-tami-text)]">
@@ -255,37 +255,39 @@ export function ChatWorkspace({ initialTurnsRemaining }: ChatWorkspaceProps) {
 
       {/* Quota Exhausted Notice Banner */}
       {turnsRemaining <= 0 && (
-        <Banner
-          variant="error"
-          size="sm"
-          className="rounded-2xl border border-[var(--color-tami-red)]/30 bg-[var(--color-tami-surface)] shadow-xs"
-        >
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 w-full text-xs">
-            <div className="flex items-center gap-2">
-              <WarningCircle size={18} weight="fill" className="text-[var(--color-tami-red)] shrink-0" />
-              <div>
-                <span className="font-bold text-[var(--color-tami-text)] block">
-                  {t("quotaExceededTitle")}
-                </span>
-                <span className="text-[var(--color-tami-text-muted)]">
-                  {t("quotaExceededDesc")}
-                </span>
+        <div className="pt-3 shrink-0">
+          <Banner
+            variant="error"
+            size="sm"
+            className="rounded-2xl border border-[var(--color-tami-red)]/30 bg-[var(--color-tami-surface)] shadow-xs"
+          >
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 w-full text-xs">
+              <div className="flex items-center gap-2">
+                <WarningCircle size={18} weight="fill" className="text-[var(--color-tami-red)] shrink-0" />
+                <div>
+                  <span className="font-bold text-[var(--color-tami-text)] block">
+                    {t("quotaExceededTitle")}
+                  </span>
+                  <span className="text-[var(--color-tami-text-muted)]">
+                    {t("quotaExceededDesc")}
+                  </span>
+                </div>
               </div>
+              <Button
+                variant="primary"
+                size="sm"
+                className="rounded-full !bg-[var(--color-tami-orange)] hover:!bg-[var(--color-tami-orange-hover)] !text-white font-semibold shrink-0 text-xs px-4 h-8"
+                icon={<GoogleLogo size={14} weight="bold" />}
+              >
+                {t("signInToContinue")}
+              </Button>
             </div>
-            <Button
-              variant="primary"
-              size="sm"
-              className="rounded-full !bg-[var(--color-tami-orange)] hover:!bg-[var(--color-tami-orange-hover)] !text-white font-semibold shrink-0 text-xs px-4 h-8"
-              icon={<GoogleLogo size={14} weight="bold" />}
-            >
-              {t("signInToContinue")}
-            </Button>
-          </div>
-        </Banner>
+          </Banner>
+        </div>
       )}
 
-      {/* Messages Stream Container */}
-      <div className="flex-1 overflow-y-auto space-y-4 pr-1 min-h-[300px]">
+      {/* Messages Stream Container (Autofit & Dedicated Scroll) */}
+      <div className="flex-1 overflow-y-auto space-y-4 pr-1 sm:pr-2 min-h-0 py-3 scroll-smooth">
         {messages.map((message) => {
           const isUser = message.role === "user";
 
@@ -313,7 +315,7 @@ export function ChatWorkspace({ initialTurnsRemaining }: ChatWorkspaceProps) {
 
               {/* Message Bubble */}
               <div
-                className={`max-w-[85%] sm:max-w-[75%] rounded-2xl p-4 text-sm leading-relaxed ${
+                className={`max-w-[85%] sm:max-w-[75%] rounded-2xl p-4 text-sm leading-relaxed overflow-hidden break-words ${
                   isUser
                     ? "bg-[var(--color-tami-orange)] text-white font-medium rounded-tr-xs"
                     : "bg-[var(--color-tami-surface)] text-[var(--color-tami-text)] border border-[var(--color-tami-line)] rounded-tl-xs shadow-2xs"
@@ -327,7 +329,7 @@ export function ChatWorkspace({ initialTurnsRemaining }: ChatWorkspaceProps) {
                     <span>{t("thinking")}</span>
                   </div>
                 ) : (
-                  <div className="prose prose-sm dark:prose-invert max-w-none space-y-2 text-[var(--color-tami-text)]">
+                  <div className="prose prose-sm dark:prose-invert max-w-none space-y-2 text-[var(--color-tami-text)] overflow-hidden break-words">
                     <ReactMarkdown
                       remarkPlugins={[remarkGfm]}
                       rehypePlugins={[rehypeSanitize]}
@@ -343,62 +345,65 @@ export function ChatWorkspace({ initialTurnsRemaining }: ChatWorkspaceProps) {
         <div ref={messagesEndRef} />
       </div>
 
-      {/* Discussion Starter Chips (Visible when only 1 welcome message exists) */}
-      {messages.length <= 1 && (
-        <div className="space-y-2 pt-2">
-          <span className="text-xs font-semibold text-[var(--color-tami-text-muted)]">
-            {t("startersTitle")}
-          </span>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-            {starters.map((starter, idx) => (
-              <button
-                key={idx}
-                type="button"
-                onClick={() => handleSendMessage(starter)}
+      {/* Discussion Starter Chips & Bottom Input Bar (Pinned Bottom) */}
+      <div className="shrink-0 pt-2 space-y-2.5">
+        {/* Discussion Starter Chips (Visible when only 1 welcome message exists) */}
+        {messages.length <= 1 && (
+          <div className="space-y-1.5">
+            <span className="text-xs font-semibold text-[var(--color-tami-text-muted)]">
+              {t("startersTitle")}
+            </span>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+              {starters.map((starter, idx) => (
+                <button
+                  key={idx}
+                  type="button"
+                  onClick={() => handleSendMessage(starter)}
+                  disabled={isLoading || turnsRemaining <= 0}
+                  className="text-left p-2.5 rounded-2xl border border-[var(--color-tami-line)] bg-[var(--color-tami-surface)] hover:bg-[var(--color-tami-surface-subdued)] hover:border-[var(--color-tami-orange)] text-xs text-[var(--color-tami-text)] transition-none cursor-pointer disabled:opacity-60 truncate"
+                >
+                  &ldquo;{starter}&rdquo;
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Message Input Bar */}
+        <div>
+          <LayerCard className="rounded-2xl p-2 bg-[var(--color-tami-surface)] border border-[var(--color-tami-line)] shadow-sm focus-within:border-[var(--color-tami-orange)] focus-within:ring-1 focus-within:ring-[var(--color-tami-orange)]">
+            <div className="flex items-end gap-2">
+              <textarea
+                ref={textareaRef}
+                value={input}
+                onChange={handleInputChange}
+                onKeyDown={handleKeyDown}
                 disabled={isLoading || turnsRemaining <= 0}
-                className="text-left p-3 rounded-2xl border border-[var(--color-tami-line)] bg-[var(--color-tami-surface)] hover:bg-[var(--color-tami-surface-subdued)] hover:border-[var(--color-tami-orange)] text-xs text-[var(--color-tami-text)] transition-none cursor-pointer disabled:opacity-60"
-              >
-                &ldquo;{starter}&rdquo;
-              </button>
-            ))}
-          </div>
-        </div>
-      )}
+                placeholder={
+                  turnsRemaining <= 0
+                    ? t("quotaExceededTitle")
+                    : t("placeholder")
+                }
+                rows={1}
+                className="flex-1 max-h-32 min-h-[42px] p-2 bg-transparent text-sm text-[var(--color-tami-text)] placeholder:text-[var(--color-tami-text-muted)] resize-none focus:outline-none"
+              />
+              <Button
+                variant="primary"
+                size="base"
+                onClick={() => handleSendMessage()}
+                disabled={isLoading || !input.trim() || turnsRemaining <= 0}
+                aria-label={t("send")}
+                className="rounded-xl !bg-[var(--color-tami-orange)] hover:!bg-[var(--color-tami-orange-hover)] !text-white w-10 h-10 min-w-[40px] flex items-center justify-center shrink-0 cursor-pointer disabled:opacity-50"
+                icon={<PaperPlaneRight size={18} weight="bold" />}
+              />
+            </div>
+          </LayerCard>
 
-      {/* Message Input Bar */}
-      <div className="pt-2">
-        <LayerCard className="rounded-2xl p-2 bg-[var(--color-tami-surface)] border border-[var(--color-tami-line)] shadow-sm focus-within:border-[var(--color-tami-orange)] focus-within:ring-1 focus-within:ring-[var(--color-tami-orange)]">
-          <div className="flex items-end gap-2">
-            <textarea
-              ref={textareaRef}
-              value={input}
-              onChange={handleInputChange}
-              onKeyDown={handleKeyDown}
-              disabled={isLoading || turnsRemaining <= 0}
-              placeholder={
-                turnsRemaining <= 0
-                  ? t("quotaExceededTitle")
-                  : t("placeholder")
-              }
-              rows={1}
-              className="flex-1 max-h-36 min-h-[44px] p-2.5 bg-transparent text-sm text-[var(--color-tami-text)] placeholder:text-[var(--color-tami-text-muted)] resize-none focus:outline-none"
-            />
-            <Button
-              variant="primary"
-              size="base"
-              onClick={() => handleSendMessage()}
-              disabled={isLoading || !input.trim() || turnsRemaining <= 0}
-              aria-label={t("send")}
-              className="rounded-xl !bg-[var(--color-tami-orange)] hover:!bg-[var(--color-tami-orange-hover)] !text-white w-10 h-10 min-w-[40px] flex items-center justify-center shrink-0 cursor-pointer disabled:opacity-50"
-              icon={<PaperPlaneRight size={18} weight="bold" />}
-            />
+          {/* Trust Disclaimer */}
+          <div className="flex items-center justify-center gap-1.5 pt-1.5 text-[11px] text-[var(--color-tami-text-muted)] text-center">
+            <LockKey size={13} weight="bold" className="text-[var(--color-tami-green)] shrink-0" />
+            <span>{t("disclaimer")}</span>
           </div>
-        </LayerCard>
-
-        {/* Trust Disclaimer */}
-        <div className="flex items-center justify-center gap-1.5 pt-2 text-[11px] text-[var(--color-tami-text-muted)] text-center">
-          <LockKey size={13} weight="bold" className="text-[var(--color-tami-green)] shrink-0" />
-          <span>{t("disclaimer")}</span>
         </div>
       </div>
     </div>

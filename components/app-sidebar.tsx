@@ -12,6 +12,7 @@ import {
   Sidebar,
   SidebarProvider,
   SidebarMenuButton,
+  SidebarTrigger,
 } from "@cloudflare/kumo/components/sidebar";
 import { Button } from "@cloudflare/kumo/components/button";
 import { Badge } from "@cloudflare/kumo/components/badge";
@@ -244,8 +245,34 @@ export function AppSidebarLayout({ children }: AppSidebarLayoutProps) {
         </Sidebar>
 
         {/* Main Content Area (Autofit & Independent Scroll) */}
-        <main className="flex-1 flex flex-col min-w-0 h-screen overflow-y-auto">
-          {children}
+        <main className="flex-1 flex flex-col min-w-0 h-screen overflow-y-auto bg-[var(--color-tami-canvas)]">
+          {/* Mobile Topbar with Sidebar Trigger (Visible on mobile/tablet screens < md) */}
+          <header className="md:hidden flex items-center justify-between p-3 border-b border-[var(--color-tami-line)] bg-[var(--color-tami-surface)] shrink-0">
+            <div className="flex items-center gap-2">
+              <SidebarTrigger />
+              <Link href="/" className="flex items-center gap-2 focus:outline-none">
+                <Image
+                  src="/icon.svg"
+                  alt="tami"
+                  width={22}
+                  height={22}
+                  className="w-5.5 h-5.5 object-contain shrink-0"
+                />
+                <span className="font-bold text-sm tracking-tight text-[var(--color-tami-text)]">
+                  {tCommon("appName")}
+                </span>
+              </Link>
+            </div>
+
+            <div className="flex items-center gap-1">
+              <LocaleSwitcher />
+              <ThemeToggle />
+            </div>
+          </header>
+
+          <div className="flex-1 flex flex-col min-h-0">
+            {children}
+          </div>
         </main>
 
         {/* Login Dialog Modal */}
