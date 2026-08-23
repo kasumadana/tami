@@ -36,7 +36,7 @@
     "tools": "Defense Tools",
     "resources": "Curriculum & Guides",
     "guestTurnsRemaining": "3 Guest Turns Left",
-    "guestDescription": "Explore without signing in. Sign in to save permanent history.",
+    "guestDescription": "Explore as a guest. Sign in to save permanent history.",
     "toggleCollapse": "Collapse Sidebar"
   },
   "chat": {
