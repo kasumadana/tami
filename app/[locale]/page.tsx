@@ -73,21 +73,21 @@ function HomeContent() {
 
           {/* Primary Action Buttons */}
           <div className="flex flex-col sm:flex-row items-center gap-3 pt-2 w-full sm:w-auto">
-            <Link href="/chat" className="w-full sm:w-auto">
+            <Link href="/chat" className="w-full sm:w-auto rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[var(--color-tami-orange)]">
               <Button
                 variant="primary"
                 size="lg"
-                className="w-full sm:w-auto rounded-full !bg-[var(--color-tami-orange)] hover:!bg-[var(--color-tami-orange-hover)] !text-white font-semibold text-sm px-7 h-12 shadow-sm"
+                className="w-full sm:w-auto rounded-full !bg-[var(--color-tami-orange)] hover:!bg-[var(--color-tami-orange-hover)] !text-white font-semibold text-sm px-7 h-12 shadow-sm transition-none"
                 icon={<ArrowRight size={18} weight="bold" />}
               >
                 {t("hero.ctaPrimary")}
               </Button>
             </Link>
-            <Link href="/detector" className="w-full sm:w-auto">
+            <Link href="/detector" className="w-full sm:w-auto rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[var(--color-tami-orange)]">
               <Button
                 variant="secondary"
                 size="lg"
-                className="w-full sm:w-auto rounded-full border border-[var(--color-tami-line)] bg-[var(--color-tami-surface)] hover:bg-[var(--color-tami-surface-subdued)] text-[var(--color-tami-text)] font-semibold text-sm px-6 h-12"
+                className="w-full sm:w-auto rounded-full border border-[var(--color-tami-line)] bg-[var(--color-tami-surface)] hover:bg-[var(--color-tami-surface-subdued)] text-[var(--color-tami-text)] font-semibold text-sm px-6 h-12 transition-none"
                 icon={<ShieldWarning size={18} weight="bold" className="text-[var(--color-tami-orange)]" />}
               >
                 {t("hero.ctaSecondary")}
@@ -216,11 +216,11 @@ function HomeContent() {
               </div>
             </div>
 
-            <Link href="/chat">
+            <Link href="/chat" className="w-full sm:w-auto rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-tami-orange)]">
               <Button
                 variant="secondary"
                 size="base"
-                className="w-full sm:w-auto rounded-full border border-[var(--color-tami-line)] bg-[var(--color-tami-surface)] text-[var(--color-tami-text)] hover:bg-[var(--color-tami-surface-subdued)] text-sm font-semibold hover:border-[var(--color-tami-orange)]"
+                className="w-full sm:w-auto rounded-full border border-[var(--color-tami-line)] bg-[var(--color-tami-surface)] text-[var(--color-tami-text)] hover:bg-[var(--color-tami-surface-subdued)] text-sm font-semibold hover:border-[var(--color-tami-orange)] transition-none"
                 icon={<ArrowRight size={16} weight="bold" />}
               >
                 {t("features.chat.action")}
@@ -262,11 +262,11 @@ function HomeContent() {
               </div>
             </div>
 
-            <Link href="/detector">
+            <Link href="/detector" className="w-full sm:w-auto rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-tami-green)]">
               <Button
                 variant="secondary"
                 size="base"
-                className="w-full sm:w-auto rounded-full border border-[var(--color-tami-line)] bg-[var(--color-tami-surface)] text-[var(--color-tami-text)] hover:bg-[var(--color-tami-surface-subdued)] text-sm font-semibold hover:border-[var(--color-tami-green)]"
+                className="w-full sm:w-auto rounded-full border border-[var(--color-tami-line)] bg-[var(--color-tami-surface)] text-[var(--color-tami-text)] hover:bg-[var(--color-tami-surface-subdued)] text-sm font-semibold hover:border-[var(--color-tami-green)] transition-none"
                 icon={<ArrowRight size={16} weight="bold" />}
               >
                 {t("features.detector.action")}
@@ -294,27 +294,31 @@ function HomeContent() {
                 </p>
               </div>
 
-              {/* Password Entropy Preview */}
-              <div className="p-3 rounded-2xl bg-[var(--color-tami-surface-subdued)] border border-[var(--color-tami-line)] space-y-2 text-xs">
+              {/* Tactile Segmented Password Entropy Preview */}
+              <div className="p-3.5 rounded-2xl bg-[var(--color-tami-surface-subdued)] border border-[var(--color-tami-line)] space-y-2.5 text-xs">
                 <div className="flex justify-between items-center">
-                  <span className="font-semibold text-[var(--color-tami-text)]">
-                    {t("features.demo.passwordStrength")}
+                  <span className="font-semibold text-[var(--color-tami-text)] flex items-center gap-1.5">
+                    <LockKey size={14} weight="bold" className="text-[var(--color-tami-green)]" />
+                    <span>{t("features.demo.passwordStrength")}</span>
                   </span>
-                  <span className="text-[var(--color-tami-green)] font-mono font-bold">
+                  <span className="text-[var(--color-tami-green)] font-mono font-bold px-2 py-0.5 rounded-md bg-[var(--color-tami-green)]/10 border border-[var(--color-tami-green)]/20">
                     {t("features.demo.passwordStrengthValue")}
                   </span>
                 </div>
-                <div className="w-full bg-[var(--color-tami-line)] h-2 rounded-full overflow-hidden">
-                  <div className="bg-[var(--color-tami-green)] h-full w-4/5 rounded-full"></div>
+                <div className="grid grid-cols-4 gap-1.5 w-full">
+                  <div className="h-2 rounded-full bg-[var(--color-tami-green)]" />
+                  <div className="h-2 rounded-full bg-[var(--color-tami-green)]" />
+                  <div className="h-2 rounded-full bg-[var(--color-tami-green)]" />
+                  <div className="h-2 rounded-full bg-[var(--color-tami-green)] animate-pulse" />
                 </div>
               </div>
             </div>
 
-            <Link href="/practice">
+            <Link href="/practice" className="w-full sm:w-auto rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-tami-orange)]">
               <Button
                 variant="secondary"
                 size="base"
-                className="w-full sm:w-auto rounded-full border border-[var(--color-tami-line)] bg-[var(--color-tami-surface)] text-[var(--color-tami-text)] hover:bg-[var(--color-tami-surface-subdued)] text-sm font-semibold hover:border-[var(--color-tami-orange)]"
+                className="w-full sm:w-auto rounded-full border border-[var(--color-tami-line)] bg-[var(--color-tami-surface)] text-[var(--color-tami-text)] hover:bg-[var(--color-tami-surface-subdued)] text-sm font-semibold hover:border-[var(--color-tami-orange)] transition-none"
                 icon={<ArrowRight size={16} weight="bold" />}
               >
                 {t("features.practice.action")}
@@ -359,11 +363,11 @@ function HomeContent() {
               </div>
             </div>
 
-            <Link href="/learn">
+            <Link href="/learn" className="w-full sm:w-auto rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-tami-violet)]">
               <Button
                 variant="secondary"
                 size="base"
-                className="w-full sm:w-auto rounded-full border border-[var(--color-tami-line)] bg-[var(--color-tami-surface)] text-[var(--color-tami-text)] hover:bg-[var(--color-tami-surface-subdued)] text-sm font-semibold hover:border-[var(--color-tami-violet)]"
+                className="w-full sm:w-auto rounded-full border border-[var(--color-tami-line)] bg-[var(--color-tami-surface)] text-[var(--color-tami-text)] hover:bg-[var(--color-tami-surface-subdued)] text-sm font-semibold hover:border-[var(--color-tami-violet)] transition-none"
                 icon={<ArrowRight size={16} weight="bold" />}
               >
                 {t("features.learn.action")}

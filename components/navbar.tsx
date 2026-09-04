@@ -8,7 +8,7 @@ import { ThemeToggle } from "./theme-toggle";
 import { LocaleSwitcher } from "./locale-switcher";
 import { useSession } from "next-auth/react";
 import { Button } from "@cloudflare/kumo/components/button";
-import { UserCircle, ArrowRight } from "@phosphor-icons/react";
+import { ArrowRight } from "@phosphor-icons/react";
 
 export function Navbar() {
   const tCommon = useTranslations("common");
@@ -44,19 +44,15 @@ export function Navbar() {
           {session?.user && (
             <Link
               href="/profile"
-              className="flex items-center gap-2 px-2.5 py-1 rounded-full bg-[var(--color-tami-surface-subdued)] border border-[var(--color-tami-line)] hover:bg-[var(--color-tami-surface-muted)] text-xs transition-none"
+              className="flex items-center gap-2 px-2.5 py-1 rounded-full bg-[var(--color-tami-surface-subdued)] border border-[var(--color-tami-line)] hover:bg-[var(--color-tami-surface-muted)] text-xs transition-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-tami-orange)]"
             >
-              {session.user.image ? (
-                <Image
-                  src={session.user.image}
-                  alt={session.user.name || "User"}
-                  width={20}
-                  height={20}
-                  className="w-5 h-5 rounded-full object-cover"
-                />
-              ) : (
-                <UserCircle size={18} className="text-[var(--color-tami-orange)]" />
-              )}
+              <Image
+                src={session.user.image || "/icon.svg"}
+                alt={session.user.name || "User"}
+                width={20}
+                height={20}
+                className="w-5 h-5 object-contain shrink-0"
+              />
               <span className="font-semibold text-[var(--color-tami-text)] max-w-[100px] truncate">
                 {session.user.name}
               </span>
@@ -64,7 +60,7 @@ export function Navbar() {
           )}
 
           {/* Single Primary CTA Button ("Buka Lab") */}
-          <Link href="/chat">
+          <Link href="/chat" className="rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[var(--color-tami-orange)]">
             <Button
               variant="primary"
               size="base"
