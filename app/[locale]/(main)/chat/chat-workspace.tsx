@@ -3,6 +3,7 @@
 import React, { useState, useRef, useEffect, useCallback } from "react";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
+import { useSession } from "next-auth/react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeSanitize from "rehype-sanitize";
@@ -26,6 +27,7 @@ interface Message {
 
 interface ChatWorkspaceProps {
   initialTurnsRemaining: number;
+  initialIsAuthenticated?: boolean;
 }
 
 let messageCounter = 0;
@@ -34,8 +36,13 @@ function createMessageId(prefix: string): string {
   return `${prefix}-${messageCounter}`;
 }
 
-export function ChatWorkspace({ initialTurnsRemaining }: ChatWorkspaceProps) {
+export function ChatWorkspace({
+  initialTurnsRemaining,
+  initialIsAuthenticated = false,
+}: ChatWorkspaceProps) {
   const t = useTranslations("chat");
+  const { data: session } = useSession();
+  const isAuthenticated = initialIsAuthenticated || !!session?.user?.id;
 
   const [messages, setMessages] = useState<Message[]>(() => [
     {
@@ -72,7 +79,7 @@ export function ChatWorkspace({ initialTurnsRemaining }: ChatWorkspaceProps) {
     const messageContent = (textToSend || input).trim();
     if (!messageContent || isLoading) return;
 
-    if (turnsRemaining <= 0) {
+    if (!isAuthenticated && turnsRemaining <= 0) {
       return;
     }
 
@@ -113,7 +120,9 @@ export function ChatWorkspace({ initialTurnsRemaining }: ChatWorkspaceProps) {
 
       // Update remaining turns from response headers if present
       const remainingHeader = response.headers.get("X-Turns-Remaining");
-      if (remainingHeader !== null) {
+      if (remainingHeader === "unlimited") {
+        setTurnsRemaining(999);
+      } else if (remainingHeader !== null) {
         const parsed = parseInt(remainingHeader, 10);
         if (!isNaN(parsed)) {
           setTurnsRemaining(parsed);
@@ -122,7 +131,7 @@ export function ChatWorkspace({ initialTurnsRemaining }: ChatWorkspaceProps) {
 
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
-        if (response.status === 403 || errorData.error === "QUOTA_EXCEEDED") {
+        if (!isAuthenticated && (response.status === 403 || errorData.error === "QUOTA_EXCEEDED")) {
           setTurnsRemaining(0);
           setMessages((prev) =>
             prev.map((msg) =>
@@ -227,7 +236,7 @@ export function ChatWorkspace({ initialTurnsRemaining }: ChatWorkspaceProps) {
           <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[var(--color-tami-surface-subdued)] border border-[var(--color-tami-line)] text-xs font-semibold">
             <Sparkle size={13} weight="fill" className="text-[var(--color-tami-orange)]" />
             <span className="text-[var(--color-tami-text)] font-mono">
-              {turnsRemaining}/3
+              {isAuthenticated ? t("unlimitedTurns") : `${turnsRemaining}/3`}
             </span>
           </div>
 
@@ -246,8 +255,8 @@ export function ChatWorkspace({ initialTurnsRemaining }: ChatWorkspaceProps) {
         </div>
       </div>
 
-      {/* Quota Exhausted Notice Banner */}
-      {turnsRemaining <= 0 && (
+      {/* Quota Exhausted Notice Banner (Guests Only) */}
+      {!isAuthenticated && turnsRemaining <= 0 && (
         <div className="pt-3 shrink-0">
           <Banner
             variant="error"

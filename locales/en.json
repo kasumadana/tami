@@ -48,6 +48,7 @@
     "clear": "Clear Chat",
     "clearConfirm": "Are you sure you want to clear this chat history?",
     "guestQuotaNotice": "Guest Turns: {remaining} of {max} remaining",
+    "unlimitedTurns": "Full Access",
     "quotaExceededTitle": "Guest Turns Exhausted",
     "quotaExceededDesc": "You have used your 3 guest exploration turns. Sign in with Google to continue unlimited chat sessions and save your learning progress.",
     "signInToContinue": "Sign In with Google",

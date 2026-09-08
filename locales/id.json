@@ -48,6 +48,7 @@
     "clear": "Hapus Obrolan",
     "clearConfirm": "Apakah kamu yakin ingin menghapus seluruh riwayat obrolan ini?",
     "guestQuotaNotice": "Giliran Tamu: {remaining} dari {max} tersisa",
+    "unlimitedTurns": "Akses Penuh",
     "quotaExceededTitle": "Giliran Tamu Telah Habis",
     "quotaExceededDesc": "Kamu telah menggunakan 3 giliran eksplorasi tamu. Masuk dengan Google untuk melanjutkan obrolan tanpa batas dan menyimpan pencapaian belajarmu.",
     "signInToContinue": "Masuk dengan Google",

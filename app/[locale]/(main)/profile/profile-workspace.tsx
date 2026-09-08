@@ -145,11 +145,11 @@ export function ProfileWorkspace() {
       <LayerCard className="rounded-3xl p-5 sm:p-6 bg-[var(--color-tami-surface)] border border-[var(--color-tami-line)] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-xs print:hidden">
         <div className="flex items-center gap-4">
           <Image
-            src="/icon.svg"
+            src={session?.user?.image || "/icon.svg"}
             alt={displayName}
             width={48}
             height={48}
-            className="w-12 h-12 object-contain shrink-0"
+            className="w-12 h-12 rounded-full object-cover shrink-0 border border-[var(--color-tami-line)]"
           />
 
           <div className="space-y-1">
@@ -360,6 +360,7 @@ export function ProfileWorkspace() {
 
       {/* Digital Certificate Generator */}
       <CertificateCard
+        key={session?.user?.name || "guest"}
         initialName={session?.user?.name || undefined}
         isUnlocked={isCurriculumUnlocked || practiceProgress.totalScore >= 100}
       />
