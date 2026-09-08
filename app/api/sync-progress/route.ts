@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/auth";
 import { db } from "@/lib/db";
-import { learningProgress, practiceRecords, users } from "@/lib/db/schema";
+import { learningProgress, practiceRecords, threatScans, users } from "@/lib/db/schema";
 import { eq, and } from "drizzle-orm";
 
 export async function POST(req: NextRequest) {
@@ -121,6 +121,11 @@ export async function POST(req: NextRequest) {
       new Set([...guestBadges, ...allPractice.map((p) => p.badgeEarned)])
     );
 
+    const allScans = await db
+      .select()
+      .from(threatScans)
+      .where(eq(threatScans.userId, userId));
+
     return NextResponse.json({
       success: true,
       synced: true,
@@ -131,9 +136,56 @@ export async function POST(req: NextRequest) {
         totalScore: mergedChallenges.length * 100,
         unlockedBadges: mergedBadges,
       },
+      threatScansCount: allScans.length,
     });
   } catch (error) {
     console.error("Progress sync error:", error);
     return NextResponse.json({ success: false, error: "Sync failed" }, { status: 500 });
+  }
+}
+
+// GET endpoint to fetch synced user progress from Neon DB
+export async function GET() {
+  try {
+    const session = await auth();
+    if (!session?.user?.id || !db) {
+      return NextResponse.json({ authenticated: false }, { status: 401 });
+    }
+
+    const userId = session.user.id;
+
+    const allModules = await db
+      .select()
+      .from(learningProgress)
+      .where(eq(learningProgress.userId, userId));
+
+    const allPractice = await db
+      .select()
+      .from(practiceRecords)
+      .where(eq(practiceRecords.userId, userId));
+
+    const allScans = await db
+      .select()
+      .from(threatScans)
+      .where(eq(threatScans.userId, userId));
+
+    const completedModules = allModules.map((m) => m.moduleId);
+    const completedChallenges = allPractice.map((p) => p.challengeId);
+    const unlockedBadges = allPractice.map((p) => p.badgeEarned);
+
+    return NextResponse.json({
+      authenticated: true,
+      userId,
+      completedModules,
+      practiceProgress: {
+        completedChallenges,
+        totalScore: completedChallenges.length * 100,
+        unlockedBadges,
+      },
+      threatScansCount: allScans.length,
+    });
+  } catch (error) {
+    console.error("Fetch progress error:", error);
+    return NextResponse.json({ error: "Failed to fetch user progress" }, { status: 500 });
   }
 }

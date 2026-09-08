@@ -1,4 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
+import { auth } from "@/auth";
+import { db } from "@/lib/db";
+import { threatScans } from "@/lib/db/schema";
 import { DetectorResultSchema, DetectorResult } from "@/lib/detector-schema";
 import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
 import { HumanMessage } from "@langchain/core/messages";
@@ -92,6 +95,22 @@ export async function POST(req: NextRequest) {
         isRelevantDigitalMessage: true,
       };
 
+      const session = await auth();
+      if (session?.user?.id && db) {
+        try {
+          await db.insert(threatScans).values({
+            id: `scan_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`,
+            userId: session.user.id,
+            riskLevel: mockResult.riskLevel,
+            confidenceScore: mockResult.confidenceScore,
+            headline: mockResult.headline,
+            scannedAt: new Date(),
+          });
+        } catch (dbErr) {
+          console.error("Failed to persist fallback threat scan to Neon DB:", dbErr);
+        }
+      }
+
       return NextResponse.json(mockResult);
     }
 
@@ -125,6 +144,22 @@ Inspect this screenshot in-memory for digital cybersecurity risks:
         ],
       }),
     ]);
+
+    const session = await auth();
+    if (session?.user?.id && db) {
+      try {
+        await db.insert(threatScans).values({
+          id: `scan_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`,
+          userId: session.user.id,
+          riskLevel: result.riskLevel,
+          confidenceScore: result.confidenceScore,
+          headline: result.headline,
+          scannedAt: new Date(),
+        });
+      } catch (dbErr) {
+        console.error("Failed to persist live threat scan to Neon DB:", dbErr);
+      }
+    }
 
     return NextResponse.json(result);
   } catch (error) {

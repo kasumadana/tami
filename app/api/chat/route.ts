@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
+import { auth } from "@/auth";
 import {
   decodeGuestCookie,
   encodeGuestCookie,
@@ -27,30 +28,39 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // 1. Verify and update guest quota
-    const cookieStore = await cookies();
-    const rawGuestCookie = cookieStore.get(GUEST_COOKIE_NAME)?.value;
-    const sessionData = decodeGuestCookie(rawGuestCookie);
-    const quota = getQuotaStatus(sessionData.turnsUsed);
+    // 1. Verify authentication and guest quota
+    const session = await auth();
+    const isAuthenticated = !!session?.user?.id;
 
-    if (quota.isExceeded) {
-      return NextResponse.json(
-        {
-          error: "QUOTA_EXCEEDED",
-          message: "Guest turns exhausted. Sign in to continue learning with tami.",
-          turnsRemaining: 0,
-          turnsUsed: quota.turnsUsed,
-        },
-        { status: 403 }
-      );
+    let turnsRemaining = 999;
+    let newCookieValue = "";
+    let newTurnsUsed = 0;
+
+    if (!isAuthenticated) {
+      const cookieStore = await cookies();
+      const rawGuestCookie = cookieStore.get(GUEST_COOKIE_NAME)?.value;
+      const sessionData = decodeGuestCookie(rawGuestCookie);
+      const quota = getQuotaStatus(sessionData.turnsUsed);
+
+      if (quota.isExceeded) {
+        return NextResponse.json(
+          {
+            error: "QUOTA_EXCEEDED",
+            message: "Guest turns exhausted. Sign in to continue learning with tami.",
+            turnsRemaining: 0,
+            turnsUsed: quota.turnsUsed,
+          },
+          { status: 403 }
+        );
+      }
+
+      newTurnsUsed = sessionData.turnsUsed + 1;
+      newCookieValue = encodeGuestCookie({
+        turnsUsed: newTurnsUsed,
+        createdAt: sessionData.createdAt || Date.now(),
+      });
+      turnsRemaining = Math.max(0, quota.maxTurns - newTurnsUsed);
     }
-
-    const newTurnsUsed = sessionData.turnsUsed + 1;
-    const newCookieValue = encodeGuestCookie({
-      turnsUsed: newTurnsUsed,
-      createdAt: sessionData.createdAt || Date.now(),
-    });
-    const turnsRemaining = Math.max(0, quota.maxTurns - newTurnsUsed);
 
     // 2. Prepare AI chat messages with Socratic System Prompt Grounding
     const langchainMessages = [
@@ -89,17 +99,19 @@ export async function POST(req: NextRequest) {
         },
       });
 
-      const response = new Response(stream, {
-        headers: {
-          "Content-Type": "text/plain; charset=utf-8",
-          "Transfer-Encoding": "chunked",
-          "X-Turns-Remaining": String(turnsRemaining),
-          "X-Turns-Used": String(newTurnsUsed),
-          "Set-Cookie": `${GUEST_COOKIE_NAME}=${newCookieValue}; Path=/; HttpOnly; SameSite=Lax; Max-Age=2592000`,
-        },
-      });
+      const headers: Record<string, string> = {
+        "Content-Type": "text/plain; charset=utf-8",
+        "Transfer-Encoding": "chunked",
+        "X-Turns-Remaining": isAuthenticated ? "unlimited" : String(turnsRemaining),
+        "X-Is-Authenticated": isAuthenticated ? "true" : "false",
+      };
 
-      return response;
+      if (!isAuthenticated && newCookieValue) {
+        headers["X-Turns-Used"] = String(newTurnsUsed);
+        headers["Set-Cookie"] = `${GUEST_COOKIE_NAME}=${newCookieValue}; Path=/; HttpOnly; SameSite=Lax; Max-Age=2592000`;
+      }
+
+      return new Response(stream, { headers });
     }
 
     // 4. Live LangChain + Google Gemini 3.7 Flash Stream
@@ -132,15 +144,19 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    return new Response(stream, {
-      headers: {
-        "Content-Type": "text/plain; charset=utf-8",
-        "Transfer-Encoding": "chunked",
-        "X-Turns-Remaining": String(turnsRemaining),
-        "X-Turns-Used": String(newTurnsUsed),
-        "Set-Cookie": `${GUEST_COOKIE_NAME}=${newCookieValue}; Path=/; HttpOnly; SameSite=Lax; Max-Age=2592000`,
-      },
-    });
+    const headers: Record<string, string> = {
+      "Content-Type": "text/plain; charset=utf-8",
+      "Transfer-Encoding": "chunked",
+      "X-Turns-Remaining": isAuthenticated ? "unlimited" : String(turnsRemaining),
+      "X-Is-Authenticated": isAuthenticated ? "true" : "false",
+    };
+
+    if (!isAuthenticated && newCookieValue) {
+      headers["X-Turns-Used"] = String(newTurnsUsed);
+      headers["Set-Cookie"] = `${GUEST_COOKIE_NAME}=${newCookieValue}; Path=/; HttpOnly; SameSite=Lax; Max-Age=2592000`;
+    }
+
+    return new Response(stream, { headers });
   } catch (error) {
     console.error("Chat API error:", error);
     return NextResponse.json(
@@ -152,10 +168,21 @@ export async function POST(req: NextRequest) {
 
 // GET endpoint to query current quota status
 export async function GET() {
+  const session = await auth();
+  if (session?.user?.id) {
+    return NextResponse.json({
+      turnsUsed: 0,
+      maxTurns: 999,
+      turnsRemaining: 999,
+      isExceeded: false,
+      isGuest: false,
+    });
+  }
+
   const cookieStore = await cookies();
   const rawGuestCookie = cookieStore.get(GUEST_COOKIE_NAME)?.value;
   const sessionData = decodeGuestCookie(rawGuestCookie);
   const quota = getQuotaStatus(sessionData.turnsUsed);
 
-  return NextResponse.json(quota);
+  return NextResponse.json({ ...quota, isGuest: true });
 }
