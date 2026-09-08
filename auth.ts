@@ -40,5 +40,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       return session;
     },
   },
-  secret: process.env.NEXTAUTH_SECRET || "tami_super_secret_jwt_key_2026_bali_fest",
+  secret:
+    process.env.AUTH_SECRET ||
+    process.env.NEXTAUTH_SECRET ||
+    process.env.BETTER_AUTH_SECRET ||
+    "tami_super_secret_jwt_key_2026_bali_fest",
 });
