@@ -41,30 +41,33 @@ tami adalah platform AI Smart Tutor dan laboratorium simulasi keamanan siber int
 
 ## Implementation Decisions
 
-1. **AI Inference & Rate Limit Optimization (ADR 0002 & ADR 0004):**
-   - Model `gemini-3.7-flash` via LangChain.
-   - Strictly enforced **Single-Pass Inference** (1 user interaction = maximum 1 API request) to conserve Requests Per Minute (RPM) and Requests Per Day (RPD).
-   - In-Memory System Prompt Grounding injects 4-topic curriculum takeaways directly into `/chat` prompt, eliminating extra Vector RAG / embedding lookups.
+1. **AI Inference, In-Process LangChain & Streaming (ADR 0002, ADR 0004 & ADR 0006):**
+   - Model `gemini-3.7-flash` via `@langchain/google-genai` dan `@langchain/core` pada Next.js Node.js Serverless runtime (`export const runtime = 'nodejs'`).
+   - True Token Streaming pada Socratic Tutor (`/api/chat`) via `ReadableStream` (`Transfer-Encoding: chunked`, TTFT $\le 1.5$ detik).
+   - Strictly enforced **Single-Pass Inference** (1 interaksi pengguna = maksimal 1 request API) guna menghemat kuota RPM/RPD.
+   - In-Memory System Prompt Grounding menyuntikkan silabus kurikulum langsung ke prompt `/chat`, meniadakan lookup embedding / Vector RAG tambahan.
 
-2. **Socratic Dialog Persona & Guest Cookie Sessions (ADR 0001):**
-   - System prompt strictly bans direct verdicts on turn 1, guiding students with 1–2 reflective inquiries.
-   - Guest session turn quota (max 3 turns) tracked via signed, encrypted stateless HTTP cookies to prevent database bloat and preserve child privacy.
+2. **Socratic Dialog Persona & Guest Cookie Sessions (ADR 0001 & ADR 0006):**
+   - System prompt melarang vonis langsung pada giliran pertama, memandu nalar kritis siswa lewat pertanyaan pemantik.
+   - Sesi tamu dibatasi maksimal 3 giliran dialog via signed/encrypted stateless HTTP cookie (`tami_guest_session`) dengan pengurangan kuota atomik pra-stream.
 
-3. **Multimodal Visual Threat Inspection (ADR 0002):**
-   - In-memory Base64 image parsing with immediate RAM clearing (Zero Disk Storage).
-   - Single-pass Zod schema structured output returning: OCR text, visual anomaly flags (typosquatting, fake logo, dark patterns), risk level (`SAFE`, `SUSPICIOUS`, `DANGEROUS`), and specialized states (`IRRELEVANT_IMAGE`, `UNCLEAR_IMAGE`).
+3. **Multimodal Visual Threat Inspection (ADR 0002 & ADR 0006):**
+   - Pemrosesan in-memory gambar Base64 dengan penghapusan RAM seketika (Zero Disk/Cloud Storage Policy).
+   - Structured output divalidasi skema Zod (`DetectorResultSchema`) menghasilkan: OCR teks, anomali visual (typosquatting, logo tiruan, dark patterns), tingkat risiko (`SAFE`, `SUSPICIOUS`, `DANGEROUS`), dan status khusus (`IRRELEVANT_IMAGE`, `UNCLEAR_IMAGE`).
 
 4. **Deterministic Practice Lab & Auto-Merge Sync (ADR 0003):**
    - Skenario simulasi (phishing, password entropy, firewall) dievaluasi secara deterministik di client/server tanpa latensi API eksternal. AI explainer hanya dipicu on-demand.
-   - Guest `localStorage` progress disinkronkan ke tabel `learning_progress` dan `practice_records` di Neon DB saat login via NextAuth.
+   - Progres tamu di `localStorage` disinkronkan otomatis ke Neon DB (`learningProgress` dan `practiceRecords`) saat login via NextAuth.
 
 5. **Authentication & Open Access Guide (ADR 0005):**
-   - Autentikasi 1-klik Google OAuth (Auth.js / NextAuth v5) untuk siswa dan guru.
-   - Rute `/guide` bersifat publik tanpa _login gatekeeper_.
+   - Autentikasi 1-klik Google OAuth (Auth.js / NextAuth v5) + Demo Student untuk siswa dan pendidik.
+   - Rute panduan `/guide` bersifat terbuka tanpa pembatasan login (*no login gatekeeper*).
 
-6. **UI System & Design Tokens (PRODUCT.md & DESIGN.md):**
-   - `@cloudflare/kumo` primitives + Tailwind CSS v4.
-   - Primary: Red Panda Amber (`#d87a4a`), Secondary: Sage Shielding (`#3d7a6b`), Dark mode equity, WCAG AA compliance.
+6. **Standardisasi Sistem Desain Cloudflare Kumo UI (ADR 0007, PRODUCT.md & DESIGN.md):**
+   - `@cloudflare/kumo` v2.11+ primitives + Base UI + Tailwind CSS v4 + `@phosphor-icons/react`.
+   - Adopsi Kumo Blocks resmi: `PageHeader` terstandarisasi di seluruh 6 ruang kerja workspace (`/chat`, `/detector`, `/practice`, `/learn`, `/guide`, `/profile`) dan `ResourceListPage`.
+   - Komponen interaktif Kumo: `SensitiveInput` & `Meter` pada simulator sandi dan kurikulum, `Tabs`, `Badge`, `Banner`, `LayerCard`, serta suite `SidebarProvider` & `Sidebar`.
+   - Palet Pure Canvas: Pure White (`#ffffff`) di Light Mode, Pure Black (`#000000`) di Dark Mode, dengan aksen *tami Fiery Orange* (`#ff5a00`) dan *Lime Spark* (`#16a34a`). Zero cream / zero beige policy.
 
 ## Testing Decisions
 
