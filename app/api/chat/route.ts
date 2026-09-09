@@ -86,8 +86,8 @@ export async function POST(req: NextRequest) {
       const isEnglish = /^[A-Za-z0-9\s.,?!'"-]+$/.test(latestUserMsg) && !latestUserMsg.toLowerCase().includes("saya") && !latestUserMsg.toLowerCase().includes("aku");
 
       const fallbackReply = isEnglish
-        ? `Hello! I'm **tami**, your cybersecurity companion! 🐾\n\nThat's a very curious scenario you brought up: *" ${latestUserMsg} "*. \n\nBefore we jump to conclusions, let's observe a few key clues together:\n1. **What domain or sender address** is this coming from? Does it match the official domain?\n2. **Is there emotional pressure** (e.g. asking you to act urgently within a few minutes)?\n\nWhat do you notice when you look at these two clues?`
-        : `Halo! Aku **tami**, teman aman media internetmu! 🐾\n\nPertanyaan yang sangat menarik: *"${latestUserMsg}"*.\n\nSebelum kita menyimpulkan, yuk kita amati dua petunjuk penting ini bersama-sama:\n1. **Dari mana domain atau alamat pengirimnya?** Apakah alamat situsnya sesuai dengan domain resmi gamenya?\n2. **Apakah ada desakan emosi atau iming-iming gratis** yang terasa terlalu berlebihan?\n\nCoba perhatikan baik-baik, apa yang kamu temukan dari dua petunjuk tersebut?`;
+        ? `Hello! I'm **tami**, your cybersecurity companion!\n\nThat's a very curious scenario you brought up: *" ${latestUserMsg} "*. \n\nBefore we jump to conclusions, let's observe a few key clues together:\n1. **What domain or sender address** is this coming from? Does it match the official domain?\n2. **Is there emotional pressure** (e.g. asking you to act urgently within a few minutes)?\n\nWhat do you notice when you look at these two clues?`
+        : `Halo! Aku **tami**, teman aman media internetmu!\n\nPertanyaan yang sangat menarik: *"${latestUserMsg}"*.\n\nSebelum kita menyimpulkan, yuk kita amati dua petunjuk penting ini bersama-sama:\n1. **Dari mana domain atau alamat pengirimnya?** Apakah alamat situsnya sesuai dengan domain resmi gamenya?\n2. **Apakah ada desakan emosi atau iming-iming gratis** yang terasa terlalu berlebihan?\n\nCoba perhatikan baik-baik, apa yang kamu temukan dari dua petunjuk tersebut?`;
 
       const stream = new ReadableStream({
         async start(controller) {
@@ -116,10 +116,10 @@ export async function POST(req: NextRequest) {
       return new Response(stream, { headers });
     }
 
-    // 4. Live LangChain + Google Gemini 3.7 Flash Stream
+    // 4. Live LangChain + Google Gemini 3.5 Flash Stream
     const model = new ChatGoogleGenerativeAI({
       apiKey,
-      model: "gemini-3.7-flash",
+      model: process.env.GEMINI_CHAT_MODEL || "gemini-3.5-flash-lite",
       temperature: 0.5,
       maxOutputTokens: 1024,
     });

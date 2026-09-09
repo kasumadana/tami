@@ -49,7 +49,7 @@ export function PracticeWorkspace() {
 
   return (
     <div className="flex flex-col w-full max-w-6xl mx-auto p-4 sm:p-6 space-y-6">
-      {/* PageHeader with Breadcrumbs, Global Badges, and Tabs */}
+      {/* PageHeader with Breadcrumbs, Global Badges, and Clean Tabs */}
       <PageHeader
         breadcrumbs={
           <Breadcrumbs size="sm">
@@ -64,12 +64,14 @@ export function PracticeWorkspace() {
         description={t("subtitle")}
         actions={
           <div className="flex items-center gap-2 self-start sm:self-auto">
-            <div className="flex items-center gap-1.5 px-3 py-1 rounded-xl bg-[var(--color-tami-surface)] border border-[var(--color-tami-line)] text-xs font-mono font-bold text-[var(--color-tami-orange)] shadow-xs">
-              <Trophy size={15} weight="fill" className="text-[var(--color-tami-yellow)]" />
+            {/* High-Contrast XP Badge (WCAG AA Compliant) */}
+            <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[var(--color-tami-yellow)] text-zinc-950 font-mono font-bold text-xs shadow-xs">
+              <Trophy size={15} weight="fill" className="text-zinc-950" />
               <span>{t("scoreBadge", { score: progress.totalScore })}</span>
             </div>
 
-            <div className="flex items-center gap-1.5 px-3 py-1 rounded-xl bg-[var(--color-tami-surface)] border border-[var(--color-tami-line)] text-xs font-semibold text-[var(--color-tami-green)] shadow-xs">
+            {/* Badges Count */}
+            <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[var(--color-tami-green)] text-white font-semibold text-xs shadow-xs">
               <Sparkle size={15} weight="fill" />
               <span>{t("badgesUnlocked", { count: progress.unlockedBadges.length })}</span>
             </div>

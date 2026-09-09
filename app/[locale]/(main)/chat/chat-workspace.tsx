@@ -11,7 +11,14 @@ import { Button } from "@cloudflare/kumo/components/button";
 import { Banner } from "@cloudflare/kumo/components/banner";
 import { LayerCard } from "@cloudflare/kumo/components/layer-card";
 import { Breadcrumbs } from "@cloudflare/kumo/components/breadcrumbs";
+import {
+  DialogRoot,
+  Dialog,
+  DialogTitle,
+  DialogDescription,
+} from "@cloudflare/kumo/components/dialog";
 import { PageHeader } from "@/components/kumo/page-header/page-header";
+import { LoginDialog } from "@/components/auth/login-dialog";
 import {
   PaperPlaneRight,
   Trash,
@@ -31,6 +38,8 @@ interface Message {
 interface ChatWorkspaceProps {
   initialTurnsRemaining: number;
   initialIsAuthenticated?: boolean;
+  initialTopic?: string;
+  initialScenario?: string;
 }
 
 let messageCounter = 0;
@@ -42,22 +51,36 @@ function createMessageId(prefix: string): string {
 export function ChatWorkspace({
   initialTurnsRemaining,
   initialIsAuthenticated = false,
+  initialScenario,
 }: ChatWorkspaceProps) {
   const t = useTranslations("chat");
   const tNav = useTranslations("nav");
   const { data: session } = useSession();
   const isAuthenticated = initialIsAuthenticated || !!session?.user?.id;
 
-  const [messages, setMessages] = useState<Message[]>(() => [
-    {
-      id: "welcome-msg",
-      role: "assistant",
-      content: t("tamiWelcome"),
-    },
-  ]);
+  const [messages, setMessages] = useState<Message[]>(() => {
+    if (initialScenario) {
+      return [
+        {
+          id: "welcome-msg",
+          role: "assistant",
+          content: t("labReferralWelcome", { scenario: initialScenario }),
+        },
+      ];
+    }
+    return [
+      {
+        id: "welcome-msg",
+        role: "assistant",
+        content: t("tamiWelcome"),
+      },
+    ];
+  });
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [turnsRemaining, setTurnsRemaining] = useState(initialTurnsRemaining);
+  const [isConfirmClearOpen, setIsConfirmClearOpen] = useState(false);
+  const [isLoginOpen, setIsLoginOpen] = useState(false);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -197,22 +220,21 @@ export function ChatWorkspace({
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.key === "Enter" && !e.shiftKey) {
+    if (e.key === "Enter" && !e.shiftKey && !e.nativeEvent.isComposing) {
       e.preventDefault();
       handleSendMessage();
     }
   };
 
-  const handleClearChat = () => {
-    if (window.confirm(t("clearConfirm"))) {
-      setMessages([
-        {
-          id: createMessageId("welcome"),
-          role: "assistant",
-          content: t("tamiWelcome"),
-        },
-      ]);
-    }
+  const handleConfirmClear = () => {
+    setMessages([
+      {
+        id: createMessageId("welcome"),
+        role: "assistant",
+        content: t("tamiWelcome"),
+      },
+    ]);
+    setIsConfirmClearOpen(false);
   };
 
   const starters = [
@@ -240,7 +262,7 @@ export function ChatWorkspace({
         description={t("subtitle")}
         actions={
           <div className="flex items-center gap-2 shrink-0">
-            <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[var(--color-tami-surface-subdued)] border border-[var(--color-tami-line)] text-xs font-semibold">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[var(--color-tami-surface-subdued)] ring-1 ring-[var(--color-tami-line)]/40 text-xs font-semibold">
               <Sparkle size={13} weight="fill" className="text-[var(--color-tami-orange)]" />
               <span className="text-[var(--color-tami-text)] font-mono">
                 {isAuthenticated ? t("unlimitedTurns") : `${turnsRemaining}/3`}
@@ -249,13 +271,13 @@ export function ChatWorkspace({
 
             <Button
               variant="secondary"
-              size="sm"
-              onClick={handleClearChat}
+              size="base"
+              onClick={() => setIsConfirmClearOpen(true)}
               disabled={isLoading || messages.length <= 1}
               aria-label={t("clear")}
               title={t("clear")}
-              className="rounded-xl border border-[var(--color-tami-line)] bg-[var(--color-tami-surface)] text-[var(--color-tami-text)] hover:bg-[var(--color-tami-surface-subdued)] text-xs px-2.5 h-8"
-              icon={<Trash size={14} />}
+              className="rounded-xl ring-1 ring-[var(--color-tami-line)]/50 bg-[var(--color-tami-surface)] text-[var(--color-tami-text)] hover:bg-[var(--color-tami-surface-subdued)] text-sm px-3 min-h-[44px] cursor-pointer"
+              icon={<Trash size={16} />}
             >
               <span className="hidden sm:inline">{t("clear")}</span>
             </Button>
@@ -269,7 +291,7 @@ export function ChatWorkspace({
           <Banner
             variant="error"
             size="sm"
-            className="rounded-2xl border border-[var(--color-tami-red)]/30 bg-[var(--color-tami-surface)] shadow-xs"
+            className="rounded-2xl ring-1 ring-[var(--color-tami-red)]/30 bg-[var(--color-tami-surface-subdued)]"
           >
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 w-full text-xs">
               <div className="flex items-center gap-2">
@@ -285,9 +307,10 @@ export function ChatWorkspace({
               </div>
               <Button
                 variant="primary"
-                size="sm"
-                className="rounded-full !bg-[var(--color-tami-orange)] hover:!bg-[var(--color-tami-orange-hover)] !text-white font-semibold shrink-0 text-xs px-4 h-8"
-                icon={<GoogleLogo size={14} weight="bold" />}
+                size="base"
+                onClick={() => setIsLoginOpen(true)}
+                className="rounded-full font-semibold shrink-0 text-sm px-5 min-h-[44px] cursor-pointer"
+                icon={<GoogleLogo size={16} weight="bold" />}
               >
                 {t("signInToContinue")}
               </Button>
@@ -310,7 +333,7 @@ export function ChatWorkspace({
             >
               {/* Avatar Icon */}
               {isUser ? (
-                <div className="w-8 h-8 rounded-full bg-[var(--color-tami-surface-muted)] text-[var(--color-tami-text)] flex items-center justify-center font-bold text-xs shrink-0 border border-[var(--color-tami-line)]">
+                <div className="w-8 h-8 rounded-full bg-[var(--color-tami-surface-muted)] text-[var(--color-tami-text)] flex items-center justify-center font-bold text-xs shrink-0 ring-1 ring-[var(--color-tami-line)]/50">
                   U
                 </div>
               ) : (
@@ -327,8 +350,8 @@ export function ChatWorkspace({
               <div
                 className={`max-w-[85%] sm:max-w-[75%] rounded-2xl p-4 text-sm leading-relaxed overflow-hidden break-words ${
                   isUser
-                    ? "bg-[var(--color-tami-orange)] text-white font-medium rounded-tr-xs"
-                    : "bg-[var(--color-tami-surface)] text-[var(--color-tami-text)] border border-[var(--color-tami-line)] rounded-tl-xs shadow-2xs"
+                    ? "bg-[var(--color-tami-orange)] text-zinc-950 font-medium rounded-tr-xs"
+                    : "bg-[var(--color-tami-surface-subdued)] text-[var(--color-tami-text)] ring-1 ring-[var(--color-tami-line)]/40 rounded-tl-xs"
                 }`}
               >
                 {isUser ? (
@@ -370,7 +393,7 @@ export function ChatWorkspace({
                   type="button"
                   onClick={() => handleSendMessage(starter)}
                   disabled={isLoading || turnsRemaining <= 0}
-                  className="text-left p-2.5 rounded-2xl border border-[var(--color-tami-line)] bg-[var(--color-tami-surface)] hover:bg-[var(--color-tami-surface-subdued)] hover:border-[var(--color-tami-orange)] text-xs text-[var(--color-tami-text)] transition-none cursor-pointer disabled:opacity-60 truncate"
+                  className="text-left p-3 rounded-xl ring-1 ring-[var(--color-tami-line)]/40 bg-[var(--color-tami-surface)] hover:bg-[var(--color-tami-surface-subdued)] hover:ring-[var(--color-tami-orange)] text-xs text-[var(--color-tami-text)] transition-none cursor-pointer disabled:opacity-60 truncate min-h-[44px] flex items-center"
                 >
                   &ldquo;{starter}&rdquo;
                 </button>
@@ -381,7 +404,7 @@ export function ChatWorkspace({
 
         {/* Message Input Bar */}
         <div>
-          <LayerCard className="rounded-2xl p-2 bg-[var(--color-tami-surface)] border border-[var(--color-tami-line)] shadow-sm focus-within:border-[var(--color-tami-orange)] focus-within:ring-1 focus-within:ring-[var(--color-tami-orange)]">
+          <LayerCard className="rounded-2xl p-2 bg-[var(--color-tami-surface-subdued)] border-none ring-1 ring-[var(--color-tami-line)]/50 focus-within:ring-2 focus-within:ring-[var(--color-tami-orange)]">
             <div className="flex items-end gap-2">
               <textarea
                 ref={textareaRef}
@@ -403,19 +426,52 @@ export function ChatWorkspace({
                 onClick={() => handleSendMessage()}
                 disabled={isLoading || !input.trim() || turnsRemaining <= 0}
                 aria-label={t("send")}
-                className="rounded-xl !bg-[var(--color-tami-orange)] hover:!bg-[var(--color-tami-orange-hover)] !text-white w-10 h-10 min-w-[40px] flex items-center justify-center shrink-0 cursor-pointer disabled:opacity-50"
+                className="rounded-xl font-semibold w-11 h-11 min-w-[44px] min-h-[44px] flex items-center justify-center shrink-0 cursor-pointer disabled:opacity-50"
                 icon={<PaperPlaneRight size={18} weight="bold" />}
               />
             </div>
           </LayerCard>
 
           {/* Trust Disclaimer */}
-          <div className="flex items-center justify-center gap-1.5 pt-1.5 text-[11px] text-[var(--color-tami-text-muted)] text-center">
+          <div className="flex items-center justify-center gap-1.5 pt-1.5 text-xs text-[var(--color-tami-text-muted)] text-center">
             <LockKey size={13} weight="bold" className="text-[var(--color-tami-green)] shrink-0" />
             <span>{t("disclaimer")}</span>
           </div>
         </div>
       </div>
+
+      {/* Clear Confirmation Dialog */}
+      <DialogRoot open={isConfirmClearOpen} onOpenChange={setIsConfirmClearOpen}>
+        <Dialog size="sm" className="rounded-2xl p-6 bg-[var(--color-tami-surface)] ring-1 ring-[var(--color-tami-line)]/50 space-y-4">
+          <DialogTitle className="font-bold text-base text-[var(--color-tami-text)]">
+            {t("clear")}
+          </DialogTitle>
+          <DialogDescription className="text-sm text-[var(--color-tami-text-muted)] leading-relaxed">
+            {t("clearConfirm")}
+          </DialogDescription>
+          <div className="flex items-center justify-end gap-2.5 pt-2">
+            <Button
+              variant="secondary"
+              size="base"
+              onClick={() => setIsConfirmClearOpen(false)}
+              className="rounded-xl ring-1 ring-[var(--color-tami-line)]/50 bg-[var(--color-tami-surface)] text-[var(--color-tami-text)] text-sm font-semibold min-h-[44px] px-4 cursor-pointer"
+            >
+              {t("cancel")}
+            </Button>
+            <Button
+              variant="primary"
+              size="base"
+              onClick={handleConfirmClear}
+              className="rounded-xl text-sm font-semibold min-h-[44px] px-4 cursor-pointer !bg-[var(--color-tami-red)] hover:!bg-[var(--color-tami-red)]/90 text-white"
+            >
+              {t("clear")}
+            </Button>
+          </div>
+        </Dialog>
+      </DialogRoot>
+
+      {/* Login Dialog for Guest Quota Recovery */}
+      <LoginDialog isOpen={isLoginOpen} onClose={() => setIsLoginOpen(false)} />
     </div>
   );
 }

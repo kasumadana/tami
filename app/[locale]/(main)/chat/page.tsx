@@ -7,10 +7,12 @@ import { ChatWorkspace } from "./chat-workspace";
 
 interface ChatPageProps {
   params: Promise<{ locale: string }>;
+  searchParams: Promise<{ topic?: string; scenario?: string }>;
 }
 
-export default async function ChatPage({ params }: ChatPageProps) {
+export default async function ChatPage({ params, searchParams }: ChatPageProps) {
   const { locale } = await params;
+  const resolvedSearchParams = await searchParams;
   setRequestLocale(locale);
 
   const session = await auth();
@@ -30,6 +32,8 @@ export default async function ChatPage({ params }: ChatPageProps) {
       <ChatWorkspace
         initialTurnsRemaining={initialTurnsRemaining}
         initialIsAuthenticated={isAuthenticated}
+        initialTopic={resolvedSearchParams?.topic}
+        initialScenario={resolvedSearchParams?.scenario}
       />
     </div>
   );

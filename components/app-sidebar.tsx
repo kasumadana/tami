@@ -81,9 +81,9 @@ export function AppSidebarLayout({ children }: AppSidebarLayoutProps) {
 
   return (
     <SidebarProvider defaultOpen>
-      <div className="flex h-screen w-full overflow-hidden bg-[var(--color-tami-canvas)] text-[var(--color-tami-text)]">
+      <div className="flex h-dvh w-full overflow-hidden bg-[var(--color-tami-canvas)] text-[var(--color-tami-text)]">
         {/* Sticky Full-Height Sidebar with Autofit & Clean Boundaries */}
-        <Sidebar className="border-r border-[var(--color-tami-line)] bg-[var(--color-tami-surface)] flex flex-col h-screen sticky top-0 shrink-0 w-64">
+        <Sidebar className="border-r border-[var(--color-tami-line)] bg-[var(--color-tami-surface)] flex flex-col h-dvh sticky top-0 shrink-0 w-64">
           {/* Header: Clean Unboxed Brand Lockup (Zero Clutter) */}
           <Sidebar.Header className="p-4 border-b border-[var(--color-tami-line)] shrink-0">
             <Link
@@ -168,7 +168,7 @@ export function AppSidebarLayout({ children }: AppSidebarLayoutProps) {
             <div className="pt-2">
               {session?.user ? (
                 /* Authenticated User Status Card */
-                <div className="p-3 rounded-2xl bg-[var(--color-tami-surface-subdued)] border border-[var(--color-tami-line)] flex items-center justify-between gap-2.5">
+                <div className="p-3 rounded-2xl bg-[var(--color-tami-surface-subdued)] ring-1 ring-[var(--color-tami-line)]/40 flex items-center justify-between gap-2.5">
                   <Link href="/profile" className="flex items-center gap-2.5 min-w-0 flex-1 hover:opacity-85 transition-none">
                     <Image
                       src={session.user.image || "/icon.svg"}
@@ -181,7 +181,7 @@ export function AppSidebarLayout({ children }: AppSidebarLayoutProps) {
                       <p className="text-xs font-semibold text-[var(--color-tami-text)] truncate">
                         {session.user.name || tAuth("defaultStudent")}
                       </p>
-                      <p className="text-[10px] text-[var(--color-tami-text-muted)] truncate">
+                      <p className="text-xs text-[var(--color-tami-text-muted)] truncate">
                         {tCommon("heroBadge")}
                       </p>
                     </div>
@@ -189,30 +189,30 @@ export function AppSidebarLayout({ children }: AppSidebarLayoutProps) {
 
                   <Button
                     variant="secondary"
-                    size="sm"
+                    size="base"
                     onClick={() => signOut()}
-                    className="rounded-xl border border-[var(--color-tami-line)] bg-[var(--color-tami-surface)] text-[var(--color-tami-text)] hover:bg-[var(--color-tami-surface-muted)] text-xs h-7.5 w-7.5 p-0 shrink-0 flex items-center justify-center"
-                    icon={<SignOut size={14} />}
+                    className="rounded-xl ring-1 ring-[var(--color-tami-line)]/50 bg-[var(--color-tami-surface)] text-[var(--color-tami-text)] hover:bg-[var(--color-tami-surface-muted)] w-11 h-11 min-w-[44px] min-h-[44px] p-0 shrink-0 flex items-center justify-center cursor-pointer"
+                    icon={<SignOut size={16} />}
                     aria-label={tAuth("signOut")}
                   />
                 </div>
               ) : (
                 /* Guest Mode Banner + Action Button (Clean Spacing & No Text Overflow) */
-                <div className="p-3.5 rounded-2xl bg-[var(--color-tami-surface-subdued)] border border-[var(--color-tami-line)] space-y-2.5 w-full max-w-full overflow-hidden">
+                <div className="p-3.5 rounded-2xl bg-[var(--color-tami-surface-subdued)] ring-1 ring-[var(--color-tami-line)]/40 space-y-2.5 w-full max-w-full overflow-hidden">
                   <div className="flex items-center gap-1.5 text-xs font-semibold text-[var(--color-tami-text)]">
                     <Sparkle size={14} className="text-[var(--color-tami-orange)] shrink-0" weight="fill" />
                     <span className="truncate">{t("guestTurnsRemaining")}</span>
                   </div>
-                  <p className="text-[11px] text-[var(--color-tami-text-muted)] leading-relaxed whitespace-normal break-words">
+                  <p className="text-xs text-[var(--color-tami-text-muted)] leading-relaxed whitespace-normal break-words">
                     {t("guestDescription")}
                   </p>
 
                   <Button
                     variant="primary"
-                    size="sm"
+                    size="base"
                     onClick={() => setIsLoginOpen(true)}
-                    className="w-full rounded-xl !bg-[var(--color-tami-orange)] hover:!bg-[var(--color-tami-orange-hover)] !text-white font-semibold text-xs h-8.5 shadow-xs flex items-center justify-center gap-2 mt-1"
-                    icon={<SignIn size={14} weight="bold" />}
+                    className="w-full rounded-xl font-semibold text-xs min-h-[44px] flex items-center justify-center gap-2 mt-1 cursor-pointer"
+                    icon={<SignIn size={16} weight="bold" />}
                   >
                     {tAuth("signIn")}
                   </Button>
@@ -222,8 +222,8 @@ export function AppSidebarLayout({ children }: AppSidebarLayoutProps) {
           </Sidebar.Content>
 
           {/* Footer: Compact Bottom Controls Bar (Stable Fixed Height) */}
-          <Sidebar.Footer className="h-12 shrink-0 border-t border-[var(--color-tami-line)] bg-[var(--color-tami-surface)] px-3.5 flex items-center justify-between">
-            <Badge variant={session?.user ? "success" : "warning"} appearance="dot" className="text-[11px]">
+          <Sidebar.Footer className="min-h-[56px] py-1.5 shrink-0 border-t border-[var(--color-tami-line)] bg-[var(--color-tami-surface)] px-3.5 flex items-center justify-between">
+            <Badge variant={session?.user ? "success" : "warning"} appearance="dot" className="text-xs">
               {session?.user ? "Online" : tCommon("guestMode")}
             </Badge>
 
@@ -235,7 +235,7 @@ export function AppSidebarLayout({ children }: AppSidebarLayoutProps) {
         </Sidebar>
 
         {/* Main Content Area (Autofit & Independent Scroll) */}
-        <main className="flex-1 flex flex-col min-w-0 h-screen overflow-y-auto bg-[var(--color-tami-canvas)]">
+        <main className="flex-1 flex flex-col min-w-0 h-dvh overflow-y-auto bg-[var(--color-tami-canvas)]">
           {/* Mobile Topbar with Sidebar Trigger (Visible on mobile/tablet screens < md) */}
           <header className="md:hidden flex items-center justify-between p-3 border-b border-[var(--color-tami-line)] bg-[var(--color-tami-surface)] shrink-0">
             <div className="flex items-center gap-2">

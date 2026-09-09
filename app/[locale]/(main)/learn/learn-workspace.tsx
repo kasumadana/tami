@@ -4,7 +4,6 @@ import React, { useSyncExternalStore, useCallback } from "react";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { Button } from "@cloudflare/kumo/components/button";
-import { Badge } from "@cloudflare/kumo/components/badge";
 import { LayerCard } from "@cloudflare/kumo/components/layer-card";
 import { Breadcrumbs } from "@cloudflare/kumo/components/breadcrumbs";
 import { Meter } from "@cloudflare/kumo/components/meter";
@@ -17,10 +16,10 @@ import {
   ChatCircleDots,
   CheckCircle,
   ArrowRight,
-  BookOpen,
   Trophy,
   Sparkle,
   House,
+  CaretDown,
 } from "@phosphor-icons/react";
 import {
   subscribeLearn,
@@ -111,9 +110,9 @@ export function LearnWorkspace() {
           <Link href="/practice">
             <Button
               variant="secondary"
-              size="sm"
-              className="rounded-xl border border-[var(--color-tami-line)] bg-[var(--color-tami-surface)] text-[var(--color-tami-text)] hover:bg-[var(--color-tami-surface-subdued)] text-xs h-8"
-              icon={<ArrowRight size={14} weight="bold" />}
+              size="base"
+              className="rounded-xl bg-[var(--color-tami-surface-subdued)] hover:bg-[var(--color-tami-surface-muted)] text-[var(--color-tami-text)] text-sm font-semibold min-h-[44px] px-4 ring-1 ring-[var(--color-tami-line)]/40 transition-none"
+              icon={<ArrowRight size={16} weight="bold" />}
             >
               {t("goToPractice")}
             </Button>
@@ -122,17 +121,17 @@ export function LearnWorkspace() {
       />
 
       {/* Curriculum Progress Header Card */}
-      <LayerCard className="rounded-3xl p-5 sm:p-6 bg-[var(--color-tami-surface)] border border-[var(--color-tami-line)] space-y-3.5 shadow-xs">
+      <LayerCard className="rounded-2xl p-5 sm:p-6 bg-[var(--color-tami-surface-subdued)] border-none ring-1 ring-[var(--color-tami-line)]/40 space-y-3.5">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-xl bg-[var(--color-tami-yellow)]/15 text-[var(--color-tami-yellow)] flex items-center justify-center shrink-0">
-              <Trophy size={18} weight="fill" />
+            <div className="w-9 h-9 rounded-xl bg-[var(--color-tami-yellow)]/15 text-[var(--color-tami-yellow)] flex items-center justify-center shrink-0">
+              <Trophy size={20} weight="fill" />
             </div>
             <h2 className="font-semibold text-sm text-[var(--color-tami-text)]">
               {t("progressTitle")}
             </h2>
           </div>
-          <span className="text-xs font-mono font-bold text-[var(--color-tami-orange)] self-start sm:self-auto px-2.5 py-1 rounded-lg bg-[var(--color-tami-surface-subdued)] border border-[var(--color-tami-line)]">
+          <span className="text-xs font-mono font-bold text-[var(--color-tami-orange)] self-start sm:self-auto px-3 py-1.5 rounded-lg bg-[var(--color-tami-surface)] ring-1 ring-[var(--color-tami-line)]/40">
             {t("progressCompleted", {
               completed: completedCount,
               total: totalModules,
@@ -166,10 +165,10 @@ export function LearnWorkspace() {
           return (
             <LayerCard
               key={mod.id}
-              className={`rounded-3xl p-5 sm:p-6 bg-[var(--color-tami-surface)] border flex flex-col justify-between space-y-5 transition-none ${
+              className={`rounded-2xl p-5 sm:p-6 bg-[var(--color-tami-surface)] border-none ring-1 flex flex-col justify-between space-y-5 transition-none ${
                 isDone
-                  ? "border-[var(--color-tami-green)]/40 shadow-xs"
-                  : "border-[var(--color-tami-line)]"
+                  ? "ring-[var(--color-tami-green)]/40"
+                  : "ring-[var(--color-tami-line)]/40"
               }`}
             >
               <div className="space-y-4">
@@ -177,89 +176,78 @@ export function LearnWorkspace() {
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2.5">
                     <div
-                      className={`w-10 h-10 rounded-2xl ${mod.bgClass} ${mod.colorClass} flex items-center justify-center`}
+                      className={`w-10 h-10 rounded-xl ${mod.bgClass} ${mod.colorClass} flex items-center justify-center`}
                     >
-                      <IconComponent size={22} weight="bold" />
+                      <IconComponent size={22} weight="duotone" />
                     </div>
-                    <Badge variant="neutral" appearance="filled" className="text-xs">
-                      {t(`${modKey}.badge`)}
-                    </Badge>
+                    <div>
+                      <h3 className="font-bold text-sm text-[var(--color-tami-text)] leading-tight">
+                        {t(`${modKey}.title`)}
+                      </h3>
+                      <span className="text-xs text-[var(--color-tami-text-muted)] font-medium">
+                        {t(`${modKey}.badge`)}
+                      </span>
+                    </div>
                   </div>
 
                   <button
                     type="button"
                     onClick={() => toggleModuleComplete(mod.id)}
-                    className={`flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold border cursor-pointer ${
+                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold cursor-pointer transition-none min-h-[36px] ${
                       isDone
-                        ? "bg-[var(--color-tami-green)]/15 border-[var(--color-tami-green)] text-[var(--color-tami-green)]"
-                        : "bg-[var(--color-tami-surface-subdued)] border-[var(--color-tami-line)] text-[var(--color-tami-text-muted)] hover:border-[var(--color-tami-orange)]"
+                        ? "bg-[var(--color-tami-green)]/15 text-[var(--color-tami-green)]"
+                        : "bg-[var(--color-tami-surface-subdued)] text-[var(--color-tami-text-muted)] hover:text-[var(--color-tami-text)] ring-1 ring-[var(--color-tami-line)]/40"
                     }`}
                   >
                     <CheckCircle
                       size={15}
                       weight={isDone ? "fill" : "regular"}
                     />
-                    <span>{isDone ? t("completed") : t("markCompleted")}</span>
+                    <span>{isDone ? t("completed") : t("markDone")}</span>
                   </button>
                 </div>
 
-                {/* Title & Description */}
-                <div className="space-y-1">
-                  <h3 className="font-bold text-base text-[var(--color-tami-text)]">
-                    {t(`${modKey}.title`)}
-                  </h3>
-                  <p className="text-xs text-[var(--color-tami-text-muted)] leading-relaxed">
-                    {t(`${modKey}.description`)}
-                  </p>
-                </div>
+                {/* Module Description */}
+                <p className="text-sm text-[var(--color-tami-text-muted)] leading-relaxed">
+                  {t(`${modKey}.description`)}
+                </p>
 
                 {/* Key Takeaways */}
-                <div className="space-y-2 pt-1">
-                  <span className="text-xs font-bold text-[var(--color-tami-text)] flex items-center gap-1.5">
-                    <BookOpen size={14} className="text-[var(--color-tami-orange)]" />
-                    <span>{t("keyTakeawaysTitle")}</span>
-                  </span>
-                  <ul className="space-y-1.5 text-xs text-[var(--color-tami-text)]">
-                    <li className="flex items-start gap-2">
-                      <span className="w-1.5 h-1.5 rounded-full bg-[var(--color-tami-orange)] shrink-0 mt-1.5" />
-                      <span className="leading-relaxed">{t(`${modKey}.takeaway1`)}</span>
+                <ul className="space-y-2 pt-1">
+                  {[1, 2, 3].map((ptNum) => (
+                    <li
+                      key={ptNum}
+                      className="flex items-start gap-2 text-xs text-[var(--color-tami-text)]"
+                    >
+                      <span className="w-1.5 h-1.5 rounded-full bg-[var(--color-tami-orange)] mt-1.5 shrink-0" />
+                      <span>{t(`${modKey}.takeaway${ptNum}` as "modules.module1.takeaway1")}</span>
                     </li>
-                    <li className="flex items-start gap-2">
-                      <span className="w-1.5 h-1.5 rounded-full bg-[var(--color-tami-orange)] shrink-0 mt-1.5" />
-                      <span className="leading-relaxed">{t(`${modKey}.takeaway2`)}</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="w-1.5 h-1.5 rounded-full bg-[var(--color-tami-orange)] shrink-0 mt-1.5" />
-                      <span className="leading-relaxed">{t(`${modKey}.takeaway3`)}</span>
-                    </li>
-                  </ul>
-                </div>
+                  ))}
+                </ul>
 
-                {/* Collapsible Case Study Accordion */}
-                <details className="p-3.5 rounded-2xl bg-[var(--color-tami-surface-subdued)] border border-[var(--color-tami-line)] text-xs group">
+                {/* Real-World Case Study Collapsible */}
+                <details className="group rounded-xl p-3.5 bg-[var(--color-tami-surface-subdued)] ring-1 ring-[var(--color-tami-line)]/30 text-xs">
                   <summary className="font-semibold text-[var(--color-tami-text)] cursor-pointer select-none flex items-center justify-between">
-                    <span className="flex items-center gap-1.5">
-                      <GraduationCap size={15} className="text-[var(--color-tami-violet)]" />
+                    <span className="flex items-center gap-2">
+                      <GraduationCap size={16} className="text-[var(--color-tami-violet)]" />
                       <span>{t("caseStudyTitle")}</span>
                     </span>
-                    <span className="text-[10px] text-[var(--color-tami-text-muted)] group-open:rotate-180 transition-transform">
-                      ▼
-                    </span>
+                    <CaretDown size={14} weight="bold" className="text-[var(--color-tami-text-muted)] group-open:rotate-180 transition-transform" />
                   </summary>
-                  <p className="mt-2.5 p-2.5 rounded-xl bg-[var(--color-tami-surface)] border border-[var(--color-tami-line)] text-[11px] text-[var(--color-tami-text-muted)] leading-relaxed">
+                  <p className="mt-2.5 p-3 rounded-xl bg-[var(--color-tami-surface)] ring-1 ring-[var(--color-tami-line)]/30 text-sm text-[var(--color-tami-text-muted)] leading-relaxed">
                     {t(`${modKey}.caseStudy`)}
                   </p>
                 </details>
               </div>
 
               {/* Bottom Practice Action Button */}
-              <div className="pt-2 border-t border-[var(--color-tami-line)] flex justify-end">
+              <div className="pt-3 border-t border-[var(--color-tami-line)]/40 flex justify-end">
                 <Link href={mod.practiceHref}>
                   <Button
                     variant="secondary"
-                    size="sm"
-                    className="rounded-full border border-[var(--color-tami-line)] bg-[var(--color-tami-surface)] text-[var(--color-tami-text)] hover:bg-[var(--color-tami-surface-subdued)] text-xs px-3.5 h-8 font-semibold"
-                    icon={<ArrowRight size={14} weight="bold" />}
+                    size="base"
+                    className="rounded-xl bg-[var(--color-tami-surface-subdued)] hover:bg-[var(--color-tami-surface-muted)] text-[var(--color-tami-text)] ring-1 ring-[var(--color-tami-line)]/40 text-sm px-4 min-h-[44px] font-semibold transition-none"
+                    icon={<ArrowRight size={16} weight="bold" />}
                   >
                     {t(mod.practiceLabelKey as "takePractice")}
                   </Button>

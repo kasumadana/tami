@@ -253,11 +253,11 @@ export function DetectorWorkspace() {
           imagePreview ? (
             <Button
               variant="secondary"
-              size="sm"
+              size="base"
               onClick={handleReset}
               disabled={isLoading}
-              className="rounded-xl border border-[var(--color-tami-line)] bg-[var(--color-tami-surface)] text-[var(--color-tami-text)] hover:bg-[var(--color-tami-surface-subdued)] text-xs self-start sm:self-auto"
-              icon={<ArrowClockwise size={14} />}
+              className="rounded-xl ring-1 ring-[var(--color-tami-line)]/50 bg-[var(--color-tami-surface)] text-[var(--color-tami-text)] hover:bg-[var(--color-tami-surface-subdued)] text-sm font-semibold min-h-[44px] px-4 self-start sm:self-auto cursor-pointer"
+              icon={<ArrowClockwise size={16} />}
             >
               {t("reupload")}
             </Button>
@@ -270,16 +270,25 @@ export function DetectorWorkspace() {
         {/* Left Column: Dropzone & Image Preview (Col 5) */}
         <div className="lg:col-span-5 space-y-4">
           {!imagePreview ? (
-            /* Empty Dropzone State */
+            /* Empty Dropzone State with Full Keyboard Accessibility */
             <div
+              tabIndex={0}
+              role="button"
+              aria-label={t("dropzoneTitle")}
               onDragOver={handleDragOver}
               onDragLeave={handleDragLeave}
               onDrop={handleDrop}
               onClick={() => fileInputRef.current?.click()}
-              className={`p-8 rounded-3xl border-2 border-dashed flex flex-col items-center justify-center text-center cursor-pointer transition-none min-h-[300px] ${
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  fileInputRef.current?.click();
+                }
+              }}
+              className={`p-8 rounded-2xl border-2 border-dashed flex flex-col items-center justify-center text-center cursor-pointer transition-none min-h-[300px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-tami-orange)] ${
                 isDragging
                   ? "border-[var(--color-tami-orange)] bg-[var(--color-tami-orange)]/5"
-                  : "border-[var(--color-tami-line)] bg-[var(--color-tami-surface)] hover:border-[var(--color-tami-orange)] hover:bg-[var(--color-tami-surface-subdued)]"
+                  : "border-[var(--color-tami-line)]/60 bg-[var(--color-tami-surface)] hover:border-[var(--color-tami-orange)] hover:bg-[var(--color-tami-surface-subdued)]"
               }`}
             >
               <input
@@ -298,14 +307,14 @@ export function DetectorWorkspace() {
               <p className="text-xs text-[var(--color-tami-text-muted)] mt-1 max-w-[240px]">
                 {t("dropzoneHint")}
               </p>
-              <div className="mt-4 px-3 py-1.5 rounded-full bg-[var(--color-tami-surface-muted)] text-[11px] text-[var(--color-tami-text-muted)] font-medium">
+              <div className="mt-4 px-3.5 py-1.5 rounded-full bg-[var(--color-tami-surface-muted)] text-xs text-[var(--color-tami-text-muted)] font-medium">
                 {t("pasteHint")}
               </div>
             </div>
           ) : (
             /* Active Image Preview Card */
-            <LayerCard className="rounded-3xl p-4 bg-[var(--color-tami-surface)] border border-[var(--color-tami-line)] space-y-4">
-              <div className="relative aspect-video w-full rounded-2xl overflow-hidden bg-black/5 dark:bg-white/5 border border-[var(--color-tami-line)] flex items-center justify-center">
+            <LayerCard className="rounded-2xl p-4 bg-[var(--color-tami-surface-subdued)] border-none ring-1 ring-[var(--color-tami-line)]/40 space-y-4">
+              <div className="relative aspect-video w-full rounded-xl overflow-hidden bg-black/5 dark:bg-white/5 border border-[var(--color-tami-line)]/50 flex items-center justify-center">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={imagePreview}
@@ -316,7 +325,7 @@ export function DetectorWorkspace() {
 
               <div className="flex items-center justify-between text-xs text-[var(--color-tami-text-muted)]">
                 <span className="truncate max-w-[200px] font-mono">{fileName || "screenshot.png"}</span>
-                <span className="uppercase font-semibold text-[10px]">{mimeType.split("/")[1] || "IMAGE"}</span>
+                <span className="uppercase font-semibold text-xs">{mimeType.split("/")[1] || "IMAGE"}</span>
               </div>
 
               <Button
@@ -324,7 +333,7 @@ export function DetectorWorkspace() {
                 size="base"
                 onClick={handleAnalyze}
                 disabled={isLoading}
-                className="w-full rounded-2xl !bg-[var(--color-tami-orange)] hover:!bg-[var(--color-tami-orange-hover)] !text-white font-semibold text-sm h-11 shadow-sm"
+                className="w-full rounded-xl font-semibold text-sm min-h-[44px] cursor-pointer"
                 icon={isLoading ? <ArrowClockwise size={18} className="animate-spin" /> : <ShieldWarning size={18} weight="bold" />}
               >
                 {isLoading ? t("analyzing") : t("analyzeAction")}
@@ -344,7 +353,7 @@ export function DetectorWorkspace() {
                   type="button"
                   onClick={() => handleSampleSelect(sample)}
                   disabled={isLoading}
-                  className="w-full text-left px-3.5 py-2.5 rounded-xl border border-[var(--color-tami-line)] bg-[var(--color-tami-surface)] hover:bg-[var(--color-tami-surface-subdued)] hover:border-[var(--color-tami-orange)] text-xs text-[var(--color-tami-text)] flex items-center gap-2 cursor-pointer disabled:opacity-60"
+                  className="w-full text-left px-3.5 py-3 rounded-xl ring-1 ring-[var(--color-tami-line)]/40 bg-[var(--color-tami-surface)] hover:bg-[var(--color-tami-surface-subdued)] hover:ring-[var(--color-tami-orange)] text-xs text-[var(--color-tami-text)] flex items-center gap-2 cursor-pointer disabled:opacity-60 min-h-[44px]"
                 >
                   <ImageIcon size={16} className="text-[var(--color-tami-orange)] shrink-0" />
                   <span className="font-medium truncate">{t(sample.titleKey as "sample1" | "sample2" | "sample3")}</span>
@@ -354,7 +363,7 @@ export function DetectorWorkspace() {
           </div>
 
           {/* Zero Storage Privacy Badge */}
-          <div className="p-3 rounded-2xl bg-[var(--color-tami-surface-subdued)] border border-[var(--color-tami-line)] flex items-start gap-2 text-[11px] text-[var(--color-tami-text-muted)] leading-relaxed">
+          <div className="p-3.5 rounded-2xl bg-[var(--color-tami-surface-subdued)] ring-1 ring-[var(--color-tami-line)]/40 flex items-start gap-2 text-xs text-[var(--color-tami-text-muted)] leading-relaxed">
             <LockKey size={16} weight="fill" className="text-[var(--color-tami-green)] shrink-0 mt-0.5" />
             <span>{t("zeroStorageNotice")}</span>
           </div>
@@ -363,14 +372,14 @@ export function DetectorWorkspace() {
         {/* Right Column: Analysis Result / State (Col 7) */}
         <div className="lg:col-span-7 flex flex-col justify-between">
           {errorMsg && (
-            <div className="p-4 rounded-2xl bg-red-500/10 border border-red-500/20 text-xs text-[var(--color-tami-red)] flex items-center gap-2">
+            <div className="p-4 rounded-2xl bg-[var(--color-tami-red)]/10 border border-[var(--color-tami-red)]/25 text-xs text-[var(--color-tami-red)] flex items-center gap-2">
               <XCircle size={18} weight="fill" className="shrink-0" />
               <span>{errorMsg}</span>
             </div>
           )}
 
           {isLoading && (
-            <LayerCard className="rounded-3xl p-8 bg-[var(--color-tami-surface)] border border-[var(--color-tami-line)] flex flex-col items-center justify-center text-center space-y-4 min-h-[380px]">
+            <LayerCard className="rounded-2xl p-8 bg-[var(--color-tami-surface-subdued)] border-none ring-1 ring-[var(--color-tami-line)]/40 flex flex-col items-center justify-center text-center space-y-4 min-h-[380px]">
               <div className="flex flex-col items-center justify-center gap-3">
                 <Loader size="lg" />
                 <div className="space-y-1 mt-2">
@@ -388,9 +397,9 @@ export function DetectorWorkspace() {
           {!isLoading && !result && !errorMsg && (
             <Empty
               size="base"
-              className="rounded-3xl border border-[var(--color-tami-line)] bg-[var(--color-tami-surface)] min-h-[380px] justify-center p-8 text-center"
+              className="rounded-2xl ring-1 ring-[var(--color-tami-line)]/40 bg-[var(--color-tami-surface-subdued)] min-h-[380px] justify-center p-8 text-center border-none"
               icon={
-                <div className="w-12 h-12 rounded-2xl bg-[var(--color-tami-surface-subdued)] border border-[var(--color-tami-line)] text-[var(--color-tami-text-muted)] flex items-center justify-center mb-1">
+                <div className="w-12 h-12 rounded-xl bg-[var(--color-tami-surface)] ring-1 ring-[var(--color-tami-line)]/40 text-[var(--color-tami-text-muted)] flex items-center justify-center mb-1">
                   <FileText size={24} />
                 </div>
               }
@@ -402,10 +411,10 @@ export function DetectorWorkspace() {
           {!isLoading && result && (
             <div className="space-y-4">
               {/* Verdict Summary Card */}
-              <LayerCard className="rounded-3xl p-5 sm:p-6 bg-[var(--color-tami-surface)] border border-[var(--color-tami-line)] space-y-4 shadow-sm">
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[var(--color-tami-line)]">
+              <LayerCard className="rounded-2xl p-5 sm:p-6 bg-[var(--color-tami-surface-subdued)] border-none ring-1 ring-[var(--color-tami-line)]/40 space-y-4">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[var(--color-tami-line)]/50">
                   <div className="space-y-1">
-                    <span className="text-[11px] font-semibold text-[var(--color-tami-text-muted)] uppercase tracking-wider">
+                    <span className="text-xs font-semibold text-[var(--color-tami-text-muted)]">
                       {t("statusEvaluation")}
                     </span>
                     <h2 className="text-lg font-bold text-[var(--color-tami-text)]">
@@ -435,19 +444,19 @@ export function DetectorWorkspace() {
                       {result.anomaliesFound.map((item, idx) => (
                         <div
                           key={idx}
-                          className="p-3 rounded-2xl bg-[var(--color-tami-surface-subdued)] border border-[var(--color-tami-line)] space-y-1 text-xs"
+                          className="p-3 rounded-xl bg-[var(--color-tami-surface)] ring-1 ring-[var(--color-tami-line)]/30 space-y-1 text-xs"
                         >
                           <div className="flex items-center justify-between font-semibold text-[var(--color-tami-text)]">
                             <span>{item.category}</span>
                             <Badge
                               variant={item.severity === "high" ? "error" : "warning"}
                               appearance="filled"
-                              className="text-[10px] uppercase font-mono px-2 py-0.5"
+                              className="text-xs uppercase font-mono px-2 py-0.5"
                             >
                               {item.severity}
                             </Badge>
                           </div>
-                          <p className="text-[11px] text-[var(--color-tami-text-muted)] leading-relaxed">
+                          <p className="text-xs text-[var(--color-tami-text-muted)] leading-relaxed">
                             {item.description}
                           </p>
                         </div>
@@ -459,7 +468,7 @@ export function DetectorWorkspace() {
 
               {/* Socratic Reflection Prompts Card */}
               {result.reflectionQuestions && result.reflectionQuestions.length > 0 && (
-                <div className="p-5 rounded-3xl bg-[var(--color-tami-orange)]/10 border border-[var(--color-tami-orange)]/25 space-y-3">
+                <div className="p-5 rounded-2xl bg-[var(--color-tami-orange)]/10 ring-1 ring-[var(--color-tami-orange)]/30 space-y-3">
                   <div className="flex items-center gap-2">
                     <Image
                       src="/icon.svg"
@@ -480,12 +489,12 @@ export function DetectorWorkspace() {
                     ))}
                   </ul>
                   <div className="pt-1 flex justify-end">
-                    <Link href="/chat">
+                    <Link href={`/chat?topic=detector&scenario=${encodeURIComponent(result.headline)}`}>
                       <Button
                         variant="primary"
-                        size="sm"
-                        className="rounded-full !bg-[var(--color-tami-orange)] hover:!bg-[var(--color-tami-orange-hover)] !text-white font-semibold text-xs px-4 h-8"
-                        icon={<ChatCircleDots size={14} weight="bold" />}
+                        size="base"
+                        className="rounded-full font-semibold text-xs px-5 min-h-[44px] cursor-pointer"
+                        icon={<ChatCircleDots size={16} weight="bold" />}
                       >
                         {t("askTami")}
                       </Button>
@@ -496,7 +505,7 @@ export function DetectorWorkspace() {
 
               {/* Recommended Defense Actions */}
               {result.safetyTips && result.safetyTips.length > 0 && (
-                <div className="p-4 rounded-2xl bg-[var(--color-tami-surface)] border border-[var(--color-tami-line)] space-y-2 text-xs">
+                <div className="p-4 rounded-xl bg-[var(--color-tami-surface-subdued)] ring-1 ring-[var(--color-tami-line)]/40 space-y-2 text-xs">
                   <span className="font-bold text-[var(--color-tami-text)] flex items-center gap-1.5">
                     <Lightbulb size={16} weight="fill" className="text-[var(--color-tami-yellow)]" />
                     <span>{t("tipsTitle")}</span>
@@ -514,7 +523,7 @@ export function DetectorWorkspace() {
 
               {/* OCR Transcription Preview */}
               {result.ocrText && (
-                <details className="p-3.5 rounded-2xl bg-[var(--color-tami-surface-subdued)] border border-[var(--color-tami-line)] text-xs group">
+                <details className="p-3.5 rounded-xl bg-[var(--color-tami-surface-subdued)] ring-1 ring-[var(--color-tami-line)]/40 text-xs group">
                   <summary className="font-semibold text-[var(--color-tami-text)] cursor-pointer select-none flex items-center justify-between">
                     <span className="flex items-center gap-1.5">
                       <FileText size={15} />
@@ -522,7 +531,7 @@ export function DetectorWorkspace() {
                     </span>
                     <CaretDown size={14} className="text-[var(--color-tami-text-muted)] group-open:rotate-180 transition-transform shrink-0" />
                   </summary>
-                  <p className="mt-2.5 p-2.5 rounded-xl bg-[var(--color-tami-surface)] border border-[var(--color-tami-line)] font-mono text-[11px] text-[var(--color-tami-text-muted)] whitespace-pre-wrap break-all break-words max-h-48 overflow-y-auto leading-relaxed">
+                  <p className="mt-2.5 p-2.5 rounded-lg bg-[var(--color-tami-surface)] ring-1 ring-[var(--color-tami-line)]/30 font-mono text-xs text-[var(--color-tami-text-muted)] whitespace-pre-wrap break-all break-words max-h-48 overflow-y-auto leading-relaxed">
                     {result.ocrText}
                   </p>
                 </details>

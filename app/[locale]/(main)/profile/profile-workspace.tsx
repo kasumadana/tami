@@ -86,17 +86,9 @@ export function ProfileWorkspace() {
   const isPasswordUnlocked = practiceProgress.completedChallenges.includes("password");
   const isFirewallUnlocked = practiceProgress.completedChallenges.includes("firewall");
   const isCurriculumUnlocked = completedModulesCount === totalModules;
-
-  // Rank determination
   const totalPoints = practiceProgress.totalScore + completedModulesCount * 50;
-  const getRank = () => {
-    if (totalPoints >= 400) return t("rankHero");
-    if (totalPoints >= 200) return t("rankApprentice");
-    return t("rankNovice");
-  };
 
   const displayName = session?.user?.name || t("guestStudent");
-  const displayEmail = session?.user?.email || "guest@tami.local"; // i18n-ignore
 
   return (
     <div className="flex flex-col w-full max-w-6xl mx-auto p-4 sm:p-6 space-y-6">
@@ -118,10 +110,10 @@ export function ProfileWorkspace() {
           !session?.user ? (
             <Button
               variant="primary"
-              size="sm"
+              size="base"
               onClick={() => setIsLoginOpen(true)}
-              className="rounded-full !bg-[var(--color-tami-orange)] hover:!bg-[var(--color-tami-orange-hover)] !text-white font-semibold text-xs h-8 px-4 self-start sm:self-auto"
-              icon={<SignIn size={14} weight="bold" />}
+              className="rounded-full bg-[var(--color-tami-orange)] hover:bg-[var(--color-tami-orange-hover)] text-white font-semibold text-sm min-h-[44px] px-5 self-start sm:self-auto transition-none cursor-pointer"
+              icon={<SignIn size={16} weight="bold" />}
             >
               {t("guestSignInBtn")}
             </Button>
@@ -139,9 +131,9 @@ export function ProfileWorkspace() {
             action={
               <Button
                 variant="secondary"
-                size="sm"
+                size="base"
                 onClick={() => setIsLoginOpen(true)}
-                className="rounded-xl border border-[var(--color-tami-line)] bg-[var(--color-tami-surface)] text-[var(--color-tami-text)] hover:bg-[var(--color-tami-surface-subdued)] text-xs h-8 shrink-0"
+                className="rounded-xl bg-[var(--color-tami-surface)] hover:bg-[var(--color-tami-surface-muted)] text-[var(--color-tami-text)] ring-1 ring-[var(--color-tami-line)]/50 text-sm font-semibold min-h-[44px] px-4 shrink-0 transition-none cursor-pointer"
               >
                 {t("guestSignInBtn")}
               </Button>
@@ -151,35 +143,34 @@ export function ProfileWorkspace() {
       )}
 
       {/* Hero Profile Card */}
-      <LayerCard className="rounded-3xl p-5 sm:p-6 bg-[var(--color-tami-surface)] border border-[var(--color-tami-line)] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-xs print:hidden">
+      <LayerCard className="rounded-2xl p-5 sm:p-6 bg-[var(--color-tami-surface-subdued)] border-none ring-1 ring-[var(--color-tami-line)]/40 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 print:hidden">
         <div className="flex items-center gap-4">
           <Image
             src={session?.user?.image || "/icon.svg"}
             alt={displayName}
             width={48}
             height={48}
-            className="w-12 h-12 rounded-full object-cover shrink-0 border border-[var(--color-tami-line)]"
+            className="w-12 h-12 rounded-2xl bg-[var(--color-tami-surface)] ring-1 ring-[var(--color-tami-line)]/40 p-1 object-contain"
           />
-
           <div className="space-y-1">
-            <div className="flex flex-wrap items-center gap-2">
-              <h2 className="font-bold text-lg text-[var(--color-tami-text)] leading-tight">
+            <div className="flex items-center gap-2">
+              <h2 className="font-bold text-base text-[var(--color-tami-text)]">
                 {displayName}
               </h2>
-              <Badge variant="warning" appearance="filled" className="text-xs">
-                {getRank()}
+              <Badge variant={session?.user ? "success" : "neutral"} appearance="filled" className="text-xs">
+                {session?.user ? t("authMember") : t("guestRole")}
               </Badge>
             </div>
-            <p className="text-xs text-[var(--color-tami-text-muted)] font-mono">
-              {displayEmail}
+            <p className="text-sm text-[var(--color-tami-text-muted)]">
+              {session?.user?.email || t("guestAccountHint")}
             </p>
           </div>
         </div>
 
-        <div className="flex items-center gap-2 self-start sm:self-auto">
-          <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-2xl bg-[var(--color-tami-surface-subdued)] border border-[var(--color-tami-line)]">
-            <Trophy size={16} weight="fill" className="text-[var(--color-tami-yellow)]" />
-            <span className="text-xs font-mono font-bold text-[var(--color-tami-orange)]">
+        <div className="flex items-center gap-3 self-end sm:self-auto">
+          <div className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-[var(--color-tami-surface)] ring-1 ring-[var(--color-tami-line)]/40">
+            <Trophy size={18} weight="fill" className="text-[var(--color-tami-yellow)]" />
+            <span className="text-sm font-mono font-bold text-[var(--color-tami-orange)]">
               {totalPoints} XP
             </span>
           </div>
@@ -188,48 +179,48 @@ export function ProfileWorkspace() {
 
       {/* 4 Stats Grid */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 print:hidden">
-        <LayerCard className="p-4 rounded-2xl bg-[var(--color-tami-surface)] border border-[var(--color-tami-line)] space-y-1.5">
+        <LayerCard className="p-4 rounded-xl bg-[var(--color-tami-surface-subdued)] border-none ring-1 ring-[var(--color-tami-line)]/40 space-y-1.5">
           <div className="flex items-center justify-between">
-            <span className="text-[11px] text-[var(--color-tami-text-muted)] block font-semibold">
+            <span className="text-xs text-[var(--color-tami-text-muted)] block font-semibold">
               {t("stats.modulesCompleted")}
             </span>
-            <GraduationCap size={16} className="text-[var(--color-tami-orange)]" />
+            <GraduationCap size={18} className="text-[var(--color-tami-orange)]" />
           </div>
           <span className="text-xl font-mono font-bold text-[var(--color-tami-text)] block">
             {completedModulesCount}/4
           </span>
         </LayerCard>
 
-        <LayerCard className="p-4 rounded-2xl bg-[var(--color-tami-surface)] border border-[var(--color-tami-line)] space-y-1.5">
+        <LayerCard className="p-4 rounded-xl bg-[var(--color-tami-surface-subdued)] border-none ring-1 ring-[var(--color-tami-line)]/40 space-y-1.5">
           <div className="flex items-center justify-between">
-            <span className="text-[11px] text-[var(--color-tami-text-muted)] block font-semibold">
+            <span className="text-xs text-[var(--color-tami-text-muted)] block font-semibold">
               {t("stats.curriculumProgress")}
             </span>
-            <Sparkle size={16} weight="fill" className="text-[var(--color-tami-yellow)]" />
+            <Sparkle size={18} weight="fill" className="text-[var(--color-tami-yellow)]" />
           </div>
           <span className="text-xl font-mono font-bold text-[var(--color-tami-yellow)] block">
             {curriculumPercent}%
           </span>
         </LayerCard>
 
-        <LayerCard className="p-4 rounded-2xl bg-[var(--color-tami-surface)] border border-[var(--color-tami-line)] space-y-1.5">
+        <LayerCard className="p-4 rounded-xl bg-[var(--color-tami-surface-subdued)] border-none ring-1 ring-[var(--color-tami-line)]/40 space-y-1.5">
           <div className="flex items-center justify-between">
-            <span className="text-[11px] text-[var(--color-tami-text-muted)] block font-semibold">
+            <span className="text-xs text-[var(--color-tami-text-muted)] block font-semibold">
               {t("stats.badgesCount")}
             </span>
-            <ShieldCheck size={16} weight="fill" className="text-[var(--color-tami-green)]" />
+            <ShieldCheck size={18} weight="fill" className="text-[var(--color-tami-green)]" />
           </div>
           <span className="text-xl font-mono font-bold text-[var(--color-tami-green)] block">
             {practiceProgress.unlockedBadges.length}/3
           </span>
         </LayerCard>
 
-        <LayerCard className="p-4 rounded-2xl bg-[var(--color-tami-surface)] border border-[var(--color-tami-line)] space-y-1.5">
+        <LayerCard className="p-4 rounded-xl bg-[var(--color-tami-surface-subdued)] border-none ring-1 ring-[var(--color-tami-line)]/40 space-y-1.5">
           <div className="flex items-center justify-between">
-            <span className="text-[11px] text-[var(--color-tami-text-muted)] block font-semibold">
+            <span className="text-xs text-[var(--color-tami-text-muted)] block font-semibold">
               {t("stats.totalXp")}
             </span>
-            <Trophy size={16} weight="fill" className="text-[var(--color-tami-orange)]" />
+            <Trophy size={18} weight="fill" className="text-[var(--color-tami-orange)]" />
           </div>
           <span className="text-xl font-mono font-bold text-[var(--color-tami-orange)] block">
             {totalPoints}
@@ -247,29 +238,29 @@ export function ProfileWorkspace() {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
           {/* Badge 1: Phishing */}
           <div
-            className={`p-4 rounded-2xl border flex flex-col justify-between space-y-3 ${
+            className={`p-4 rounded-2xl border-none ring-1 flex flex-col justify-between space-y-3 ${
               isPhishingUnlocked
-                ? "bg-[var(--color-tami-surface)] border-[var(--color-tami-orange)]/40 shadow-xs"
-                : "bg-[var(--color-tami-surface-subdued)]/50 border-[var(--color-tami-line)] opacity-60"
+                ? "bg-[var(--color-tami-surface-subdued)] ring-[var(--color-tami-orange)]/40"
+                : "bg-[var(--color-tami-surface-subdued)]/50 ring-[var(--color-tami-line)]/40 opacity-70"
             }`}
           >
             <div className="space-y-2">
               <div className="flex items-center justify-between">
-                <div className="w-8 h-8 rounded-xl bg-[var(--color-tami-orange)]/15 text-[var(--color-tami-orange)] flex items-center justify-center">
+                <div className="w-9 h-9 rounded-xl bg-[var(--color-tami-orange)]/15 text-[var(--color-tami-orange)] flex items-center justify-center">
                   <ShieldWarning size={18} weight="bold" />
                 </div>
                 <Badge
                   variant={isPhishingUnlocked ? "success" : "neutral"}
                   appearance="filled"
-                  className="text-[10px]"
+                  className="text-xs"
                 >
                   {isPhishingUnlocked ? t("badges.unlocked") : t("badges.locked")}
                 </Badge>
               </div>
-              <h4 className="font-bold text-xs text-[var(--color-tami-text)]">
+              <h4 className="font-bold text-sm text-[var(--color-tami-text)]">
                 {t("badges.phishingTitle")}
               </h4>
-              <p className="text-[11px] text-[var(--color-tami-text-muted)] leading-relaxed">
+              <p className="text-xs text-[var(--color-tami-text-muted)] leading-relaxed">
                 {t("badges.phishingDesc")}
               </p>
             </div>
@@ -277,29 +268,29 @@ export function ProfileWorkspace() {
 
           {/* Badge 2: Password */}
           <div
-            className={`p-4 rounded-2xl border flex flex-col justify-between space-y-3 ${
+            className={`p-4 rounded-2xl border-none ring-1 flex flex-col justify-between space-y-3 ${
               isPasswordUnlocked
-                ? "bg-[var(--color-tami-surface)] border-[var(--color-tami-yellow)]/40 shadow-xs"
-                : "bg-[var(--color-tami-surface-subdued)]/50 border-[var(--color-tami-line)] opacity-60"
+                ? "bg-[var(--color-tami-surface-subdued)] ring-[var(--color-tami-yellow)]/40"
+                : "bg-[var(--color-tami-surface-subdued)]/50 ring-[var(--color-tami-line)]/40 opacity-70"
             }`}
           >
             <div className="space-y-2">
               <div className="flex items-center justify-between">
-                <div className="w-8 h-8 rounded-xl bg-[var(--color-tami-yellow)]/15 text-[var(--color-tami-yellow)] flex items-center justify-center">
+                <div className="w-9 h-9 rounded-xl bg-[var(--color-tami-yellow)]/15 text-[var(--color-tami-yellow)] flex items-center justify-center">
                   <Key size={18} weight="bold" />
                 </div>
                 <Badge
                   variant={isPasswordUnlocked ? "success" : "neutral"}
                   appearance="filled"
-                  className="text-[10px]"
+                  className="text-xs"
                 >
                   {isPasswordUnlocked ? t("badges.unlocked") : t("badges.locked")}
                 </Badge>
               </div>
-              <h4 className="font-bold text-xs text-[var(--color-tami-text)]">
+              <h4 className="font-bold text-sm text-[var(--color-tami-text)]">
                 {t("badges.passwordTitle")}
               </h4>
-              <p className="text-[11px] text-[var(--color-tami-text-muted)] leading-relaxed">
+              <p className="text-xs text-[var(--color-tami-text-muted)] leading-relaxed">
                 {t("badges.passwordDesc")}
               </p>
             </div>
@@ -307,29 +298,29 @@ export function ProfileWorkspace() {
 
           {/* Badge 3: Firewall */}
           <div
-            className={`p-4 rounded-2xl border flex flex-col justify-between space-y-3 ${
+            className={`p-4 rounded-2xl border-none ring-1 flex flex-col justify-between space-y-3 ${
               isFirewallUnlocked
-                ? "bg-[var(--color-tami-surface)] border-[var(--color-tami-green)]/40 shadow-xs"
-                : "bg-[var(--color-tami-surface-subdued)]/50 border-[var(--color-tami-line)] opacity-60"
+                ? "bg-[var(--color-tami-surface-subdued)] ring-[var(--color-tami-green)]/40"
+                : "bg-[var(--color-tami-surface-subdued)]/50 ring-[var(--color-tami-line)]/40 opacity-70"
             }`}
           >
             <div className="space-y-2">
               <div className="flex items-center justify-between">
-                <div className="w-8 h-8 rounded-xl bg-[var(--color-tami-green)]/15 text-[var(--color-tami-green)] flex items-center justify-center">
+                <div className="w-9 h-9 rounded-xl bg-[var(--color-tami-green)]/15 text-[var(--color-tami-green)] flex items-center justify-center">
                   <ShieldCheck size={18} weight="bold" />
                 </div>
                 <Badge
                   variant={isFirewallUnlocked ? "success" : "neutral"}
                   appearance="filled"
-                  className="text-[10px]"
+                  className="text-xs"
                 >
                   {isFirewallUnlocked ? t("badges.unlocked") : t("badges.locked")}
                 </Badge>
               </div>
-              <h4 className="font-bold text-xs text-[var(--color-tami-text)]">
+              <h4 className="font-bold text-sm text-[var(--color-tami-text)]">
                 {t("badges.firewallTitle")}
               </h4>
-              <p className="text-[11px] text-[var(--color-tami-text-muted)] leading-relaxed">
+              <p className="text-xs text-[var(--color-tami-text-muted)] leading-relaxed">
                 {t("badges.firewallDesc")}
               </p>
             </div>
@@ -337,29 +328,29 @@ export function ProfileWorkspace() {
 
           {/* Badge 4: Curriculum */}
           <div
-            className={`p-4 rounded-2xl border flex flex-col justify-between space-y-3 ${
+            className={`p-4 rounded-2xl border-none ring-1 flex flex-col justify-between space-y-3 ${
               isCurriculumUnlocked
-                ? "bg-[var(--color-tami-surface)] border-[var(--color-tami-violet)]/40 shadow-xs"
-                : "bg-[var(--color-tami-surface-subdued)]/50 border-[var(--color-tami-line)] opacity-60"
+                ? "bg-[var(--color-tami-surface-subdued)] ring-[var(--color-tami-violet)]/40"
+                : "bg-[var(--color-tami-surface-subdued)]/50 ring-[var(--color-tami-line)]/40 opacity-70"
             }`}
           >
             <div className="space-y-2">
               <div className="flex items-center justify-between">
-                <div className="w-8 h-8 rounded-xl bg-[var(--color-tami-violet)]/15 text-[var(--color-tami-violet)] flex items-center justify-center">
+                <div className="w-9 h-9 rounded-xl bg-[var(--color-tami-violet)]/15 text-[var(--color-tami-violet)] flex items-center justify-center">
                   <GraduationCap size={18} weight="bold" />
                 </div>
                 <Badge
                   variant={isCurriculumUnlocked ? "success" : "neutral"}
                   appearance="filled"
-                  className="text-[10px]"
+                  className="text-xs"
                 >
                   {isCurriculumUnlocked ? t("badges.unlocked") : t("badges.locked")}
                 </Badge>
               </div>
-              <h4 className="font-bold text-xs text-[var(--color-tami-text)]">
+              <h4 className="font-bold text-sm text-[var(--color-tami-text)]">
                 {t("badges.curriculumTitle")}
               </h4>
-              <p className="text-[11px] text-[var(--color-tami-text-muted)] leading-relaxed">
+              <p className="text-xs text-[var(--color-tami-text-muted)] leading-relaxed">
                 {t("badges.curriculumDesc")}
               </p>
             </div>

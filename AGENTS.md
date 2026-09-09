@@ -197,11 +197,10 @@ Every user-facing string must be managed via `next-intl` (`useTranslations` or `
 
 Use `// i18n-ignore` strictly on lines declaring technical constants, IDs, or model strings.
 
-### E. AI & LangChain Architecture (`gemini-3.7-flash`)
+### E. AI & LangChain Architecture
 
-- Use model `gemini-3.7-flash` with low-to-medium temperature settings ($0.3 - 0.7$).
-- Endpoint `/api/chat` must strictly enforce **Socratic Questioning** (guide the student with reflective questions rather than instant verdicts).
-- Endpoint `/api/detector` must validate structured outputs using **Zod** schemas.
+- **Chatbot Tutor Sokratik (`/api/chat`):** Menggunakan model `gemini-3.5-flash-lite` (atau `gemini-3.5-flash`) dengan latensi kilat dan toleransi batas kuota (*rate limits*) tinggi. Menegakkan dialog Sokratik (*Socratic Questioning*).
+- **Detektor Forensik Visual (`/api/detector`):** Menggunakan model multimodal `gemini-3.7-flash` dengan validasi skema terstruktur **Zod**.
 - Process uploaded images **in-memory only**; do not persist user images to disk or cloud storage.
 
 ---

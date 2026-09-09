@@ -44,7 +44,7 @@ export function Navbar() {
           {session?.user && (
             <Link
               href="/profile"
-              className="flex items-center gap-2 px-2.5 py-1 rounded-full bg-[var(--color-tami-surface-subdued)] border border-[var(--color-tami-line)] hover:bg-[var(--color-tami-surface-muted)] text-xs transition-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-tami-orange)]"
+              className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-[var(--color-tami-surface-subdued)] ring-1 ring-[var(--color-tami-line)]/50 hover:bg-[var(--color-tami-surface-muted)] text-xs min-h-[44px] transition-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-tami-orange)]"
             >
               <Image
                 src={session.user.image || "/icon.svg"}
@@ -64,7 +64,7 @@ export function Navbar() {
             <Button
               variant="primary"
               size="base"
-              className="rounded-full !bg-[var(--color-tami-orange)] hover:!bg-[var(--color-tami-orange-hover)] !text-white font-medium text-sm px-4 h-9 shadow-sm"
+              className="rounded-full font-semibold text-sm px-5 min-h-[44px] cursor-pointer"
               icon={<ArrowRight size={16} weight="bold" />}
             >
               {tCommon("openLab")}

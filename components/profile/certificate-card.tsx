@@ -127,8 +127,8 @@ export function CertificateCard({ initialName, isUnlocked }: CertificateCardProp
   return (
     <div className="space-y-6">
       {/* Controls & Name Input Header */}
-      <LayerCard className="rounded-3xl p-5 sm:p-6 bg-[var(--color-tami-surface)] border border-[var(--color-tami-line)] space-y-4 print:hidden">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[var(--color-tami-line)]">
+      <LayerCard className="rounded-2xl p-5 sm:p-6 bg-[var(--color-tami-surface-subdued)] border-none ring-1 ring-[var(--color-tami-line)]/40 space-y-4 print:hidden">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[var(--color-tami-line)]/40">
           <div className="space-y-0.5">
             <div className="flex items-center gap-2">
               <SealCheck size={20} className="text-[var(--color-tami-orange)]" weight="fill" />
@@ -136,27 +136,27 @@ export function CertificateCard({ initialName, isUnlocked }: CertificateCardProp
                 {t("sectionTitle")}
               </h2>
             </div>
-            <p className="text-xs text-[var(--color-tami-text-muted)] leading-relaxed">
+            <p className="text-sm text-[var(--color-tami-text-muted)] leading-relaxed">
               {t("sectionDesc")}
             </p>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2.5">
             <Button
               variant="secondary"
-              size="sm"
+              size="base"
               onClick={handlePrint}
-              className="rounded-xl border border-[var(--color-tami-line)] bg-[var(--color-tami-surface)] text-[var(--color-tami-text)] hover:bg-[var(--color-tami-surface-subdued)] text-xs h-8"
-              icon={<Printer size={14} weight="bold" />}
+              className="rounded-xl bg-[var(--color-tami-surface)] hover:bg-[var(--color-tami-surface-muted)] text-[var(--color-tami-text)] ring-1 ring-[var(--color-tami-line)]/50 text-sm min-h-[44px] px-4 font-semibold transition-none cursor-pointer"
+              icon={<Printer size={16} weight="bold" />}
             >
               {t("printPdfBtn")}
             </Button>
             <Button
               variant="primary"
-              size="sm"
+              size="base"
               onClick={handleDownloadPng}
-              className="rounded-xl !bg-[var(--color-tami-orange)] hover:!bg-[var(--color-tami-orange-hover)] !text-white font-semibold text-xs h-8"
-              icon={<DownloadSimple size={14} weight="bold" />}
+              className="rounded-xl bg-[var(--color-tami-orange)] hover:bg-[var(--color-tami-orange-hover)] text-white font-semibold text-sm min-h-[44px] px-4 transition-none cursor-pointer"
+              icon={<DownloadSimple size={16} weight="bold" />}
             >
               {t("downloadPngBtn")}
             </Button>
@@ -165,13 +165,14 @@ export function CertificateCard({ initialName, isUnlocked }: CertificateCardProp
 
         {/* Name input row */}
         <div className="flex flex-col sm:flex-row sm:items-center gap-3">
-          <label htmlFor="cert-name" className="text-xs font-semibold text-[var(--color-tami-text)] min-w-[140px]">
+          <label htmlFor="cert-name" className="text-sm font-semibold text-[var(--color-tami-text)] min-w-[140px]">
             {t("nameInputLabel")}
           </label>
           <div className="flex-1">
             <Input
               id="cert-name"
-              size="sm"
+              size="base"
+              className="min-h-[44px]"
               value={studentName}
               onChange={(e) => setStudentName(e.target.value)}
               placeholder={t("studentNamePlaceholder")}
@@ -183,17 +184,17 @@ export function CertificateCard({ initialName, isUnlocked }: CertificateCardProp
       {/* Visual Certificate Card Frame */}
       <div
         ref={certRef}
-        className="relative w-full rounded-3xl p-4 sm:p-10 bg-white text-zinc-900 border-4 border-[var(--color-tami-orange)] shadow-xl space-y-6 overflow-hidden print:border-none print:shadow-none print:m-0 print:p-8"
+        className="relative w-full rounded-2xl p-6 sm:p-10 bg-[var(--color-tami-surface)] text-[var(--color-tami-text)] border-2 border-[var(--color-tami-orange)] ring-4 ring-[var(--color-tami-orange)]/20 space-y-6 overflow-hidden print:border-none print:shadow-none print:m-0 print:p-8"
       >
         {/* Decorative corner ribbons */}
-        <div className="absolute top-0 right-0 w-24 h-24 overflow-hidden pointer-events-none">
-          <div className="bg-[var(--color-tami-orange)] text-white text-[9px] font-semibold py-1 text-center rotate-45 translate-x-7 translate-y-4 shadow-xs">
+        <div className="absolute top-0 right-0 w-28 h-28 overflow-hidden pointer-events-none">
+          <div className="bg-[var(--color-tami-orange)] text-white text-xs font-bold py-1 text-center rotate-45 translate-x-8 translate-y-5">
             {t("verifiedBadge")}
           </div>
         </div>
 
         {/* Certificate Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b-2 border-zinc-200">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-[var(--color-tami-line)]/50">
           <div className="flex items-center gap-3">
             <Image
               src="/icon.svg"
@@ -203,29 +204,29 @@ export function CertificateCard({ initialName, isUnlocked }: CertificateCardProp
               className="w-9 h-9 object-contain"
             />
             <div className="space-y-0.5">
-              <span className="font-bold text-lg text-zinc-900 tracking-tight block">
+              <span className="font-bold text-lg text-[var(--color-tami-text)] tracking-tight block">
                 tami
               </span>
-              <span className="text-[11px] font-semibold text-[var(--color-tami-orange)] block">
+              <span className="text-xs font-semibold text-[var(--color-tami-orange)] block">
                 Teman Aman Media Internet
               </span>
             </div>
           </div>
 
-          <Badge variant="neutral" appearance="filled" className="text-xs bg-zinc-100 text-zinc-800 border-zinc-300 self-start sm:self-auto">
+          <Badge variant="neutral" appearance="filled" className="text-xs self-start sm:self-auto">
             {t("eventBadge")}
           </Badge>
         </div>
 
         {/* Certificate Main Title & Hero Content */}
         <div className="text-center space-y-2 py-3">
-          <span className="text-xs tracking-widest font-bold text-zinc-500 block">
+          <span className="text-xs font-semibold text-[var(--color-tami-text-muted)] block">
             {t("certTitle")}
           </span>
-          <h1 className="text-2xl sm:text-3xl font-black text-zinc-900 tracking-tight">
+          <h1 className="text-2xl sm:text-3xl font-black text-[var(--color-tami-text)] tracking-tight">
             {t("certSubtitle")}
           </h1>
-          <p className="text-xs text-zinc-500 pt-2">{t("presentedTo")}</p>
+          <p className="text-sm text-[var(--color-tami-text-muted)] pt-2">{t("presentedTo")}</p>
           <div className="py-2">
             <span className="text-2xl sm:text-3xl font-bold text-[var(--color-tami-orange)] underline decoration-amber-400 decoration-wavy decoration-2 underline-offset-8">
               {studentName}
@@ -234,35 +235,35 @@ export function CertificateCard({ initialName, isUnlocked }: CertificateCardProp
         </div>
 
         {/* Body Text Statement */}
-        <p className="text-xs text-zinc-700 max-w-2xl mx-auto text-center leading-relaxed font-sans">
+        <p className="text-sm text-[var(--color-tami-text-muted)] max-w-2xl mx-auto text-center leading-relaxed font-sans">
           {t("certBody")}
         </p>
 
         {/* 4 Verified Competency Badges */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-2">
-          <div className="p-2 rounded-xl bg-zinc-50 border border-zinc-200 flex items-center gap-1.5 text-[11px] font-semibold text-zinc-800">
-            <CheckCircle size={14} weight="fill" className="text-[var(--color-tami-green)] shrink-0" />
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 pt-2">
+          <div className="p-2.5 rounded-xl bg-[var(--color-tami-surface-subdued)] ring-1 ring-[var(--color-tami-line)]/40 flex items-center gap-2 text-xs font-semibold text-[var(--color-tami-text)]">
+            <CheckCircle size={16} weight="fill" className="text-[var(--color-tami-green)] shrink-0" />
             <span>{t("skillPass")}</span>
           </div>
-          <div className="p-2 rounded-xl bg-zinc-50 border border-zinc-200 flex items-center gap-1.5 text-[11px] font-semibold text-zinc-800">
-            <CheckCircle size={14} weight="fill" className="text-[var(--color-tami-green)] shrink-0" />
+          <div className="p-2.5 rounded-xl bg-[var(--color-tami-surface-subdued)] ring-1 ring-[var(--color-tami-line)]/40 flex items-center gap-2 text-xs font-semibold text-[var(--color-tami-text)]">
+            <CheckCircle size={16} weight="fill" className="text-[var(--color-tami-green)] shrink-0" />
             <span>{t("skillPhish")}</span>
           </div>
-          <div className="p-2 rounded-xl bg-zinc-50 border border-zinc-200 flex items-center gap-1.5 text-[11px] font-semibold text-zinc-800">
-            <CheckCircle size={14} weight="fill" className="text-[var(--color-tami-green)] shrink-0" />
+          <div className="p-2.5 rounded-xl bg-[var(--color-tami-surface-subdued)] ring-1 ring-[var(--color-tami-line)]/40 flex items-center gap-2 text-xs font-semibold text-[var(--color-tami-text)]">
+            <CheckCircle size={16} weight="fill" className="text-[var(--color-tami-green)] shrink-0" />
             <span>{t("skillPriv")}</span>
           </div>
-          <div className="p-2 rounded-xl bg-zinc-50 border border-zinc-200 flex items-center gap-1.5 text-[11px] font-semibold text-zinc-800">
-            <CheckCircle size={14} weight="fill" className="text-[var(--color-tami-green)] shrink-0" />
+          <div className="p-2.5 rounded-xl bg-[var(--color-tami-surface-subdued)] ring-1 ring-[var(--color-tami-line)]/40 flex items-center gap-2 text-xs font-semibold text-[var(--color-tami-text)]">
+            <CheckCircle size={16} weight="fill" className="text-[var(--color-tami-green)] shrink-0" />
             <span>{t("skillEthic")}</span>
           </div>
         </div>
 
         {/* Certificate Footer: Date, ID, and Stamp */}
-        <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between gap-4 pt-4 border-t-2 border-zinc-200 text-xs text-zinc-600">
-          <div className="space-y-1 font-mono text-[11px]">
+        <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between gap-4 pt-4 border-t border-[var(--color-tami-line)]/50 text-xs text-[var(--color-tami-text-muted)]">
+          <div className="space-y-1 font-mono text-xs">
             <div>{t("certDate", { date: issueDate })}</div>
-            <div className="text-zinc-500">{t("certId", { id: verificationId })}</div>
+            <div className="text-[var(--color-tami-text-muted)]">{t("certId", { id: verificationId })}</div>
           </div>
 
           <div className="flex items-center gap-3 self-end">
@@ -274,20 +275,20 @@ export function CertificateCard({ initialName, isUnlocked }: CertificateCardProp
               className="w-9 h-9 object-contain shrink-0"
             />
             <div className="text-right space-y-0.5">
-              <span className="font-bold text-zinc-900 block text-xs">{t("mascotSign")}</span>
-              <span className="text-[10px] text-zinc-500 block">{t("signatureLabel")}</span>
+              <span className="font-bold text-[var(--color-tami-text)] block text-xs">{t("mascotSign")}</span>
+              <span className="text-xs text-[var(--color-tami-text-muted)] block">{t("signatureLabel")}</span>
             </div>
           </div>
         </div>
 
         {/* Locked watermark overlay if not unlocked */}
         {!isUnlocked && (
-          <div className="absolute inset-0 bg-white/70 backdrop-blur-xs flex items-center justify-center p-6 text-center">
-            <div className="p-4 rounded-2xl bg-white border border-zinc-300 shadow-lg space-y-1 max-w-sm">
-              <span className="text-xs font-bold text-zinc-900 block">
+          <div className="absolute inset-0 bg-[var(--color-tami-canvas)]/85 backdrop-blur-xs flex items-center justify-center p-6 text-center">
+            <div className="p-5 rounded-2xl bg-[var(--color-tami-surface)] ring-1 ring-[var(--color-tami-line)] space-y-2 max-w-sm">
+              <span className="text-sm font-bold text-[var(--color-tami-text)] block">
                 {t("certSubtitle")}
               </span>
-              <p className="text-[11px] text-zinc-600 leading-relaxed">
+              <p className="text-xs text-[var(--color-tami-text-muted)] leading-relaxed">
                 {t("lockedNotice")}
               </p>
             </div>

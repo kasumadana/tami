@@ -16,6 +16,9 @@ import {
   ArrowRight,
   Handshake,
   House,
+  ShieldCheck,
+  MagnifyingGlass,
+  ChatCircleDots,
 } from "@phosphor-icons/react";
 
 export function GuideWorkspace() {
@@ -71,54 +74,54 @@ export function GuideWorkspace() {
 
           {/* 3 Core Family Principles Grid */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <LayerCard className="rounded-3xl p-5 bg-[var(--color-tami-surface)] border border-[var(--color-tami-line)] space-y-3">
-              <div className="w-9 h-9 rounded-xl bg-[var(--color-tami-orange)]/15 text-[var(--color-tami-orange)] flex items-center justify-center font-bold text-xs">
-                1
+            <LayerCard className="rounded-2xl p-5 bg-[var(--color-tami-surface-subdued)] border-none ring-1 ring-[var(--color-tami-line)]/40 space-y-3">
+              <div className="w-10 h-10 rounded-xl bg-[var(--color-tami-orange)]/15 text-[var(--color-tami-orange)] flex items-center justify-center">
+                <ShieldCheck size={22} weight="duotone" />
               </div>
               <h3 className="font-bold text-sm text-[var(--color-tami-text)]">
                 {t("parentTips.tip1Title")}
               </h3>
-              <p className="text-xs text-[var(--color-tami-text-muted)] leading-relaxed">
+              <p className="text-sm text-[var(--color-tami-text-muted)] leading-relaxed">
                 {t("parentTips.tip1Desc")}
               </p>
             </LayerCard>
 
-            <LayerCard className="rounded-3xl p-5 bg-[var(--color-tami-surface)] border border-[var(--color-tami-line)] space-y-3">
-              <div className="w-9 h-9 rounded-xl bg-[var(--color-tami-green)]/15 text-[var(--color-tami-green)] flex items-center justify-center font-bold text-xs">
-                2
+            <LayerCard className="rounded-2xl p-5 bg-[var(--color-tami-surface-subdued)] border-none ring-1 ring-[var(--color-tami-line)]/40 space-y-3">
+              <div className="w-10 h-10 rounded-xl bg-[var(--color-tami-green)]/15 text-[var(--color-tami-green)] flex items-center justify-center">
+                <MagnifyingGlass size={22} weight="duotone" />
               </div>
               <h3 className="font-bold text-sm text-[var(--color-tami-text)]">
                 {t("parentTips.tip2Title")}
               </h3>
-              <p className="text-xs text-[var(--color-tami-text-muted)] leading-relaxed">
+              <p className="text-sm text-[var(--color-tami-text-muted)] leading-relaxed">
                 {t("parentTips.tip2Desc")}
               </p>
             </LayerCard>
 
-            <LayerCard className="rounded-3xl p-5 bg-[var(--color-tami-surface)] border border-[var(--color-tami-line)] space-y-3">
-              <div className="w-9 h-9 rounded-xl bg-[var(--color-tami-violet)]/15 text-[var(--color-tami-violet)] flex items-center justify-center font-bold text-xs">
-                3
+            <LayerCard className="rounded-2xl p-5 bg-[var(--color-tami-surface-subdued)] border-none ring-1 ring-[var(--color-tami-line)]/40 space-y-3">
+              <div className="w-10 h-10 rounded-xl bg-[var(--color-tami-violet)]/15 text-[var(--color-tami-violet)] flex items-center justify-center">
+                <ChatCircleDots size={22} weight="duotone" />
               </div>
               <h3 className="font-bold text-sm text-[var(--color-tami-text)]">
                 {t("parentTips.tip3Title")}
               </h3>
-              <p className="text-xs text-[var(--color-tami-text-muted)] leading-relaxed">
+              <p className="text-sm text-[var(--color-tami-text-muted)] leading-relaxed">
                 {t("parentTips.tip3Desc")}
               </p>
             </LayerCard>
           </div>
 
           {/* Quick Action Prompt to Chat */}
-          <div className="p-5 rounded-3xl bg-[var(--color-tami-surface-subdued)] border border-[var(--color-tami-line)] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div className="p-5 rounded-2xl bg-[var(--color-tami-surface-subdued)] ring-1 ring-[var(--color-tami-line)]/40 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-2xl bg-[var(--color-tami-surface)] border border-[var(--color-tami-line)] flex items-center justify-center text-[var(--color-tami-orange)] shrink-0">
-                <Handshake size={20} weight="bold" />
+              <div className="w-11 h-11 rounded-xl bg-[var(--color-tami-surface)] ring-1 ring-[var(--color-tami-line)]/40 flex items-center justify-center text-[var(--color-tami-orange)] shrink-0">
+                <Handshake size={22} weight="bold" />
               </div>
               <div className="space-y-0.5">
-                <h4 className="font-bold text-xs text-[var(--color-tami-text)]">
+                <h4 className="font-bold text-sm text-[var(--color-tami-text)]">
                   {t("parentCtaTitle")}
                 </h4>
-                <p className="text-[11px] text-[var(--color-tami-text-muted)]">
+                <p className="text-xs text-[var(--color-tami-text-muted)]">
                   {t("parentCtaDesc")}
                 </p>
               </div>
@@ -127,9 +130,9 @@ export function GuideWorkspace() {
             <Link href="/chat">
               <Button
                 variant="primary"
-                size="sm"
-                className="rounded-full !bg-[var(--color-tami-orange)] hover:!bg-[var(--color-tami-orange-hover)] !text-white font-semibold text-xs px-4 h-8 shrink-0"
-                icon={<ArrowRight size={14} weight="bold" />}
+                size="base"
+                className="rounded-full bg-[var(--color-tami-orange)] hover:bg-[var(--color-tami-orange-hover)] text-white font-semibold text-sm px-5 min-h-[44px] shrink-0 transition-none cursor-pointer"
+                icon={<ArrowRight size={16} weight="bold" />}
               >
                 {t("parentCtaBtn")}
               </Button>
@@ -141,9 +144,9 @@ export function GuideWorkspace() {
       {/* Tab Content 2: Educators & Classroom Guide */}
       {activeTab === "educators" && (
         <div className="space-y-6">
-          <div className="p-5 sm:p-6 rounded-3xl bg-[var(--color-tami-surface)] border border-[var(--color-tami-line)] space-y-1">
+          <div className="p-5 sm:p-6 rounded-2xl bg-[var(--color-tami-surface-subdued)] border-none ring-1 ring-[var(--color-tami-line)]/40 space-y-1">
             <div className="flex items-center gap-2 text-[var(--color-tami-violet)] mb-1">
-              <ChalkboardTeacher size={20} weight="bold" />
+              <ChalkboardTeacher size={22} weight="bold" />
               <Badge variant="neutral" appearance="filled" className="text-xs">
                 {t("eduSyllabusBadge")}
               </Badge>
@@ -151,14 +154,14 @@ export function GuideWorkspace() {
             <h2 className="font-bold text-base text-[var(--color-tami-text)]">
               {t("educatorsTitle")}
             </h2>
-            <p className="text-xs text-[var(--color-tami-text-muted)] leading-relaxed">
+            <p className="text-sm text-[var(--color-tami-text-muted)] leading-relaxed">
               {t("educatorsDesc")}
             </p>
           </div>
 
           {/* 45-Minute Lesson Timeline */}
           <div className="space-y-3">
-            <div className="p-4 rounded-2xl bg-[var(--color-tami-surface)] border border-[var(--color-tami-line)] flex items-start gap-3">
+            <div className="p-4 rounded-xl bg-[var(--color-tami-surface-subdued)] border-none ring-1 ring-[var(--color-tami-line)]/40 flex items-start gap-3">
               <div className="w-8 h-8 rounded-xl bg-[var(--color-tami-orange)]/15 text-[var(--color-tami-orange)] flex items-center justify-center shrink-0">
                 <Clock size={16} weight="bold" />
               </div>
@@ -172,7 +175,7 @@ export function GuideWorkspace() {
               </div>
             </div>
 
-            <div className="p-4 rounded-2xl bg-[var(--color-tami-surface)] border border-[var(--color-tami-line)] flex items-start gap-3">
+            <div className="p-4 rounded-xl bg-[var(--color-tami-surface-subdued)] border-none ring-1 ring-[var(--color-tami-line)]/40 flex items-start gap-3">
               <div className="w-8 h-8 rounded-xl bg-[var(--color-tami-yellow)]/15 text-[var(--color-tami-yellow)] flex items-center justify-center shrink-0">
                 <Clock size={16} weight="bold" />
               </div>
@@ -186,7 +189,7 @@ export function GuideWorkspace() {
               </div>
             </div>
 
-            <div className="p-4 rounded-2xl bg-[var(--color-tami-surface)] border border-[var(--color-tami-line)] flex items-start gap-3">
+            <div className="p-4 rounded-xl bg-[var(--color-tami-surface-subdued)] border-none ring-1 ring-[var(--color-tami-line)]/40 flex items-start gap-3">
               <div className="w-8 h-8 rounded-xl bg-[var(--color-tami-green)]/15 text-[var(--color-tami-green)] flex items-center justify-center shrink-0">
                 <Clock size={16} weight="bold" />
               </div>
@@ -200,7 +203,7 @@ export function GuideWorkspace() {
               </div>
             </div>
 
-            <div className="p-4 rounded-2xl bg-[var(--color-tami-surface)] border border-[var(--color-tami-line)] flex items-start gap-3">
+            <div className="p-4 rounded-xl bg-[var(--color-tami-surface-subdued)] border-none ring-1 ring-[var(--color-tami-line)]/40 flex items-start gap-3">
               <div className="w-8 h-8 rounded-xl bg-[var(--color-tami-violet)]/15 text-[var(--color-tami-violet)] flex items-center justify-center shrink-0">
                 <Clock size={16} weight="bold" />
               </div>
@@ -216,16 +219,16 @@ export function GuideWorkspace() {
           </div>
 
           {/* Direct Classroom Projector Shortcut */}
-          <div className="p-5 rounded-3xl bg-[var(--color-tami-surface-subdued)] border border-[var(--color-tami-line)] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div className="p-5 rounded-2xl bg-[var(--color-tami-surface-subdued)] ring-1 ring-[var(--color-tami-line)]/40 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-2xl bg-[var(--color-tami-surface)] border border-[var(--color-tami-line)] flex items-center justify-center text-[var(--color-tami-violet)] shrink-0">
-                <Lightbulb size={20} weight="bold" />
+              <div className="w-11 h-11 rounded-xl bg-[var(--color-tami-surface)] ring-1 ring-[var(--color-tami-line)]/40 flex items-center justify-center text-[var(--color-tami-violet)] shrink-0">
+                <Lightbulb size={22} weight="bold" />
               </div>
               <div className="space-y-0.5">
-                <h4 className="font-bold text-xs text-[var(--color-tami-text)]">
+                <h4 className="font-bold text-sm text-[var(--color-tami-text)]">
                   {t("eduCtaTitle")}
                 </h4>
-                <p className="text-[11px] text-[var(--color-tami-text-muted)]">
+                <p className="text-xs text-[var(--color-tami-text-muted)]">
                   {t("eduCtaDesc")}
                 </p>
               </div>
@@ -234,9 +237,9 @@ export function GuideWorkspace() {
             <Link href="/detector">
               <Button
                 variant="primary"
-                size="sm"
-                className="rounded-full !bg-[var(--color-tami-violet)] hover:!bg-[var(--color-tami-violet)]/90 !text-white font-semibold text-xs px-4 h-8 shrink-0"
-                icon={<ArrowRight size={14} weight="bold" />}
+                size="base"
+                className="rounded-full bg-[var(--color-tami-violet)] hover:bg-[var(--color-tami-violet)]/90 text-white font-semibold text-sm px-5 min-h-[44px] shrink-0 transition-none cursor-pointer"
+                icon={<ArrowRight size={16} weight="bold" />}
               >
                 {t("eduCtaBtn")}
               </Button>

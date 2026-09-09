@@ -22,7 +22,7 @@ export function AuthButton() {
   if (session?.user) {
     return (
       <div className="flex items-center gap-2">
-        <div className="flex items-center gap-2 px-2.5 py-1 rounded-full bg-[var(--color-tami-surface-subdued)] border border-[var(--color-tami-line)] text-xs">
+        <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-[var(--color-tami-surface-subdued)] ring-1 ring-[var(--color-tami-line)]/50 text-xs min-h-[44px]">
           {session.user.image ? (
             <Image
               src={session.user.image}
@@ -41,10 +41,10 @@ export function AuthButton() {
 
         <Button
           variant="secondary"
-          size="sm"
+          size="base"
           onClick={() => signOut()}
-          className="rounded-full border border-[var(--color-tami-line)] bg-[var(--color-tami-surface)] text-[var(--color-tami-text)] hover:bg-[var(--color-tami-surface-subdued)] text-xs h-8 px-2.5"
-          icon={<SignOut size={13} />}
+          className="rounded-full ring-1 ring-[var(--color-tami-line)]/50 bg-[var(--color-tami-surface)] text-[var(--color-tami-text)] hover:bg-[var(--color-tami-surface-subdued)] text-sm min-h-[44px] px-3.5 cursor-pointer"
+          icon={<SignOut size={16} />}
           aria-label={t("signOut")}
         >
           {t("signOut")}
@@ -57,10 +57,10 @@ export function AuthButton() {
     <>
       <Button
         variant="primary"
-        size="sm"
+        size="base"
         onClick={() => setIsLoginOpen(true)}
-        className="rounded-full !bg-[var(--color-tami-orange)] hover:!bg-[var(--color-tami-orange-hover)] !text-white font-semibold text-xs h-8 px-3.5"
-        icon={<SignIn size={14} weight="bold" />}
+        className="rounded-full font-semibold text-sm min-h-[44px] px-5 cursor-pointer"
+        icon={<SignIn size={16} weight="bold" />}
       >
         {t("signIn")}
       </Button>

@@ -17,8 +17,14 @@
   --color-tami-orange-hover: #e04f00;
   --color-tami-yellow: #ffd80c;
   --color-tami-green: #16a34a;
+  --color-tami-lime: #3ccb09;
   --color-tami-red: #fd4b38;
   --color-tami-violet: #8a53ff;
+  --color-tami-blue: #478bff;
+
+  /* Official Kumo Button Emphasis Binding */
+  --kumo-button-emphasis-bg: var(--color-tami-orange);
+  --kumo-button-emphasis-ring: var(--color-tami-orange);
 
   /* Backward-compatible alias tokens */
   --tami-orange: var(--color-tami-orange);
@@ -42,6 +48,16 @@
   --color-tami-line: #27272a;
   --color-tami-orange: #ff5a00;
   --color-tami-orange-hover: #ff6e1f;
+  --color-tami-yellow: #ffd80c;
+  --color-tami-green: #16a34a;
+  --color-tami-lime: #3ccb09;
+  --color-tami-red: #fd4b38;
+  --color-tami-violet: #8a53ff;
+  --color-tami-blue: #478bff;
+
+  /* Official Kumo Button Emphasis Binding */
+  --kumo-button-emphasis-bg: var(--color-tami-orange);
+  --kumo-button-emphasis-ring: var(--color-tami-orange);
 
   /* Backward-compatible alias tokens */
   --tami-orange: var(--color-tami-orange);

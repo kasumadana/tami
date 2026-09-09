@@ -51,7 +51,7 @@ function HomeContent() {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
         <div className="flex flex-col items-center text-center max-w-3xl mx-auto space-y-6">
           {/* Die-Cut Event Sticker */}
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--color-tami-surface-subdued)] border border-[var(--color-tami-line)] text-xs font-semibold text-[var(--color-tami-text)] shadow-xs">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[var(--color-tami-surface-subdued)] ring-1 ring-[var(--color-tami-line)]/50 text-xs font-semibold text-[var(--color-tami-text)]">
             <Sparkle size={14} weight="fill" className="text-[var(--color-tami-orange)]" />
             <span>{t("hero.badge")}</span>
           </div>
@@ -77,7 +77,7 @@ function HomeContent() {
               <Button
                 variant="primary"
                 size="lg"
-                className="w-full sm:w-auto rounded-full !bg-[var(--color-tami-orange)] hover:!bg-[var(--color-tami-orange-hover)] !text-white font-semibold text-sm px-7 h-12 shadow-sm transition-none"
+                className="w-full sm:w-auto rounded-full bg-[var(--color-tami-orange)] hover:bg-[var(--color-tami-orange-hover)] text-white font-semibold text-sm px-7 min-h-[48px] transition-none cursor-pointer"
                 icon={<ArrowRight size={18} weight="bold" />}
               >
                 {t("hero.ctaPrimary")}
@@ -87,7 +87,7 @@ function HomeContent() {
               <Button
                 variant="secondary"
                 size="lg"
-                className="w-full sm:w-auto rounded-full border border-[var(--color-tami-line)] bg-[var(--color-tami-surface)] hover:bg-[var(--color-tami-surface-subdued)] text-[var(--color-tami-text)] font-semibold text-sm px-6 h-12 transition-none"
+                className="w-full sm:w-auto rounded-full bg-[var(--color-tami-surface-subdued)] hover:bg-[var(--color-tami-surface-muted)] text-[var(--color-tami-text)] ring-1 ring-[var(--color-tami-line)]/50 font-semibold text-sm px-6 min-h-[48px] transition-none cursor-pointer"
                 icon={<ShieldWarning size={18} weight="bold" className="text-[var(--color-tami-orange)]" />}
               >
                 {t("hero.ctaSecondary")}
@@ -97,15 +97,15 @@ function HomeContent() {
 
           {/* Tactile Decal Badges Bar */}
           <div className="flex flex-wrap items-center justify-center gap-2 pt-2">
-            <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-[var(--color-tami-green)]/10 text-[var(--color-tami-green)] border border-[var(--color-tami-green)]/20 text-xs font-semibold">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[var(--color-tami-green)]/10 text-[var(--color-tami-green)] ring-1 ring-[var(--color-tami-green)]/30 text-xs font-semibold">
               <CheckCircle size={14} weight="bold" />
               <span>{t("stickers.safeStorage")}</span>
             </div>
-            <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-[var(--color-tami-orange)]/10 text-[var(--color-tami-orange)] border border-[var(--color-tami-orange)]/20 text-xs font-semibold">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[var(--color-tami-orange)]/10 text-[var(--color-tami-orange)] ring-1 ring-[var(--color-tami-orange)]/30 text-xs font-semibold">
               <Brain size={14} weight="bold" />
               <span>{t("stickers.socratic")}</span>
             </div>
-            <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-[var(--color-tami-violet)]/10 text-[var(--color-tami-violet)] border border-[var(--color-tami-violet)]/20 text-xs font-semibold">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[var(--color-tami-violet)]/10 text-[var(--color-tami-violet)] ring-1 ring-[var(--color-tami-violet)]/30 text-xs font-semibold">
               <ShieldCheck size={14} weight="bold" />
               <span>{t("stickers.interactive")}</span>
             </div>
@@ -115,7 +115,7 @@ function HomeContent() {
 
       {/* Mascot Speech Bubble Card (Unboxed Organic Mascot Illustration) */}
       <section className="max-w-4xl mx-auto px-4 sm:px-6 w-full">
-        <LayerCard className="rounded-3xl p-6 sm:p-7 bg-[var(--color-tami-surface)] border border-[var(--color-tami-line)]">
+        <LayerCard className="rounded-2xl p-6 sm:p-7 bg-[var(--color-tami-surface-subdued)] border-none ring-1 ring-[var(--color-tami-line)]/40">
           <div className="flex flex-col sm:flex-row items-center gap-5 sm:gap-7">
             {/* Real Mascot Image (Rendered Freely without Artificial Box) */}
             <div className="relative shrink-0 flex items-center justify-center">
@@ -135,13 +135,13 @@ function HomeContent() {
                 <span className="font-bold text-base text-[var(--color-tami-text)]">
                   {t("mascot.name")}
                 </span>
-                <Badge variant="warning" appearance="dot" className="text-[11px] w-fit mx-auto sm:mx-0">
+                <Badge variant="warning" appearance="dot" className="text-xs w-fit mx-auto sm:mx-0">
                   {t("mascot.role")}
                 </Badge>
               </div>
 
               {/* Bubble Body */}
-              <div className="p-3.5 sm:p-4 rounded-2xl bg-[var(--color-tami-surface-subdued)] border border-[var(--color-tami-line)] text-sm text-[var(--color-tami-text)] leading-relaxed">
+              <div className="p-3.5 sm:p-4 rounded-xl bg-[var(--color-tami-surface)] ring-1 ring-[var(--color-tami-line)]/30 text-sm text-[var(--color-tami-text)] leading-relaxed">
                 <p className="italic">
                   &ldquo;{t("mascot.dialog")}&rdquo;
                 </p>
@@ -176,7 +176,7 @@ function HomeContent() {
         {/* 4 Varied Layout Blocks */}
         <div className="grid grid-cols-1 md:grid-cols-12 gap-5">
           {/* Tile 1: Socratic AI Tutor (Col 7) */}
-          <LayerCard className="md:col-span-7 rounded-3xl p-6 sm:p-7 bg-[var(--color-tami-surface)] border border-[var(--color-tami-line)] flex flex-col justify-between space-y-5">
+          <LayerCard className="md:col-span-7 rounded-2xl p-6 sm:p-7 bg-[var(--color-tami-surface-subdued)] border-none ring-1 ring-[var(--color-tami-line)]/40 flex flex-col justify-between space-y-5">
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <div className="w-10 h-10 rounded-xl bg-[var(--color-tami-orange)]/15 text-[var(--color-tami-orange)] flex items-center justify-center">
@@ -196,20 +196,20 @@ function HomeContent() {
               </div>
 
               {/* Socratic Chat Simulation Bubble */}
-              <div className="space-y-2 p-3.5 rounded-2xl bg-[var(--color-tami-surface-subdued)] border border-[var(--color-tami-line)] text-xs">
+              <div className="space-y-2.5 p-3.5 rounded-xl bg-[var(--color-tami-surface)] ring-1 ring-[var(--color-tami-line)]/30 text-xs">
                 <div className="flex items-start gap-2">
-                  <div className="w-5.5 h-5.5 rounded-full bg-[var(--color-tami-surface-muted)] text-[var(--color-tami-text)] flex items-center justify-center font-bold text-[10px] shrink-0">
+                  <div className="w-6 h-6 rounded-full bg-[var(--color-tami-surface-subdued)] text-[var(--color-tami-text)] flex items-center justify-center font-bold text-xs shrink-0 ring-1 ring-[var(--color-tami-line)]/40">
                     U
                   </div>
-                  <div className="p-2.5 rounded-xl bg-[var(--color-tami-surface)] border border-[var(--color-tami-line)] text-[var(--color-tami-text)]">
+                  <div className="p-2.5 rounded-xl bg-[var(--color-tami-surface-subdued)] text-[var(--color-tami-text)]">
                     &ldquo;{t("features.demo.chatUserSample")}&rdquo;
                   </div>
                 </div>
                 <div className="flex items-start gap-2">
-                  <div className="w-5.5 h-5.5 rounded-full bg-[var(--color-tami-orange)] text-white flex items-center justify-center font-bold text-[10px] shrink-0">
+                  <div className="w-6 h-6 rounded-full bg-[var(--color-tami-orange)] text-white flex items-center justify-center font-bold text-xs shrink-0">
                     T
                   </div>
-                  <div className="p-2.5 rounded-xl bg-[var(--color-tami-orange)]/10 text-[var(--color-tami-text)] border border-[var(--color-tami-orange)]/20">
+                  <div className="p-2.5 rounded-xl bg-[var(--color-tami-orange)]/10 text-[var(--color-tami-text)]">
                     &ldquo;{t("features.demo.chatTamiSample")}&rdquo;
                   </div>
                 </div>
@@ -220,7 +220,7 @@ function HomeContent() {
               <Button
                 variant="secondary"
                 size="base"
-                className="w-full sm:w-auto rounded-full border border-[var(--color-tami-line)] bg-[var(--color-tami-surface)] text-[var(--color-tami-text)] hover:bg-[var(--color-tami-surface-subdued)] text-sm font-semibold hover:border-[var(--color-tami-orange)] transition-none"
+                className="w-full sm:w-auto rounded-full bg-[var(--color-tami-surface)] hover:bg-[var(--color-tami-surface-subdued)] text-[var(--color-tami-text)] ring-1 ring-[var(--color-tami-line)]/50 text-sm font-semibold min-h-[44px] px-6 transition-none cursor-pointer"
                 icon={<ArrowRight size={16} weight="bold" />}
               >
                 {t("features.chat.action")}
@@ -229,7 +229,7 @@ function HomeContent() {
           </LayerCard>
 
           {/* Tile 2: Visual Multimodal Threat Inspector (Col 5) */}
-          <LayerCard className="md:col-span-5 rounded-3xl p-6 sm:p-7 bg-[var(--color-tami-surface)] border border-[var(--color-tami-line)] flex flex-col justify-between space-y-5">
+          <LayerCard className="md:col-span-5 rounded-2xl p-6 sm:p-7 bg-[var(--color-tami-surface-subdued)] border-none ring-1 ring-[var(--color-tami-line)]/40 flex flex-col justify-between space-y-5">
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <div className="w-10 h-10 rounded-xl bg-[var(--color-tami-green)]/15 text-[var(--color-tami-green)] flex items-center justify-center">
@@ -249,14 +249,14 @@ function HomeContent() {
               </div>
 
               {/* Visual Threat Inspector Dropzone Preview */}
-              <div className="p-4 rounded-2xl bg-[var(--color-tami-surface-subdued)] border border-dashed border-[var(--color-tami-line)] text-center space-y-1.5">
+              <div className="p-4 rounded-xl bg-[var(--color-tami-surface)] ring-1 ring-[var(--color-tami-line)]/30 text-center space-y-1.5">
                 <div className="flex justify-center text-[var(--color-tami-orange)]">
                   <ShieldWarning size={26} weight="duotone" />
                 </div>
                 <div className="text-xs font-semibold text-[var(--color-tami-text)]">
                   {t("features.demo.dropScreenshot")}
                 </div>
-                <div className="text-[11px] text-[var(--color-tami-text-muted)]">
+                <div className="text-xs text-[var(--color-tami-text-muted)]">
                   {t("features.demo.dropScreenshotHint")}
                 </div>
               </div>
@@ -266,7 +266,7 @@ function HomeContent() {
               <Button
                 variant="secondary"
                 size="base"
-                className="w-full sm:w-auto rounded-full border border-[var(--color-tami-line)] bg-[var(--color-tami-surface)] text-[var(--color-tami-text)] hover:bg-[var(--color-tami-surface-subdued)] text-sm font-semibold hover:border-[var(--color-tami-green)] transition-none"
+                className="w-full sm:w-auto rounded-full bg-[var(--color-tami-surface)] hover:bg-[var(--color-tami-surface-subdued)] text-[var(--color-tami-text)] ring-1 ring-[var(--color-tami-line)]/50 text-sm font-semibold min-h-[44px] px-6 transition-none cursor-pointer"
                 icon={<ArrowRight size={16} weight="bold" />}
               >
                 {t("features.detector.action")}
@@ -275,7 +275,7 @@ function HomeContent() {
           </LayerCard>
 
           {/* Tile 3: Cyber Defense Lab (Col 5) */}
-          <LayerCard className="md:col-span-5 rounded-3xl p-6 sm:p-7 bg-[var(--color-tami-surface)] border border-[var(--color-tami-line)] flex flex-col justify-between space-y-5">
+          <LayerCard className="md:col-span-5 rounded-2xl p-6 sm:p-7 bg-[var(--color-tami-surface-subdued)] border-none ring-1 ring-[var(--color-tami-line)]/40 flex flex-col justify-between space-y-5">
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <div className="w-10 h-10 rounded-xl bg-[var(--color-tami-yellow)]/15 text-[var(--color-tami-yellow)] flex items-center justify-center">
@@ -295,13 +295,13 @@ function HomeContent() {
               </div>
 
               {/* Tactile Segmented Password Entropy Preview */}
-              <div className="p-3.5 rounded-2xl bg-[var(--color-tami-surface-subdued)] border border-[var(--color-tami-line)] space-y-2.5 text-xs">
+              <div className="p-3.5 rounded-xl bg-[var(--color-tami-surface)] ring-1 ring-[var(--color-tami-line)]/30 space-y-2.5 text-xs">
                 <div className="flex justify-between items-center">
                   <span className="font-semibold text-[var(--color-tami-text)] flex items-center gap-1.5">
                     <LockKey size={14} weight="bold" className="text-[var(--color-tami-green)]" />
                     <span>{t("features.demo.passwordStrength")}</span>
                   </span>
-                  <span className="text-[var(--color-tami-green)] font-mono font-bold px-2 py-0.5 rounded-md bg-[var(--color-tami-green)]/10 border border-[var(--color-tami-green)]/20">
+                  <span className="text-[var(--color-tami-green)] font-mono font-bold px-2 py-0.5 rounded-md bg-[var(--color-tami-green)]/10 ring-1 ring-[var(--color-tami-green)]/30">
                     {t("features.demo.passwordStrengthValue")}
                   </span>
                 </div>
@@ -318,7 +318,7 @@ function HomeContent() {
               <Button
                 variant="secondary"
                 size="base"
-                className="w-full sm:w-auto rounded-full border border-[var(--color-tami-line)] bg-[var(--color-tami-surface)] text-[var(--color-tami-text)] hover:bg-[var(--color-tami-surface-subdued)] text-sm font-semibold hover:border-[var(--color-tami-orange)] transition-none"
+                className="w-full sm:w-auto rounded-full bg-[var(--color-tami-surface)] hover:bg-[var(--color-tami-surface-subdued)] text-[var(--color-tami-text)] ring-1 ring-[var(--color-tami-line)]/50 text-sm font-semibold min-h-[44px] px-6 transition-none cursor-pointer"
                 icon={<ArrowRight size={16} weight="bold" />}
               >
                 {t("features.practice.action")}
@@ -327,7 +327,7 @@ function HomeContent() {
           </LayerCard>
 
           {/* Tile 4: Curriculum & Family Guide (Col 7) */}
-          <LayerCard className="md:col-span-7 rounded-3xl p-6 sm:p-7 bg-[var(--color-tami-surface)] border border-[var(--color-tami-line)] flex flex-col justify-between space-y-5">
+          <LayerCard className="md:col-span-7 rounded-2xl p-6 sm:p-7 bg-[var(--color-tami-surface-subdued)] border-none ring-1 ring-[var(--color-tami-line)]/40 flex flex-col justify-between space-y-5">
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <div className="w-10 h-10 rounded-xl bg-[var(--color-tami-violet)]/15 text-[var(--color-tami-violet)] flex items-center justify-center">
@@ -348,16 +348,16 @@ function HomeContent() {
 
               {/* Curriculum Topics Tags */}
               <div className="flex flex-wrap gap-2 pt-0.5 text-xs">
-                <span className="px-3 py-1.5 rounded-xl bg-[var(--color-tami-surface-subdued)] border border-[var(--color-tami-line)] font-medium text-[var(--color-tami-text)]">
+                <span className="px-3 py-1.5 rounded-xl bg-[var(--color-tami-surface)] ring-1 ring-[var(--color-tami-line)]/30 font-medium text-[var(--color-tami-text)]">
                   {t("features.demo.topicPasswords")}
                 </span>
-                <span className="px-3 py-1.5 rounded-xl bg-[var(--color-tami-surface-subdued)] border border-[var(--color-tami-line)] font-medium text-[var(--color-tami-text)]">
+                <span className="px-3 py-1.5 rounded-xl bg-[var(--color-tami-surface)] ring-1 ring-[var(--color-tami-line)]/30 font-medium text-[var(--color-tami-text)]">
                   {t("features.demo.topicPhishing")}
                 </span>
-                <span className="px-3 py-1.5 rounded-xl bg-[var(--color-tami-surface-subdued)] border border-[var(--color-tami-line)] font-medium text-[var(--color-tami-text)]">
+                <span className="px-3 py-1.5 rounded-xl bg-[var(--color-tami-surface)] ring-1 ring-[var(--color-tami-line)]/30 font-medium text-[var(--color-tami-text)]">
                   {t("features.demo.topicPrivacy")}
                 </span>
-                <span className="px-3 py-1.5 rounded-xl bg-[var(--color-tami-surface-subdued)] border border-[var(--color-tami-line)] font-medium text-[var(--color-tami-text)]">
+                <span className="px-3 py-1.5 rounded-xl bg-[var(--color-tami-surface)] ring-1 ring-[var(--color-tami-line)]/30 font-medium text-[var(--color-tami-text)]">
                   {t("features.demo.topicBullying")}
                 </span>
               </div>
@@ -367,7 +367,7 @@ function HomeContent() {
               <Button
                 variant="secondary"
                 size="base"
-                className="w-full sm:w-auto rounded-full border border-[var(--color-tami-line)] bg-[var(--color-tami-surface)] text-[var(--color-tami-text)] hover:bg-[var(--color-tami-surface-subdued)] text-sm font-semibold hover:border-[var(--color-tami-violet)] transition-none"
+                className="w-full sm:w-auto rounded-full bg-[var(--color-tami-surface)] hover:bg-[var(--color-tami-surface-subdued)] text-[var(--color-tami-text)] ring-1 ring-[var(--color-tami-line)]/50 text-sm font-semibold min-h-[44px] px-6 transition-none cursor-pointer"
                 icon={<ArrowRight size={16} weight="bold" />}
               >
                 {t("features.learn.action")}
@@ -379,7 +379,7 @@ function HomeContent() {
 
       {/* Trust & Safety Highlights */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-        <LayerCard className="rounded-3xl p-6 sm:p-8 bg-[var(--color-tami-surface)] border border-[var(--color-tami-line)]">
+        <LayerCard className="rounded-2xl p-6 sm:p-8 bg-[var(--color-tami-surface-subdued)] border-none ring-1 ring-[var(--color-tami-line)]/40">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 text-center md:text-left">
             <div className="space-y-1.5">
               <div className="w-10 h-10 rounded-xl bg-[var(--color-tami-green)]/15 text-[var(--color-tami-green)] flex items-center justify-center mx-auto md:mx-0">
