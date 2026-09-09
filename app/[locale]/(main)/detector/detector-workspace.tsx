@@ -9,6 +9,8 @@ import { Badge } from "@cloudflare/kumo/components/badge";
 import { LayerCard } from "@cloudflare/kumo/components/layer-card";
 import { Empty } from "@cloudflare/kumo/components/empty";
 import { Loader } from "@cloudflare/kumo/components/loader";
+import { Breadcrumbs } from "@cloudflare/kumo/components/breadcrumbs";
+import { PageHeader } from "@/components/kumo/page-header/page-header";
 import {
   UploadSimple,
   ShieldWarning,
@@ -24,6 +26,7 @@ import {
   XCircle,
   Image as ImageIcon,
   CaretDown,
+  House,
 } from "@phosphor-icons/react";
 import type { DetectorResult } from "@/lib/detector-schema";
 
@@ -51,6 +54,7 @@ const SAMPLE_PRESETS = [
 
 export function DetectorWorkspace() {
   const t = useTranslations("detector");
+  const tNav = useTranslations("nav");
   const locale = useLocale();
 
   const [imagePreview, setImagePreview] = useState<string | null>(null);
@@ -232,30 +236,34 @@ export function DetectorWorkspace() {
 
   return (
     <div className="flex flex-col w-full max-w-6xl mx-auto p-4 sm:p-6 space-y-6">
-      {/* Header Bar */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[var(--color-tami-line)]">
-        <div className="space-y-0.5">
-          <h1 className="text-xl font-bold tracking-tight text-[var(--color-tami-text)]">
-            {t("title")}
-          </h1>
-          <p className="text-xs text-[var(--color-tami-text-muted)] leading-relaxed">
-            {t("subtitle")}
-          </p>
-        </div>
-
-        {imagePreview && (
-          <Button
-            variant="secondary"
-            size="sm"
-            onClick={handleReset}
-            disabled={isLoading}
-            className="rounded-xl border border-[var(--color-tami-line)] bg-[var(--color-tami-surface)] text-[var(--color-tami-text)] hover:bg-[var(--color-tami-surface-subdued)] text-xs self-start sm:self-auto"
-            icon={<ArrowClockwise size={14} />}
-          >
-            {t("reupload")}
-          </Button>
-        )}
-      </div>
+      {/* PageHeader */}
+      <PageHeader
+        breadcrumbs={
+          <Breadcrumbs size="sm">
+            <Breadcrumbs.Link href="/" icon={<House size={14} />}>
+              {tNav("home")}
+            </Breadcrumbs.Link>
+            <Breadcrumbs.Separator />
+            <Breadcrumbs.Current>{t("title")}</Breadcrumbs.Current>
+          </Breadcrumbs>
+        }
+        title={t("title")}
+        description={t("subtitle")}
+        actions={
+          imagePreview ? (
+            <Button
+              variant="secondary"
+              size="sm"
+              onClick={handleReset}
+              disabled={isLoading}
+              className="rounded-xl border border-[var(--color-tami-line)] bg-[var(--color-tami-surface)] text-[var(--color-tami-text)] hover:bg-[var(--color-tami-surface-subdued)] text-xs self-start sm:self-auto"
+              icon={<ArrowClockwise size={14} />}
+            >
+              {t("reupload")}
+            </Button>
+          ) : undefined
+        }
+      />
 
       {/* Main Workspace Layout */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">

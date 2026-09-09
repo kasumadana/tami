@@ -10,6 +10,8 @@ import rehypeSanitize from "rehype-sanitize";
 import { Button } from "@cloudflare/kumo/components/button";
 import { Banner } from "@cloudflare/kumo/components/banner";
 import { LayerCard } from "@cloudflare/kumo/components/layer-card";
+import { Breadcrumbs } from "@cloudflare/kumo/components/breadcrumbs";
+import { PageHeader } from "@/components/kumo/page-header/page-header";
 import {
   PaperPlaneRight,
   Trash,
@@ -17,6 +19,7 @@ import {
   WarningCircle,
   LockKey,
   GoogleLogo,
+  House,
 } from "@phosphor-icons/react";
 
 interface Message {
@@ -41,6 +44,7 @@ export function ChatWorkspace({
   initialIsAuthenticated = false,
 }: ChatWorkspaceProps) {
   const t = useTranslations("chat");
+  const tNav = useTranslations("nav");
   const { data: session } = useSession();
   const isAuthenticated = initialIsAuthenticated || !!session?.user?.id;
 
@@ -220,40 +224,44 @@ export function ChatWorkspace({
 
   return (
     <div className="flex flex-col h-full max-w-6xl mx-auto w-full p-3.5 sm:p-6 min-h-0 overflow-hidden">
-      {/* Header Bar (Pinned Top) */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[var(--color-tami-line)] shrink-0">
-        <div className="space-y-0.5">
-          <h1 className="text-xl font-bold tracking-tight text-[var(--color-tami-text)]">
-            {t("title")}
-          </h1>
-          <p className="text-xs text-[var(--color-tami-text-muted)] leading-relaxed">
-            {t("subtitle")}
-          </p>
-        </div>
+      {/* PageHeader (Pinned Top) */}
+      <PageHeader
+        className="shrink-0 mb-3"
+        breadcrumbs={
+          <Breadcrumbs size="sm">
+            <Breadcrumbs.Link href="/" icon={<House size={14} />}>
+              {tNav("home")}
+            </Breadcrumbs.Link>
+            <Breadcrumbs.Separator />
+            <Breadcrumbs.Current>{t("title")}</Breadcrumbs.Current>
+          </Breadcrumbs>
+        }
+        title={t("title")}
+        description={t("subtitle")}
+        actions={
+          <div className="flex items-center gap-2 shrink-0">
+            <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[var(--color-tami-surface-subdued)] border border-[var(--color-tami-line)] text-xs font-semibold">
+              <Sparkle size={13} weight="fill" className="text-[var(--color-tami-orange)]" />
+              <span className="text-[var(--color-tami-text)] font-mono">
+                {isAuthenticated ? t("unlimitedTurns") : `${turnsRemaining}/3`}
+              </span>
+            </div>
 
-        {/* Action Controls & Quota Pill */}
-        <div className="flex items-center gap-2 shrink-0">
-          <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[var(--color-tami-surface-subdued)] border border-[var(--color-tami-line)] text-xs font-semibold">
-            <Sparkle size={13} weight="fill" className="text-[var(--color-tami-orange)]" />
-            <span className="text-[var(--color-tami-text)] font-mono">
-              {isAuthenticated ? t("unlimitedTurns") : `${turnsRemaining}/3`}
-            </span>
+            <Button
+              variant="secondary"
+              size="sm"
+              onClick={handleClearChat}
+              disabled={isLoading || messages.length <= 1}
+              aria-label={t("clear")}
+              title={t("clear")}
+              className="rounded-xl border border-[var(--color-tami-line)] bg-[var(--color-tami-surface)] text-[var(--color-tami-text)] hover:bg-[var(--color-tami-surface-subdued)] text-xs px-2.5 h-8"
+              icon={<Trash size={14} />}
+            >
+              <span className="hidden sm:inline">{t("clear")}</span>
+            </Button>
           </div>
-
-          <Button
-            variant="secondary"
-            size="sm"
-            onClick={handleClearChat}
-            disabled={isLoading || messages.length <= 1}
-            aria-label={t("clear")}
-            title={t("clear")}
-            className="rounded-xl border border-[var(--color-tami-line)] bg-[var(--color-tami-surface)] text-[var(--color-tami-text)] hover:bg-[var(--color-tami-surface-subdued)] text-xs px-2.5 h-8"
-            icon={<Trash size={14} />}
-          >
-            <span className="hidden sm:inline">{t("clear")}</span>
-          </Button>
-        </div>
-      </div>
+        }
+      />
 
       {/* Quota Exhausted Notice Banner (Guests Only) */}
       {!isAuthenticated && turnsRemaining <= 0 && (

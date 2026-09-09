@@ -8,6 +8,8 @@ import { Button } from "@cloudflare/kumo/components/button";
 import { Badge } from "@cloudflare/kumo/components/badge";
 import { Banner } from "@cloudflare/kumo/components/banner";
 import { LayerCard } from "@cloudflare/kumo/components/layer-card";
+import { Breadcrumbs } from "@cloudflare/kumo/components/breadcrumbs";
+import { PageHeader } from "@/components/kumo/page-header/page-header";
 import {
   Trophy,
   GraduationCap,
@@ -16,6 +18,7 @@ import {
   Key,
   SignIn,
   Sparkle,
+  House,
 } from "@phosphor-icons/react";
 import {
   subscribePractice,
@@ -33,6 +36,7 @@ import { LoginDialog } from "@/components/auth/login-dialog";
 
 export function ProfileWorkspace() {
   const t = useTranslations("profile");
+  const tNav = useTranslations("nav");
   const { data: session } = useSession();
 
   const [isLoginOpen, setIsLoginOpen] = useState(false);
@@ -96,29 +100,34 @@ export function ProfileWorkspace() {
 
   return (
     <div className="flex flex-col w-full max-w-6xl mx-auto p-4 sm:p-6 space-y-6">
-      {/* Header Bar */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[var(--color-tami-line)] print:hidden">
-        <div className="space-y-0.5">
-          <h1 className="text-xl font-bold tracking-tight text-[var(--color-tami-text)]">
-            {t("title")}
-          </h1>
-          <p className="text-xs text-[var(--color-tami-text-muted)] leading-relaxed">
-            {t("subtitle")}
-          </p>
-        </div>
-
-        {!session?.user && (
-          <Button
-            variant="primary"
-            size="sm"
-            onClick={() => setIsLoginOpen(true)}
-            className="rounded-full !bg-[var(--color-tami-orange)] hover:!bg-[var(--color-tami-orange-hover)] !text-white font-semibold text-xs h-8 px-4 self-start sm:self-auto"
-            icon={<SignIn size={14} weight="bold" />}
-          >
-            {t("guestSignInBtn")}
-          </Button>
-        )}
-      </div>
+      {/* PageHeader with Breadcrumbs and Sign In Action */}
+      <PageHeader
+        className="print:hidden"
+        breadcrumbs={
+          <Breadcrumbs size="sm">
+            <Breadcrumbs.Link href="/" icon={<House size={14} />}>
+              {tNav("home")}
+            </Breadcrumbs.Link>
+            <Breadcrumbs.Separator />
+            <Breadcrumbs.Current>{t("title")}</Breadcrumbs.Current>
+          </Breadcrumbs>
+        }
+        title={t("title")}
+        description={t("subtitle")}
+        actions={
+          !session?.user ? (
+            <Button
+              variant="primary"
+              size="sm"
+              onClick={() => setIsLoginOpen(true)}
+              className="rounded-full !bg-[var(--color-tami-orange)] hover:!bg-[var(--color-tami-orange-hover)] !text-white font-semibold text-xs h-8 px-4 self-start sm:self-auto"
+              icon={<SignIn size={14} weight="bold" />}
+            >
+              {t("guestSignInBtn")}
+            </Button>
+          ) : undefined
+        }
+      />
 
       {/* Guest Mode Callout using Official Kumo Banner */}
       {!session?.user && (

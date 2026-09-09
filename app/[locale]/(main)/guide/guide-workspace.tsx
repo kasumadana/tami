@@ -7,47 +7,45 @@ import { Link } from "@/i18n/navigation";
 import { Button } from "@cloudflare/kumo/components/button";
 import { Badge } from "@cloudflare/kumo/components/badge";
 import { LayerCard } from "@cloudflare/kumo/components/layer-card";
-import { Tabs } from "@cloudflare/kumo/components/tabs";
+import { Breadcrumbs } from "@cloudflare/kumo/components/breadcrumbs";
+import { PageHeader } from "@/components/kumo/page-header/page-header";
 import {
   ChalkboardTeacher,
   Clock,
   Lightbulb,
   ArrowRight,
   Handshake,
+  House,
 } from "@phosphor-icons/react";
 
 export function GuideWorkspace() {
   const t = useTranslations("guide");
+  const tNav = useTranslations("nav");
 
   const [activeTab, setActiveTab] = useState<"parents" | "educators">("parents");
 
   return (
     <div className="flex flex-col w-full max-w-6xl mx-auto p-4 sm:p-6 space-y-6">
-      {/* Header Bar */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[var(--color-tami-line)]">
-        <div className="space-y-0.5">
-          <h1 className="text-xl font-bold tracking-tight text-[var(--color-tami-text)]">
-            {t("title")}
-          </h1>
-          <p className="text-xs text-[var(--color-tami-text-muted)] leading-relaxed">
-            {t("subtitle")}
-          </p>
-        </div>
-
-        {/* Official Kumo Tabs Segmented Switcher */}
-        <div className="self-start sm:self-auto">
-          <Tabs
-            variant="segmented"
-            size="sm"
-            value={activeTab}
-            onValueChange={(val) => setActiveTab(val as "parents" | "educators")}
-            tabs={[
-              { value: "parents", label: t("tabParents") },
-              { value: "educators", label: t("tabEducators") },
-            ]}
-          />
-        </div>
-      </div>
+      {/* PageHeader with Breadcrumbs and Tabs */}
+      <PageHeader
+        breadcrumbs={
+          <Breadcrumbs size="sm">
+            <Breadcrumbs.Link href="/" icon={<House size={14} />}>
+              {tNav("home")}
+            </Breadcrumbs.Link>
+            <Breadcrumbs.Separator />
+            <Breadcrumbs.Current>{t("title")}</Breadcrumbs.Current>
+          </Breadcrumbs>
+        }
+        title={t("title")}
+        description={t("subtitle")}
+        tabs={[
+          { value: "parents", label: t("tabParents") },
+          { value: "educators", label: t("tabEducators") },
+        ]}
+        value={activeTab}
+        onValueChange={(val) => setActiveTab(val as "parents" | "educators")}
+      />
 
       {/* Tab Content 1: Parents & Family Guide */}
       {activeTab === "parents" && (

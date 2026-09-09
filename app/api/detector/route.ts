@@ -7,6 +7,7 @@ import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
 import { HumanMessage } from "@langchain/core/messages";
 
 export const maxDuration = 30; // 30 seconds max duration
+export const runtime = "nodejs";
 
 export async function POST(req: NextRequest) {
   try {

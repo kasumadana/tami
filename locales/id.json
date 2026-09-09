@@ -216,6 +216,7 @@
       "toolTitle": "Kalkulator Entropi & Estimasi Waktu Retas",
       "inputPlaceholder": "Ketik atau coba frasa sandi di sini...",
       "bitsLabel": "Nilai Entropi",
+      "bitsUnit": "Bit",
       "crackTimeLabel": "Estimasi Waktu Retas Komputer",
       "passphraseHint": "Target Tantangan: Capai minimal 80 bit entropi menggunakan frasa sandi panjang (misal: 4 kata acak).",
       "generatorBtn": "Buat Contoh Frasa Kuat",

@@ -7,6 +7,8 @@ import { Link } from "@/i18n/navigation";
 import { Button } from "@cloudflare/kumo/components/button";
 import { Badge } from "@cloudflare/kumo/components/badge";
 import { LayerCard } from "@cloudflare/kumo/components/layer-card";
+import { SensitiveInput } from "@cloudflare/kumo/components/sensitive-input";
+import { Meter } from "@cloudflare/kumo/components/meter";
 import {
   Key,
   Sparkle,
@@ -54,8 +56,7 @@ export function PasswordSimulator() {
   const entropy = useMemo(() => calculateEntropy(password), [password]);
   const crackTime = useMemo(() => getCrackTime(entropy, tPwd), [entropy, tPwd]);
 
-  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const val = e.target.value;
+  const onPasswordUpdate = (val: string) => {
     setPassword(val);
 
     const calculated = calculateEntropy(val);
@@ -77,21 +78,7 @@ export function PasswordSimulator() {
   const handleGenerateSample = () => {
     const randomIndex = Math.floor(Math.random() * SAMPLE_PASSPHRASES.length);
     const sample = SAMPLE_PASSPHRASES[randomIndex];
-    setPassword(sample);
-
-    if (!hasCompleted) {
-      setHasCompleted(true);
-      recordChallengeSuccess("password", "Entropy Master", 100);
-      try {
-        confetti({
-          particleCount: 80,
-          spread: 70,
-          origin: { y: 0.6 },
-        });
-      } catch {
-        // Ignore confetti error
-      }
-    }
+    onPasswordUpdate(sample);
   };
 
   const getEntropyStatus = () => {
@@ -151,40 +138,41 @@ export function PasswordSimulator() {
           </Button>
         </div>
 
-        {/* Password Input Field */}
+        {/* Password Input Field with Kumo SensitiveInput */}
         <div className="space-y-2">
-          <div className="relative">
-            <input
-              type="text"
-              value={password}
-              onChange={handlePasswordChange}
-              placeholder={tPwd("inputPlaceholder")}
-              className="w-full h-12 px-4 rounded-2xl bg-[var(--color-tami-surface-subdued)] border border-[var(--color-tami-line)] text-sm font-mono text-[var(--color-tami-text)] placeholder:text-[var(--color-tami-text-muted)] focus:outline-none focus:border-[var(--color-tami-orange)] focus:ring-1 focus:ring-[var(--color-tami-orange)]"
-            />
-          </div>
+          <SensitiveInput
+            value={password}
+            onValueChange={onPasswordUpdate}
+            placeholder={tPwd("inputPlaceholder")}
+            size="base"
+            className="w-full font-mono text-sm"
+          />
         </div>
 
         {/* Entropy Stats Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div className="p-4 rounded-2xl bg-[var(--color-tami-surface-subdued)] border border-[var(--color-tami-line)] space-y-1.5">
-            <span className="text-xs text-[var(--color-tami-text-muted)] block">
-              {tPwd("bitsLabel")}
-            </span>
+          <div className="p-4 rounded-2xl bg-[var(--color-tami-surface-subdued)] border border-[var(--color-tami-line)] space-y-2">
             <div className="flex items-center justify-between">
-              <span className={`text-2xl font-mono font-bold ${status.color}`}>
-                {entropy} Bits
+              <span className="text-xs text-[var(--color-tami-text-muted)]">
+                {tPwd("bitsLabel")}
               </span>
               <Badge variant={status.badgeVariant} appearance="filled" className="text-xs font-semibold">
                 {status.label}
               </Badge>
             </div>
-            {/* Entropy Progress Bar */}
-            <div className="w-full bg-[var(--color-tami-line)] h-2 rounded-full overflow-hidden mt-2">
-              <div
-                className={`h-full ${status.barColor} rounded-full transition-all duration-300`}
-                style={{ width: status.barWidth }}
-              />
+            <div className="text-2xl font-mono font-bold">
+              <span className={status.color}>{entropy}</span>
+              <span className="text-sm font-normal text-[var(--color-tami-text-muted)] ml-1.5">
+                {tPwd("bitsUnit")}
+              </span>
             </div>
+            {/* Kumo Meter */}
+            <Meter
+              label={tPwd("bitsLabel")}
+              showValue={false}
+              value={Math.min(100, Math.round((entropy / 80) * 100))}
+              max={100}
+            />
           </div>
 
           <div className="p-4 rounded-2xl bg-[var(--color-tami-surface-subdued)] border border-[var(--color-tami-line)] space-y-1.5 flex flex-col justify-center">

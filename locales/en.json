@@ -216,6 +216,7 @@
       "toolTitle": "Entropy Calculator & Crack Time Estimator",
       "inputPlaceholder": "Type or test a passphrase here...",
       "bitsLabel": "Entropy Score",
+      "bitsUnit": "Bits",
       "crackTimeLabel": "Estimated Computer Crack Time",
       "passphraseHint": "Challenge Goal: Reach at least 80 bits of entropy using a long passphrase (e.g. 4 random words).",
       "generatorBtn": "Generate Strong Sample",

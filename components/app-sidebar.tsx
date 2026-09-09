@@ -108,7 +108,7 @@ export function AppSidebarLayout({ children }: AppSidebarLayoutProps) {
           <Sidebar.Content className="flex-1 overflow-y-auto min-h-0 p-3 space-y-4">
             {/* Overview / Beranda */}
             <div className="space-y-1">
-              <span className="px-3 text-[11px] font-semibold text-[var(--color-tami-text-muted)] uppercase tracking-wider">
+              <span className="px-3 text-xs font-semibold text-[var(--color-tami-text-muted)]">
                 {t("overview")}
               </span>
               <Sidebar.Menu>
@@ -126,7 +126,7 @@ export function AppSidebarLayout({ children }: AppSidebarLayoutProps) {
 
             {/* Tools Group / Alat Perlindungan */}
             <div className="space-y-1">
-              <span className="px-3 text-[11px] font-semibold text-[var(--color-tami-text-muted)] uppercase tracking-wider">
+              <span className="px-3 text-xs font-semibold text-[var(--color-tami-text-muted)]">
                 {t("tools")}
               </span>
               <Sidebar.Menu>
@@ -146,7 +146,7 @@ export function AppSidebarLayout({ children }: AppSidebarLayoutProps) {
 
             {/* Resources Group / Materi & Panduan */}
             <div className="space-y-1">
-              <span className="px-3 text-[11px] font-semibold text-[var(--color-tami-text-muted)] uppercase tracking-wider">
+              <span className="px-3 text-xs font-semibold text-[var(--color-tami-text-muted)]">
                 {t("resources")}
               </span>
               <Sidebar.Menu>

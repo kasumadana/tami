@@ -6,6 +6,9 @@ import { Link } from "@/i18n/navigation";
 import { Button } from "@cloudflare/kumo/components/button";
 import { Badge } from "@cloudflare/kumo/components/badge";
 import { LayerCard } from "@cloudflare/kumo/components/layer-card";
+import { Breadcrumbs } from "@cloudflare/kumo/components/breadcrumbs";
+import { Meter } from "@cloudflare/kumo/components/meter";
+import { PageHeader } from "@/components/kumo/page-header/page-header";
 import {
   GraduationCap,
   Key,
@@ -17,6 +20,7 @@ import {
   BookOpen,
   Trophy,
   Sparkle,
+  House,
 } from "@phosphor-icons/react";
 import {
   subscribeLearn,
@@ -62,6 +66,7 @@ const MODULES_DATA = [
 
 export function LearnWorkspace() {
   const t = useTranslations("learn");
+  const tNav = useTranslations("nav");
 
   const rawSnapshot = useSyncExternalStore(
     subscribeLearn,
@@ -89,28 +94,32 @@ export function LearnWorkspace() {
 
   return (
     <div className="flex flex-col w-full max-w-6xl mx-auto p-4 sm:p-6 space-y-6">
-      {/* Header Bar */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[var(--color-tami-line)]">
-        <div className="space-y-0.5">
-          <h1 className="text-xl font-bold tracking-tight text-[var(--color-tami-text)]">
-            {t("title")}
-          </h1>
-          <p className="text-xs text-[var(--color-tami-text-muted)] leading-relaxed">
-            {t("subtitle")}
-          </p>
-        </div>
-
-        <Link href="/practice">
-          <Button
-            variant="secondary"
-            size="sm"
-            className="rounded-xl border border-[var(--color-tami-line)] bg-[var(--color-tami-surface)] text-[var(--color-tami-text)] hover:bg-[var(--color-tami-surface-subdued)] text-xs h-8"
-            icon={<ArrowRight size={14} weight="bold" />}
-          >
-            {t("goToPractice")}
-          </Button>
-        </Link>
-      </div>
+      {/* PageHeader with Breadcrumbs & Action */}
+      <PageHeader
+        breadcrumbs={
+          <Breadcrumbs size="sm">
+            <Breadcrumbs.Link href="/" icon={<House size={14} />}>
+              {tNav("home")}
+            </Breadcrumbs.Link>
+            <Breadcrumbs.Separator />
+            <Breadcrumbs.Current>{t("title")}</Breadcrumbs.Current>
+          </Breadcrumbs>
+        }
+        title={t("title")}
+        description={t("subtitle")}
+        actions={
+          <Link href="/practice">
+            <Button
+              variant="secondary"
+              size="sm"
+              className="rounded-xl border border-[var(--color-tami-line)] bg-[var(--color-tami-surface)] text-[var(--color-tami-text)] hover:bg-[var(--color-tami-surface-subdued)] text-xs h-8"
+              icon={<ArrowRight size={14} weight="bold" />}
+            >
+              {t("goToPractice")}
+            </Button>
+          </Link>
+        }
+      />
 
       {/* Curriculum Progress Header Card */}
       <LayerCard className="rounded-3xl p-5 sm:p-6 bg-[var(--color-tami-surface)] border border-[var(--color-tami-line)] space-y-3.5 shadow-xs">
@@ -119,7 +128,7 @@ export function LearnWorkspace() {
             <div className="w-8 h-8 rounded-xl bg-[var(--color-tami-yellow)]/15 text-[var(--color-tami-yellow)] flex items-center justify-center shrink-0">
               <Trophy size={18} weight="fill" />
             </div>
-            <h2 className="font-bold text-sm text-[var(--color-tami-text)]">
+            <h2 className="font-semibold text-sm text-[var(--color-tami-text)]">
               {t("progressTitle")}
             </h2>
           </div>
@@ -132,12 +141,12 @@ export function LearnWorkspace() {
           </span>
         </div>
 
-        <div className="w-full bg-[var(--color-tami-surface-subdued)] h-2 rounded-full overflow-hidden border border-[var(--color-tami-line)]">
-          <div
-            className="bg-[var(--color-tami-orange)] h-full rounded-full transition-all duration-300"
-            style={{ width: `${progressPercent}%` }}
-          />
-        </div>
+        <Meter
+          label={t("progressTitle")}
+          showValue={false}
+          value={progressPercent}
+          max={100}
+        />
 
         {completedCount === totalModules && (
           <div className="flex items-center gap-1.5 pt-0.5 text-xs text-[var(--color-tami-green)] font-semibold">
