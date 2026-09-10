@@ -75,7 +75,7 @@ export function GuideWorkspace() {
           {/* 3 Core Family Principles Grid */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <LayerCard className="rounded-2xl p-5 bg-[var(--color-tami-surface-subdued)] border-none ring-1 ring-[var(--color-tami-line)]/40 space-y-3">
-              <div className="w-10 h-10 rounded-xl bg-[var(--color-tami-orange)]/15 text-[var(--color-tami-orange)] flex items-center justify-center">
+              <div className="w-10 h-10 rounded-xl bg-[var(--color-tami-orange)]/10 text-[var(--color-tami-orange)] ring-1 ring-[var(--color-tami-orange)]/25 flex items-center justify-center">
                 <ShieldCheck size={22} weight="duotone" />
               </div>
               <h3 className="font-bold text-sm text-[var(--color-tami-text)]">
@@ -87,7 +87,7 @@ export function GuideWorkspace() {
             </LayerCard>
 
             <LayerCard className="rounded-2xl p-5 bg-[var(--color-tami-surface-subdued)] border-none ring-1 ring-[var(--color-tami-line)]/40 space-y-3">
-              <div className="w-10 h-10 rounded-xl bg-[var(--color-tami-green)]/15 text-[var(--color-tami-green)] flex items-center justify-center">
+              <div className="w-10 h-10 rounded-xl bg-[var(--color-tami-green)]/10 text-[var(--color-tami-green)] ring-1 ring-[var(--color-tami-green)]/25 flex items-center justify-center">
                 <MagnifyingGlass size={22} weight="duotone" />
               </div>
               <h3 className="font-bold text-sm text-[var(--color-tami-text)]">
@@ -99,7 +99,7 @@ export function GuideWorkspace() {
             </LayerCard>
 
             <LayerCard className="rounded-2xl p-5 bg-[var(--color-tami-surface-subdued)] border-none ring-1 ring-[var(--color-tami-line)]/40 space-y-3">
-              <div className="w-10 h-10 rounded-xl bg-[var(--color-tami-violet)]/15 text-[var(--color-tami-violet)] flex items-center justify-center">
+              <div className="w-10 h-10 rounded-xl bg-[var(--color-tami-violet)]/10 text-[var(--color-tami-violet)] ring-1 ring-[var(--color-tami-violet)]/25 flex items-center justify-center">
                 <ChatCircleDots size={22} weight="duotone" />
               </div>
               <h3 className="font-bold text-sm text-[var(--color-tami-text)]">
@@ -131,7 +131,7 @@ export function GuideWorkspace() {
               <Button
                 variant="primary"
                 size="base"
-                className="rounded-full bg-[var(--color-tami-orange)] hover:bg-[var(--color-tami-orange-hover)] text-white font-semibold text-sm px-5 min-h-[44px] shrink-0 transition-none cursor-pointer"
+                className="rounded-xl font-semibold text-sm px-5 min-h-[44px] shrink-0 transition-none cursor-pointer"
                 icon={<ArrowRight size={16} weight="bold" />}
               >
                 {t("parentCtaBtn")}
@@ -238,7 +238,7 @@ export function GuideWorkspace() {
               <Button
                 variant="primary"
                 size="base"
-                className="rounded-full bg-[var(--color-tami-violet)] hover:bg-[var(--color-tami-violet)]/90 text-white font-semibold text-sm px-5 min-h-[44px] shrink-0 transition-none cursor-pointer"
+                className="rounded-xl font-semibold text-sm px-5 min-h-[44px] shrink-0 transition-none cursor-pointer"
                 icon={<ArrowRight size={16} weight="bold" />}
               >
                 {t("eduCtaBtn")}

@@ -77,7 +77,7 @@ function HomeContent() {
               <Button
                 variant="primary"
                 size="lg"
-                className="w-full sm:w-auto rounded-full bg-[var(--color-tami-orange)] hover:bg-[var(--color-tami-orange-hover)] text-white font-semibold text-sm px-7 min-h-[48px] transition-none cursor-pointer"
+                className="w-full sm:w-auto rounded-full font-semibold text-sm px-7 min-h-[48px] transition-none cursor-pointer"
                 icon={<ArrowRight size={18} weight="bold" />}
               >
                 {t("hero.ctaPrimary")}
@@ -179,7 +179,7 @@ function HomeContent() {
           <LayerCard className="md:col-span-7 rounded-2xl p-6 sm:p-7 bg-[var(--color-tami-surface-subdued)] border-none ring-1 ring-[var(--color-tami-line)]/40 flex flex-col justify-between space-y-5">
             <div className="space-y-4">
               <div className="flex items-center justify-between">
-                <div className="w-10 h-10 rounded-xl bg-[var(--color-tami-orange)]/15 text-[var(--color-tami-orange)] flex items-center justify-center">
+                <div className="w-10 h-10 rounded-xl bg-[var(--color-tami-orange)]/10 text-[var(--color-tami-orange)] ring-1 ring-[var(--color-tami-orange)]/25 flex items-center justify-center">
                   <ChatCircleDots size={22} weight="bold" />
                 </div>
                 <Badge variant="warning" appearance="filled" className="text-xs">
@@ -394,7 +394,7 @@ function HomeContent() {
             </div>
 
             <div className="space-y-1.5">
-              <div className="w-10 h-10 rounded-xl bg-[var(--color-tami-orange)]/15 text-[var(--color-tami-orange)] flex items-center justify-center mx-auto md:mx-0">
+              <div className="w-10 h-10 rounded-xl bg-[var(--color-tami-orange)]/10 text-[var(--color-tami-orange)] ring-1 ring-[var(--color-tami-orange)]/25 flex items-center justify-center mx-auto md:mx-0">
                 <Brain size={22} weight="bold" />
               </div>
               <h4 className="font-semibold text-sm text-[var(--color-tami-text)]">

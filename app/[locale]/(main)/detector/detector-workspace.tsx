@@ -2,12 +2,11 @@
 
 import React, { useState, useRef, useEffect, useCallback } from "react";
 import Image from "next/image";
-import { useTranslations, useLocale } from "next-intl";
+import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { Button } from "@cloudflare/kumo/components/button";
 import { Badge } from "@cloudflare/kumo/components/badge";
 import { LayerCard } from "@cloudflare/kumo/components/layer-card";
-import { Empty } from "@cloudflare/kumo/components/empty";
 import { Loader } from "@cloudflare/kumo/components/loader";
 import { Breadcrumbs } from "@cloudflare/kumo/components/breadcrumbs";
 import { PageHeader } from "@/components/kumo/page-header/page-header";
@@ -28,6 +27,7 @@ import {
   CaretDown,
   House,
   Skull,
+  ArrowRight,
 } from "@phosphor-icons/react";
 import type { DetectorResult } from "@/lib/detector-schema";
 import { ExploitSandboxModal } from "@/components/detector/exploit-sandbox-modal";
@@ -57,7 +57,6 @@ const SAMPLE_PRESETS = [
 export function DetectorWorkspace() {
   const t = useTranslations("detector");
   const tNav = useTranslations("nav");
-  const locale = useLocale();
 
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [fileName, setFileName] = useState<string>("");
@@ -121,41 +120,45 @@ export function DetectorWorkspace() {
     return () => window.removeEventListener("paste", handlePaste);
   }, [processFile]);
 
-  // Drag and Drop Handlers
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) processFile(file);
+  };
+
   const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault();
     setIsDragging(true);
   };
 
-  const handleDragLeave = (e: React.DragEvent) => {
-    e.preventDefault();
+  const handleDragLeave = () => {
     setIsDragging(false);
   };
 
   const handleDrop = (e: React.DragEvent) => {
     e.preventDefault();
     setIsDragging(false);
-    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-      processFile(e.dataTransfer.files[0]);
-    }
-  };
-
-  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      processFile(e.target.files[0]);
-    }
+    const file = e.dataTransfer.files?.[0];
+    if (file) processFile(file);
   };
 
   const handleSampleSelect = (sample: (typeof SAMPLE_PRESETS)[0]) => {
     setErrorMsg(null);
     setResult(null);
-    setFileName(sample.id);
+    setFileName(`${sample.id}.svg`);
     setMimeType("image/svg+xml");
     setImagePreview(sample.dataUrl);
   };
 
+  const handleReset = () => {
+    setImagePreview(null);
+    setFileName("");
+    setResult(null);
+    setErrorMsg(null);
+    if (fileInputRef.current) fileInputRef.current.value = "";
+  };
+
   const handleAnalyze = async () => {
-    if (!imagePreview || isLoading) return;
+    if (!imagePreview) return;
 
     setIsLoading(true);
     setErrorMsg(null);
@@ -166,34 +169,22 @@ export function DetectorWorkspace() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           imageBase64: imagePreview,
-          mimeType,
-          language: locale === "en" ? "en" : "id",
+          mimeType: mimeType,
         }),
       });
 
+      const data = await response.json();
+
       if (!response.ok) {
-        const err = await response.json().catch(() => ({}));
-        throw new Error(err.message || t("analysisError"));
+        throw new Error(data.message || t("analysisError"));
       }
 
-      const data: DetectorResult = await response.json();
-      setResult(data);
+      setResult(data.data);
     } catch (err: unknown) {
-      const msg = err instanceof Error ? err.message : t("analysisError");
-      setErrorMsg(msg);
+      const errorMessage = err instanceof Error ? err.message : t("analysisError");
+      setErrorMsg(errorMessage);
     } finally {
       setIsLoading(false);
-    }
-  };
-
-  const handleReset = () => {
-    setImagePreview(null);
-    setFileName("");
-    setResult(null);
-    setErrorMsg(null);
-    setIsSandboxOpen(false);
-    if (fileInputRef.current) {
-      fileInputRef.current.value = "";
     }
   };
 
@@ -240,7 +231,7 @@ export function DetectorWorkspace() {
 
   return (
     <div className="flex flex-col w-full max-w-6xl mx-auto p-4 sm:p-6 space-y-6">
-      {/* PageHeader */}
+      {/* Top Header & Breadcrumbs */}
       <PageHeader
         breadcrumbs={
           <Breadcrumbs size="sm">
@@ -260,7 +251,7 @@ export function DetectorWorkspace() {
               size="base"
               onClick={handleReset}
               disabled={isLoading}
-              className="rounded-xl ring-1 ring-[var(--color-tami-line)]/50 bg-[var(--color-tami-surface)] text-[var(--color-tami-text)] hover:bg-[var(--color-tami-surface-subdued)] text-sm font-semibold min-h-[44px] px-4 self-start sm:self-auto cursor-pointer"
+              className="rounded-xl ring-1 ring-[var(--color-tami-line)]/50 bg-[var(--color-tami-surface)] text-[var(--color-tami-text)] hover:bg-[var(--color-tami-surface-subdued)] text-sm font-semibold min-h-[44px] px-4 cursor-pointer"
               icon={<ArrowClockwise size={16} />}
             >
               {t("reupload")}
@@ -269,12 +260,19 @@ export function DetectorWorkspace() {
         }
       />
 
-      {/* Main Workspace Layout */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        {/* Left Column: Dropzone & Image Preview (Col 5) */}
-        <div className="lg:col-span-5 space-y-4">
-          {!imagePreview ? (
-            /* Empty Dropzone State with Full Keyboard Accessibility */
+      {/* Global Error Banner */}
+      {errorMsg && (
+        <div className="p-4 rounded-xl bg-[var(--color-tami-red)]/10 ring-1 ring-[var(--color-tami-red)]/30 text-sm text-[var(--color-tami-red)] flex items-center gap-2.5">
+          <XCircle size={20} weight="fill" className="shrink-0" />
+          <span className="font-medium">{errorMsg}</span>
+        </div>
+      )}
+
+      {/* PRE-UPLOAD & INITIAL EXPLORATION STATE */}
+      {!imagePreview && (
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+          {/* Main Dropzone Column (Col 7) */}
+          <div className="lg:col-span-7 space-y-4">
             <div
               tabIndex={0}
               role="button"
@@ -289,7 +287,7 @@ export function DetectorWorkspace() {
                   fileInputRef.current?.click();
                 }
               }}
-              className={`p-8 rounded-2xl border-2 border-dashed flex flex-col items-center justify-center text-center cursor-pointer transition-none min-h-[300px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-tami-orange)] ${
+              className={`p-8 sm:p-10 rounded-2xl border-2 border-dashed flex flex-col items-center justify-center text-center cursor-pointer transition-none min-h-[340px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-tami-orange)] ${
                 isDragging
                   ? "border-[var(--color-tami-orange)] bg-[var(--color-tami-orange)]/5"
                   : "border-[var(--color-tami-line)]/60 bg-[var(--color-tami-surface)] hover:border-[var(--color-tami-orange)] hover:bg-[var(--color-tami-surface-subdued)]"
@@ -302,23 +300,95 @@ export function DetectorWorkspace() {
                 onChange={handleFileSelect}
                 className="hidden"
               />
-              <div className="w-14 h-14 rounded-2xl bg-[var(--color-tami-orange)]/15 text-[var(--color-tami-orange)] flex items-center justify-center mb-3">
+              <div className="icon-box-hero w-14 h-14 rounded-2xl mb-4">
                 <UploadSimple size={28} weight="bold" />
               </div>
-              <h3 className="font-bold text-sm text-[var(--color-tami-text)]">
+              <h3 className="font-bold text-base text-[var(--color-tami-text)]">
                 {t("dropzoneTitle")}
               </h3>
-              <p className="text-xs text-[var(--color-tami-text-muted)] mt-1 max-w-[240px]">
+              <p className="text-sm text-[var(--color-tami-text-muted)] mt-1.5 max-w-sm leading-relaxed">
                 {t("dropzoneHint")}
               </p>
-              <div className="mt-4 px-3.5 py-1.5 rounded-full bg-[var(--color-tami-surface-muted)] text-xs text-[var(--color-tami-text-muted)] font-medium">
-                {t("pasteHint")}
+              <div className="mt-5 inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-[var(--color-tami-surface-subdued)] ring-1 ring-[var(--color-tami-line)]/40 text-xs text-[var(--color-tami-text-muted)] font-medium">
+                <Sparkle size={14} className="text-[var(--color-tami-orange)] shrink-0" weight="fill" />
+                <span>{t("pasteHint")}</span>
               </div>
             </div>
-          ) : (
-            /* Active Image Preview Card */
+
+            {/* Zero Storage Privacy Strip */}
+            <div className="p-4 rounded-xl bg-[var(--color-tami-surface-subdued)] ring-1 ring-[var(--color-tami-line)]/40 flex items-center gap-3 text-sm text-[var(--color-tami-text-muted)]">
+              <div className="icon-box-neutral shrink-0">
+                <LockKey size={16} weight="fill" className="text-[var(--color-tami-green)]" />
+              </div>
+              <span className="text-xs sm:text-sm leading-relaxed">{t("zeroStorageNotice")}</span>
+            </div>
+          </div>
+
+          {/* Quick Preset Samples & Mascot Guidance (Col 5) */}
+          <div className="lg:col-span-5 space-y-4">
+            {/* 1-Click Interactive Preset Gallery */}
+            <LayerCard className="rounded-2xl p-5 bg-[var(--color-tami-surface-subdued)] border-none ring-1 ring-[var(--color-tami-line)]/40 space-y-3.5">
+              <div className="flex items-center gap-2">
+                <div className="icon-box-hero w-8 h-8 rounded-lg">
+                  <ImageIcon size={16} weight="bold" />
+                </div>
+                <h3 className="font-bold text-sm text-[var(--color-tami-text)]">
+                  {t("samplesTitle")}
+                </h3>
+              </div>
+
+              <div className="space-y-2">
+                {SAMPLE_PRESETS.map((sample) => (
+                  <button
+                    key={sample.id}
+                    type="button"
+                    onClick={() => handleSampleSelect(sample)}
+                    disabled={isLoading}
+                    className="w-full text-left p-3.5 rounded-xl ring-1 ring-[var(--color-tami-line)]/40 bg-[var(--color-tami-surface)] hover:bg-[var(--color-tami-surface-subdued)] hover:ring-[var(--color-tami-orange)] flex items-center justify-between gap-3 cursor-pointer disabled:opacity-60 min-h-[48px] group transition-none"
+                  >
+                    <div className="flex items-center gap-2.5 min-w-0">
+                      <div className="icon-box-neutral shrink-0 group-hover:bg-[var(--color-tami-orange)]/10 group-hover:text-[var(--color-tami-orange)]">
+                        <ImageIcon size={16} />
+                      </div>
+                      <span className="font-semibold text-sm text-[var(--color-tami-text)] truncate">
+                        {t(sample.titleKey as "sample1" | "sample2" | "sample3")}
+                      </span>
+                    </div>
+                    <ArrowRight size={16} weight="bold" className="text-[var(--color-tami-text-muted)] group-hover:text-[var(--color-tami-orange)] shrink-0" />
+                  </button>
+                ))}
+              </div>
+            </LayerCard>
+
+            {/* Mascot Warm Inquisitive Card */}
+            <div className="p-5 rounded-2xl bg-[var(--color-tami-surface)] ring-1 ring-[var(--color-tami-line)]/40 flex items-start gap-3.5">
+              <Image
+                src="/shai-wave.png"
+                alt="tami"
+                width={48}
+                height={48}
+                className="w-12 h-12 object-contain shrink-0"
+              />
+              <div className="space-y-1">
+                <h4 className="font-bold text-sm text-[var(--color-tami-text)]">
+                  Investigasi Mandiri Bersama tami
+                </h4>
+                <p className="text-xs text-[var(--color-tami-text-muted)] leading-relaxed">
+                  tami tidak sekadar memberi label, tetapi melatih matamu mengenali tanda-tanda jebakan digital: manipulasi domain, font janggal, dan tombol tiruan.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ACTIVE EVIDENCE & FORENSIC WORKBENCH (Post-Selection) */}
+      {imagePreview && (
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+          {/* Left Column: Evidence Viewer & Inspection Panel (Col 5) */}
+          <div className="lg:col-span-5 space-y-4">
             <LayerCard className="rounded-2xl p-4 bg-[var(--color-tami-surface-subdued)] border-none ring-1 ring-[var(--color-tami-line)]/40 space-y-4">
-              <div className="relative aspect-video w-full rounded-xl overflow-hidden bg-black/5 dark:bg-white/5 border border-[var(--color-tami-line)]/50 flex items-center justify-center">
+              <div className="relative aspect-video w-full rounded-xl overflow-hidden bg-black/5 dark:bg-white/5 ring-1 ring-[var(--color-tami-line)]/50 flex items-center justify-center">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={imagePreview}
@@ -327,251 +397,253 @@ export function DetectorWorkspace() {
                 />
               </div>
 
-              <div className="flex items-center justify-between text-xs text-[var(--color-tami-text-muted)]">
+              <div className="flex items-center justify-between text-xs text-[var(--color-tami-text-muted)] px-1">
                 <span className="truncate max-w-[200px] font-mono">{fileName || "screenshot.png"}</span>
-                <span className="uppercase font-semibold text-xs">{mimeType.split("/")[1] || "IMAGE"}</span>
+                <span className="uppercase font-semibold px-2 py-0.5 rounded-md bg-[var(--color-tami-surface)] ring-1 ring-[var(--color-tami-line)]/40">
+                  {mimeType.split("/")[1] || "IMAGE"}
+                </span>
               </div>
 
-              <Button
-                variant="primary"
-                size="base"
-                onClick={handleAnalyze}
-                disabled={isLoading}
-                className="w-full rounded-xl font-semibold text-sm min-h-[44px] cursor-pointer"
-                icon={isLoading ? <ArrowClockwise size={18} className="animate-spin" /> : <ShieldWarning size={18} weight="bold" />}
-              >
-                {isLoading ? t("analyzing") : t("analyzeAction")}
-              </Button>
-            </LayerCard>
-          )}
-
-          {/* Sample Preset Selector */}
-          <div className="space-y-2">
-            <span className="text-xs font-semibold text-[var(--color-tami-text-muted)]">
-              {t("samplesTitle")}
-            </span>
-            <div className="space-y-1.5">
-              {SAMPLE_PRESETS.map((sample) => (
-                <button
-                  key={sample.id}
-                  type="button"
-                  onClick={() => handleSampleSelect(sample)}
+              {!result && (
+                <Button
+                  variant="primary"
+                  size="base"
+                  onClick={handleAnalyze}
                   disabled={isLoading}
-                  className="w-full text-left px-3.5 py-3 rounded-xl ring-1 ring-[var(--color-tami-line)]/40 bg-[var(--color-tami-surface)] hover:bg-[var(--color-tami-surface-subdued)] hover:ring-[var(--color-tami-orange)] text-xs text-[var(--color-tami-text)] flex items-center gap-2 cursor-pointer disabled:opacity-60 min-h-[44px]"
+                  className="w-full rounded-xl font-semibold text-sm min-h-[44px] cursor-pointer"
+                  icon={isLoading ? <ArrowClockwise size={18} className="animate-spin" /> : <ShieldWarning size={18} weight="bold" />}
                 >
-                  <ImageIcon size={16} className="text-[var(--color-tami-orange)] shrink-0" />
-                  <span className="font-medium truncate">{t(sample.titleKey as "sample1" | "sample2" | "sample3")}</span>
-                </button>
-              ))}
+                  {isLoading ? t("analyzing") : t("analyzeAction")}
+                </Button>
+              )}
+            </LayerCard>
+
+            {/* OCR Extracted Text Box (Colocated with Evidence) */}
+            {result?.ocrText && (
+              <details className="p-4 rounded-2xl bg-[var(--color-tami-surface-subdued)] ring-1 ring-[var(--color-tami-line)]/40 text-xs group" open>
+                <summary className="font-semibold text-sm text-[var(--color-tami-text)] cursor-pointer select-none flex items-center justify-between">
+                  <span className="flex items-center gap-2">
+                    <FileText size={16} className="text-[var(--color-tami-orange)]" />
+                    <span>{t("ocrTitle")}</span>
+                  </span>
+                  <CaretDown size={14} className="text-[var(--color-tami-text-muted)] group-open:rotate-180 transition-transform shrink-0" />
+                </summary>
+                <p className="mt-3 p-3 rounded-xl bg-[var(--color-tami-surface)] ring-1 ring-[var(--color-tami-line)]/30 font-mono text-xs text-[var(--color-tami-text-muted)] whitespace-pre-wrap break-all break-words max-h-48 overflow-y-auto leading-relaxed">
+                  {result.ocrText}
+                </p>
+              </details>
+            )}
+
+            {/* Quick Switch Sample Preset Bar */}
+            <div className="p-3.5 rounded-2xl bg-[var(--color-tami-surface)] ring-1 ring-[var(--color-tami-line)]/40 space-y-2">
+              <span className="text-xs font-semibold text-[var(--color-tami-text-muted)] block">
+                {t("samplesTitle")}
+              </span>
+              <div className="grid grid-cols-3 gap-2">
+                {SAMPLE_PRESETS.map((sample) => (
+                  <button
+                    key={sample.id}
+                    type="button"
+                    onClick={() => handleSampleSelect(sample)}
+                    disabled={isLoading}
+                    className="px-2 py-2 rounded-lg bg-[var(--color-tami-surface-subdued)] hover:bg-[var(--color-tami-surface-muted)] text-[11px] font-medium text-[var(--color-tami-text)] truncate text-center cursor-pointer min-h-[36px]"
+                  >
+                    {t(sample.titleKey as "sample1" | "sample2" | "sample3")}
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
 
-          {/* Zero Storage Privacy Badge */}
-          <div className="p-3.5 rounded-2xl bg-[var(--color-tami-surface-subdued)] ring-1 ring-[var(--color-tami-line)]/40 flex items-start gap-2 text-xs text-[var(--color-tami-text-muted)] leading-relaxed">
-            <LockKey size={16} weight="fill" className="text-[var(--color-tami-green)] shrink-0 mt-0.5" />
-            <span>{t("zeroStorageNotice")}</span>
-          </div>
-        </div>
-
-        {/* Right Column: Analysis Result / State (Col 7) */}
-        <div className="lg:col-span-7 flex flex-col justify-between">
-          {errorMsg && (
-            <div className="p-4 rounded-2xl bg-[var(--color-tami-red)]/10 border border-[var(--color-tami-red)]/25 text-xs text-[var(--color-tami-red)] flex items-center gap-2">
-              <XCircle size={18} weight="fill" className="shrink-0" />
-              <span>{errorMsg}</span>
-            </div>
-          )}
-
-          {isLoading && (
-            <LayerCard className="rounded-2xl p-8 bg-[var(--color-tami-surface-subdued)] border-none ring-1 ring-[var(--color-tami-line)]/40 flex flex-col items-center justify-center text-center space-y-4 min-h-[380px]">
-              <div className="flex flex-col items-center justify-center gap-3">
+          {/* Right Column: Forensic Intelligence & Findings (Col 7) */}
+          <div className="lg:col-span-7 space-y-4">
+            {/* Loading State Skeleton */}
+            {isLoading && (
+              <LayerCard className="rounded-2xl p-8 bg-[var(--color-tami-surface-subdued)] border-none ring-1 ring-[var(--color-tami-line)]/40 flex flex-col items-center justify-center text-center space-y-4 min-h-[380px]">
                 <Loader size="lg" />
-                <div className="space-y-1 mt-2">
-                  <h3 className="font-bold text-sm text-[var(--color-tami-text)]">
+                <div className="space-y-1.5 mt-2">
+                  <h3 className="font-bold text-base text-[var(--color-tami-text)]">
                     {t("analyzing")}
                   </h3>
-                  <p className="text-xs text-[var(--color-tami-text-muted)] max-w-xs leading-relaxed">
+                  <p className="text-sm text-[var(--color-tami-text-muted)] max-w-sm leading-relaxed">
                     {t("analyzingSub")}
                   </p>
                 </div>
-              </div>
-            </LayerCard>
-          )}
+              </LayerCard>
+            )}
 
-          {!isLoading && !result && !errorMsg && (
-            <Empty
-              size="base"
-              className="rounded-2xl ring-1 ring-[var(--color-tami-line)]/40 bg-[var(--color-tami-surface-subdued)] min-h-[380px] justify-center p-8 text-center border-none"
-              icon={
-                <div className="w-12 h-12 rounded-xl bg-[var(--color-tami-surface)] ring-1 ring-[var(--color-tami-line)]/40 text-[var(--color-tami-text-muted)] flex items-center justify-center mb-1">
-                  <FileText size={24} />
+            {/* Ready to Analyze Waiting State */}
+            {!isLoading && !result && (
+              <LayerCard className="rounded-2xl p-8 bg-[var(--color-tami-surface-subdued)] border-none ring-1 ring-[var(--color-tami-line)]/40 flex flex-col items-center justify-center text-center space-y-4 min-h-[340px]">
+                <div className="icon-box-hero w-14 h-14 rounded-2xl mb-1">
+                  <ShieldCheck size={28} weight="bold" />
                 </div>
-              }
-              title={t("emptyTitle")}
-              description={t("emptyDesc")}
-            />
-          )}
-
-          {!isLoading && result && (
-            <div className="space-y-4">
-              {/* Verdict Summary Card */}
-              <LayerCard className="rounded-2xl p-5 sm:p-6 bg-[var(--color-tami-surface-subdued)] border-none ring-1 ring-[var(--color-tami-line)]/40 space-y-4">
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[var(--color-tami-line)]/50">
-                  <div className="space-y-1">
-                    <span className="text-xs font-semibold text-[var(--color-tami-text-muted)]">
-                      {t("statusEvaluation")}
-                    </span>
-                    <h2 className="text-lg font-bold text-[var(--color-tami-text)]">
-                      {result.headline}
-                    </h2>
-                  </div>
-                  <div className="flex items-center gap-2 shrink-0">
-                    {getRiskBadge(result.riskLevel)}
-                    <span className="text-xs font-mono text-[var(--color-tami-text-muted)] font-semibold">
-                      {t("accuracy", { score: result.confidenceScore })}
-                    </span>
-                  </div>
+                <div className="space-y-1.5 max-w-sm">
+                  <h3 className="font-bold text-base text-[var(--color-tami-text)]">
+                    Bukti Siap Diperiksa
+                  </h3>
+                  <p className="text-sm text-[var(--color-tami-text-muted)] leading-relaxed">
+                    Klik tombol <strong>{t("analyzeAction")}</strong> di bawah gambar untuk memulai pemindaian mendalam menggunakan model multimodal AI tami.
+                  </p>
                 </div>
+                <Button
+                  variant="primary"
+                  size="base"
+                  onClick={handleAnalyze}
+                  className="rounded-xl font-semibold text-sm min-h-[44px] px-6 cursor-pointer mt-2"
+                  icon={<ShieldWarning size={18} weight="bold" />}
+                >
+                  {t("analyzeAction")}
+                </Button>
+              </LayerCard>
+            )}
 
-                <p className="text-sm text-[var(--color-tami-text)] leading-relaxed">
-                  {result.summary}
-                </p>
+            {/* Forensic Result Dashboard */}
+            {!isLoading && result && (
+              <div className="space-y-4">
+                {/* Hero Verdict Card */}
+                <LayerCard className="rounded-2xl p-5 sm:p-6 bg-[var(--color-tami-surface-subdued)] border-none ring-1 ring-[var(--color-tami-line)]/40 space-y-4">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[var(--color-tami-line)]/50">
+                    <div className="space-y-1">
+                      <span className="text-xs font-semibold text-[var(--color-tami-text-muted)]">
+                        {t("statusEvaluation")}
+                      </span>
+                      <h2 className="text-lg font-bold text-[var(--color-tami-text)]">
+                        {result.headline}
+                      </h2>
+                    </div>
+                    <div className="flex items-center gap-2.5 shrink-0">
+                      {getRiskBadge(result.riskLevel)}
+                      <span className="text-xs font-mono text-[var(--color-tami-text-muted)] font-semibold">
+                        {t("accuracy", { score: result.confidenceScore })}
+                      </span>
+                    </div>
+                  </div>
 
-                {/* Detected Anomalies List */}
-                {result.anomaliesFound && result.anomaliesFound.length > 0 && (
-                  <div className="space-y-2 pt-1">
-                    <span className="text-xs font-bold text-[var(--color-tami-text)] flex items-center gap-1.5">
-                      <WarningCircle size={15} weight="bold" className="text-[var(--color-tami-red)]" />
-                      <span>{t("anomaliesTitle")}</span>
-                    </span>
-                    <div className="space-y-2">
-                      {result.anomaliesFound.map((item, idx) => (
-                        <div
-                          key={idx}
-                          className="p-3 rounded-xl bg-[var(--color-tami-surface)] ring-1 ring-[var(--color-tami-line)]/30 space-y-1 text-xs"
-                        >
-                          <div className="flex items-center justify-between font-semibold text-[var(--color-tami-text)]">
-                            <span>{item.category}</span>
-                            <Badge
-                              variant={item.severity === "high" ? "error" : "warning"}
-                              appearance="filled"
-                              className="text-xs uppercase font-mono px-2 py-0.5"
-                            >
-                              {item.severity}
-                            </Badge>
+                  <p className="text-sm text-[var(--color-tami-text)] leading-relaxed">
+                    {result.summary}
+                  </p>
+
+                  {/* Detected Anomalies List */}
+                  {result.anomaliesFound && result.anomaliesFound.length > 0 && (
+                    <div className="space-y-2 pt-1">
+                      <span className="text-xs font-bold text-[var(--color-tami-text)] flex items-center gap-1.5">
+                        <WarningCircle size={16} weight="bold" className="text-[var(--color-tami-red)]" />
+                        <span>{t("anomaliesTitle")}</span>
+                      </span>
+                      <div className="space-y-2">
+                        {result.anomaliesFound.map((item, idx) => (
+                          <div
+                            key={idx}
+                            className="p-3.5 rounded-xl bg-[var(--color-tami-surface)] ring-1 ring-[var(--color-tami-line)]/30 space-y-1 text-xs"
+                          >
+                            <div className="flex items-center justify-between font-semibold text-sm text-[var(--color-tami-text)]">
+                              <span>{item.category}</span>
+                              <Badge
+                                variant={item.severity === "high" ? "error" : "warning"}
+                                appearance="filled"
+                                className="text-xs uppercase font-mono px-2 py-0.5"
+                              >
+                                {item.severity}
+                              </Badge>
+                            </div>
+                            <p className="text-sm text-[var(--color-tami-text-muted)] leading-relaxed">
+                              {item.description}
+                            </p>
                           </div>
-                          <p className="text-xs text-[var(--color-tami-text-muted)] leading-relaxed">
-                            {item.description}
-                          </p>
-                        </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </LayerCard>
+
+                {/* Exploit Impact Sandbox Trigger Card */}
+                {result.exploitSimulation && (
+                  <div className="p-4 sm:p-5 rounded-2xl bg-[var(--color-tami-surface-subdued)] ring-1 ring-[var(--color-tami-line)]/50 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <div className="flex items-start gap-3">
+                      <div className="w-10 h-10 rounded-xl bg-[var(--color-tami-red)]/10 text-[var(--color-tami-red)] ring-1 ring-[var(--color-tami-red)]/25 flex items-center justify-center shrink-0">
+                        <Skull size={20} weight="bold" />
+                      </div>
+                      <div className="space-y-0.5">
+                        <h3 className="text-sm font-bold text-[var(--color-tami-text)]">
+                          Simulasi Dampak Serangan
+                        </h3>
+                        <p className="text-xs sm:text-sm text-[var(--color-tami-text-muted)] leading-relaxed">
+                          {result.exploitSimulation.scenarioTitle}
+                        </p>
+                      </div>
+                    </div>
+                    <Button
+                      variant="secondary"
+                      size="base"
+                      onClick={() => setIsSandboxOpen(true)}
+                      className="rounded-xl ring-1 ring-[var(--color-tami-line)]/50 bg-[var(--color-tami-surface)] text-[var(--color-tami-text)] hover:bg-[var(--color-tami-surface-muted)] text-sm font-semibold min-h-[44px] px-4 cursor-pointer shrink-0"
+                      icon={<Skull size={16} weight="bold" className="text-[var(--color-tami-red)]" />}
+                    >
+                      Buka Simulasi Sandbox
+                    </Button>
+                  </div>
+                )}
+
+                {/* Socratic Reflection Prompts Card */}
+                {result.reflectionQuestions && result.reflectionQuestions.length > 0 && (
+                  <div className="p-5 rounded-2xl bg-[var(--color-tami-orange)]/10 ring-1 ring-[var(--color-tami-orange)]/30 space-y-3">
+                    <div className="flex items-center gap-2.5">
+                      <Image
+                        src="/icon.svg"
+                        alt="tami"
+                        width={28}
+                        height={28}
+                        className="w-7 h-7 object-contain shrink-0"
+                      />
+                      <h3 className="font-bold text-sm text-[var(--color-tami-text)]">
+                        {t("reflectionTitle")}
+                      </h3>
+                    </div>
+                    <ul className="space-y-2 text-sm text-[var(--color-tami-text)] list-disc list-inside leading-relaxed">
+                      {result.reflectionQuestions.map((q, idx) => (
+                        <li key={idx} className="font-medium">
+                          {q}
+                        </li>
                       ))}
+                    </ul>
+                    <div className="pt-2 flex justify-end">
+                      <Link href={`/chat?topic=detector&scenario=${encodeURIComponent(result.headline)}`}>
+                        <Button
+                          variant="primary"
+                          size="base"
+                          className="rounded-xl font-semibold text-sm px-5 min-h-[44px] cursor-pointer"
+                          icon={<ChatCircleDots size={16} weight="bold" />}
+                        >
+                          {t("askTami")}
+                        </Button>
+                      </Link>
                     </div>
                   </div>
                 )}
-              </LayerCard>
 
-              {/* Exploit Impact Sandbox Trigger Card */}
-              {result.exploitSimulation && (
-                <div className="p-4 sm:p-5 rounded-2xl bg-[var(--color-tami-surface-subdued)] ring-1 ring-[var(--color-tami-line)]/50 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                  <div className="flex items-start gap-3">
-                    <div className="w-9 h-9 rounded-xl bg-[var(--color-tami-red)]/10 text-[var(--color-tami-red)] flex items-center justify-center shrink-0">
-                      <Skull size={20} weight="bold" />
-                    </div>
-                    <div className="space-y-0.5">
-                      <h3 className="text-xs sm:text-sm font-bold text-[var(--color-tami-text)]">
-                        Simulasi Dampak Serangan
-                      </h3>
-                      <p className="text-xs text-[var(--color-tami-text-muted)] leading-relaxed">
-                        {result.exploitSimulation.scenarioTitle}
-                      </p>
-                    </div>
-                  </div>
-                  <Button
-                    variant="secondary"
-                    size="base"
-                    onClick={() => setIsSandboxOpen(true)}
-                    className="rounded-xl ring-1 ring-[var(--color-tami-line)]/50 bg-[var(--color-tami-surface)] text-[var(--color-tami-text)] hover:bg-[var(--color-tami-surface-muted)] text-xs sm:text-sm font-semibold min-h-[44px] px-4 cursor-pointer shrink-0"
-                    icon={<Skull size={16} weight="bold" className="text-[var(--color-tami-red)]" />}
-                  >
-                    Buka Simulasi Sandbox
-                  </Button>
-                </div>
-              )}
-
-              {/* Socratic Reflection Prompts Card */}
-              {result.reflectionQuestions && result.reflectionQuestions.length > 0 && (
-                <div className="p-5 rounded-2xl bg-[var(--color-tami-orange)]/10 ring-1 ring-[var(--color-tami-orange)]/30 space-y-3">
-                  <div className="flex items-center gap-2">
-                    <Image
-                      src="/icon.svg"
-                      alt="tami"
-                      width={26}
-                      height={26}
-                      className="w-6.5 h-6.5 object-contain shrink-0"
-                    />
-                    <h3 className="font-bold text-xs text-[var(--color-tami-text)]">
-                      {t("reflectionTitle")}
-                    </h3>
-                  </div>
-                  <ul className="space-y-2 text-xs text-[var(--color-tami-text)] list-disc list-inside leading-relaxed">
-                    {result.reflectionQuestions.map((q, idx) => (
-                      <li key={idx} className="font-medium">
-                        {q}
-                      </li>
-                    ))}
-                  </ul>
-                  <div className="pt-1 flex justify-end">
-                    <Link href={`/chat?topic=detector&scenario=${encodeURIComponent(result.headline)}`}>
-                      <Button
-                        variant="primary"
-                        size="base"
-                        className="rounded-full font-semibold text-xs px-5 min-h-[44px] cursor-pointer"
-                        icon={<ChatCircleDots size={16} weight="bold" />}
-                      >
-                        {t("askTami")}
-                      </Button>
-                    </Link>
-                  </div>
-                </div>
-              )}
-
-              {/* Recommended Defense Actions */}
-              {result.safetyTips && result.safetyTips.length > 0 && (
-                <div className="p-4 rounded-xl bg-[var(--color-tami-surface-subdued)] ring-1 ring-[var(--color-tami-line)]/40 space-y-2 text-xs">
-                  <span className="font-bold text-[var(--color-tami-text)] flex items-center gap-1.5">
-                    <Lightbulb size={16} weight="fill" className="text-[var(--color-tami-yellow)]" />
-                    <span>{t("tipsTitle")}</span>
-                  </span>
-                  <ul className="space-y-1.5 text-xs text-[var(--color-tami-text-muted)]">
-                    {result.safetyTips.map((tip, idx) => (
-                      <li key={idx} className="flex items-start gap-2">
-                        <CheckCircle size={14} weight="bold" className="text-[var(--color-tami-green)] shrink-0 mt-0.5" />
-                        <span>{tip}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-
-              {/* OCR Transcription Preview */}
-              {result.ocrText && (
-                <details className="p-3.5 rounded-xl bg-[var(--color-tami-surface-subdued)] ring-1 ring-[var(--color-tami-line)]/40 text-xs group">
-                  <summary className="font-semibold text-[var(--color-tami-text)] cursor-pointer select-none flex items-center justify-between">
-                    <span className="flex items-center gap-1.5">
-                      <FileText size={15} />
-                      <span>{t("ocrTitle")}</span>
+                {/* Recommended Defense Actions */}
+                {result.safetyTips && result.safetyTips.length > 0 && (
+                  <div className="p-5 rounded-2xl bg-[var(--color-tami-surface-subdued)] ring-1 ring-[var(--color-tami-line)]/40 space-y-2.5">
+                    <span className="font-bold text-sm text-[var(--color-tami-text)] flex items-center gap-2">
+                      <Lightbulb size={18} weight="fill" className="text-[var(--color-tami-yellow)]" />
+                      <span>{t("tipsTitle")}</span>
                     </span>
-                    <CaretDown size={14} className="text-[var(--color-tami-text-muted)] group-open:rotate-180 transition-transform shrink-0" />
-                  </summary>
-                  <p className="mt-2.5 p-2.5 rounded-lg bg-[var(--color-tami-surface)] ring-1 ring-[var(--color-tami-line)]/30 font-mono text-xs text-[var(--color-tami-text-muted)] whitespace-pre-wrap break-all break-words max-h-48 overflow-y-auto leading-relaxed">
-                    {result.ocrText}
-                  </p>
-                </details>
-              )}
-            </div>
-          )}
+                    <ul className="space-y-2 text-sm text-[var(--color-tami-text-muted)]">
+                      {result.safetyTips.map((tip, idx) => (
+                        <li key={idx} className="flex items-start gap-2.5">
+                          <CheckCircle size={16} weight="bold" className="text-[var(--color-tami-green)] shrink-0 mt-0.5" />
+                          <span className="leading-relaxed">{tip}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Exploit Impact Sandbox Modal */}
       <ExploitSandboxModal

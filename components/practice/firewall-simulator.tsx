@@ -507,7 +507,7 @@ export function FirewallSimulator() {
                 variant="secondary"
                 size="base"
                 onClick={handleReset}
-                className="rounded-xl text-xs min-h-[44px]"
+                className="rounded-xl text-sm font-semibold min-h-[44px] px-4"
                 icon={<ArrowClockwise size={15} weight="bold" />}
               >
                 {t("resetChallenge")}
@@ -516,7 +516,7 @@ export function FirewallSimulator() {
                 variant="primary"
                 size="base"
                 onClick={() => setIsDebriefOpen(true)}
-                className="rounded-full text-xs min-h-[44px] px-5 font-semibold"
+                className="rounded-xl text-sm min-h-[44px] px-5 font-semibold"
                 icon={<ChatCircleDots size={16} weight="bold" />}
               >
                 {t("socraticDebriefBtn")}

@@ -47,7 +47,9 @@ typography:
     letterSpacing: "0.01em"
 rounded:
   sm: "6px"
+  xs: "8px"
   md: "10px"
+  base: "12px"
   lg: "16px"
   xl: "20px"
   pill: "9999px"

@@ -704,10 +704,10 @@ export function ChatWorkspace({
                 {t("cancel")}
               </Button>
               <Button
-                variant="primary"
+                variant="destructive"
                 size="base"
                 onClick={handleConfirmClear}
-                className="rounded-xl text-sm font-semibold min-h-[44px] px-4 cursor-pointer !bg-[var(--color-tami-red)] hover:!bg-[var(--color-tami-red)]/90 text-white"
+                className="rounded-xl text-sm font-semibold min-h-[44px] px-4 cursor-pointer"
               >
                 {t("clear")}
               </Button>

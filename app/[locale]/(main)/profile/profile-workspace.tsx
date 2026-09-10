@@ -112,7 +112,7 @@ export function ProfileWorkspace() {
               variant="primary"
               size="base"
               onClick={() => setIsLoginOpen(true)}
-              className="rounded-full bg-[var(--color-tami-orange)] hover:bg-[var(--color-tami-orange-hover)] text-white font-semibold text-sm min-h-[44px] px-5 self-start sm:self-auto transition-none cursor-pointer"
+              className="rounded-xl font-semibold text-sm min-h-[44px] px-5 self-start sm:self-auto transition-none cursor-pointer"
               icon={<SignIn size={16} weight="bold" />}
             >
               {t("guestSignInBtn")}
