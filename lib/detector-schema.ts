@@ -6,6 +6,26 @@ export const AnomalyItemSchema = z.object({
   severity: z.enum(["low", "medium", "high"]).describe("Tingkat keparahan anomali"),
 });
 
+export const ExploitStepSchema = z.object({
+  step: z.number().describe("Urutan langkah simulasi (1, 2, 3)"),
+  title: z.string().describe("Nama fase eksploitasi, misal: 'Pengalihan Tautan Tersembunyi'"),
+  victimView: z.string().describe("Apa yang tampak di layar korban (misal: 'Halaman formulir klaim hadiah meminta login nomor HP')"),
+  behindTheScenes: z.string().describe("Apa yang sebenarnya dieksekusi penyerang di balik layar (misal: 'Kredensial dan cookie sesi dikirim ke server hacker')"),
+  lossRisk: z.string().describe("Potensi kerugian nyata jika langkah ini terjadi"),
+});
+
+export const ExploitSimulationSchema = z.object({
+  scenarioTitle: z.string().describe("Judul skenario dampak eksploitasi jika korban mengeklik tautan atau mengunduh berkas"),
+  steps: z
+    .array(ExploitStepSchema)
+    .min(2)
+    .max(4)
+    .describe("2 sampai 4 tahapan kronologis bagaimana serangan siber ini bekerja di balik layar"),
+  mitigationAdvice: z.string().describe("Langkah pemulihan darurat jika sudah terlanjur menjadi korban"),
+});
+
+export type ExploitSimulationData = z.infer<typeof ExploitSimulationSchema>;
+
 export const DetectorResultSchema = z.object({
   status: z
     .enum(["ANALYZED", "IRRELEVANT_IMAGE", "UNCLEAR_IMAGE"])
@@ -37,9 +57,13 @@ export const DetectorResultSchema = z.object({
   safetyTips: z
     .array(z.string())
     .describe("Langkah-langkah tindakan perlindungan yang disarankan"),
+  exploitSimulation: ExploitSimulationSchema.optional().describe(
+    "Simulasi dampak nyata langkah demi langkah jika korban tertipu dan mengeklik tautan/file pada bukti"
+  ),
   isRelevantDigitalMessage: z
     .boolean()
     .describe("Apakah gambar merupakan tangkapan layar pesan digital / UI / dokumen siber"),
 });
 
 export type DetectorResult = z.infer<typeof DetectorResultSchema>;
+

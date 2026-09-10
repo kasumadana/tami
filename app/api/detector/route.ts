@@ -93,6 +93,49 @@ export async function POST(req: NextRequest) {
             ? "Enable Two-Factor Authentication (2FA) on your account as an additional defense shield."
             : "Aktifkan Autentikasi Dua Faktor (2FA) pada akunmu untuk lapisan perlindungan ekstra.",
         ],
+        exploitSimulation: {
+          scenarioTitle: isEnglish
+            ? "What happens if you click this diamond claim link?"
+            : "Apa yang terjadi jika kamu mengeklik link klaim diamond ini?",
+          steps: [
+            {
+              step: 1,
+              title: isEnglish ? "Deceptive Page Load" : "Pemuatan Halaman Tiruan",
+              victimView: isEnglish
+                ? "A flashy web page appears with game artwork asking you to log in to receive 10,000 diamonds."
+                : "Muncul halaman web berkilau dengan logo game favoritmu yang meminta memasukkan username dan kata sandi.",
+              behindTheScenes: isEnglish
+                ? "The fake site records keystrokes and IP address without contacting official game servers."
+                : "Situs tiruan merekam setiap ketikan kata sandi dan langsung menyimpannya ke database milik penyerang.",
+              lossRisk: isEnglish ? "Login credentials captured" : "Kredensial login tercuri",
+            },
+            {
+              step: 2,
+              title: isEnglish ? "Session Hijack & Password Reset" : "Pembajakan Sesi & Penggantian Kata Sandi",
+              victimView: isEnglish
+                ? "The screen says 'System Error: Please wait 24 hours' to stall your reaction."
+                : "Layar menampilkan pesan palsu 'Error: Tunggu 24 jam untuk verifikasi item' agar kamu tidak segera curiga.",
+              behindTheScenes: isEnglish
+                ? "Automated bot logs in using your stolen password and immediately changes linked email and phone number."
+                : "Bot peretas otomatis masuk ke akun aslimu dan mengganti email pemulihan serta nomor handphone.",
+              lossRisk: isEnglish ? "Total loss of account access" : "Akses akun hilang sepenuhnya",
+            },
+            {
+              step: 3,
+              title: isEnglish ? "In-Game Inventory Liquidation" : "Penjualan Seluruh Item & Skin",
+              victimView: isEnglish
+                ? "Friends start asking why your character is messaging them asking for emergency money."
+                : "Teman-temanmu mulai bertanya mengapa akunmu mengirim pesan pinjam uang atau jual skin murah.",
+              behindTheScenes: isEnglish
+                ? "All valuable items, diamonds, and inventory are gifted or traded away to the scammer's mules."
+                : "Item langka dan diamond dipindahkan ke akun penampung untuk dijual dengan uang tunai.",
+              lossRisk: isEnglish ? "Financial loss and social reputation damage" : "Kerugian materi dan rusaknya reputasi di antara teman",
+            },
+          ],
+          mitigationAdvice: isEnglish
+            ? "If you ever typed your password into a suspicious page: immediately open the REAL app/website, change your password, kick all active sessions, and notify parents/teachers."
+            : "Jika kamu terlanjur memasukkan kata sandi ke link asing: segera buka aplikasi ASLI, ganti kata sandi secepatnya, keluar dari semua perangkat yang aktif, dan beri tahu orang tua atau guru.",
+        },
         isRelevantDigitalMessage: true,
       };
 
@@ -129,10 +172,11 @@ Inspect this screenshot in-memory for digital cybersecurity risks:
 1. Phishing & Typosquatting (look for misspelled URLs, suspicious TLDs like .xyz/.tk, imitation logins).
 2. Social engineering & emotional traps (false lottery wins, urgency timers, fake bank alerts, threatening account bans).
 3. Fake brand logos or manipulated UI elements.
-4. If this image is completely non-digital (e.g. a pet photo, landscape, selfie, physical object), set status to "IRRELEVANT_IMAGE", riskLevel to "SAFE", and explain gently in the summary that this tool is designed for digital screenshots.
-5. If the image is too blurry to read, set status to "UNCLEAR_IMAGE".
-6. Target language for output: ${language === "en" ? "English" : "Bahasa Indonesia"}.
-7. Return strictly conforming structured data.`;
+4. If this is a digital threat (SUSPICIOUS or DANGEROUS), provide an "exploitSimulation" detailing step-by-step what would happen if a student actually fell for the scam and clicked or logged in (what appears on victim's screen vs what happens behind the scenes by the attacker).
+5. If this image is completely non-digital (e.g. a pet photo, landscape, selfie, physical object), set status to "IRRELEVANT_IMAGE", riskLevel to "SAFE", and explain gently in the summary that this tool is designed for digital screenshots.
+6. If the image is too blurry to read, set status to "UNCLEAR_IMAGE".
+7. Target language for output: ${language === "en" ? "English" : "Bahasa Indonesia"}.
+8. Return strictly conforming structured data.`;
 
     const result = await structuredModel.invoke([
       new HumanMessage({

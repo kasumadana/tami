@@ -27,8 +27,10 @@ import {
   Image as ImageIcon,
   CaretDown,
   House,
+  Skull,
 } from "@phosphor-icons/react";
 import type { DetectorResult } from "@/lib/detector-schema";
+import { ExploitSandboxModal } from "@/components/detector/exploit-sandbox-modal";
 
 // Built-in Sample Image Data URIs for Instant Testing
 const SAMPLE_PRESETS = [
@@ -64,6 +66,7 @@ export function DetectorWorkspace() {
   const [isLoading, setIsLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [result, setResult] = useState<DetectorResult | null>(null);
+  const [isSandboxOpen, setIsSandboxOpen] = useState(false);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -188,6 +191,7 @@ export function DetectorWorkspace() {
     setFileName("");
     setResult(null);
     setErrorMsg(null);
+    setIsSandboxOpen(false);
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
     }
@@ -466,6 +470,34 @@ export function DetectorWorkspace() {
                 )}
               </LayerCard>
 
+              {/* Exploit Impact Sandbox Trigger Card */}
+              {result.exploitSimulation && (
+                <div className="p-4 sm:p-5 rounded-2xl bg-[var(--color-tami-surface-subdued)] ring-1 ring-[var(--color-tami-line)]/50 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                  <div className="flex items-start gap-3">
+                    <div className="w-9 h-9 rounded-xl bg-[var(--color-tami-red)]/10 text-[var(--color-tami-red)] flex items-center justify-center shrink-0">
+                      <Skull size={20} weight="bold" />
+                    </div>
+                    <div className="space-y-0.5">
+                      <h3 className="text-xs sm:text-sm font-bold text-[var(--color-tami-text)]">
+                        Simulasi Dampak Serangan
+                      </h3>
+                      <p className="text-xs text-[var(--color-tami-text-muted)] leading-relaxed">
+                        {result.exploitSimulation.scenarioTitle}
+                      </p>
+                    </div>
+                  </div>
+                  <Button
+                    variant="secondary"
+                    size="base"
+                    onClick={() => setIsSandboxOpen(true)}
+                    className="rounded-xl ring-1 ring-[var(--color-tami-line)]/50 bg-[var(--color-tami-surface)] text-[var(--color-tami-text)] hover:bg-[var(--color-tami-surface-muted)] text-xs sm:text-sm font-semibold min-h-[44px] px-4 cursor-pointer shrink-0"
+                    icon={<Skull size={16} weight="bold" className="text-[var(--color-tami-red)]" />}
+                  >
+                    Buka Simulasi Sandbox
+                  </Button>
+                </div>
+              )}
+
               {/* Socratic Reflection Prompts Card */}
               {result.reflectionQuestions && result.reflectionQuestions.length > 0 && (
                 <div className="p-5 rounded-2xl bg-[var(--color-tami-orange)]/10 ring-1 ring-[var(--color-tami-orange)]/30 space-y-3">
@@ -540,6 +572,13 @@ export function DetectorWorkspace() {
           )}
         </div>
       </div>
+
+      {/* Exploit Impact Sandbox Modal */}
+      <ExploitSandboxModal
+        isOpen={isSandboxOpen}
+        onClose={() => setIsSandboxOpen(false)}
+        simulation={result?.exploitSimulation}
+      />
     </div>
   );
 }
