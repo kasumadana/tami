@@ -26,6 +26,18 @@ _Avoid_: Vector RAG berlebihan, embedding API lookups.
 Prinsip perancangan inferensi yang memprioritaskan minimalisasi jumlah panggilan API (RPM/RPD) melalui arsitektur single-pass dan pemrosesan lokal terkurasi.
 _Avoid_: Chained multi-hop LLM calls, round-trip bloat.
 
+**Generative UI Sokratik (Socratic Generative UI)**:
+Komponen antarmuka interaktif yang diproduksi secara dinamis oleh model AI (seperti pilihan reflektif, radar risiko, dan daftar periksa taktil) untuk mengubah respons teks pasif menjadi eksplorasi tindakan langsung.
+_Avoid_: Teks markdown biasa, widget statis monolitik.
+
+**Utas Obrolan (Chat Thread / Session)**:
+Kumpulan riwayat pesan terstruktur antara seorang siswa dan tami yang dikelompokkan berdasarkan topik konsultasi siber tertentu.
+_Avoid_: Single chat log, infinite linear feed.
+
+**Enkripsi Pesan Tingkat Aplikasi (Application-Level Chat Encryption)**:
+Penyandian kriptografis simetris terotentikasi (AES-256-GCM) pada isi pesan dan payload widget sebelum ditulis ke database untuk menjamin kerahasiaan privasi anak.
+_Avoid_: Plaintext SQL storage, client-managed key E2EE.
+
 ### Forensik Visual & Deteksi Ancaman
 
 **Inspeksi Forensik Visual (Visual Forensic Inspection)**:
@@ -40,11 +52,19 @@ _Avoid_: Skor virus, status infeksi.
 Petunjuk fisik manipulasi pada antarmuka, seperti peniruan logo institusi, ketidaksesuaian karakter domain (_typosquatting_), dan tombol jebakan (_dark patterns_).
 _Avoid_: Glitch gambar, bug render.
 
+**Simulasi Dampak Eksploitasi (Exploit Impact Simulator)**:
+Komponen sandbox interaktif yang memproyeksikan visualisasi konsekuensi langsung jika siswa terjebak manipulasi digital (misal: pratinjau kebocoran formulir atau pembajakan akun).
+_Avoid_: Eksekusi malware nyata, animasi nakut-nakuti anak.
+
 ### Kurikulum, Simulasi, & Progres
 
 **Simulasi Lab Pertahanan (Defense Lab Simulation)**:
 Tantangan interaktif terkurasi (analisis phishing, pengujian kekuatan kata sandi, aturan firewall) yang dievaluasi secara deterministik dengan umpan balik visual dan pembimbingan AI on-demand.
 _Avoid_: Kuis hafalan, ujian teori pilihan ganda biasa.
+
+**Arena Rekayasa Sosial (Social Engineering Arena)**:
+Mode simulasi roleplay berbasis agen LLM di mana siswa berhadapan dengan bot penyusup digital di bawah bimbingan taktis tami untuk mengasah ketahanan nalar terhadap manipulasi psikologis siber.
+_Avoid_: Chat obrolan santai tanpa skenario, adu debat bebas.
 
 **Sinkronisasi Progres (Progress Synchronization)**:
 Mekanisme penggabungan otomatis data modul dan skor tantangan dari penyimpanan lokal tamu (`localStorage`) ke akun Neon DB saat pengguna login/mendaftar.
