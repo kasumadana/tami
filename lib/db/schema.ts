@@ -86,3 +86,27 @@ export const threatScans = pgTable("threat_scans", {
   headline: text("headline").notNull(),
   scannedAt: timestamp("scanned_at", { mode: "date" }).defaultNow().notNull(),
 });
+
+export const chatSessions = pgTable("chat_sessions", {
+  id: text("id").primaryKey(),
+  userId: text("user_id")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  title: text("title").notNull(),
+  topic: text("topic").default("general").notNull(),
+  createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
+  updatedAt: timestamp("updated_at", { mode: "date" }).defaultNow().notNull(),
+});
+
+export const chatMessages = pgTable("chat_messages", {
+  id: text("id").primaryKey(),
+  sessionId: text("session_id")
+    .notNull()
+    .references(() => chatSessions.id, { onDelete: "cascade" }),
+  role: text("role").notNull(),
+  encryptedContent: text("encrypted_content").notNull(),
+  widgetType: text("widget_type"),
+  encryptedWidgetData: text("encrypted_widget_data"),
+  createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
+});
+
