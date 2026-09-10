@@ -18,12 +18,15 @@ import {
 import { PhishingSimulator } from "@/components/practice/phishing-simulator";
 import { PasswordSimulator } from "@/components/practice/password-simulator";
 import { FirewallSimulator } from "@/components/practice/firewall-simulator";
+import { ArenaSimulator } from "@/components/practice/arena-simulator";
 
 export function PracticeWorkspace() {
   const t = useTranslations("practice");
   const tNav = useTranslations("nav");
 
-  const [activeTab, setActiveTab] = useState<"phishing" | "password" | "firewall">("phishing");
+  const [activeTab, setActiveTab] = useState<
+    "phishing" | "password" | "firewall" | "arena"
+  >("phishing");
 
   const rawSnapshot = useSyncExternalStore(
     subscribePractice,
@@ -81,9 +84,12 @@ export function PracticeWorkspace() {
           { value: "phishing", label: t("tabPhishing") },
           { value: "password", label: t("tabPassword") },
           { value: "firewall", label: t("tabFirewall") },
+          { value: "arena", label: t("tabArena") },
         ]}
         value={activeTab}
-        onValueChange={(val) => setActiveTab(val as "phishing" | "password" | "firewall")}
+        onValueChange={(val) =>
+          setActiveTab(val as "phishing" | "password" | "firewall" | "arena")
+        }
       />
 
       {/* Active Simulator View */}
@@ -91,6 +97,7 @@ export function PracticeWorkspace() {
         {activeTab === "phishing" && <PhishingSimulator />}
         {activeTab === "password" && <PasswordSimulator />}
         {activeTab === "firewall" && <FirewallSimulator />}
+        {activeTab === "arena" && <ArenaSimulator />}
       </div>
     </div>
   );
