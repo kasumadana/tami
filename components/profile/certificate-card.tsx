@@ -146,7 +146,7 @@ export function CertificateCard({ initialName, isUnlocked }: CertificateCardProp
               variant="secondary"
               size="base"
               onClick={handlePrint}
-              className="rounded-xl bg-[var(--color-tami-surface)] hover:bg-[var(--color-tami-surface-muted)] text-[var(--color-tami-text)] ring-1 ring-[var(--color-tami-line)]/50 text-sm min-h-[44px] px-4 font-semibold transition-none cursor-pointer"
+              className="rounded-full bg-[var(--color-tami-surface)] hover:bg-[var(--color-tami-surface-muted)] text-[var(--color-tami-text)] ring-1 ring-[var(--color-tami-line)]/50 text-sm min-h-[44px] px-5 font-semibold transition-none cursor-pointer"
               icon={<Printer size={16} weight="bold" />}
             >
               {t("printPdfBtn")}
@@ -155,7 +155,7 @@ export function CertificateCard({ initialName, isUnlocked }: CertificateCardProp
               variant="primary"
               size="base"
               onClick={handleDownloadPng}
-              className="rounded-xl bg-[var(--color-tami-orange)] hover:bg-[var(--color-tami-orange-hover)] text-white font-semibold text-sm min-h-[44px] px-4 transition-none cursor-pointer"
+              className="rounded-full bg-[var(--color-tami-orange)] hover:bg-[var(--color-tami-orange-hover)] text-white font-semibold text-sm min-h-[44px] px-5 transition-none cursor-pointer"
               icon={<DownloadSimple size={16} weight="bold" />}
             >
               {t("downloadPngBtn")}

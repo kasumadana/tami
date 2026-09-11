@@ -77,7 +77,7 @@ export function LoginDialog({ isOpen, onClose }: LoginDialogProps) {
             variant="secondary"
             size="base"
             onClick={handleGoogleSignIn}
-            className="w-full rounded-xl ring-1 ring-[var(--color-tami-line)]/50 bg-[var(--color-tami-surface-subdued)] text-[var(--color-tami-text)] hover:bg-[var(--color-tami-surface-muted)] text-sm h-11 min-h-[44px] font-semibold flex items-center justify-center gap-2 cursor-pointer"
+            className="w-full rounded-full ring-1 ring-[var(--color-tami-line)]/50 bg-[var(--color-tami-surface-subdued)] text-[var(--color-tami-text)] hover:bg-[var(--color-tami-surface-muted)] text-sm h-11 min-h-[44px] font-semibold flex items-center justify-center gap-2 cursor-pointer"
             icon={<GoogleLogo size={16} weight="bold" className="text-[var(--color-tami-orange)]" />}
           >
             {t("googleSignIn")}
@@ -88,7 +88,7 @@ export function LoginDialog({ isOpen, onClose }: LoginDialogProps) {
             variant="primary"
             size="base"
             onClick={handleDemoSignIn}
-            className="w-full rounded-xl text-sm h-11 min-h-[44px] font-semibold flex items-center justify-center gap-2 cursor-pointer"
+            className="w-full rounded-full text-sm h-11 min-h-[44px] font-semibold flex items-center justify-center gap-2 cursor-pointer"
             icon={<Sparkle size={16} weight="fill" />}
           >
             {t("demoSignIn")}
