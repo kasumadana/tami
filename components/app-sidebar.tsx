@@ -22,14 +22,12 @@ import {
   useSidebar,
 } from "@cloudflare/kumo/components/sidebar";
 import { Button } from "@cloudflare/kumo/components/button";
-import { Badge } from "@cloudflare/kumo/components/badge";
 import {
   ChatCircleDots,
   ShieldWarning,
   ShieldCheck,
   GraduationCap,
   Users,
-  Trophy,
   Sparkle,
   SignOut,
   SignIn,
@@ -178,11 +176,6 @@ function AppSidebarInner({ children }: AppSidebarLayoutProps) {
       href: "/guide",
       icon: <Users size={19} weight={pathname === "/guide" ? "fill" : "regular"} />,
     },
-    {
-      title: tNav("profile"),
-      href: "/profile",
-      icon: <Trophy size={19} weight={pathname === "/profile" ? "fill" : "regular"} />,
-    },
   ];
 
   // Group chat sessions by date
@@ -301,9 +294,9 @@ function AppSidebarInner({ children }: AppSidebarLayoutProps) {
         {/* Full-Height Sticky Kumo Sidebar */}
         <Sidebar className="bg-[var(--color-tami-surface)]">
           {/* Header: Clean Brand Lockup OR Back-To-Menu Header */}
-          <Sidebar.Header className="p-3.5 border-b border-[var(--color-tami-line)] shrink-0 flex items-center justify-between gap-2 overflow-hidden">
+          <Sidebar.Header className="p-3.5 group-data-[state=collapsed]/sidebar:p-2 border-b border-[var(--color-tami-line)] shrink-0 flex items-center justify-between group-data-[state=collapsed]/sidebar:justify-center gap-2 overflow-hidden">
             {activeSurface === "chat-history" ? (
-              <div className="flex items-center justify-between w-full gap-2 overflow-hidden">
+              <div className="flex items-center justify-between w-full gap-2 overflow-hidden group-data-[state=collapsed]/sidebar:justify-center">
                 <button
                   type="button"
                   onClick={closeChatHistory}
@@ -355,7 +348,7 @@ function AppSidebarInner({ children }: AppSidebarLayoutProps) {
           <Sidebar.SlidingViews activeKey={activeSurface} direction={activeSurface === "chat-history" ? "left" : "right"}>
             {/* View 1: Main Platform Navigation */}
             <Sidebar.SlidingView value="nav">
-              <Sidebar.Content className="flex-1 overflow-y-auto min-h-0 p-3 space-y-4">
+              <Sidebar.Content className="flex-1 overflow-y-auto min-h-0 p-3 group-data-[state=collapsed]/sidebar:px-1 group-data-[state=collapsed]/sidebar:py-2 space-y-4">
                 {/* Tools Group / Alat Perlindungan */}
                 <div className="space-y-1">
                   <span className="px-3 text-xs font-semibold text-[var(--color-tami-text-muted)] group-data-[state=collapsed]/sidebar:hidden">
@@ -397,98 +390,12 @@ function AppSidebarInner({ children }: AppSidebarLayoutProps) {
                     ))}
                   </Sidebar.Menu>
                 </div>
-
-                {/* Account & Session Card */}
-                <div className="pt-2">
-                  {session?.user ? (
-                    <>
-                      <div className="hidden group-data-[state=collapsed]/sidebar:flex justify-center">
-                        <Link
-                          href="/profile"
-                          className="p-1.5 rounded-full hover:bg-[var(--color-tami-surface-subdued)] flex items-center justify-center"
-                          title={session.user.name || tAuth("defaultStudent")}
-                        >
-                          <Image
-                            src={session.user.image || "/icon.svg"}
-                            alt={session.user.name || "User"}
-                            width={28}
-                            height={28}
-                            className="w-7 h-7 object-contain rounded-full"
-                          />
-                        </Link>
-                      </div>
-
-                      <div className="group-data-[state=collapsed]/sidebar:hidden p-3 rounded-2xl bg-[var(--color-tami-surface-subdued)] ring-1 ring-[var(--color-tami-line)]/40 flex items-center justify-between gap-2.5">
-                        <Link href="/profile" className="flex items-center gap-2.5 min-w-0 flex-1 hover:opacity-85 transition-none">
-                          <Image
-                            src={session.user.image || "/icon.svg"}
-                            alt={session.user.name || "User"}
-                            width={28}
-                            height={28}
-                            className="w-7 h-7 object-contain shrink-0 rounded-full"
-                          />
-                          <div className="min-w-0 flex-1">
-                            <p className="text-xs font-semibold text-[var(--color-tami-text)] truncate">
-                              {session.user.name || tAuth("defaultStudent")}
-                            </p>
-                            <p className="text-xs text-[var(--color-tami-text-muted)] truncate">
-                              {tCommon("heroBadge")}
-                            </p>
-                          </div>
-                        </Link>
-
-                        <Button
-                          variant="secondary"
-                          size="base"
-                          onClick={() => signOut()}
-                          className="rounded-full ring-1 ring-[var(--color-tami-line)]/50 bg-[var(--color-tami-surface)] text-[var(--color-tami-text)] hover:bg-[var(--color-tami-surface-muted)] w-11 h-11 min-w-[44px] min-h-[44px] p-0 shrink-0 flex items-center justify-center cursor-pointer"
-                          icon={<SignOut size={16} />}
-                          aria-label={tAuth("signOut")}
-                        />
-                      </div>
-                    </>
-                  ) : (
-                    <>
-                      <div className="hidden group-data-[state=collapsed]/sidebar:flex justify-center">
-                        <Button
-                          variant="primary"
-                          size="base"
-                          onClick={() => setIsLoginOpen(true)}
-                          className="w-10 h-10 min-w-[40px] min-h-[40px] p-0 rounded-full flex items-center justify-center cursor-pointer"
-                          aria-label={tAuth("signIn")}
-                          title={tAuth("signIn")}
-                          icon={<SignIn size={18} weight="bold" />}
-                        />
-                      </div>
-
-                      <div className="group-data-[state=collapsed]/sidebar:hidden p-3.5 rounded-2xl bg-[var(--color-tami-surface-subdued)] ring-1 ring-[var(--color-tami-line)]/40 space-y-2.5 w-full max-w-full overflow-hidden">
-                        <div className="flex items-center gap-1.5 text-xs font-semibold text-[var(--color-tami-text)]">
-                          <Sparkle size={14} className="text-[var(--color-tami-orange)] shrink-0" weight="fill" />
-                          <span className="truncate">{t("guestTurnsRemaining")}</span>
-                        </div>
-                        <p className="text-xs text-[var(--color-tami-text-muted)] leading-relaxed whitespace-normal break-words">
-                          {t("guestDescription")}
-                        </p>
-
-                        <Button
-                          variant="primary"
-                          size="base"
-                          onClick={() => setIsLoginOpen(true)}
-                          className="w-full rounded-full font-semibold text-xs min-h-[44px] flex items-center justify-center gap-2 mt-1 cursor-pointer"
-                          icon={<SignIn size={16} weight="bold" />}
-                        >
-                          <span>{tAuth("signIn")}</span>
-                        </Button>
-                      </div>
-                    </>
-                  )}
-                </div>
               </Sidebar.Content>
             </Sidebar.SlidingView>
 
             {/* View 2: Integrated Chat History Surface */}
             <Sidebar.SlidingView value="chat-history">
-              <Sidebar.Content className="flex-1 overflow-y-auto min-h-0 p-3 space-y-3">
+              <Sidebar.Content className="flex-1 overflow-y-auto min-h-0 p-3 group-data-[state=collapsed]/sidebar:px-1 group-data-[state=collapsed]/sidebar:py-2 space-y-3">
                 {/* New Chat Action Button */}
                 <Button
                   variant="primary"
@@ -497,7 +404,7 @@ function AppSidebarInner({ children }: AppSidebarLayoutProps) {
                     chatHandlers?.onCreateNewSession();
                     setOpenMobile(false);
                   }}
-                  className="w-full rounded-full font-semibold text-xs min-h-[44px] cursor-pointer flex items-center justify-center gap-2"
+                  className="w-full rounded-full font-semibold text-xs min-h-[44px] cursor-pointer flex items-center justify-center gap-2 group-data-[state=collapsed]/sidebar:w-10 group-data-[state=collapsed]/sidebar:h-10 group-data-[state=collapsed]/sidebar:min-w-[40px] group-data-[state=collapsed]/sidebar:p-0 group-data-[state=collapsed]/sidebar:mx-auto"
                   icon={<Plus size={16} weight="bold" />}
                 >
                   <span className="group-data-[state=collapsed]/sidebar:hidden">{tChat("newChat")}</span>
@@ -557,15 +464,100 @@ function AppSidebarInner({ children }: AppSidebarLayoutProps) {
             </Sidebar.SlidingView>
           </Sidebar.SlidingViews>
 
-          {/* Footer: Compact Bottom Controls Bar (Stable Fixed Height) */}
-          <Sidebar.Footer className="min-h-[56px] py-1.5 shrink-0 border-t border-[var(--color-tami-line)] bg-[var(--color-tami-surface)] px-2 flex items-center justify-between group-data-[state=collapsed]/sidebar:justify-center group-data-[state=collapsed]/sidebar:flex-col group-data-[state=collapsed]/sidebar:gap-1.5">
-            <Badge variant={session?.user ? "success" : "warning"} appearance="dot" className="text-xs group-data-[state=collapsed]/sidebar:hidden">
-              {session?.user ? "Online" : tCommon("guestMode")}
-            </Badge>
+          {/* Footer: Profile / Account & Controls Bar */}
+          <Sidebar.Footer className="shrink-0 border-t border-[var(--color-tami-line)] bg-[var(--color-tami-surface)] p-2 group-data-[state=collapsed]/sidebar:p-1 flex flex-col gap-2">
+            {/* Account / Profile Action Area */}
+            {session?.user ? (
+              <div className="w-full">
+                {/* Collapsed state: neat avatar circle */}
+                <div className="hidden group-data-[state=collapsed]/sidebar:flex justify-center w-full">
+                  <Link
+                    href="/profile"
+                    className="w-10 h-10 min-w-[40px] min-h-[40px] rounded-full hover:bg-[var(--color-tami-surface-subdued)] ring-1 ring-[var(--color-tami-line)]/50 flex items-center justify-center transition-none overflow-hidden"
+                    title={session.user.name || tAuth("defaultStudent")}
+                  >
+                    <Image
+                      src={session.user.image || "/icon.svg"}
+                      alt={session.user.name || "User"}
+                      width={32}
+                      height={32}
+                      className="w-8 h-8 object-contain rounded-full"
+                    />
+                  </Link>
+                </div>
 
-            <div className="flex items-center gap-1 group-data-[state=collapsed]/sidebar:flex-col group-data-[state=collapsed]/sidebar:items-center">
-              <LocaleSwitcher />
-              <ThemeToggle />
+                {/* Expanded state: profile card with sign-out */}
+                <div className="group-data-[state=collapsed]/sidebar:hidden p-2 rounded-2xl bg-[var(--color-tami-surface-subdued)] ring-1 ring-[var(--color-tami-line)]/40 flex items-center justify-between gap-2">
+                  <Link href="/profile" className="flex items-center gap-2.5 min-w-0 flex-1 hover:opacity-85 transition-none">
+                    <Image
+                      src={session.user.image || "/icon.svg"}
+                      alt={session.user.name || "User"}
+                      width={32}
+                      height={32}
+                      className="w-8 h-8 object-contain shrink-0 rounded-full"
+                    />
+                    <div className="min-w-0 flex-1">
+                      <p className="text-xs font-semibold text-[var(--color-tami-text)] truncate">
+                        {session.user.name || tAuth("defaultStudent")}
+                      </p>
+                      <p className="text-xs text-[var(--color-tami-text-muted)] truncate">
+                        {tCommon("heroBadge")}
+                      </p>
+                    </div>
+                  </Link>
+
+                  <Button
+                    variant="secondary"
+                    size="base"
+                    onClick={() => signOut()}
+                    className="rounded-full ring-1 ring-[var(--color-tami-line)]/50 bg-[var(--color-tami-surface)] text-[var(--color-tami-text)] hover:bg-[var(--color-tami-surface-muted)] w-9 h-9 min-w-[36px] min-h-[36px] p-0 shrink-0 flex items-center justify-center cursor-pointer"
+                    icon={<SignOut size={16} />}
+                    aria-label={tAuth("signOut")}
+                  />
+                </div>
+              </div>
+            ) : (
+              <div className="w-full">
+                {/* Collapsed state: sign-in circular icon button */}
+                <div className="hidden group-data-[state=collapsed]/sidebar:flex justify-center w-full">
+                  <Button
+                    variant="primary"
+                    size="base"
+                    onClick={() => setIsLoginOpen(true)}
+                    className="w-10 h-10 min-w-[40px] min-h-[40px] p-0 rounded-full flex items-center justify-center cursor-pointer"
+                    aria-label={tAuth("signIn")}
+                    title={tAuth("signIn")}
+                    icon={<SignIn size={18} weight="bold" />}
+                  />
+                </div>
+
+                {/* Expanded state: guest info card */}
+                <div className="group-data-[state=collapsed]/sidebar:hidden p-3 rounded-2xl bg-[var(--color-tami-surface-subdued)] ring-1 ring-[var(--color-tami-line)]/40 space-y-2 w-full max-w-full overflow-hidden">
+                  <div className="flex items-center gap-1.5 text-xs font-semibold text-[var(--color-tami-text)]">
+                    <Sparkle size={14} className="text-[var(--color-tami-orange)] shrink-0" weight="fill" />
+                    <span className="truncate">{t("guestTurnsRemaining")}</span>
+                  </div>
+                  <p className="text-xs text-[var(--color-tami-text-muted)] leading-relaxed whitespace-normal break-words line-clamp-2">
+                    {t("guestDescription")}
+                  </p>
+
+                  <Button
+                    variant="primary"
+                    size="base"
+                    onClick={() => setIsLoginOpen(true)}
+                    className="w-full rounded-full font-semibold text-xs min-h-[38px] flex items-center justify-center gap-2 mt-1 cursor-pointer"
+                    icon={<SignIn size={16} weight="bold" />}
+                  >
+                    <span>{tAuth("signIn")}</span>
+                  </Button>
+                </div>
+              </div>
+            )}
+
+            {/* Bottom Controls: Locale Switcher & Theme Toggle */}
+            <div className="flex items-center justify-between group-data-[state=collapsed]/sidebar:flex-col group-data-[state=collapsed]/sidebar:items-center group-data-[state=collapsed]/sidebar:justify-center gap-1.5 pt-1 border-t border-[var(--color-tami-line)]/50">
+              <LocaleSwitcher className="group-data-[state=collapsed]/sidebar:w-10 group-data-[state=collapsed]/sidebar:h-10 group-data-[state=collapsed]/sidebar:min-w-[40px] group-data-[state=collapsed]/sidebar:min-h-[40px] group-data-[state=collapsed]/sidebar:p-0 group-data-[state=collapsed]/sidebar:gap-0" />
+              <ThemeToggle className="group-data-[state=collapsed]/sidebar:w-10 group-data-[state=collapsed]/sidebar:h-10 group-data-[state=collapsed]/sidebar:min-w-[40px] group-data-[state=collapsed]/sidebar:min-h-[40px] group-data-[state=collapsed]/sidebar:p-0" />
             </div>
           </Sidebar.Footer>
         </Sidebar>
