@@ -7,7 +7,6 @@ import { Link } from "@/i18n/navigation";
 import { Button } from "@cloudflare/kumo/components/button";
 import { Badge } from "@cloudflare/kumo/components/badge";
 import { LayerCard } from "@cloudflare/kumo/components/layer-card";
-import { Breadcrumbs } from "@cloudflare/kumo/components/breadcrumbs";
 import { PageHeader } from "@/components/kumo/page-header/page-header";
 import {
   ChalkboardTeacher,
@@ -15,7 +14,6 @@ import {
   Lightbulb,
   ArrowRight,
   Handshake,
-  House,
   ShieldCheck,
   MagnifyingGlass,
   ChatCircleDots,
@@ -23,23 +21,13 @@ import {
 
 export function GuideWorkspace() {
   const t = useTranslations("guide");
-  const tNav = useTranslations("nav");
 
   const [activeTab, setActiveTab] = useState<"parents" | "educators">("parents");
 
   return (
     <div className="flex flex-col w-full max-w-6xl mx-auto p-4 sm:p-6 space-y-6">
-      {/* PageHeader with Breadcrumbs and Tabs */}
+      {/* PageHeader with Clean Tabs */}
       <PageHeader
-        breadcrumbs={
-          <Breadcrumbs size="sm">
-            <Breadcrumbs.Link href="/" icon={<House size={14} />}>
-              {tNav("home")}
-            </Breadcrumbs.Link>
-            <Breadcrumbs.Separator />
-            <Breadcrumbs.Current>{t("title")}</Breadcrumbs.Current>
-          </Breadcrumbs>
-        }
         title={t("title")}
         description={t("subtitle")}
         tabs={[
@@ -131,7 +119,7 @@ export function GuideWorkspace() {
               <Button
                 variant="primary"
                 size="base"
-                className="rounded-xl font-semibold text-sm px-5 min-h-[44px] shrink-0 transition-none cursor-pointer"
+                className="rounded-full font-semibold text-sm px-5 min-h-[44px] shrink-0 transition-none cursor-pointer"
                 icon={<ArrowRight size={16} weight="bold" />}
               >
                 {t("parentCtaBtn")}
@@ -238,7 +226,7 @@ export function GuideWorkspace() {
               <Button
                 variant="primary"
                 size="base"
-                className="rounded-xl font-semibold text-sm px-5 min-h-[44px] shrink-0 transition-none cursor-pointer"
+                className="rounded-full font-semibold text-sm px-5 min-h-[44px] shrink-0 transition-none cursor-pointer"
                 icon={<ArrowRight size={16} weight="bold" />}
               >
                 {t("eduCtaBtn")}

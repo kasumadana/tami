@@ -8,7 +8,6 @@ import { Button } from "@cloudflare/kumo/components/button";
 import { Badge } from "@cloudflare/kumo/components/badge";
 import { LayerCard } from "@cloudflare/kumo/components/layer-card";
 import { Loader } from "@cloudflare/kumo/components/loader";
-import { Breadcrumbs } from "@cloudflare/kumo/components/breadcrumbs";
 import { PageHeader } from "@/components/kumo/page-header/page-header";
 import {
   UploadSimple,
@@ -25,7 +24,6 @@ import {
   XCircle,
   Image as ImageIcon,
   CaretDown,
-  House,
   Skull,
   ArrowRight,
 } from "@phosphor-icons/react";
@@ -56,7 +54,6 @@ const SAMPLE_PRESETS = [
 
 export function DetectorWorkspace() {
   const t = useTranslations("detector");
-  const tNav = useTranslations("nav");
 
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [fileName, setFileName] = useState<string>("");
@@ -231,17 +228,8 @@ export function DetectorWorkspace() {
 
   return (
     <div className="flex flex-col w-full max-w-6xl mx-auto p-4 sm:p-6 space-y-6">
-      {/* Top Header & Breadcrumbs */}
+      {/* PageHeader */}
       <PageHeader
-        breadcrumbs={
-          <Breadcrumbs size="sm">
-            <Breadcrumbs.Link href="/" icon={<House size={14} />}>
-              {tNav("home")}
-            </Breadcrumbs.Link>
-            <Breadcrumbs.Separator />
-            <Breadcrumbs.Current>{t("title")}</Breadcrumbs.Current>
-          </Breadcrumbs>
-        }
         title={t("title")}
         description={t("subtitle")}
         actions={
@@ -251,7 +239,7 @@ export function DetectorWorkspace() {
               size="base"
               onClick={handleReset}
               disabled={isLoading}
-              className="rounded-xl ring-1 ring-[var(--color-tami-line)]/50 bg-[var(--color-tami-surface)] text-[var(--color-tami-text)] hover:bg-[var(--color-tami-surface-subdued)] text-sm font-semibold min-h-[44px] px-4 cursor-pointer"
+              className="rounded-full ring-1 ring-[var(--color-tami-line)]/50 bg-[var(--color-tami-surface)] text-[var(--color-tami-text)] hover:bg-[var(--color-tami-surface-subdued)] text-sm font-semibold min-h-[44px] px-5 cursor-pointer"
               icon={<ArrowClockwise size={16} />}
             >
               {t("reupload")}
@@ -410,7 +398,7 @@ export function DetectorWorkspace() {
                   size="base"
                   onClick={handleAnalyze}
                   disabled={isLoading}
-                  className="w-full rounded-xl font-semibold text-sm min-h-[44px] cursor-pointer"
+                  className="w-full rounded-full font-semibold text-sm min-h-[44px] cursor-pointer"
                   icon={isLoading ? <ArrowClockwise size={18} className="animate-spin" /> : <ShieldWarning size={18} weight="bold" />}
                 >
                   {isLoading ? t("analyzing") : t("analyzeAction")}
@@ -490,7 +478,7 @@ export function DetectorWorkspace() {
                   variant="primary"
                   size="base"
                   onClick={handleAnalyze}
-                  className="rounded-xl font-semibold text-sm min-h-[44px] px-6 cursor-pointer mt-2"
+                  className="rounded-full font-semibold text-sm min-h-[44px] px-6 cursor-pointer mt-2"
                   icon={<ShieldWarning size={18} weight="bold" />}
                 >
                   {t("analyzeAction")}
@@ -577,7 +565,7 @@ export function DetectorWorkspace() {
                       variant="secondary"
                       size="base"
                       onClick={() => setIsSandboxOpen(true)}
-                      className="rounded-xl ring-1 ring-[var(--color-tami-line)]/50 bg-[var(--color-tami-surface)] text-[var(--color-tami-text)] hover:bg-[var(--color-tami-surface-muted)] text-sm font-semibold min-h-[44px] px-4 cursor-pointer shrink-0"
+                      className="rounded-full ring-1 ring-[var(--color-tami-line)]/50 bg-[var(--color-tami-surface)] text-[var(--color-tami-text)] hover:bg-[var(--color-tami-surface-muted)] text-sm font-semibold min-h-[44px] px-5 cursor-pointer shrink-0"
                       icon={<Skull size={16} weight="bold" className="text-[var(--color-tami-red)]" />}
                     >
                       Buka Simulasi Sandbox
@@ -612,7 +600,7 @@ export function DetectorWorkspace() {
                         <Button
                           variant="primary"
                           size="base"
-                          className="rounded-xl font-semibold text-sm px-5 min-h-[44px] cursor-pointer"
+                          className="rounded-full font-semibold text-sm px-6 min-h-[44px] cursor-pointer"
                           icon={<ChatCircleDots size={16} weight="bold" />}
                         >
                           {t("askTami")}

@@ -8,7 +8,6 @@ import { Button } from "@cloudflare/kumo/components/button";
 import { Badge } from "@cloudflare/kumo/components/badge";
 import { Banner } from "@cloudflare/kumo/components/banner";
 import { LayerCard } from "@cloudflare/kumo/components/layer-card";
-import { Breadcrumbs } from "@cloudflare/kumo/components/breadcrumbs";
 import { PageHeader } from "@/components/kumo/page-header/page-header";
 import {
   Trophy,
@@ -16,9 +15,7 @@ import {
   ShieldCheck,
   ShieldWarning,
   Key,
-  SignIn,
   Sparkle,
-  House,
 } from "@phosphor-icons/react";
 import {
   subscribePractice,
@@ -36,7 +33,6 @@ import { LoginDialog } from "@/components/auth/login-dialog";
 
 export function ProfileWorkspace() {
   const t = useTranslations("profile");
-  const tNav = useTranslations("nav");
   const { data: session } = useSession();
 
   const [isLoginOpen, setIsLoginOpen] = useState(false);
@@ -92,33 +88,11 @@ export function ProfileWorkspace() {
 
   return (
     <div className="flex flex-col w-full max-w-6xl mx-auto p-4 sm:p-6 space-y-6">
-      {/* PageHeader with Breadcrumbs and Sign In Action */}
+      {/* PageHeader */}
       <PageHeader
         className="print:hidden"
-        breadcrumbs={
-          <Breadcrumbs size="sm">
-            <Breadcrumbs.Link href="/" icon={<House size={14} />}>
-              {tNav("home")}
-            </Breadcrumbs.Link>
-            <Breadcrumbs.Separator />
-            <Breadcrumbs.Current>{t("title")}</Breadcrumbs.Current>
-          </Breadcrumbs>
-        }
         title={t("title")}
         description={t("subtitle")}
-        actions={
-          !session?.user ? (
-            <Button
-              variant="primary"
-              size="base"
-              onClick={() => setIsLoginOpen(true)}
-              className="rounded-xl font-semibold text-sm min-h-[44px] px-5 self-start sm:self-auto transition-none cursor-pointer"
-              icon={<SignIn size={16} weight="bold" />}
-            >
-              {t("guestSignInBtn")}
-            </Button>
-          ) : undefined
-        }
       />
 
       {/* Guest Mode Callout using Official Kumo Banner */}
@@ -133,7 +107,7 @@ export function ProfileWorkspace() {
                 variant="secondary"
                 size="base"
                 onClick={() => setIsLoginOpen(true)}
-                className="rounded-xl bg-[var(--color-tami-surface)] hover:bg-[var(--color-tami-surface-muted)] text-[var(--color-tami-text)] ring-1 ring-[var(--color-tami-line)]/50 text-sm font-semibold min-h-[44px] px-4 shrink-0 transition-none cursor-pointer"
+                className="rounded-full bg-[var(--color-tami-surface)] hover:bg-[var(--color-tami-surface-muted)] text-[var(--color-tami-text)] ring-1 ring-[var(--color-tami-line)]/50 text-sm font-semibold min-h-[44px] px-5 shrink-0 transition-none cursor-pointer"
               >
                 {t("guestSignInBtn")}
               </Button>

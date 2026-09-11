@@ -10,7 +10,6 @@ import rehypeSanitize from "rehype-sanitize";
 import { Button } from "@cloudflare/kumo/components/button";
 import { Banner } from "@cloudflare/kumo/components/banner";
 import { LayerCard } from "@cloudflare/kumo/components/layer-card";
-import { Breadcrumbs } from "@cloudflare/kumo/components/breadcrumbs";
 import {
   DialogRoot,
   Dialog,
@@ -22,15 +21,14 @@ import { LoginDialog } from "@/components/auth/login-dialog";
 import {
   PaperPlaneRight,
   Trash,
-  Sparkle,
   WarningCircle,
   LockKey,
   GoogleLogo,
-  House,
   SidebarSimple,
+  Plus,
 } from "@phosphor-icons/react";
 import { WidgetRenderer } from "@/components/chat/widgets/widget-renderer";
-import { ChatSessionDrawer } from "@/components/chat/chat-session-drawer";
+import { useChatSidebar } from "@/components/app-sidebar";
 import { ChatSessionMetadata } from "@/lib/chat-store";
 
 export interface ChatMessageItem {
@@ -60,7 +58,6 @@ export function ChatWorkspace({
   initialScenario,
 }: ChatWorkspaceProps) {
   const t = useTranslations("chat");
-  const tNav = useTranslations("nav");
   const { data: session } = useSession();
   const isAuthenticated = initialIsAuthenticated || !!session?.user?.id;
 
@@ -89,10 +86,10 @@ export function ChatWorkspace({
   const [isConfirmClearOpen, setIsConfirmClearOpen] = useState(false);
   const [isLoginOpen, setIsLoginOpen] = useState(false);
 
-  // Session & Drawer States
+  // Session & Sidebar States
   const [sessions, setSessions] = useState<ChatSessionMetadata[]>([]);
   const [currentSessionId, setCurrentSessionId] = useState<string | null>(null);
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const { surface, toggleChatHistory, registerChatHandlers } = useChatSidebar();
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -175,7 +172,7 @@ export function ChatWorkspace({
   }, [isAuthenticated, messages]);
 
   // Switch to selected session
-  const handleSelectSession = async (sessionId: string) => {
+  const handleSelectSession = useCallback(async (sessionId: string) => {
     if (sessionId === currentSessionId || isLoading) return;
     try {
       setIsLoading(true);
@@ -210,17 +207,16 @@ export function ChatWorkspace({
             },
           ]);
         }
-        setIsDrawerOpen(false);
       }
     } catch (err) {
       console.error("Failed to fetch session messages:", err);
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [currentSessionId, isLoading, t]);
 
   // Create new session
-  const handleCreateNewSession = () => {
+  const handleCreateNewSession = useCallback(() => {
     setCurrentSessionId(null);
     setMessages([
       {
@@ -229,12 +225,11 @@ export function ChatWorkspace({
         content: t("tamiWelcome"),
       },
     ]);
-    setIsDrawerOpen(false);
     textareaRef.current?.focus();
-  };
+  }, [t]);
 
   // Rename session
-  const handleRenameSession = async (sessionId: string, newTitle: string) => {
+  const handleRenameSession = useCallback(async (sessionId: string, newTitle: string) => {
     try {
       const res = await fetch("/api/chat/sessions", {
         method: "PATCH",
@@ -247,10 +242,10 @@ export function ChatWorkspace({
     } catch (err) {
       console.error("Failed to rename session:", err);
     }
-  };
+  }, [refreshSessions]);
 
   // Delete session
-  const handleDeleteSession = async (sessionId: string) => {
+  const handleDeleteSession = useCallback(async (sessionId: string) => {
     try {
       const res = await fetch(`/api/chat/sessions?sessionId=${sessionId}`, {
         method: "DELETE",
@@ -264,7 +259,36 @@ export function ChatWorkspace({
     } catch (err) {
       console.error("Failed to delete session:", err);
     }
-  };
+  }, [currentSessionId, handleCreateNewSession, refreshSessions]);
+
+  // Register session handlers with sidebar
+  useEffect(() => {
+    registerChatHandlers({
+      sessions,
+      currentSessionId,
+      onSelectSession: handleSelectSession,
+      onCreateNewSession: handleCreateNewSession,
+      onDeleteSession: handleDeleteSession,
+      onRenameSession: handleRenameSession,
+      onOpenLogin: () => setIsLoginOpen(true),
+      isAuthenticated,
+    });
+  }, [
+    sessions,
+    currentSessionId,
+    handleSelectSession,
+    handleCreateNewSession,
+    handleDeleteSession,
+    handleRenameSession,
+    isAuthenticated,
+    registerChatHandlers,
+  ]);
+
+  useEffect(() => {
+    return () => {
+      registerChatHandlers(null);
+    };
+  }, [registerChatHandlers]);
 
   // Handle Textarea Auto-Resize
   const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -450,74 +474,57 @@ export function ChatWorkspace({
   ];
 
   return (
-    <div className="flex h-full w-full min-h-0 overflow-hidden relative">
-      {/* Sessions Drawer (Collapsible & Responsive) */}
-      <ChatSessionDrawer
-        isOpen={isDrawerOpen}
-        onClose={() => setIsDrawerOpen(false)}
-        sessions={sessions}
-        currentSessionId={currentSessionId}
-        onSelectSession={handleSelectSession}
-        onCreateNewSession={handleCreateNewSession}
-        onDeleteSession={handleDeleteSession}
-        onRenameSession={handleRenameSession}
-        isAuthenticated={isAuthenticated}
-        onOpenLogin={() => setIsLoginOpen(true)}
+    <div className="flex flex-col flex-1 h-full max-w-5xl mx-auto w-full p-3.5 sm:p-6 min-h-0 overflow-hidden">
+      {/* PageHeader (Pinned Top) */}
+      <PageHeader
+        className="shrink-0 mb-3"
+        title={t("title")}
+        description={t("subtitle")}
+        actions={
+          <div className="flex items-center gap-2 shrink-0">
+
+            {/* Sidebar Chat History Toggle Button */}
+            <Button
+              variant={surface === "chat-history" ? "primary" : "secondary"}
+              size="base"
+              onClick={toggleChatHistory}
+              aria-label={t("historyDrawer")}
+              title={t("historyDrawer")}
+              className="rounded-full ring-1 ring-[var(--color-tami-line)]/50 text-sm px-4 min-h-[44px] cursor-pointer"
+              icon={<SidebarSimple size={18} weight={surface === "chat-history" ? "fill" : "regular"} />}
+            >
+              <span className="hidden sm:inline">{t("historyDrawer")}</span>
+            </Button>
+
+            {/* New Chat Button */}
+            <Button
+              variant="secondary"
+              size="base"
+              onClick={handleCreateNewSession}
+              aria-label={t("newChat")}
+              title={t("newChat")}
+              className="rounded-full ring-1 ring-[var(--color-tami-line)]/50 bg-[var(--color-tami-surface)] text-[var(--color-tami-text)] hover:bg-[var(--color-tami-surface-subdued)] text-sm px-3.5 min-h-[44px] cursor-pointer"
+              icon={<Plus size={16} weight="bold" />}
+            >
+              <span className="hidden sm:inline">{t("newChat")}</span>
+            </Button>
+
+            {/* Clear Chat Button */}
+            <Button
+              variant="secondary"
+              size="base"
+              onClick={() => setIsConfirmClearOpen(true)}
+              disabled={isLoading || messages.length <= 1}
+              aria-label={t("clear")}
+              title={t("clear")}
+              className="rounded-full ring-1 ring-[var(--color-tami-line)]/50 bg-[var(--color-tami-surface)] text-[var(--color-tami-text)] hover:bg-[var(--color-tami-surface-subdued)] text-sm px-4 min-h-[44px] cursor-pointer"
+              icon={<Trash size={16} />}
+            >
+              <span className="hidden sm:inline">{t("clear")}</span>
+            </Button>
+          </div>
+        }
       />
-
-      {/* Main Chat Stream Workspace */}
-      <div className="flex flex-col flex-1 h-full max-w-5xl mx-auto w-full p-3.5 sm:p-6 min-h-0 overflow-hidden">
-        {/* PageHeader (Pinned Top) */}
-        <PageHeader
-          className="shrink-0 mb-3"
-          breadcrumbs={
-            <Breadcrumbs size="sm">
-              <Breadcrumbs.Link href="/" icon={<House size={14} />}>
-                {tNav("home")}
-              </Breadcrumbs.Link>
-              <Breadcrumbs.Separator />
-              <Breadcrumbs.Current>{t("title")}</Breadcrumbs.Current>
-            </Breadcrumbs>
-          }
-          title={t("title")}
-          description={t("subtitle")}
-          actions={
-            <div className="flex items-center gap-2 shrink-0">
-              {/* Drawer Toggle Button */}
-              <Button
-                variant="secondary"
-                size="base"
-                onClick={() => setIsDrawerOpen((prev) => !prev)}
-                aria-label={t("historyDrawer")}
-                title={t("historyDrawer")}
-                className="rounded-xl ring-1 ring-[var(--color-tami-line)]/50 bg-[var(--color-tami-surface)] text-[var(--color-tami-text)] hover:bg-[var(--color-tami-surface-subdued)] text-sm px-3 min-h-[44px] cursor-pointer"
-                icon={<SidebarSimple size={18} weight="bold" />}
-              >
-                <span className="hidden sm:inline">{t("historyDrawer")}</span>
-              </Button>
-
-              <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[var(--color-tami-surface-subdued)] ring-1 ring-[var(--color-tami-line)]/40 text-xs font-semibold">
-                <Sparkle size={13} weight="fill" className="text-[var(--color-tami-orange)]" />
-                <span className="text-[var(--color-tami-text)] font-mono">
-                  {isAuthenticated ? t("unlimitedTurns") : `${turnsRemaining}/3`}
-                </span>
-              </div>
-
-              <Button
-                variant="secondary"
-                size="base"
-                onClick={() => setIsConfirmClearOpen(true)}
-                disabled={isLoading || messages.length <= 1}
-                aria-label={t("clear")}
-                title={t("clear")}
-                className="rounded-xl ring-1 ring-[var(--color-tami-line)]/50 bg-[var(--color-tami-surface)] text-[var(--color-tami-text)] hover:bg-[var(--color-tami-surface-subdued)] text-sm px-3 min-h-[44px] cursor-pointer"
-                icon={<Trash size={16} />}
-              >
-                <span className="hidden sm:inline">{t("clear")}</span>
-              </Button>
-            </div>
-          }
-        />
 
         {/* Quota Exhausted Notice Banner (Guests Only) */}
         {!isAuthenticated && turnsRemaining <= 0 && (
@@ -638,7 +645,7 @@ export function ChatWorkspace({
                     type="button"
                     onClick={() => handleSendMessage(starter)}
                     disabled={isLoading || turnsRemaining <= 0}
-                    className="text-left p-3 rounded-xl ring-1 ring-[var(--color-tami-line)]/40 bg-[var(--color-tami-surface)] hover:bg-[var(--color-tami-surface-subdued)] hover:ring-[var(--color-tami-orange)] text-xs text-[var(--color-tami-text)] transition-none cursor-pointer disabled:opacity-60 truncate min-h-[44px] flex items-center"
+                    className="text-left px-4 py-2.5 rounded-full ring-1 ring-[var(--color-tami-line)]/40 bg-[var(--color-tami-surface)] hover:bg-[var(--color-tami-surface-subdued)] hover:ring-[var(--color-tami-orange)] text-xs text-[var(--color-tami-text)] transition-none cursor-pointer disabled:opacity-60 truncate min-h-[44px] flex items-center"
                   >
                     &ldquo;{starter}&rdquo;
                   </button>
@@ -671,7 +678,7 @@ export function ChatWorkspace({
                   onClick={() => handleSendMessage()}
                   disabled={isLoading || !input.trim() || turnsRemaining <= 0}
                   aria-label={t("send")}
-                  className="rounded-xl font-semibold w-11 h-11 min-w-[44px] min-h-[44px] flex items-center justify-center shrink-0 cursor-pointer disabled:opacity-50"
+                  className="rounded-full font-semibold w-11 h-11 min-w-[44px] min-h-[44px] flex items-center justify-center shrink-0 cursor-pointer disabled:opacity-50"
                   icon={<PaperPlaneRight size={18} weight="bold" />}
                 />
               </div>
@@ -699,7 +706,7 @@ export function ChatWorkspace({
                 variant="secondary"
                 size="base"
                 onClick={() => setIsConfirmClearOpen(false)}
-                className="rounded-xl ring-1 ring-[var(--color-tami-line)]/50 bg-[var(--color-tami-surface)] text-[var(--color-tami-text)] text-sm font-semibold min-h-[44px] px-4 cursor-pointer"
+                className="rounded-full ring-1 ring-[var(--color-tami-line)]/50 bg-[var(--color-tami-surface)] text-[var(--color-tami-text)] text-sm font-semibold min-h-[44px] px-5 cursor-pointer"
               >
                 {t("cancel")}
               </Button>
@@ -707,7 +714,7 @@ export function ChatWorkspace({
                 variant="destructive"
                 size="base"
                 onClick={handleConfirmClear}
-                className="rounded-xl text-sm font-semibold min-h-[44px] px-4 cursor-pointer"
+                className="rounded-full text-sm font-semibold min-h-[44px] px-5 cursor-pointer"
               >
                 {t("clear")}
               </Button>
@@ -717,7 +724,6 @@ export function ChatWorkspace({
 
         {/* Login Dialog for Guest Quota Recovery */}
         <LoginDialog isOpen={isLoginOpen} onClose={() => setIsLoginOpen(false)} />
-      </div>
     </div>
   );
 }

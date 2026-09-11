@@ -2,12 +2,10 @@
 
 import React, { useState, useSyncExternalStore } from "react";
 import { useTranslations } from "next-intl";
-import { Breadcrumbs } from "@cloudflare/kumo/components/breadcrumbs";
 import { PageHeader } from "@/components/kumo/page-header/page-header";
 import {
   Trophy,
   Sparkle,
-  House,
 } from "@phosphor-icons/react";
 import {
   subscribePractice,
@@ -22,7 +20,6 @@ import { ArenaSimulator } from "@/components/practice/arena-simulator";
 
 export function PracticeWorkspace() {
   const t = useTranslations("practice");
-  const tNav = useTranslations("nav");
 
   const [activeTab, setActiveTab] = useState<
     "phishing" | "password" | "firewall" | "arena"
@@ -52,32 +49,21 @@ export function PracticeWorkspace() {
 
   return (
     <div className="flex flex-col w-full max-w-6xl mx-auto p-4 sm:p-6 space-y-6">
-      {/* PageHeader with Breadcrumbs, Global Badges, and Clean Tabs */}
+      {/* PageHeader with Clean Tabs and Progress Stats */}
       <PageHeader
-        breadcrumbs={
-          <Breadcrumbs size="sm">
-            <Breadcrumbs.Link href="/" icon={<House size={14} />}>
-              {tNav("home")}
-            </Breadcrumbs.Link>
-            <Breadcrumbs.Separator />
-            <Breadcrumbs.Current>{t("title")}</Breadcrumbs.Current>
-          </Breadcrumbs>
-        }
         title={t("title")}
         description={t("subtitle")}
         actions={
-          <div className="flex items-center gap-2 self-start sm:self-auto">
-            {/* High-Contrast XP Badge (WCAG AA Compliant) */}
-            <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[var(--color-tami-yellow)] text-zinc-950 font-mono font-bold text-xs shadow-xs">
-              <Trophy size={15} weight="fill" className="text-zinc-950" />
+          <div className="flex items-center gap-3 text-xs font-mono text-[var(--color-tami-text-muted)] bg-[var(--color-tami-surface-subdued)] px-3.5 py-1.5 rounded-full ring-1 ring-[var(--color-tami-line)]/50">
+            <span className="flex items-center gap-1.5 font-semibold text-[var(--color-tami-text)]">
+              <Trophy size={15} weight="fill" className="text-[var(--color-tami-yellow)]" />
               <span>{t("scoreBadge", { score: progress.totalScore })}</span>
-            </div>
-
-            {/* Badges Count */}
-            <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[var(--color-tami-green)] text-white font-semibold text-xs shadow-xs">
-              <Sparkle size={15} weight="fill" />
+            </span>
+            <span className="text-[var(--color-tami-line)]">|</span>
+            <span className="flex items-center gap-1.5 font-semibold text-[var(--color-tami-text)]">
+              <Sparkle size={15} weight="fill" className="text-[var(--color-tami-green)]" />
               <span>{t("badgesUnlocked", { count: progress.unlockedBadges.length })}</span>
-            </div>
+            </span>
           </div>
         }
         tabs={[

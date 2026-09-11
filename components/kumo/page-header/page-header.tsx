@@ -1,94 +1,80 @@
 import { ReactNode } from "react";
 import { Tabs, cn, type TabsItem } from "@cloudflare/kumo";
 
-export const KUMO_PAGE_HEADER_VARIANTS = {
-  spacing: {
-    compact: {
-      classes: "gap-1",
-      description: "Compact spacing between header elements",
-    },
-    base: {
-      classes: "gap-2",
-      description: "Default spacing between header elements",
-    },
-    relaxed: {
-      classes: "gap-4",
-      description: "Relaxed spacing for more prominent headers",
-    },
-  },
-} as const;
-
-export const KUMO_PAGE_HEADER_DEFAULT_VARIANTS = {
-  spacing: "base",
-} as const;
-
-export type KumoPageHeaderSpacing =
-  keyof typeof KUMO_PAGE_HEADER_VARIANTS.spacing;
-
-export interface KumoPageHeaderVariantsProps {
-  spacing?: KumoPageHeaderSpacing;
-}
-
-export function pageHeaderVariants({
-  spacing = KUMO_PAGE_HEADER_DEFAULT_VARIANTS.spacing,
-}: KumoPageHeaderVariantsProps = {}) {
-  return cn(
-    "flex flex-col",
-    KUMO_PAGE_HEADER_VARIANTS.spacing[spacing].classes,
-  );
-}
-
-export interface PageHeaderProps extends KumoPageHeaderVariantsProps {
-  breadcrumbs: ReactNode;
-  title?: string;
+export interface PageHeaderProps {
+  title: string;
   description?: string;
+  titleBadge?: ReactNode;
+  breadcrumbs?: ReactNode;
   actions?: ReactNode;
   tabs?: TabsItem[];
+  tabsVariant?: "segmented" | "underline";
   value?: string;
   defaultTab?: string;
   onValueChange?: (value: string) => void;
   className?: string;
-  children?: React.ReactNode;
+  children?: ReactNode;
+  borderBottom?: boolean;
 }
 
 export function PageHeader({
-  breadcrumbs,
   title,
   description,
+  titleBadge,
+  breadcrumbs,
   actions,
   tabs,
+  tabsVariant = "segmented",
   value,
   defaultTab,
   onValueChange,
-  spacing = "base",
   className,
   children,
+  borderBottom = true,
 }: PageHeaderProps) {
   return (
-    <div className={cn(pageHeaderVariants({ spacing }), className)}>
-      <div className="border-b border-kumo-line py-1 px-1">{breadcrumbs}</div>
-
-      {(title || description || actions) && (
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 py-2 px-1">
-          <div className="flex flex-col gap-0.5">
-            {title && (
-              <h1 className="font-heading text-xl sm:text-2xl font-semibold text-kumo-default">
-                {title}
-              </h1>
-            )}
-            {description && (
-              <p className="max-w-prose text-xs sm:text-sm text-kumo-subtle">
-                {description}
-              </p>
-            )}
-          </div>
-          {actions && <div className="flex items-center gap-2 shrink-0">{actions}</div>}
+    <header
+      className={cn(
+        "flex flex-col gap-3",
+        borderBottom && "border-b border-[var(--color-tami-line)]/50 pb-4 sm:pb-5 mb-5",
+        className
+      )}
+    >
+      {/* Optional Breadcrumb Trail (Subtle hierarchy, zero arbitrary divider lines) */}
+      {breadcrumbs && (
+        <div className="text-xs text-[var(--color-tami-text-muted)] flex items-center gap-1.5 -mb-0.5">
+          {breadcrumbs}
         </div>
       )}
 
-      {tabs && (
-        <div className="flex w-full items-center justify-between border-b border-kumo-line pt-1 pb-2.5 px-1">
+      {/* Main Title, Subtitle, and Actions Row */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div className="flex flex-col gap-1 min-w-0 flex-1">
+          <div className="flex items-center gap-2.5 flex-wrap">
+            <h1 className="font-heading text-xl sm:text-2xl lg:text-[26px] font-bold tracking-tight text-[var(--color-tami-text)] leading-tight">
+              {title}
+            </h1>
+            {titleBadge}
+          </div>
+          {description && (
+            <p className="max-w-3xl text-sm text-[var(--color-tami-text-muted)] leading-relaxed">
+              {description}
+            </p>
+          )}
+        </div>
+
+        {actions && (
+          <div className="flex items-center gap-2.5 sm:self-center shrink-0 flex-wrap">
+            {actions}
+          </div>
+        )}
+      </div>
+
+      {/* Optional Integrated Tabs Row */}
+      {tabs && tabs.length > 0 && (
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-1.5">
           <Tabs
+            variant={tabsVariant}
             tabs={tabs}
             value={value}
             selectedValue={defaultTab}
@@ -96,11 +82,11 @@ export function PageHeader({
               const stringValue = String(nextValue);
               onValueChange?.(stringValue);
             }}
+            className="w-full sm:w-auto"
           />
-
-          <div className="flex items-center gap-2">{children}</div>
+          {children && <div className="flex items-center gap-2 shrink-0">{children}</div>}
         </div>
       )}
-    </div>
+    </header>
   );
 }

@@ -5,7 +5,6 @@ import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { Button } from "@cloudflare/kumo/components/button";
 import { LayerCard } from "@cloudflare/kumo/components/layer-card";
-import { Breadcrumbs } from "@cloudflare/kumo/components/breadcrumbs";
 import { Meter } from "@cloudflare/kumo/components/meter";
 import { PageHeader } from "@/components/kumo/page-header/page-header";
 import {
@@ -18,7 +17,6 @@ import {
   ArrowRight,
   Trophy,
   Sparkle,
-  House,
   CaretDown,
 } from "@phosphor-icons/react";
 import {
@@ -65,7 +63,6 @@ const MODULES_DATA = [
 
 export function LearnWorkspace() {
   const t = useTranslations("learn");
-  const tNav = useTranslations("nav");
 
   const rawSnapshot = useSyncExternalStore(
     subscribeLearn,
@@ -93,17 +90,8 @@ export function LearnWorkspace() {
 
   return (
     <div className="flex flex-col w-full max-w-6xl mx-auto p-4 sm:p-6 space-y-6">
-      {/* PageHeader with Breadcrumbs & Action */}
+      {/* PageHeader */}
       <PageHeader
-        breadcrumbs={
-          <Breadcrumbs size="sm">
-            <Breadcrumbs.Link href="/" icon={<House size={14} />}>
-              {tNav("home")}
-            </Breadcrumbs.Link>
-            <Breadcrumbs.Separator />
-            <Breadcrumbs.Current>{t("title")}</Breadcrumbs.Current>
-          </Breadcrumbs>
-        }
         title={t("title")}
         description={t("subtitle")}
         actions={
@@ -111,7 +99,7 @@ export function LearnWorkspace() {
             <Button
               variant="secondary"
               size="base"
-              className="rounded-xl bg-[var(--color-tami-surface-subdued)] hover:bg-[var(--color-tami-surface-muted)] text-[var(--color-tami-text)] text-sm font-semibold min-h-[44px] px-4 ring-1 ring-[var(--color-tami-line)]/40 transition-none"
+              className="rounded-full bg-[var(--color-tami-surface-subdued)] hover:bg-[var(--color-tami-surface-muted)] text-[var(--color-tami-text)] text-sm font-semibold min-h-[44px] px-5 ring-1 ring-[var(--color-tami-line)]/40 transition-none cursor-pointer"
               icon={<ArrowRight size={16} weight="bold" />}
             >
               {t("goToPractice")}
@@ -203,7 +191,7 @@ export function LearnWorkspace() {
                       size={15}
                       weight={isDone ? "fill" : "regular"}
                     />
-                    <span>{isDone ? t("completed") : t("markDone")}</span>
+                    <span>{isDone ? t("completed") : t("markCompleted")}</span>
                   </button>
                 </div>
 
@@ -246,7 +234,7 @@ export function LearnWorkspace() {
                   <Button
                     variant="secondary"
                     size="base"
-                    className="rounded-xl bg-[var(--color-tami-surface-subdued)] hover:bg-[var(--color-tami-surface-muted)] text-[var(--color-tami-text)] ring-1 ring-[var(--color-tami-line)]/40 text-sm px-4 min-h-[44px] font-semibold transition-none"
+                    className="rounded-full bg-[var(--color-tami-surface-subdued)] hover:bg-[var(--color-tami-surface-muted)] text-[var(--color-tami-text)] ring-1 ring-[var(--color-tami-line)]/40 text-sm px-5 min-h-[44px] font-semibold transition-none"
                     icon={<ArrowRight size={16} weight="bold" />}
                   >
                     {t(mod.practiceLabelKey as "takePractice")}
