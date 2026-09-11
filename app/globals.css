@@ -115,3 +115,54 @@ body {
   justify-content: center;
   flex-shrink: 0;
 }
+
+/* Universal Capsule Shape for Kumo Buttons & Interactive Action Controls */
+[data-kumo-component="Button"],
+button[data-kumo-component="Button"],
+a[data-kumo-component="Button"] {
+  border-radius: 9999px !important;
+}
+
+/* Collapsed Sidebar MenuButton & Icon Centering */
+.group\/sidebar[data-state="collapsed"] [data-sidebar="menu-button"] {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  justify-content: center !important;
+  width: 100% !important;
+}
+
+.group\/sidebar[data-state="collapsed"] [data-sidebar="menu-button"] > div {
+  justify-content: center !important;
+  transform: none !important;
+  width: 100% !important;
+}
+
+.group\/sidebar[data-state="collapsed"] [data-sidebar="menu-button"] > div > span {
+  display: none !important;
+}
+
+.group\/sidebar[data-state="collapsed"] [data-sidebar="menu-button"] svg {
+  margin: 0 auto !important;
+  flex-shrink: 0 !important;
+}
+
+/* Collapsed Sidebar Footer Button Compacting */
+.group\/sidebar[data-state="collapsed"] [data-sidebar="footer"] button {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  width: 36px !important;
+  min-width: 36px !important;
+  height: 36px !important;
+  min-height: 36px !important;
+  justify-content: center !important;
+}
+
+.group\/sidebar[data-state="collapsed"] [data-sidebar="footer"] button span {
+  display: none !important;
+}
+
+/* Floating Elevation Shadow when Sidebar is Peeking */
+[data-state="peeking"] [data-sidebar="content-container"] {
+  box-shadow: 0 12px 36px -4px rgba(0, 0, 0, 0.25), 0 0 0 1px var(--color-tami-line) !important;
+}
+
