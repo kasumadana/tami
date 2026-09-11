@@ -181,7 +181,7 @@ export function PasswordSimulator() {
               size="base"
               onClick={handleGenerateAiPuzzle}
               disabled={isGeneratingAi}
-              className="rounded-xl text-xs min-h-[44px] px-3 font-semibold"
+              className="rounded-full text-xs min-h-[44px] px-4 font-semibold"
               icon={isGeneratingAi ? <Loader size="sm" /> : <MagicWand size={16} weight="bold" className="text-[var(--color-tami-violet)]" />}
             >
               {isGeneratingAi ? t("generatingAi") : t("puzzleAi")}
@@ -190,7 +190,7 @@ export function PasswordSimulator() {
               variant="secondary"
               size="base"
               onClick={handleGenerateSample}
-              className="rounded-xl text-xs min-h-[44px] px-3 font-semibold"
+              className="rounded-full text-xs min-h-[44px] px-4 font-semibold"
             >
               {tPwd("generatorBtn")}
             </Button>
@@ -278,7 +278,7 @@ export function PasswordSimulator() {
                 variant="secondary"
                 size="base"
                 onClick={handleReset}
-                className="rounded-xl text-sm font-semibold min-h-[44px] px-4"
+                className="rounded-full text-sm font-semibold min-h-[44px] px-4"
                 icon={<ArrowClockwise size={15} weight="bold" />}
               >
                 {t("resetChallenge")}
@@ -287,7 +287,7 @@ export function PasswordSimulator() {
                 variant="primary"
                 size="base"
                 onClick={() => setIsDebriefOpen(true)}
-                className="rounded-xl text-sm min-h-[44px] px-5 font-semibold"
+                className="rounded-full text-sm min-h-[44px] px-5 font-semibold"
                 icon={<ChatCircleDots size={16} weight="bold" />}
               >
                 {t("socraticDebriefBtn")}

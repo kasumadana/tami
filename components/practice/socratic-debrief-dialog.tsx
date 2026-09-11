@@ -206,7 +206,7 @@ export function SocraticDebriefDialog({
                   setReflectionInput(chip);
                   handleAskQuestion(chip);
                 }}
-                className="px-3.5 py-2.5 rounded-xl text-xs font-medium bg-[var(--color-tami-surface-subdued)] hover:bg-[var(--color-tami-surface-muted)] text-[var(--color-tami-text)] text-left min-h-[44px] transition-none focus-visible:ring-2 focus-visible:ring-[var(--color-tami-yellow)] flex items-center gap-2"
+                className="px-4 py-2.5 rounded-full text-xs font-medium bg-[var(--color-tami-surface-subdued)] hover:bg-[var(--color-tami-surface-muted)] text-[var(--color-tami-text)] text-left min-h-[44px] transition-none focus-visible:ring-2 focus-visible:ring-[var(--color-tami-yellow)] flex items-center gap-2 cursor-pointer"
               >
                 <Lightbulb size={16} weight="fill" className="text-[var(--color-tami-yellow)] shrink-0" />
                 <span>{chip}</span>
@@ -255,7 +255,7 @@ export function SocraticDebriefDialog({
             size="base"
             onClick={() => handleAskQuestion()}
             disabled={isLoading || !reflectionInput.trim()}
-            className="rounded-xl min-h-[44px] px-4 font-semibold text-xs"
+            className="rounded-full min-h-[44px] px-5 font-semibold text-xs"
             icon={<PaperPlaneTilt size={16} weight="bold" />}
           >
             {tChat("send")}
@@ -272,7 +272,7 @@ export function SocraticDebriefDialog({
                 onClose();
                 onReplay();
               }}
-              className="rounded-xl text-xs min-h-[44px]"
+              className="rounded-full text-xs min-h-[44px] px-4"
               icon={<ArrowClockwise size={15} weight="bold" />}
             >
               {t("resetChallenge")}

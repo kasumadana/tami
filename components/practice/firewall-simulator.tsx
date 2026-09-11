@@ -248,7 +248,7 @@ export function FirewallSimulator() {
               size="base"
               onClick={handleGenerateAiMission}
               disabled={isGeneratingAi || isSimulating}
-              className="rounded-xl text-xs min-h-[44px] px-3 font-semibold"
+              className="rounded-full text-xs min-h-[44px] px-4 font-semibold"
               icon={isGeneratingAi ? <Loader size="sm" /> : <MagicWand size={16} weight="bold" className="text-[var(--color-tami-violet)]" />}
             >
               {isGeneratingAi ? t("generatingAi") : t("generateAi")}
@@ -258,7 +258,7 @@ export function FirewallSimulator() {
               size="base"
               onClick={handleStartSimulation}
               disabled={isSimulating}
-              className="rounded-xl text-xs min-h-[44px] px-4 font-semibold"
+              className="rounded-full text-xs min-h-[44px] px-5 font-semibold"
               icon={isSimulating ? <Loader size="sm" /> : <Play size={15} weight="fill" />}
             >
               {isSimulating ? tFw("filtering") : tFw("startStream")}
@@ -297,7 +297,7 @@ export function FirewallSimulator() {
                   type="button"
                   onClick={() => handleRuleChange(443, "ALLOW")}
                   aria-pressed={rules[443] === "ALLOW"}
-                  className={`flex-1 py-2.5 rounded-xl text-xs font-bold transition-none min-h-[44px] cursor-pointer ${
+                  className={`flex-1 py-2.5 rounded-full text-xs font-bold transition-none min-h-[44px] cursor-pointer ${
                     rules[443] === "ALLOW"
                       ? "bg-[var(--color-tami-green)] text-white"
                       : "bg-[var(--color-tami-surface)] text-[var(--color-tami-text-muted)] hover:bg-[var(--color-tami-surface-muted)]"
@@ -309,7 +309,7 @@ export function FirewallSimulator() {
                   type="button"
                   onClick={() => handleRuleChange(443, "BLOCK")}
                   aria-pressed={rules[443] === "BLOCK"}
-                  className={`flex-1 py-2.5 rounded-xl text-xs font-bold transition-none min-h-[44px] cursor-pointer ${
+                  className={`flex-1 py-2.5 rounded-full text-xs font-bold transition-none min-h-[44px] cursor-pointer ${
                     rules[443] === "BLOCK"
                       ? "bg-[var(--color-tami-red)] text-white"
                       : "bg-[var(--color-tami-surface)] text-[var(--color-tami-text-muted)] hover:bg-[var(--color-tami-surface-muted)]"
@@ -344,7 +344,7 @@ export function FirewallSimulator() {
                   type="button"
                   onClick={() => handleRuleChange(4444, "ALLOW")}
                   aria-pressed={rules[4444] === "ALLOW"}
-                  className={`flex-1 py-2.5 rounded-xl text-xs font-bold transition-none min-h-[44px] cursor-pointer ${
+                  className={`flex-1 py-2.5 rounded-full text-xs font-bold transition-none min-h-[44px] cursor-pointer ${
                     rules[4444] === "ALLOW"
                       ? "bg-[var(--color-tami-green)] text-white"
                       : "bg-[var(--color-tami-surface)] text-[var(--color-tami-text-muted)] hover:bg-[var(--color-tami-surface-muted)]"
@@ -356,7 +356,7 @@ export function FirewallSimulator() {
                   type="button"
                   onClick={() => handleRuleChange(4444, "BLOCK")}
                   aria-pressed={rules[4444] === "BLOCK"}
-                  className={`flex-1 py-2.5 rounded-xl text-xs font-bold transition-none min-h-[44px] cursor-pointer ${
+                  className={`flex-1 py-2.5 rounded-full text-xs font-bold transition-none min-h-[44px] cursor-pointer ${
                     rules[4444] === "BLOCK"
                       ? "bg-[var(--color-tami-red)] text-white"
                       : "bg-[var(--color-tami-surface)] text-[var(--color-tami-text-muted)] hover:bg-[var(--color-tami-surface-muted)]"
@@ -391,7 +391,7 @@ export function FirewallSimulator() {
                   type="button"
                   onClick={() => handleRuleChange(22, "ALLOW")}
                   aria-pressed={rules[22] === "ALLOW"}
-                  className={`flex-1 py-2.5 rounded-xl text-xs font-bold transition-none min-h-[44px] cursor-pointer ${
+                  className={`flex-1 py-2.5 rounded-full text-xs font-bold transition-none min-h-[44px] cursor-pointer ${
                     rules[22] === "ALLOW"
                       ? "bg-[var(--color-tami-green)] text-white"
                       : "bg-[var(--color-tami-surface)] text-[var(--color-tami-text-muted)] hover:bg-[var(--color-tami-surface-muted)]"
@@ -403,7 +403,7 @@ export function FirewallSimulator() {
                   type="button"
                   onClick={() => handleRuleChange(22, "BLOCK")}
                   aria-pressed={rules[22] === "BLOCK"}
-                  className={`flex-1 py-2.5 rounded-xl text-xs font-bold transition-none min-h-[44px] cursor-pointer ${
+                  className={`flex-1 py-2.5 rounded-full text-xs font-bold transition-none min-h-[44px] cursor-pointer ${
                     rules[22] === "BLOCK"
                       ? "bg-[var(--color-tami-red)] text-white"
                       : "bg-[var(--color-tami-surface)] text-[var(--color-tami-text-muted)] hover:bg-[var(--color-tami-surface-muted)]"
@@ -507,7 +507,7 @@ export function FirewallSimulator() {
                 variant="secondary"
                 size="base"
                 onClick={handleReset}
-                className="rounded-xl text-sm font-semibold min-h-[44px] px-4"
+                className="rounded-full text-sm font-semibold min-h-[44px] px-4"
                 icon={<ArrowClockwise size={15} weight="bold" />}
               >
                 {t("resetChallenge")}
@@ -516,7 +516,7 @@ export function FirewallSimulator() {
                 variant="primary"
                 size="base"
                 onClick={() => setIsDebriefOpen(true)}
-                className="rounded-xl text-sm min-h-[44px] px-5 font-semibold"
+                className="rounded-full text-sm min-h-[44px] px-5 font-semibold"
                 icon={<ChatCircleDots size={16} weight="bold" />}
               >
                 {t("socraticDebriefBtn")}

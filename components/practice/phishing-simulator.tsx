@@ -213,7 +213,7 @@ export function PhishingSimulator() {
                 key={p.id}
                 type="button"
                 onClick={() => handleSelectScenario(p)}
-                className={`px-3 py-1.5 rounded-xl text-xs font-medium transition-none min-h-[36px] ${
+                className={`px-3.5 py-1.5 rounded-full text-xs font-medium transition-none min-h-[36px] cursor-pointer ${
                   currentScenario.id === p.id
                     ? "bg-[var(--color-tami-orange)] text-white shadow-xs font-bold"
                     : "bg-[var(--color-tami-surface)] text-[var(--color-tami-text)] hover:bg-[var(--color-tami-surface-muted)]"
@@ -231,7 +231,7 @@ export function PhishingSimulator() {
           size="base"
           onClick={handleGenerateAiScenario}
           disabled={isGeneratingAi}
-          className="rounded-xl text-xs min-h-[44px] px-4 font-semibold text-[var(--color-tami-text)]"
+          className="rounded-full text-xs min-h-[44px] px-5 font-semibold text-[var(--color-tami-text)] cursor-pointer"
           icon={isGeneratingAi ? <Loader size="sm" /> : <MagicWand size={16} weight="bold" className="text-[var(--color-tami-violet)]" />}
         >
           {isGeneratingAi ? t("generatingAi") : t("generateAi")}
@@ -420,7 +420,7 @@ export function PhishingSimulator() {
                 variant="secondary"
                 size="base"
                 onClick={handleReset}
-                className="rounded-xl text-sm font-semibold min-h-[44px] px-4"
+                className="rounded-full text-sm font-semibold min-h-[44px] px-5 cursor-pointer"
                 icon={<ArrowClockwise size={15} weight="bold" />}
               >
                 {t("resetChallenge")}
@@ -429,7 +429,7 @@ export function PhishingSimulator() {
                 variant="primary"
                 size="base"
                 onClick={() => setIsDebriefOpen(true)}
-                className="rounded-xl text-sm min-h-[44px] px-5 font-semibold"
+                className="rounded-full text-sm min-h-[44px] px-6 font-semibold cursor-pointer"
                 icon={<ChatCircleDots size={16} weight="bold" />}
               >
                 {t("socraticDebriefBtn")}
@@ -449,7 +449,7 @@ export function PhishingSimulator() {
                 variant="secondary"
                 size="base"
                 onClick={() => handleVerdictSubmit("safe")}
-                className="w-1/2 sm:w-auto rounded-xl text-xs min-h-[44px] px-4 font-semibold"
+                className="w-1/2 sm:w-auto rounded-full text-xs min-h-[44px] px-5 font-semibold cursor-pointer"
               >
                 {tPhishing("verdictSafe")}
               </Button>
@@ -457,7 +457,7 @@ export function PhishingSimulator() {
                 variant="primary"
                 size="base"
                 onClick={() => handleVerdictSubmit("phishing")}
-                className="w-1/2 sm:w-auto rounded-xl !bg-[var(--color-tami-red)] hover:!bg-red-600 !text-white font-semibold text-xs min-h-[44px] px-4"
+                className="w-1/2 sm:w-auto rounded-full !bg-[var(--color-tami-red)] hover:!bg-red-600 !text-white font-semibold text-xs min-h-[44px] px-5 cursor-pointer"
                 icon={<ShieldWarning size={16} weight="bold" />}
               >
                 {tPhishing("verdictPhishing")}

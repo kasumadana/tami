@@ -241,7 +241,7 @@ export function ArenaSimulator() {
               type="button"
               disabled={isLoading}
               onClick={() => handleSelectScenario(idx)}
-              className={`px-3.5 py-2 rounded-xl text-xs font-semibold min-h-[40px] cursor-pointer transition-none ${
+              className={`px-4 py-2 rounded-full text-xs font-semibold min-h-[40px] cursor-pointer transition-none ${
                 idx === selectedScenarioIdx
                   ? "bg-[var(--color-tami-orange)] text-white ring-1 ring-[var(--color-tami-orange)]"
                   : "bg-[var(--color-tami-surface)] text-[var(--color-tami-text-muted)] hover:bg-[var(--color-tami-surface-muted)] ring-1 ring-[var(--color-tami-line)]/40"
@@ -342,7 +342,7 @@ export function ArenaSimulator() {
               variant="primary"
               size="base"
               onClick={() => handleSelectScenario(selectedScenarioIdx)}
-              className="rounded-xl text-xs font-semibold min-h-[44px] px-4 cursor-pointer"
+              className="rounded-full text-xs font-semibold min-h-[44px] px-5 cursor-pointer"
               icon={<ArrowClockwise size={16} weight="bold" />}
             >
               Mainkan Ulang Skenario
@@ -366,7 +366,7 @@ export function ArenaSimulator() {
                   type="button"
                   disabled={isLoading}
                   onClick={() => handleSendMove(tactic)}
-                  className="text-left p-3 rounded-xl ring-1 ring-[var(--color-tami-line)]/40 bg-[var(--color-tami-surface)] hover:bg-[var(--color-tami-surface-subdued)] hover:ring-[var(--color-tami-orange)] text-xs text-[var(--color-tami-text)] transition-none cursor-pointer disabled:opacity-50 min-h-[44px] flex items-center leading-snug"
+                  className="text-left p-3.5 rounded-2xl ring-1 ring-[var(--color-tami-line)]/40 bg-[var(--color-tami-surface)] hover:bg-[var(--color-tami-surface-subdued)] hover:ring-[var(--color-tami-orange)] text-xs text-[var(--color-tami-text)] transition-none cursor-pointer disabled:opacity-50 min-h-[44px] flex items-center leading-snug"
                 >
                   &ldquo;{tactic}&rdquo;
                 </button>
@@ -396,7 +396,7 @@ export function ArenaSimulator() {
                 size="base"
                 onClick={() => handleSendMove()}
                 disabled={isLoading || !input.trim()}
-                className="rounded-xl font-semibold w-11 h-11 min-w-[44px] min-h-[44px] flex items-center justify-center shrink-0 cursor-pointer disabled:opacity-50"
+                className="rounded-full font-semibold w-11 h-11 min-w-[44px] min-h-[44px] flex items-center justify-center shrink-0 cursor-pointer disabled:opacity-50"
                 icon={<PaperPlaneRight size={18} weight="bold" />}
               />
             </div>
