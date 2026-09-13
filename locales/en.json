@@ -85,7 +85,12 @@
     "disclaimerShort": "AI responses are educational. Always verify critical safety decisions.",
     "subdomain": "Subdomain",
     "rootDomain": "Root Domain",
-    "tld": "TLD"
+    "tld": "TLD",
+    "choiceWidget": {
+      "selectAction": "Choose the action you think is safest:",
+      "riskyOption": "Risky",
+      "safeOption": "Safe Action"
+    }
   },
   "detector": {
     "title": "Multimodal Threat Inspector",
@@ -120,7 +125,23 @@
     "accuracy": "{score}% Confidence",
     "fileTooLarge": "File size exceeds the 5MB limit.",
     "invalidFormat": "Unsupported file format. Please upload PNG, JPG, or WebP.",
-    "analysisError": "Failed to analyze image. Please try again or select another image."
+    "analysisError": "Failed to analyze image. Please try again or select another image.",
+    "readyTitle": "Evidence Ready for Inspection",
+    "readyDesc": "Initiate in-depth scanning using tami's multimodal AI model to identify visual manipulation, phishing, or social engineering cues.",
+    "sandboxTitle": "Attack Impact Simulation",
+    "openSandbox": "Open Sandbox Simulation",
+    "selfInvestigationTitle": "Self-Investigation with tami",
+    "selfInvestigationDesc": "tami doesn't just slap on a label; it trains your eyes to spot digital traps: domain spoofing, unnatural fonts, and deceptive buttons.",
+    "sandbox": {
+      "modalTitle": "Real-World Attack Impact Simulation",
+      "closeLabel": "Close simulation",
+      "victimScreen": "On Your Screen",
+      "attackerScreen": "Behind the Scenes (Attacker)",
+      "prevStep": "Previous Step",
+      "stepCounter": "Step {current} of {total}",
+      "understandRisk": "I Understand the Risks",
+      "nextStep": "Next"
+    }
   },
   "learn": {
     "title": "Digital Defense Curriculum",
@@ -305,6 +326,21 @@
       "thinking": "tami is structuring a Socratic response...",
       "closeDialog": "Close Reflection Dialog",
       "openFullChat": "Open Full Discussion in Chat"
+    },
+    "arena": {
+      "title": "Social Engineering Battle Arena",
+      "subtitle": "Test your defense resilience against an AI Scammer in an interactive 3-round duel!",
+      "round": "Round {current}/3",
+      "shield": "Shield: {score}%",
+      "adversaryTag": "{name} (Scammer)",
+      "coachWhisper": "tami Socratic Coach Whisper:",
+      "victoryTitle": "Cyber Defense Victory!",
+      "defeatTitle": "Scammer Breached Your Defenses!",
+      "finalScore": "Final Score: {score}/100",
+      "replay": "Replay Scenario",
+      "tacticsPrompt": "Select Quick Tactical Response:",
+      "inputPlaceholder": "Or type your own tactical defense response...",
+      "sendAction": "Send Action"
     }
   },
   "auth": {

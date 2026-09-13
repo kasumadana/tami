@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
+import { useTranslations, useLocale } from "next-intl";
 import { Button } from "@cloudflare/kumo/components/button";
 import { LayerCard } from "@cloudflare/kumo/components/layer-card";
 import {
@@ -28,54 +29,113 @@ interface ArenaMessage {
   content: string;
 }
 
-const SCENARIOS = [
-  {
-    id: "free_skin",
-    title: "Jebakan Hadiah Game Gratis",
-    adversaryName: "Admin-Promo99",
-    initialMessage:
-      "Halo teman! Selamat, ID akunmu terpilih memenangkan 10.000 Diamond & Skin Eksklusif! Cepat kirim kode OTP 6 angka yang baru kami SMS-kan ke HP-mu sekarang juga ya!",
-    coachInitial:
-      "Lihat ini! Penipu mengiming-imingi hadiah fantastis dan meminta kode OTP SMS. Mengapa kode OTP tidak boleh diberikan ke siapa pun, bahkan yang mengaku admin?",
-    quickTactics: [
-      "Admin resmi tidak pernah meminta kode OTP atau SMS ke chat pribadi!",
-      "Saya tidak pernah mengikuti undian ini, saya akan cek langsung ke aplikasi resmi.",
-      "Tolak hadiah dan laporkan akun ini ke pengembang game.",
-    ],
-  },
-  {
-    id: "urgent_teacher",
-    title: "Pencatutan Nama Guru Sekolah",
-    adversaryName: "Pak Guru (Nomor Baru)",
-    initialMessage:
-      "Nak, ini Pak Budi guru sekolahmu. Bapak ganti nomor darurat. Tolong cepat klik link ini dan isi password portal ujianmu sekarang, tugasmu belum masuk dan nilai rapotmu terancam 0!",
-    coachInitial:
-      "Waspada! Pelaku mencatut figur otoritas (Guru) dan menciptakan rasa panik ('nilai rapotmu terancam 0'). Apa cara paling aman untuk memastikan kebenarannya?",
-    quickTactics: [
-      "Saya akan konfirmasi langsung ke nomor Pak Budi yang tersimpan di grup kelas resmi.",
-      "Maaf Pak, saya diajarkan untuk tidak pernah memasukkan kata sandi di tautan luar sekolah.",
-      "Saya akan tanyakan hal ini ke orang tua dan wali kelas saya besok di sekolah.",
-    ],
-  },
-  {
-    id: "fake_bank",
-    title: "Peringatan Pemblokiran Rekening Palsu",
-    adversaryName: "Pusat Bantuan Kartu",
-    initialMessage:
-      "PERINGATAN RESMI: Rekening e-wallet Anda terindikasi transaksi ilegal. Dalam 5 menit saldo akan disita kecuali Anda membalas pesan ini dengan PIN & nomor kartu Anda!",
-    coachInitial:
-      "Desakan waktu panik ('5 menit saldo disita') adalah ciri khas manipulasi psikologis. Jangan panik. Apa hak dan kewajiban kita saat menerima ancaman seperti ini?",
-    quickTactics: [
-      "Bank atau dompet digital resmi tidak pernah menyita saldo lewat chat darurat 5 menit.",
-      "Saya akan langsung menelepon nomor call center resmi yang tertera di belakang kartu saya.",
-      "Saya tidak akan memberikan PIN kepada siapa pun dan segera blokir kontak ini.",
-    ],
-  },
-];
+interface Scenario {
+  id: string;
+  title: string;
+  adversaryName: string;
+  initialMessage: string;
+  coachInitial: string;
+  quickTactics: string[];
+}
+
+const SCENARIOS: Record<string, Scenario[]> = {
+  id: [
+    {
+      id: "free_skin",
+      title: "Jebakan Hadiah Game Gratis",
+      adversaryName: "Admin-Promo99",
+      initialMessage:
+        "Halo teman! Selamat, ID akunmu terpilih memenangkan 10.000 Diamond & Skin Eksklusif! Cepat kirim kode OTP 6 angka yang baru kami SMS-kan ke HP-mu sekarang juga ya!",
+      coachInitial:
+        "Lihat ini! Penipu mengiming-imingi hadiah fantastis dan meminta kode OTP SMS. Mengapa kode OTP tidak boleh diberikan ke siapa pun, bahkan yang mengaku admin?",
+      quickTactics: [
+        "Admin resmi tidak pernah meminta kode OTP atau SMS ke chat pribadi!",
+        "Saya tidak pernah mengikuti undian ini, saya akan cek langsung ke aplikasi resmi.",
+        "Tolak hadiah dan laporkan akun ini ke pengembang game.",
+      ],
+    },
+    {
+      id: "urgent_teacher",
+      title: "Pencatutan Nama Guru Sekolah",
+      adversaryName: "Pak Guru (Nomor Baru)",
+      initialMessage:
+        "Nak, ini Pak Budi guru sekolahmu. Bapak ganti nomor darurat. Tolong cepat klik link ini dan isi password portal ujianmu sekarang, tugasmu belum masuk dan nilai rapotmu terancam 0!",
+      coachInitial:
+        "Waspada! Pelaku mencatut figur otoritas (Guru) dan menciptakan rasa panik ('nilai rapotmu terancam 0'). Apa cara paling aman untuk memastikan kebenarannya?",
+      quickTactics: [
+        "Saya akan konfirmasi langsung ke nomor Pak Budi yang tersimpan di grup kelas resmi.",
+        "Maaf Pak, saya diajarkan untuk tidak pernah memasukkan kata sandi di tautan luar sekolah.",
+        "Saya akan tanyakan hal ini ke orang tua dan wali kelas saya besok di sekolah.",
+      ],
+    },
+    {
+      id: "fake_bank",
+      title: "Peringatan Pemblokiran Rekening Palsu",
+      adversaryName: "Pusat Bantuan Kartu",
+      initialMessage:
+        "PERINGATAN RESMI: Rekening e-wallet Anda terindikasi transaksi ilegal. Dalam 5 menit saldo akan disita kecuali Anda membalas pesan ini dengan PIN & nomor kartu Anda!",
+      coachInitial:
+        "Desakan waktu panik ('5 menit saldo disita') adalah ciri khas manipulasi psikologis. Jangan panik. Apa hak dan kewajiban kita saat menerima ancaman seperti ini?",
+      quickTactics: [
+        "Bank atau dompet digital resmi tidak pernah menyita saldo lewat chat darurat 5 menit.",
+        "Saya akan langsung menelepon nomor call center resmi yang tertera di belakang kartu saya.",
+        "Saya tidak akan memberikan PIN kepada siapa pun dan segera blokir kontak ini.",
+      ],
+    },
+  ],
+  en: [
+    {
+      id: "free_skin",
+      title: "Free Game Skin Trap",
+      adversaryName: "Admin-Promo99",
+      initialMessage:
+        "Hey friend! Congrats, your account ID was selected to win 10,000 Diamonds & Exclusive Skin! Quickly send the 6-digit OTP code we just texted to your phone right now!",
+      coachInitial:
+        "Look at this! The scammer is baiting you with a fantastic prize and asking for an SMS OTP code. Why should OTP codes never be shared with anyone, even someone claiming to be an admin?",
+      quickTactics: [
+        "Official admins never ask for OTP or SMS codes in private chats!",
+        "I never entered this giveaway, I'll check directly inside the official app.",
+        "Decline the prize and report this account to the game developer.",
+      ],
+    },
+    {
+      id: "urgent_teacher",
+      title: "Teacher Impersonation",
+      adversaryName: "Teacher (New Number)",
+      initialMessage:
+        "Hey, this is Mr. Budi, your school teacher. I changed to an emergency number. Please quickly click this link and enter your exam portal password now—your assignment isn't in and your report card grade is at risk of being a 0!",
+      coachInitial:
+        "Alert! The attacker is impersonating an authority figure (teacher) and inducing panic ('grade at risk of being 0'). What is the safest way to verify their identity?",
+      quickTactics: [
+        "I will confirm directly with Mr. Budi's number saved in the official class group.",
+        "Sorry Sir, I was taught never to enter my password on links outside official school portals.",
+        "I will ask my parents and homeroom teacher about this tomorrow at school.",
+      ],
+    },
+    {
+      id: "fake_bank",
+      title: "Fake Account Suspension Alert",
+      adversaryName: "Card Support Center",
+      initialMessage:
+        "OFFICIAL NOTICE: Your e-wallet account has been flagged for illegal transactions. In 5 minutes your balance will be seized unless you reply to this message with your PIN & card number!",
+      coachInitial:
+        "Panic urgency ('5 minutes balance seized') is a classic psychological manipulation tactic. Stay calm. What are your rights and duties when facing this threat?",
+      quickTactics: [
+        "Official banks or digital wallets never seize funds via an urgent 5-minute chat.",
+        "I will directly call the official customer service number printed on the back of my card.",
+        "I will never share my PIN with anyone and will block this contact immediately.",
+      ],
+    },
+  ],
+};
 
 export function ArenaSimulator() {
+  const t = useTranslations("practice");
+  const locale = useLocale();
+  const scenarios = SCENARIOS[locale] || SCENARIOS.id;
+
   const [selectedScenarioIdx, setSelectedScenarioIdx] = useState(0);
-  const activeScenario = SCENARIOS[selectedScenarioIdx];
+  const activeScenario = scenarios[selectedScenarioIdx] || scenarios[0];
 
   const [round, setRound] = useState(1);
   const [defenseScore, setDefenseScore] = useState(100);
@@ -100,7 +160,7 @@ export function ArenaSimulator() {
 
   const handleSelectScenario = (idx: number) => {
     setSelectedScenarioIdx(idx);
-    const newSc = SCENARIOS[idx];
+    const newSc = scenarios[idx] || scenarios[0];
     setRound(1);
     setDefenseScore(100);
     setIsConcluded(false);
@@ -207,10 +267,10 @@ export function ArenaSimulator() {
             </div>
             <div>
               <h3 className="text-sm sm:text-base font-bold text-[var(--color-tami-text)] leading-snug">
-                Arena Simulasi Rekayasa Sosial
+                {t("arena.title")}
               </h3>
               <p className="text-xs text-[var(--color-tami-text-muted)]">
-                Uji ketangguhan pertahananmu melawan AI Penipu dalam duel 3 ronde interaktif!
+                {t("arena.subtitle")}
               </p>
             </div>
           </div>
@@ -218,24 +278,26 @@ export function ArenaSimulator() {
           <div className="flex items-center gap-2 shrink-0">
             {/* Round Badge */}
             <span className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full bg-[var(--color-tami-surface)] ring-1 ring-[var(--color-tami-line)]/50 text-xs font-mono font-bold text-[var(--color-tami-text)]">
-              Ronde {round}/3
+              {t("arena.round", { current: round })}
             </span>
 
             {/* Defense Score Meter */}
-            <span className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-mono font-bold ring-1 ${
-              defenseScore >= 70
-                ? "bg-[var(--color-tami-green)]/15 text-[var(--color-tami-green)] ring-[var(--color-tami-green)]/30"
-                : "bg-[var(--color-tami-red)]/15 text-[var(--color-tami-red)] ring-[var(--color-tami-red)]/30"
-            }`}>
+            <span
+              className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-mono font-bold ring-1 ${
+                defenseScore >= 70
+                  ? "bg-[var(--color-tami-green)]/15 text-[var(--color-tami-green)] ring-[var(--color-tami-green)]/30"
+                  : "bg-[var(--color-tami-red)]/15 text-[var(--color-tami-red)] ring-[var(--color-tami-red)]/30"
+              }`}
+            >
               <ShieldCheck size={14} weight="fill" />
-              Perisai: {defenseScore}%
+              {t("arena.shield", { score: defenseScore })}
             </span>
           </div>
         </div>
 
         {/* Scenario Selection Chips */}
         <div className="flex flex-wrap items-center gap-2 pt-1">
-          {SCENARIOS.map((sc, idx) => (
+          {scenarios.map((sc, idx) => (
             <button
               key={sc.id}
               type="button"
@@ -262,9 +324,9 @@ export function ArenaSimulator() {
                 <div className="w-8 h-8 rounded-full bg-[var(--color-tami-red)]/15 text-[var(--color-tami-red)] ring-1 ring-[var(--color-tami-red)]/30 flex items-center justify-center shrink-0">
                   <Skull size={18} weight="bold" />
                 </div>
-                <div className="max-w-[85%] sm:max-w-[75%] rounded-2xl p-4 bg-zinc-900 text-zinc-100 ring-1 ring-zinc-800 text-sm leading-relaxed space-y-1 dark:bg-black dark:ring-zinc-800">
-                  <span className="text-[11px] font-bold uppercase tracking-wider text-[var(--color-tami-red)] block font-mono">
-                    {activeScenario.adversaryName} (Penipu)
+                <div className="max-w-[85%] sm:max-w-[75%] rounded-2xl p-4 bg-[var(--color-tami-surface)] text-[var(--color-tami-text)] ring-1 ring-[var(--color-tami-line)] text-sm leading-relaxed space-y-1">
+                  <span className="text-xs font-bold text-[var(--color-tami-red)] block font-mono">
+                    {t("arena.adversaryTag", { name: activeScenario.adversaryName })}
                   </span>
                   <p>{msg.content}</p>
                 </div>
@@ -278,7 +340,7 @@ export function ArenaSimulator() {
                 <div className="w-8 h-8 rounded-full bg-[var(--color-tami-surface-muted)] text-[var(--color-tami-text)] ring-1 ring-[var(--color-tami-line)]/50 flex items-center justify-center font-bold text-xs shrink-0">
                   U
                 </div>
-                <div className="max-w-[85%] sm:max-w-[75%] rounded-2xl p-4 bg-[var(--color-tami-orange)] text-zinc-950 font-medium text-sm leading-relaxed">
+                <div className="max-w-[85%] sm:max-w-[75%] rounded-2xl p-4 bg-[var(--color-tami-orange)] text-white font-medium text-sm leading-relaxed">
                   <p>{msg.content}</p>
                 </div>
               </div>
@@ -292,16 +354,16 @@ export function ArenaSimulator() {
               className="p-3.5 rounded-2xl bg-[var(--color-tami-surface-subdued)] ring-1 ring-[var(--color-tami-line)]/50 text-xs flex items-start gap-3 my-2"
             >
               <Image
-                src="/icon.svg"
+                src="/shai-wave.png"
                 alt="tami"
-                width={26}
-                height={26}
-                className="w-6.5 h-6.5 object-contain shrink-0 mt-0.5"
+                width={28}
+                height={28}
+                className="w-7 h-7 object-contain shrink-0 mt-0.5"
               />
               <div className="space-y-0.5">
-                <span className="font-bold text-[var(--color-tami-orange)] text-[11px] flex items-center gap-1">
+                <span className="font-bold text-[var(--color-tami-orange)] text-xs flex items-center gap-1">
                   <Sparkle size={12} weight="fill" />
-                  Bisikan Pelatih Sokratik tami:
+                  {t("arena.coachWhisper")}
                 </span>
                 <p className="text-[var(--color-tami-text)] leading-relaxed">{msg.content}</p>
               </div>
@@ -326,7 +388,7 @@ export function ArenaSimulator() {
               <WarningCircle size={24} weight="fill" className="text-[var(--color-tami-red)] shrink-0" />
             )}
             <h4 className="text-base font-bold text-[var(--color-tami-text)]">
-              {verdict === "VICTORY" ? "Kemenangan Pertahanan Siber!" : "Pertahanan Berhasil Ditembus Penipu!"}
+              {verdict === "VICTORY" ? t("arena.victoryTitle") : t("arena.defeatTitle")}
             </h4>
           </div>
 
@@ -336,7 +398,7 @@ export function ArenaSimulator() {
 
           <div className="pt-1 flex items-center justify-between">
             <span className="text-xs font-mono font-bold text-[var(--color-tami-text)]">
-              Skor Akhir: {defenseScore}/100
+              {t("arena.finalScore", { score: defenseScore })}
             </span>
             <Button
               variant="primary"
@@ -345,7 +407,7 @@ export function ArenaSimulator() {
               className="rounded-full text-xs font-semibold min-h-[44px] px-5 cursor-pointer"
               icon={<ArrowClockwise size={16} weight="bold" />}
             >
-              Mainkan Ulang Skenario
+              {t("arena.replay")}
             </Button>
           </div>
         </div>
@@ -357,7 +419,7 @@ export function ArenaSimulator() {
           {/* Tactical Maneuver Buttons */}
           <div className="space-y-1.5">
             <span className="text-xs font-semibold text-[var(--color-tami-text-muted)]">
-              Pilih Manuver Taktis Cepat:
+              {t("arena.tacticsPrompt")}
             </span>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
               {activeScenario.quickTactics.map((tactic, idx) => (
@@ -388,7 +450,7 @@ export function ArenaSimulator() {
                   }
                 }}
                 disabled={isLoading}
-                placeholder="Atau ketik balasan pertahananmu sendiri di sini..."
+                placeholder={t("arena.inputPlaceholder")}
                 className="flex-1 bg-transparent px-3 py-2 text-sm text-[var(--color-tami-text)] placeholder:text-[var(--color-tami-text-muted)] focus:outline-none min-h-[44px]"
               />
               <Button
@@ -396,6 +458,7 @@ export function ArenaSimulator() {
                 size="base"
                 onClick={() => handleSendMove()}
                 disabled={isLoading || !input.trim()}
+                aria-label={t("arena.sendAction")}
                 className="rounded-full font-semibold w-11 h-11 min-w-[44px] min-h-[44px] flex items-center justify-center shrink-0 cursor-pointer disabled:opacity-50"
                 icon={<PaperPlaneRight size={18} weight="bold" />}
               />

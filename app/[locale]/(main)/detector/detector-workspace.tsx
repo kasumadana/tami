@@ -359,10 +359,10 @@ export function DetectorWorkspace() {
               />
               <div className="space-y-1">
                 <h4 className="font-bold text-sm text-[var(--color-tami-text)]">
-                  Investigasi Mandiri Bersama tami
+                  {t("selfInvestigationTitle")}
                 </h4>
                 <p className="text-xs text-[var(--color-tami-text-muted)] leading-relaxed">
-                  tami tidak sekadar memberi label, tetapi melatih matamu mengenali tanda-tanda jebakan digital: manipulasi domain, font janggal, dan tombol tiruan.
+                  {t("selfInvestigationDesc")}
                 </p>
               </div>
             </div>
@@ -391,19 +391,6 @@ export function DetectorWorkspace() {
                   {mimeType.split("/")[1] || "IMAGE"}
                 </span>
               </div>
-
-              {!result && (
-                <Button
-                  variant="primary"
-                  size="base"
-                  onClick={handleAnalyze}
-                  disabled={isLoading}
-                  className="w-full rounded-full font-semibold text-sm min-h-[44px] cursor-pointer"
-                  icon={isLoading ? <ArrowClockwise size={18} className="animate-spin" /> : <ShieldWarning size={18} weight="bold" />}
-                >
-                  {isLoading ? t("analyzing") : t("analyzeAction")}
-                </Button>
-              )}
             </LayerCard>
 
             {/* OCR Extracted Text Box (Colocated with Evidence) */}
@@ -444,7 +431,7 @@ export function DetectorWorkspace() {
           </div>
 
           {/* Right Column: Forensic Intelligence & Findings (Col 7) */}
-          <div className="lg:col-span-7 space-y-4">
+          <div className="lg:col-span-7 space-y-4 lg:sticky lg:top-6 self-start">
             {/* Loading State Skeleton */}
             {isLoading && (
               <LayerCard className="rounded-2xl p-8 bg-[var(--color-tami-surface-subdued)] border-none ring-1 ring-[var(--color-tami-line)]/40 flex flex-col items-center justify-center text-center space-y-4 min-h-[380px]">
@@ -463,15 +450,19 @@ export function DetectorWorkspace() {
             {/* Ready to Analyze Waiting State */}
             {!isLoading && !result && (
               <LayerCard className="rounded-2xl p-8 bg-[var(--color-tami-surface-subdued)] border-none ring-1 ring-[var(--color-tami-line)]/40 flex flex-col items-center justify-center text-center space-y-4 min-h-[340px]">
-                <div className="icon-box-hero w-14 h-14 rounded-2xl mb-1">
-                  <ShieldCheck size={28} weight="bold" />
-                </div>
+                <Image
+                  src="/shai-wave.png"
+                  alt="tami"
+                  width={64}
+                  height={64}
+                  className="w-16 h-16 object-contain mb-1"
+                />
                 <div className="space-y-1.5 max-w-sm">
                   <h3 className="font-bold text-base text-[var(--color-tami-text)]">
-                    Bukti Siap Diperiksa
+                    {t("readyTitle")}
                   </h3>
                   <p className="text-sm text-[var(--color-tami-text-muted)] leading-relaxed">
-                    Klik tombol <strong>{t("analyzeAction")}</strong> di bawah gambar untuk memulai pemindaian mendalam menggunakan model multimodal AI tami.
+                    {t("readyDesc")}
                   </p>
                 </div>
                 <Button
@@ -554,7 +545,7 @@ export function DetectorWorkspace() {
                       </div>
                       <div className="space-y-0.5">
                         <h3 className="text-sm font-bold text-[var(--color-tami-text)]">
-                          Simulasi Dampak Serangan
+                          {t("sandboxTitle")}
                         </h3>
                         <p className="text-xs sm:text-sm text-[var(--color-tami-text-muted)] leading-relaxed">
                           {result.exploitSimulation.scenarioTitle}
@@ -568,7 +559,7 @@ export function DetectorWorkspace() {
                       className="rounded-full ring-1 ring-[var(--color-tami-line)]/50 bg-[var(--color-tami-surface)] text-[var(--color-tami-text)] hover:bg-[var(--color-tami-surface-muted)] text-sm font-semibold min-h-[44px] px-5 cursor-pointer shrink-0"
                       icon={<Skull size={16} weight="bold" className="text-[var(--color-tami-red)]" />}
                     >
-                      Buka Simulasi Sandbox
+                      {t("openSandbox")}
                     </Button>
                   </div>
                 )}
@@ -578,11 +569,11 @@ export function DetectorWorkspace() {
                   <div className="p-5 rounded-2xl bg-[var(--color-tami-orange)]/10 ring-1 ring-[var(--color-tami-orange)]/30 space-y-3">
                     <div className="flex items-center gap-2.5">
                       <Image
-                        src="/icon.svg"
+                        src="/shai-wave.png"
                         alt="tami"
-                        width={28}
-                        height={28}
-                        className="w-7 h-7 object-contain shrink-0"
+                        width={32}
+                        height={32}
+                        className="w-8 h-8 object-contain shrink-0"
                       />
                       <h3 className="font-bold text-sm text-[var(--color-tami-text)]">
                         {t("reflectionTitle")}

@@ -42,13 +42,13 @@ export function GuideWorkspace() {
       {activeTab === "parents" && (
         <div className="space-y-6">
           {/* Reassurance Banner */}
-          <div className="p-5 sm:p-6 rounded-3xl bg-[var(--color-tami-surface)] border border-[var(--color-tami-line)] flex flex-col sm:flex-row items-start sm:items-center gap-4">
+          <div className="p-5 sm:p-6 rounded-2xl bg-[var(--color-tami-surface)] ring-1 ring-[var(--color-tami-line)]/50 flex flex-col sm:flex-row items-start sm:items-center gap-4">
             <Image
-              src="/icon.svg"
+              src="/shai-wave.png"
               alt="tami"
-              width={40}
-              height={40}
-              className="w-10 h-10 object-contain shrink-0"
+              width={48}
+              height={48}
+              className="w-12 h-12 object-contain shrink-0"
             />
             <div className="space-y-1">
               <h2 className="font-bold text-base text-[var(--color-tami-text)]">

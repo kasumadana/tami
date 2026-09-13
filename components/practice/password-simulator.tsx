@@ -84,15 +84,15 @@ export function PasswordSimulator() {
     if (entropy < 40) {
       return {
         label: tPwd("vaultWood"),
-        badgeClass: "bg-red-500/15 text-[var(--color-tami-red)] font-bold",
+        badgeClass: "bg-[var(--color-tami-red)]/15 text-[var(--color-tami-red)] font-bold",
         icon: <LockSimple size={16} weight="bold" className="text-[var(--color-tami-red)]" />,
       };
     }
     if (entropy < 80) {
       return {
         label: tPwd("vaultIron"),
-        badgeClass: "bg-[var(--color-tami-yellow)] text-zinc-950 font-bold",
-        icon: <ShieldWarning size={16} weight="fill" className="text-zinc-950" />,
+        badgeClass: "bg-[var(--color-tami-yellow)] text-black font-bold",
+        icon: <ShieldWarning size={16} weight="fill" className="text-black" />,
       };
     }
     return {

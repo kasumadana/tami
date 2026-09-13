@@ -592,7 +592,7 @@ export function ChatWorkspace({
                   <div
                     className={`rounded-2xl p-4 text-sm leading-relaxed overflow-hidden break-words ${
                       isUser
-                        ? "bg-[var(--color-tami-orange)] text-zinc-950 font-medium rounded-tr-xs"
+                        ? "bg-[var(--color-tami-orange)] text-white font-medium rounded-tr-xs"
                         : "bg-[var(--color-tami-surface-subdued)] text-[var(--color-tami-text)] ring-1 ring-[var(--color-tami-line)]/40 rounded-tl-xs"
                     }`}
                   >

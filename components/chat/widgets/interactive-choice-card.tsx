@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { useTranslations } from "next-intl";
 import { InteractiveChoiceData } from "@/lib/generative-ui-schema";
 import { CheckCircle, WarningCircle, CursorClick } from "@phosphor-icons/react";
 
@@ -15,6 +16,7 @@ export function InteractiveChoiceCard({
   onSelectChoice,
   disabled = false,
 }: InteractiveChoiceCardProps) {
+  const t = useTranslations("chat");
   const [selectedId, setSelectedId] = useState<string | null>(null);
 
   const handleSelect = (choice: { id: string; label: string; isSafeOption?: boolean }) => {
@@ -35,7 +37,7 @@ export function InteractiveChoiceCard({
             {data.prompt}
           </h4>
           <p className="text-xs text-[var(--color-tami-text-muted)] mt-0.5">
-            Pilih satu tindakan yang menurutmu paling tepat:
+            {t("choiceWidget.selectAction")}
           </p>
         </div>
       </div>
@@ -76,12 +78,12 @@ export function InteractiveChoiceCard({
                   {choice.isSafeOption === false ? (
                     <span className="inline-flex items-center gap-1 text-xs font-bold text-[var(--color-tami-red)]">
                       <WarningCircle size={16} weight="fill" />
-                      Berisiko
+                      {t("choiceWidget.riskyOption")}
                     </span>
                   ) : (
                     <span className="inline-flex items-center gap-1 text-xs font-bold text-[var(--color-tami-green)]">
                       <CheckCircle size={16} weight="fill" />
-                      Langkah Aman
+                      {t("choiceWidget.safeOption")}
                     </span>
                   )}
                 </div>

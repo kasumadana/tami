@@ -85,7 +85,12 @@
     "protocol": "Protokol",
     "subdomain": "Subdomain",
     "rootDomain": "Domain Utama",
-    "tld": "TLD"
+    "tld": "TLD",
+    "choiceWidget": {
+      "selectAction": "Pilih satu tindakan yang menurutmu paling tepat:",
+      "riskyOption": "Berisiko",
+      "safeOption": "Langkah Aman"
+    }
   },
   "detector": {
     "title": "Detektor Ancaman Multimodal",
@@ -120,7 +125,23 @@
     "accuracy": "{score}% Akurasi",
     "fileTooLarge": "Ukuran berkas melebihi batas 5MB.",
     "invalidFormat": "Format berkas tidak didukung. Harap gunakan PNG, JPG, atau WebP.",
-    "analysisError": "Gagal menganalisis gambar. Silakan coba lagi atau pilih gambar lain."
+    "analysisError": "Gagal menganalisis gambar. Silakan coba lagi atau pilih gambar lain.",
+    "readyTitle": "Bukti Siap Diperiksa",
+    "readyDesc": "Mulai pemindaian mendalam menggunakan model AI multimodal tami untuk mengidentifikasi tanda-tanda manipulasi visual, phishing, atau rekayasa sosial.",
+    "sandboxTitle": "Simulasi Dampak Serangan",
+    "openSandbox": "Buka Simulasi Sandbox",
+    "selfInvestigationTitle": "Investigasi Mandiri Bersama tami",
+    "selfInvestigationDesc": "tami tidak sekadar memberi label, tetapi melatih matamu mengenali tanda-tanda jebakan digital: manipulasi domain, font janggal, dan tombol tiruan.",
+    "sandbox": {
+      "modalTitle": "Simulasi Dampak Nyata Serangan",
+      "closeLabel": "Tutup simulasi",
+      "victimScreen": "Tampak di Layarmu",
+      "attackerScreen": "Di Balik Layar (Peretas)",
+      "prevStep": "Langkah Sebelumnya",
+      "stepCounter": "Langkah {current} dari {total}",
+      "understandRisk": "Saya Paham Risikonya",
+      "nextStep": "Lanjut"
+    }
   },
   "learn": {
     "title": "Kurikulum Pertahanan Digital",
@@ -305,6 +326,21 @@
       "thinking": "tami sedang merangkai tanggapan Sokratik...",
       "closeDialog": "Tutup Dialog Refleksi",
       "openFullChat": "Buka Diskusi Penuh di Chat"
+    },
+    "arena": {
+      "title": "Arena Simulasi Rekayasa Sosial",
+      "subtitle": "Uji ketangguhan pertahananmu melawan AI Penipu dalam duel 3 ronde interaktif!",
+      "round": "Ronde {current}/3",
+      "shield": "Perisai: {score}%",
+      "adversaryTag": "{name} (Penipu)",
+      "coachWhisper": "Bisikan Pelatih Sokratik tami:",
+      "victoryTitle": "Kemenangan Pertahanan Siber!",
+      "defeatTitle": "Pertahanan Berhasil Ditembus Penipu!",
+      "finalScore": "Skor Akhir: {score}/100",
+      "replay": "Mainkan Ulang Skenario",
+      "tacticsPrompt": "Pilih Manuver Taktis Cepat:",
+      "inputPlaceholder": "Atau ketik respons pertahananmu sendiri...",
+      "sendAction": "Kirim Tindakan"
     }
   },
   "auth": {

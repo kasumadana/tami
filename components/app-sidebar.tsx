@@ -245,11 +245,20 @@ function AppSidebarInner({ children }: AppSidebarLayoutProps) {
     return (
       <div
         key={s.id}
+        role="button"
+        tabIndex={0}
         onClick={() => {
           chatHandlers?.onSelectSession(s.id);
           setOpenMobile(false);
         }}
-        className={`group w-full text-left px-3 py-2 rounded-full text-xs flex items-center justify-between gap-2 cursor-pointer transition-none min-h-[40px] ${
+        onKeyDown={(e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            chatHandlers?.onSelectSession(s.id);
+            setOpenMobile(false);
+          }
+        }}
+        className={`group w-full text-left px-3 py-2 rounded-full text-xs flex items-center justify-between gap-2 cursor-pointer transition-none min-h-[40px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-tami-orange)] ${
           isSelected
             ? "bg-[var(--color-tami-orange)]/10 text-[var(--color-tami-text)] font-bold ring-1 ring-[var(--color-tami-orange)]/40"
             : "text-[var(--color-tami-text)] hover:bg-[var(--color-tami-surface-subdued)]"
@@ -257,7 +266,7 @@ function AppSidebarInner({ children }: AppSidebarLayoutProps) {
       >
         <span className="truncate flex-1 font-medium">{s.title}</span>
 
-        <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity shrink-0">
+        <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity shrink-0">
           <button
             type="button"
             onClick={(e) => {
@@ -267,9 +276,9 @@ function AppSidebarInner({ children }: AppSidebarLayoutProps) {
             }}
             aria-label={tChat("rename")}
             title={tChat("rename")}
-            className="p-1 rounded-full text-[var(--color-tami-text-muted)] hover:text-[var(--color-tami-text)] hover:bg-[var(--color-tami-surface)] cursor-pointer"
+            className="w-7 h-7 flex items-center justify-center rounded-full text-[var(--color-tami-text-muted)] hover:text-[var(--color-tami-text)] hover:bg-[var(--color-tami-surface)] cursor-pointer focus:outline-none focus-visible:ring-1 focus-visible:ring-[var(--color-tami-orange)]"
           >
-            <PencilSimple size={13} weight="bold" />
+            <PencilSimple size={14} weight="bold" />
           </button>
           <button
             type="button"
@@ -279,9 +288,9 @@ function AppSidebarInner({ children }: AppSidebarLayoutProps) {
             }}
             aria-label={tChat("delete")}
             title={tChat("delete")}
-            className="p-1 rounded-full text-[var(--color-tami-text-muted)] hover:text-[var(--color-tami-red)] hover:bg-[var(--color-tami-surface)] cursor-pointer"
+            className="w-7 h-7 flex items-center justify-center rounded-full text-[var(--color-tami-text-muted)] hover:text-[var(--color-tami-red)] hover:bg-[var(--color-tami-surface)] cursor-pointer focus:outline-none focus-visible:ring-1 focus-visible:ring-[var(--color-tami-red)]"
           >
-            <Trash size={13} weight="bold" />
+            <Trash size={14} weight="bold" />
           </button>
         </div>
       </div>
@@ -348,7 +357,7 @@ function AppSidebarInner({ children }: AppSidebarLayoutProps) {
           <Sidebar.SlidingViews activeKey={activeSurface} direction={activeSurface === "chat-history" ? "left" : "right"}>
             {/* View 1: Main Platform Navigation */}
             <Sidebar.SlidingView value="nav">
-              <Sidebar.Content className="flex-1 overflow-y-auto min-h-0 p-3 group-data-[state=collapsed]/sidebar:px-1 group-data-[state=collapsed]/sidebar:py-2 space-y-4">
+              <Sidebar.Content className="flex-1 overflow-y-auto min-h-0 p-3 group-data-[state=collapsed]/sidebar:px-0 group-data-[state=collapsed]/sidebar:py-2 space-y-4">
                 {/* Tools Group / Alat Perlindungan */}
                 <div className="space-y-1">
                   <span className="px-3 text-xs font-semibold text-[var(--color-tami-text-muted)] group-data-[state=collapsed]/sidebar:hidden">
@@ -395,7 +404,7 @@ function AppSidebarInner({ children }: AppSidebarLayoutProps) {
 
             {/* View 2: Integrated Chat History Surface */}
             <Sidebar.SlidingView value="chat-history">
-              <Sidebar.Content className="flex-1 overflow-y-auto min-h-0 p-3 group-data-[state=collapsed]/sidebar:px-1 group-data-[state=collapsed]/sidebar:py-2 space-y-3">
+              <Sidebar.Content className="flex-1 overflow-y-auto min-h-0 p-3 group-data-[state=collapsed]/sidebar:px-0 group-data-[state=collapsed]/sidebar:py-2 space-y-3">
                 {/* New Chat Action Button */}
                 <Button
                   variant="primary"

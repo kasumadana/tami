@@ -159,11 +159,11 @@ export function SocraticDebriefDialog({
         <div className="flex items-center gap-3">
           <div className="relative w-12 h-12 shrink-0 rounded-2xl bg-[var(--color-tami-orange)]/15 flex items-center justify-center p-1.5">
             <Image
-              src="/icon.svg"
+              src="/shai-wave.png"
               alt="tami"
-              width={36}
-              height={36}
-              className="w-9 h-9 object-contain"
+              width={40}
+              height={40}
+              className="w-10 h-10 object-contain"
             />
           </div>
           <div>
@@ -171,7 +171,7 @@ export function SocraticDebriefDialog({
               <DialogTitle className="font-bold text-base text-[var(--color-tami-text)] tracking-tight">
                 {tDebrief("title")}
               </DialogTitle>
-              <Badge variant="warning" appearance="filled" className="text-xs bg-[var(--color-tami-yellow)] text-zinc-950 font-bold">
+              <Badge variant="warning" appearance="filled" className="text-xs bg-[var(--color-tami-yellow)] text-black font-bold">
                 <Sparkle size={12} weight="fill" className="inline mr-1" />
                 {tDebrief("socraticBadge")}
               </Badge>

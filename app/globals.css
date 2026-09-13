@@ -124,6 +124,23 @@ a[data-kumo-component="Button"] {
 }
 
 /* Collapsed Sidebar MenuButton & Icon Precision Layout */
+.group\/sidebar[data-state="collapsed"] [data-sidebar="content"] {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+.group\/sidebar[data-state="collapsed"] [data-sidebar="viewport"] {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  overflow-x: visible !important;
+  mask-image: none !important;
+}
+
+.group\/sidebar[data-state="collapsed"] [data-sidebar="menu"] {
+  width: 100% !important;
+  align-items: center !important;
+}
+
 .group\/sidebar[data-state="collapsed"] [data-sidebar="menu-item"] {
   display: flex !important;
   justify-content: center !important;
@@ -131,6 +148,7 @@ a[data-kumo-component="Button"] {
   width: 100% !important;
   padding: 0 !important;
   margin: 0 !important;
+  overflow: visible !important;
 }
 
 .group\/sidebar[data-state="collapsed"] [data-sidebar="menu-button"] {
