@@ -58,6 +58,30 @@ _Avoid_: Eksekusi malware nyata, animasi nakut-nakuti anak.
 
 ### Kurikulum, Simulasi, & Progres
 
+**Ruang Baca Modul (Module Study Room)**:
+Halaman bacaan mendalam pada rute `/[locale]/learn/[moduleId]` yang menyajikan kurikulum literasi siber komprehensif, narasi kontekstual terpandu, dan visual studi kasus sebelum transisi ke evaluasi kuis.
+_Avoid_: Tab bacaan mini, accordion ringkasan sebaris.
+
+**Submodul Pembelajaran (Learning Submodule)**:
+Unit bacaan ringkas terfokus (berdurasi 2–3 menit baca) di dalam sebuah modul yang menyajikan satu pilar konsep, studi kasus, atau langkah aksi sebelum melangkah ke evaluasi kuis, mencegah kelelahan kognitif anak.
+_Avoid_: Teks monolitik panjang tak berstruktur, artikel ensiklopedia kaku.
+
+**Kuis Kelulusan Ramah Anak (Kid-Friendly Mastery Quiz)**:
+Evaluasi 5 soal kinestetik di akhir modul dengan ambang kelulusan adaptif (minimal 60%), peluang coba ulang tanpa penalti, umpan balik reflektif yang membangun rasa percaya diri anak, serta perayaan konfeti dan lencana pencapaian digital.
+_Avoid_: Ujian eliminasi yang menghukum, skor merah yang mempermalukan anak.
+
+**Jalur Belajar Luwes Terbuka (Non-Linear Open Learning Path)**:
+Prinsip desain pedagogis di mana seluruh modul pembelajaran terbuka penuh sejak awal tanpa penguncian bertingkat (*no artificial gating*), memberikan kebebasan bagi anak untuk mengeksplorasi topik yang paling menarik minatnya terlebih dahulu dalam urutan bebas.
+_Avoid_: Level terkunci kaku, urutan paksa linear.
+
+**Kuis Kinestetik Bebas-Sentuh (Touchless Kinesthetic Quiz)**:
+Sesi evaluasi pemahaman modul yang memanfaatkan pelacakan visi komputer lokal MediaPipe (gestur tangan *Hover Dwell* / *Pinch*) dan pengenalan suara fonetik Web Speech API, dilengkapi *Safe Mode* klik sebagai fallback aksesibilitas.
+_Avoid_: Kuis kamera invasif, formulir teks statis.
+
+**Peralihan Modalitas Nir-Henti (Mid-Quiz Modality Handoff)**:
+Mekanisme peralihan bebas hambatan antar-metode input (gestur kamera, suara, atau klik) di tengah sesi kuis yang mempertahankan indeks soal berjalan, riwayat jawaban, dan skor tanpa reset, disertai pelepasan stream peranti keras (*camera/mic tracks*) secara bersih saat beralih ke mode aman.
+_Avoid_: Reset kuis saat kamera putus, kebocoran resource stream media.
+
 **Simulasi Lab Pertahanan (Defense Lab Simulation)**:
 Tantangan interaktif terkurasi (analisis phishing, pengujian kekuatan kata sandi, aturan firewall) yang dievaluasi secara deterministik dengan umpan balik visual dan pembimbingan AI on-demand.
 _Avoid_: Kuis hafalan, ujian teori pilihan ganda biasa.
