@@ -47,7 +47,7 @@ export function Navbar() {
               className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-[var(--color-tami-surface-subdued)] ring-1 ring-[var(--color-tami-line)]/50 hover:bg-[var(--color-tami-surface-muted)] text-xs min-h-[44px] transition-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-tami-orange)]"
             >
               <Image
-                src={session.user.image || "/icon.svg"}
+                src={session.user.image || "/mascot/tami-headshot.webp"}
                 alt={session.user.name || "User"}
                 width={20}
                 height={20}

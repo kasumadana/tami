@@ -131,12 +131,18 @@
     "fileTooLarge": "Ukuran berkas melebihi batas 5MB.",
     "invalidFormat": "Format berkas tidak didukung. Harap gunakan PNG, JPG, atau WebP.",
     "analysisError": "Gagal menganalisis gambar. Silakan coba lagi atau pilih gambar lain.",
+    "serverBusy": "Layanan AI sedang mengalami lonjakan antrean tinggi. Silakan tunggu beberapa detik dan coba lagi.",
     "readyTitle": "Bukti Siap Diperiksa",
     "readyDesc": "Mulai pemindaian mendalam menggunakan model AI multimodal tami untuk mengidentifikasi tanda-tanda manipulasi visual, phishing, atau rekayasa sosial.",
     "sandboxTitle": "Simulasi Dampak Serangan",
     "openSandbox": "Buka Simulasi Sandbox",
     "selfInvestigationTitle": "Investigasi Mandiri Bersama tami",
     "selfInvestigationDesc": "tami tidak sekadar memberi label, tetapi melatih matamu mengenali tanda-tanda jebakan digital: manipulasi domain, font janggal, dan tombol tiruan.",
+    "safeStatusTitle": "Sistem Terverifikasi Aman",
+    "safeStatusDesc": "Tidak ditemukan manipulasi antarmuka, indikator phishing, atau muatan berbahaya pada gambar ini. Terus jaga kebiasaan waspada saat berselancar.",
+    "practiceCtaTitle": "Asah Naluri di Arena Praktik",
+    "practiceCtaDesc": "Uji kejelianmu menghadapi simulasi serangan nyata lainnya di Lab Pertahanan Siber.",
+    "practiceCtaAction": "Jelajahi Lab Praktik",
     "sandbox": {
       "modalTitle": "Simulasi Dampak Nyata Serangan",
       "closeLabel": "Tutup simulasi",
@@ -416,15 +422,16 @@
       "subtitle": "Uji ketangguhan pertahananmu melawan AI Penipu dalam duel 3 ronde interaktif!",
       "round": "Ronde {current}/3",
       "shield": "Perisai: {score}%",
-      "adversaryTag": "{name} (Penipu)",
-      "coachWhisper": "Bisikan Pelatih Sokratik tami:",
+      "adversaryTag": "{name}",
       "victoryTitle": "Kemenangan Pertahanan Siber!",
       "defeatTitle": "Pertahanan Berhasil Ditembus Penipu!",
       "finalScore": "Skor Akhir: {score}/100",
       "replay": "Mainkan Ulang Skenario",
       "tacticsPrompt": "Pilih Manuver Taktis Cepat:",
       "inputPlaceholder": "Atau ketik respons pertahananmu sendiri...",
-      "sendAction": "Kirim Tindakan"
+      "sendAction": "Kirim Tindakan",
+      "badgeName": "Lencana: Social Engineering Shield",
+      "successMsg": "Luar biasa! Kamu berhasil menepis seluruh taktik manipulasi psikologis penipu dan menjaga rahasia penting tetap aman!"
     }
   },
   "auth": {

@@ -46,7 +46,7 @@ export async function POST(req: NextRequest) {
           id: userId,
           name: session.user.name || "Siswa tami",
           email: session.user.email || "guest@tami.local",
-          image: session.user.image || "/icon.svg",
+          image: session.user.image || "/mascot/tami-headshot.webp",
         })
         .onConflictDoNothing();
     } catch {

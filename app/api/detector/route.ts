@@ -3,26 +3,79 @@ import { auth } from "@/auth";
 import { db } from "@/lib/db";
 import { threatScans } from "@/lib/db/schema";
 import { DetectorResultSchema, DetectorResult } from "@/lib/detector-schema";
+import { SAMPLE_PRESET_RESULTS } from "@/lib/detector-presets";
 import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
 import { HumanMessage } from "@langchain/core/messages";
 
-export const maxDuration = 30; // 30 seconds max duration
+export const maxDuration = 45; // 45 seconds max duration for complex analysis
 export const runtime = "nodejs";
 
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { imageBase64, mimeType = "image/png", language = "id" } = body;
+    const { imageBase64, mimeType = "image/png", language = "id", sampleId } = body;
+
+    const normalizedLang = language === "en" ? "en" : "id";
+
+    // 1. Instant Pre-computed Preset Lookup (Zero Token & Zero Latency)
+    if (sampleId && SAMPLE_PRESET_RESULTS[normalizedLang]?.[sampleId]) {
+      const presetResult = SAMPLE_PRESET_RESULTS[normalizedLang][sampleId];
+
+      const session = await auth();
+      if (session?.user?.id && db) {
+        try {
+          await db.insert(threatScans).values({
+            id: `scan_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`,
+            userId: session.user.id,
+            riskLevel: presetResult.riskLevel,
+            confidenceScore: presetResult.confidenceScore,
+            headline: presetResult.headline,
+            scannedAt: new Date(),
+          });
+        } catch (dbErr) {
+          console.error("Failed to persist preset threat scan to Neon DB:", dbErr);
+        }
+      }
+
+      return NextResponse.json(presetResult);
+    }
 
     if (!imageBase64 || typeof imageBase64 !== "string") {
       return NextResponse.json(
-        { error: "INVALID_IMAGE", message: "Image base64 data is required." },
+        { error: "INVALID_IMAGE", message: "Image data is required." },
         { status: 400 }
       );
     }
 
-    // Strip data URL prefix if included
-    const cleanBase64 = imageBase64.replace(/^data:image\/[a-zA-Z+]+;base64,/, "");
+    // 2. Base64 Sanitization & SVG Normalization
+    let cleanBase64 = "";
+    let cleanMimeType = mimeType;
+
+    if (imageBase64.startsWith("data:")) {
+      const match = imageBase64.match(/^data:([^;,]+)(?:;charset=[^;,]+)?(?:;(utf8|base64))?,(.*)$/i);
+      if (match) {
+        cleanMimeType = match[1] || cleanMimeType;
+        const encoding = match[2]?.toLowerCase();
+        const rawContent = match[3];
+
+        if (encoding === "utf8" || !encoding) {
+          // URL-encoded or raw SVG string, convert to standard Base64
+          const decoded = decodeURIComponent(rawContent);
+          cleanBase64 = Buffer.from(decoded, "utf8").toString("base64");
+        } else {
+          cleanBase64 = rawContent;
+        }
+      } else {
+        cleanBase64 = imageBase64.replace(/^data:[^;]+;base64,/, "");
+      }
+    } else {
+      cleanBase64 = imageBase64;
+    }
+
+    // Google Gemini inlineData does not accept image/svg+xml. Map to image/png or image/jpeg.
+    if (cleanMimeType.includes("svg")) {
+      cleanMimeType = "image/png";
+    }
 
     // Check payload size (max 5MB Base64 ~ 7MB raw string)
     if (cleanBase64.length > 7 * 1024 * 1024) {
@@ -36,7 +89,7 @@ export async function POST(req: NextRequest) {
 
     // Simulated fallback analysis when GEMINI_API_KEY is not configured
     if (!apiKey || apiKey === "your_gemini_api_key_here") {
-      const isEnglish = language === "en";
+      const isEnglish = normalizedLang === "en";
 
       // Return high-quality deterministic educational mock result
       const mockResult: DetectorResult = {
@@ -158,14 +211,10 @@ export async function POST(req: NextRequest) {
       return NextResponse.json(mockResult);
     }
 
-    // Live Multimodal Inference with Gemini 3.7 Flash
-    const model = new ChatGoogleGenerativeAI({
-      apiKey,
-      model: "gemini-3.7-flash",
-      temperature: 0.2,
-    });
-
-    const structuredModel = model.withStructuredOutput(DetectorResultSchema);
+    // 3. Live Multimodal Inference with Gemini Models (with high-demand fallback)
+    const modelsToTry = ["gemini-3.7-flash", "gemini-3.6-flash"];
+    let lastError: unknown = null;
+    let result: DetectorResult | null = null;
 
     const promptText = `You are "tami", an expert AI Cybersecurity Forensics Tutor for students aged 8-15 and educators.
 Inspect this screenshot in-memory for digital cybersecurity risks:
@@ -175,20 +224,42 @@ Inspect this screenshot in-memory for digital cybersecurity risks:
 4. If this is a digital threat (SUSPICIOUS or DANGEROUS), provide an "exploitSimulation" detailing step-by-step what would happen if a student actually fell for the scam and clicked or logged in (what appears on victim's screen vs what happens behind the scenes by the attacker).
 5. If this image is completely non-digital (e.g. a pet photo, landscape, selfie, physical object), set status to "IRRELEVANT_IMAGE", riskLevel to "SAFE", and explain gently in the summary that this tool is designed for digital screenshots.
 6. If the image is too blurry to read, set status to "UNCLEAR_IMAGE".
-7. Target language for output: ${language === "en" ? "English" : "Bahasa Indonesia"}.
+7. Target language for output: ${normalizedLang === "en" ? "English" : "Bahasa Indonesia"}.
 8. Return strictly conforming structured data.`;
 
-    const result = await structuredModel.invoke([
-      new HumanMessage({
-        content: [
-          { type: "text", text: promptText },
-          {
-            type: "image_url",
-            image_url: `data:${mimeType};base64,${cleanBase64}`,
-          },
-        ],
-      }),
-    ]);
+    for (const modelName of modelsToTry) {
+      try {
+        const model = new ChatGoogleGenerativeAI({
+          apiKey,
+          model: modelName,
+          temperature: 0.2,
+          maxRetries: 1,
+        });
+
+        const structuredModel = model.withStructuredOutput(DetectorResultSchema);
+
+        result = (await structuredModel.invoke([
+          new HumanMessage({
+            content: [
+              { type: "text", text: promptText },
+              {
+                type: "image_url",
+                image_url: `data:${cleanMimeType};base64,${cleanBase64}`,
+              },
+            ],
+          }),
+        ])) as DetectorResult;
+
+        if (result) break;
+      } catch (err: unknown) {
+        lastError = err;
+        console.warn(`Detector model ${modelName} failed, trying next fallback if available:`, err);
+      }
+    }
+
+    if (!result) {
+      throw lastError || new Error("All vision models failed to evaluate image.");
+    }
 
     const session = await auth();
     if (session?.user?.id && db) {
@@ -207,14 +278,24 @@ Inspect this screenshot in-memory for digital cybersecurity risks:
     }
 
     return NextResponse.json(result);
-  } catch (error) {
+  } catch (error: unknown) {
     console.error("Multimodal Detector API error:", error);
+
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    const isOverloaded =
+      errorMessage.includes("503") ||
+      errorMessage.includes("high demand") ||
+      errorMessage.includes("Service Unavailable") ||
+      errorMessage.includes("RESOURCE_EXHAUSTED");
+
     return NextResponse.json(
       {
-        error: "ANALYSIS_FAILED",
-        message: "Failed to perform visual threat analysis.",
+        error: isOverloaded ? "SERVER_BUSY" : "ANALYSIS_FAILED",
+        message: isOverloaded
+          ? "AI model is currently experiencing high temporary demand. Please try again in a few moments."
+          : "Failed to perform visual threat analysis.",
       },
-      { status: 500 }
+      { status: isOverloaded ? 503 : 500 }
     );
   }
 }

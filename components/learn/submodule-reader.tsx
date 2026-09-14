@@ -320,7 +320,7 @@ export function SubmoduleReader({
               alt="tami"
               width={96}
               height={96}
-              className="w-full h-full object-contain drop-shadow-xs"
+              className="w-full h-full object-contain "
             />
           </div>
           <div className="space-y-1.5 text-xs flex-1">

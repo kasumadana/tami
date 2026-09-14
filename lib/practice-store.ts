@@ -58,7 +58,7 @@ export const SERVER_PRACTICE_SNAPSHOT = JSON.stringify({
 });
 
 export function recordChallengeSuccess(
-  challengeId: "phishing" | "password" | "firewall",
+  challengeId: "phishing" | "password" | "firewall" | "arena",
   badgeName: string,
   xp = 100
 ) {

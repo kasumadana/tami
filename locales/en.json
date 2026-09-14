@@ -131,12 +131,18 @@
     "fileTooLarge": "File size exceeds the 5MB limit.",
     "invalidFormat": "Unsupported file format. Please upload PNG, JPG, or WebP.",
     "analysisError": "Failed to analyze image. Please try again or select another image.",
+    "serverBusy": "The AI service is experiencing high temporary demand. Please wait a few moments and try again.",
     "readyTitle": "Evidence Ready for Inspection",
     "readyDesc": "Initiate in-depth scanning using tami's multimodal AI model to identify visual manipulation, phishing, or social engineering cues.",
     "sandboxTitle": "Attack Impact Simulation",
     "openSandbox": "Open Sandbox Simulation",
     "selfInvestigationTitle": "Self-Investigation with tami",
     "selfInvestigationDesc": "tami doesn't just slap on a label; it trains your eyes to spot digital traps: domain spoofing, unnatural fonts, and deceptive buttons.",
+    "safeStatusTitle": "System Verified Safe",
+    "safeStatusDesc": "No interface manipulation, phishing indicators, or harmful payloads were found in this image. Keep up these vigilant security habits.",
+    "practiceCtaTitle": "Sharpen Your Instincts in the Practice Lab",
+    "practiceCtaDesc": "Test your vigilance against other real-world cyber threat simulations in the Cyber Defense Lab.",
+    "practiceCtaAction": "Explore Practice Lab",
     "sandbox": {
       "modalTitle": "Real-World Attack Impact Simulation",
       "closeLabel": "Close simulation",
@@ -416,15 +422,16 @@
       "subtitle": "Test your defense resilience against an AI Scammer in an interactive 3-round duel!",
       "round": "Round {current}/3",
       "shield": "Shield: {score}%",
-      "adversaryTag": "{name} (Scammer)",
-      "coachWhisper": "tami Socratic Coach Whisper:",
+      "adversaryTag": "{name}",
       "victoryTitle": "Cyber Defense Victory!",
       "defeatTitle": "Scammer Breached Your Defenses!",
       "finalScore": "Final Score: {score}/100",
       "replay": "Replay Scenario",
       "tacticsPrompt": "Select Quick Tactical Response:",
       "inputPlaceholder": "Or type your own tactical defense response...",
-      "sendAction": "Send Action"
+      "sendAction": "Send Action",
+      "badgeName": "Badge: Social Engineering Shield",
+      "successMsg": "Spectacular! You successfully resisted psychological manipulation tactics and protected sensitive information from scammers!"
     }
   },
   "auth": {

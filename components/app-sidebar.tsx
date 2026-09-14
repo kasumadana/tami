@@ -507,7 +507,7 @@ function AppSidebarInner({ children }: AppSidebarLayoutProps) {
                     title={session.user.name || tAuth("defaultStudent")}
                   >
                     <Image
-                      src={session.user.image || "/icon.svg"}
+                      src={session.user.image || "/mascot/tami-headshot.webp"}
                       alt={session.user.name || "User"}
                       width={32}
                       height={32}
@@ -520,7 +520,7 @@ function AppSidebarInner({ children }: AppSidebarLayoutProps) {
                 <div className="group-data-[state=collapsed]/sidebar:hidden p-2 rounded-2xl bg-[var(--color-tami-surface-subdued)] ring-1 ring-[var(--color-tami-line)]/40 flex items-center justify-between gap-2">
                   <Link href="/profile" className="flex items-center gap-2.5 min-w-0 flex-1 hover:opacity-85 transition-none">
                     <Image
-                      src={session.user.image || "/icon.svg"}
+                      src={session.user.image || "/mascot/tami-headshot.webp"}
                       alt={session.user.name || "User"}
                       width={32}
                       height={32}
@@ -598,13 +598,13 @@ function AppSidebarInner({ children }: AppSidebarLayoutProps) {
           <header className="md:hidden flex items-center justify-between p-3 border-b border-[var(--color-tami-line)] bg-[var(--color-tami-surface)] shrink-0">
             <div className="flex items-center gap-2">
               <SidebarTrigger />
-              <Link href="/" className="flex items-center gap-2 focus:outline-none">
+              <Link href="/" className="flex items-center gap-2.5">
                 <Image
                   src="/icon.svg"
                   alt="tami"
-                  width={22}
-                  height={22}
-                  className="w-5.5 h-5.5 object-contain shrink-0"
+                  width={28}
+                  height={28}
+                  className="w-7 h-7 shrink-0 object-contain"                
                 />
                 <span className="font-bold text-sm tracking-tight text-[var(--color-tami-text)]">
                   {tCommon("appName")}

@@ -2,7 +2,7 @@
 
 import React, { useState, useRef, useEffect, useCallback } from "react";
 import Image from "next/image";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { Button } from "@cloudflare/kumo/components/button";
 import { Badge } from "@cloudflare/kumo/components/badge";
@@ -28,6 +28,7 @@ import {
   ArrowRight,
 } from "@phosphor-icons/react";
 import type { DetectorResult } from "@/lib/detector-schema";
+import { SAMPLE_PRESET_RESULTS } from "@/lib/detector-presets";
 import { ExploitSandboxModal } from "@/components/detector/exploit-sandbox-modal";
 
 // Built-in Sample Image Data URIs for Instant Testing
@@ -54,8 +55,11 @@ const SAMPLE_PRESETS = [
 
 export function DetectorWorkspace() {
   const t = useTranslations("detector");
+  const locale = useLocale();
+  const activeLocale = locale === "en" ? "en" : "id";
 
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [selectedSampleId, setSelectedSampleId] = useState<string | null>(null);
   const [fileName, setFileName] = useState<string>("");
   const [mimeType, setMimeType] = useState<string>("image/png");
   const [isDragging, setIsDragging] = useState(false);
@@ -70,6 +74,7 @@ export function DetectorWorkspace() {
     (file: File) => {
       setErrorMsg(null);
       setResult(null);
+      setSelectedSampleId(null);
 
       // Validate format
       if (!["image/png", "image/jpeg", "image/webp", "image/svg+xml"].includes(file.type)) {
@@ -140,14 +145,23 @@ export function DetectorWorkspace() {
 
   const handleSampleSelect = (sample: (typeof SAMPLE_PRESETS)[0]) => {
     setErrorMsg(null);
-    setResult(null);
+    setSelectedSampleId(sample.id);
     setFileName(`${sample.id}.svg`);
     setMimeType("image/svg+xml");
     setImagePreview(sample.dataUrl);
+
+    // Pre-load static pre-computed result instantly for built-in sample test cases
+    const preset = SAMPLE_PRESET_RESULTS[activeLocale]?.[sample.id];
+    if (preset) {
+      setResult(preset);
+    } else {
+      setResult(null);
+    }
   };
 
   const handleReset = () => {
     setImagePreview(null);
+    setSelectedSampleId(null);
     setFileName("");
     setResult(null);
     setErrorMsg(null);
@@ -156,6 +170,12 @@ export function DetectorWorkspace() {
 
   const handleAnalyze = async () => {
     if (!imagePreview) return;
+
+    // If already pre-computed sample, analysis is already active
+    if (selectedSampleId && SAMPLE_PRESET_RESULTS[activeLocale]?.[selectedSampleId]) {
+      setResult(SAMPLE_PRESET_RESULTS[activeLocale][selectedSampleId]);
+      return;
+    }
 
     setIsLoading(true);
     setErrorMsg(null);
@@ -167,16 +187,21 @@ export function DetectorWorkspace() {
         body: JSON.stringify({
           imageBase64: imagePreview,
           mimeType: mimeType,
+          language: activeLocale,
+          sampleId: selectedSampleId || undefined,
         }),
       });
 
       const data = await response.json();
 
       if (!response.ok) {
+        if (response.status === 503 || data.error === "SERVER_BUSY") {
+          throw new Error(t("serverBusy"));
+        }
         throw new Error(data.message || t("analysisError"));
       }
 
-      setResult(data.data);
+      setResult(data);
     } catch (err: unknown) {
       const errorMessage = err instanceof Error ? err.message : t("analysisError");
       setErrorMsg(errorMessage);
@@ -356,7 +381,7 @@ export function DetectorWorkspace() {
                 alt="tami"
                 width={80}
                 height={80}
-                className="w-18 h-18 sm:w-20 sm:h-20 object-contain shrink-0 drop-shadow-xs"
+                className="w-18 h-18 sm:w-20 sm:h-20 object-contain shrink-0"
               />
               <div className="space-y-1.5 flex-1">
                 <h4 className="font-bold text-sm text-[var(--color-tami-text)]">
@@ -374,8 +399,9 @@ export function DetectorWorkspace() {
       {/* ACTIVE EVIDENCE & FORENSIC WORKBENCH (Post-Selection) */}
       {imagePreview && (
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-          {/* Left Column: Evidence Viewer & Inspection Panel (Col 5) */}
-          <div className="lg:col-span-5 space-y-4">
+          {/* Left Column: Evidence, Deep Learning, & Action Guidance (Col 7 on large or Col 6 for equal balance) */}
+          <div className="lg:col-span-6 space-y-4">
+            {/* Screenshot Evidence Card */}
             <LayerCard className="rounded-2xl p-4 bg-[var(--color-tami-surface-subdued)] border-none ring-1 ring-[var(--color-tami-line)]/40 space-y-4">
               <div className="relative aspect-video w-full rounded-xl overflow-hidden bg-black/5 dark:bg-white/5 ring-1 ring-[var(--color-tami-line)]/50 flex items-center justify-center">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -388,8 +414,8 @@ export function DetectorWorkspace() {
 
               <div className="flex items-center justify-between text-xs text-[var(--color-tami-text-muted)] px-1">
                 <span className="truncate max-w-[200px] font-mono">{fileName || "screenshot.png"}</span>
-                <span className="uppercase font-semibold px-2 py-0.5 rounded-md bg-[var(--color-tami-surface)] ring-1 ring-[var(--color-tami-line)]/40">
-                  {mimeType.split("/")[1] || "IMAGE"}
+                <span className="font-mono text-xs font-semibold px-2 py-0.5 rounded-md bg-[var(--color-tami-surface)] ring-1 ring-[var(--color-tami-line)]/40 lowercase">
+                  {mimeType.split("/")[1] || "image"}
                 </span>
               </div>
             </LayerCard>
@@ -422,17 +448,99 @@ export function DetectorWorkspace() {
                     type="button"
                     onClick={() => handleSampleSelect(sample)}
                     disabled={isLoading}
-                    className="px-3 py-2.5 rounded-full bg-[var(--color-tami-surface-subdued)] hover:bg-[var(--color-tami-surface-muted)] text-xs font-medium text-[var(--color-tami-text)] truncate text-center cursor-pointer min-h-[44px] ring-1 ring-[var(--color-tami-line)]/40 transition-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-tami-orange)]"
+                    className={`px-3.5 py-2.5 rounded-full text-xs font-semibold truncate text-center cursor-pointer min-h-[44px] transition-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-tami-orange)] ${
+                      selectedSampleId === sample.id
+                        ? "bg-[var(--color-tami-orange)] text-white shadow-xs ring-1 ring-[var(--color-tami-orange)]"
+                        : "bg-[var(--color-tami-surface-subdued)] hover:bg-[var(--color-tami-surface-muted)] text-[var(--color-tami-text)] ring-1 ring-[var(--color-tami-line)]/40"
+                    }`}
                   >
                     {t(sample.titleKey as "sample1" | "sample2" | "sample3")}
                   </button>
                 ))}
               </div>
             </div>
+
+            {/* Socratic Reflection Prompts Card (Moved to Left Side to Balance Deep Content) */}
+            {result?.reflectionQuestions && result.reflectionQuestions.length > 0 && (
+              <div className="p-5 rounded-2xl bg-[var(--color-tami-orange)]/10 ring-1 ring-[var(--color-tami-orange)]/30 space-y-3">
+                <div className="flex items-center gap-3.5">
+                  <Image
+                    src="/mascot/tami-thinking.webp"
+                    alt="tami"
+                    width={56}
+                    height={56}
+                    className="w-12 h-12 sm:w-14 sm:h-14 object-contain shrink-0"
+                  />
+                  <div className="space-y-0.5">
+                    <h3 className="font-bold text-base text-[var(--color-tami-text)]">
+                      {t("reflectionTitle")}
+                    </h3>
+                  </div>
+                </div>
+                <ul className="space-y-2.5 text-sm text-[var(--color-tami-text)] list-disc list-inside leading-relaxed pl-1">
+                  {result.reflectionQuestions.map((q, idx) => (
+                    <li key={idx} className="font-medium">
+                      {q}
+                    </li>
+                  ))}
+                </ul>
+                <div className="pt-2 flex justify-end">
+                  <Link href={`/chat?topic=detector&scenario=${encodeURIComponent(result.headline)}`}>
+                    <Button
+                      variant="primary"
+                      size="base"
+                      className="rounded-full font-semibold text-sm px-6 min-h-[44px] cursor-pointer"
+                      icon={<ChatCircleDots size={16} weight="bold" />}
+                    >
+                      {t("askTami")}
+                    </Button>
+                  </Link>
+                </div>
+              </div>
+            )}
+
+            {/* Recommended Defense Actions (Moved to Left Side) */}
+            {result?.safetyTips && result.safetyTips.length > 0 && (
+              <div className="p-5 rounded-2xl bg-[var(--color-tami-surface-subdued)] ring-1 ring-[var(--color-tami-line)]/40 space-y-3">
+                <span className="font-bold text-sm text-[var(--color-tami-text)] flex items-center gap-2">
+                  <Lightbulb size={18} weight="fill" className="text-[var(--color-tami-yellow)]" />
+                  <span>{t("tipsTitle")}</span>
+                </span>
+                <ul className="space-y-2.5 text-sm text-[var(--color-tami-text-muted)]">
+                  {result.safetyTips.map((tip, idx) => (
+                    <li key={idx} className="flex items-start gap-2.5">
+                      <CheckCircle size={16} weight="bold" className="text-[var(--color-tami-green)] shrink-0 mt-0.5" />
+                      <span className="leading-relaxed">{tip}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            {/* Companion Guidance (Shown when no result yet to assist before scanning) */}
+            {!result && (
+              <div className="p-4 sm:p-5 rounded-2xl bg-[var(--color-tami-surface)] ring-1 ring-[var(--color-tami-line)]/40 flex items-start gap-3.5">
+                <Image
+                  src="/mascot/tami-detective.webp"
+                  alt="tami"
+                  width={64}
+                  height={64}
+                  className="w-14 h-14 object-contain shrink-0"
+                />
+                <div className="space-y-1 flex-1">
+                  <h4 className="font-bold text-sm text-[var(--color-tami-text)]">
+                    {t("selfInvestigationTitle")}
+                  </h4>
+                  <p className="text-xs text-[var(--color-tami-text-muted)] leading-relaxed">
+                    {t("selfInvestigationDesc")}
+                  </p>
+                </div>
+              </div>
+            )}
           </div>
 
-          {/* Right Column: Forensic Intelligence & Findings (Col 7) */}
-          <div className="lg:col-span-7 space-y-4 lg:sticky lg:top-6 self-start">
+          {/* Right Column: Forensic Intelligence & Findings (Sticky Workbench, Col 6) */}
+          <div className="lg:col-span-6 space-y-4 lg:sticky lg:top-6 self-start">
             {/* Loading State Skeleton */}
             {isLoading && (
               <LayerCard className="rounded-2xl p-8 bg-[var(--color-tami-surface-subdued)] border-none ring-1 ring-[var(--color-tami-line)]/40 flex flex-col items-center justify-center text-center space-y-4 min-h-[380px]">
@@ -456,7 +564,7 @@ export function DetectorWorkspace() {
                   alt="tami"
                   width={144}
                   height={144}
-                  className="w-28 h-28 sm:w-36 sm:h-36 object-contain mb-1 drop-shadow-sm"
+                  className="w-28 h-28 sm:w-36 sm:h-36 object-contain mb-1"
                 />
                 <div className="space-y-1.5 max-w-sm">
                   <h3 className="font-bold text-base text-[var(--color-tami-text)]">
@@ -483,35 +591,40 @@ export function DetectorWorkspace() {
               <div className="space-y-4">
                 {/* Hero Verdict Card */}
                 <LayerCard className="rounded-2xl p-5 sm:p-6 bg-[var(--color-tami-surface-subdued)] border-none ring-1 ring-[var(--color-tami-line)]/40 space-y-4">
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[var(--color-tami-line)]/50">
-                    <div className="flex items-center gap-3.5">
-                      <Image
-                        src={
-                          result.riskLevel === "DANGEROUS" || result.riskLevel === "SUSPICIOUS"
-                            ? "/mascot/tami-warning.webp"
-                            : result.riskLevel === "SAFE"
-                            ? "/mascot/tami-shield.webp"
-                            : "/mascot/tami-detective.webp"
-                        }
-                        alt="tami"
-                        width={64}
-                        height={64}
-                        className="w-14 h-14 sm:w-16 sm:h-16 object-contain shrink-0 drop-shadow-xs"
-                      />
-                      <div className="space-y-0.5">
-                        <span className="text-xs font-semibold text-[var(--color-tami-text-muted)]">
-                          {t("statusEvaluation")}
-                        </span>
-                        <h2 className="text-lg font-bold text-[var(--color-tami-text)] leading-tight">
-                          {result.headline}
-                        </h2>
-                      </div>
+                  {/* Dedicated Status & Confidence Row */}
+                  <div className="flex flex-wrap items-center justify-between gap-2.5 pb-3 border-b border-[var(--color-tami-line)]/50">
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs font-semibold text-[var(--color-tami-text-muted)]">
+                        {t("statusEvaluation")}
+                      </span>
                     </div>
-                    <div className="flex items-center gap-2.5 shrink-0">
+                    <div className="flex items-center gap-2">
                       {getRiskBadge(result.riskLevel)}
-                      <span className="text-xs font-mono text-[var(--color-tami-text-muted)] font-semibold">
+                      <span className="text-xs font-mono text-[var(--color-tami-text-muted)] font-semibold px-2.5 py-1 rounded-full bg-[var(--color-tami-surface)] ring-1 ring-[var(--color-tami-line)]/40">
                         {t("accuracy", { score: result.confidenceScore })}
                       </span>
+                    </div>
+                  </div>
+
+                  {/* Headline & Mascot Row: Full Horizontal Breathing Room */}
+                  <div className="flex items-start gap-3.5">
+                    <Image
+                      src={
+                        result.riskLevel === "DANGEROUS" || result.riskLevel === "SUSPICIOUS"
+                          ? "/mascot/tami-warning.webp"
+                          : result.riskLevel === "SAFE"
+                          ? "/mascot/tami-shield.webp"
+                          : "/mascot/tami-detective.webp"
+                      }
+                      alt="tami"
+                      width={64}
+                      height={64}
+                      className="w-12 h-12 sm:w-14 sm:h-14 object-contain shrink-0 mt-0.5"
+                    />
+                    <div className="space-y-1 flex-1 min-w-0">
+                      <h2 className="text-lg sm:text-xl font-bold text-[var(--color-tami-text)] leading-snug">
+                        {result.headline}
+                      </h2>
                     </div>
                   </div>
 
@@ -537,7 +650,7 @@ export function DetectorWorkspace() {
                               <Badge
                                 variant={item.severity === "high" ? "error" : "warning"}
                                 appearance="filled"
-                                className="text-xs uppercase font-mono px-2 py-0.5"
+                                className="text-xs font-mono px-2 py-0.5 capitalize"
                               >
                                 {item.severity}
                               </Badge>
@@ -552,14 +665,49 @@ export function DetectorWorkspace() {
                   )}
                 </LayerCard>
 
-                {/* Exploit Impact Sandbox Trigger Card */}
-                {result.exploitSimulation && (
-                  <div className="p-4 sm:p-5 rounded-2xl bg-[var(--color-tami-surface-subdued)] ring-1 ring-[var(--color-tami-line)]/50 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                    <div className="flex items-start gap-3">
-                      <div className="w-10 h-10 rounded-xl bg-[var(--color-tami-red)]/15 text-[var(--color-tami-red)] flex items-center justify-center shrink-0">
-                        <Skull size={20} weight="bold" />
+                {/* Safe Status Guidance & Practice Lab CTA (Placed in Right Column) */}
+                {result.riskLevel === "SAFE" && (
+                  <div className="p-5 rounded-2xl bg-[var(--color-tami-surface-subdued)] ring-1 ring-[var(--color-tami-line)]/40 space-y-3.5">
+                    <div className="flex items-start gap-3.5">
+                      <div className="w-10 h-10 rounded-xl bg-[var(--color-tami-green)]/10 text-[var(--color-tami-green)] flex items-center justify-center shrink-0 mt-0.5">
+                        <ShieldCheck size={22} weight="bold" />
                       </div>
-                      <div className="space-y-0.5">
+                      <div className="space-y-1 flex-1">
+                        <h3 className="text-sm font-bold text-[var(--color-tami-text)]">
+                          {t("safeStatusTitle")}
+                        </h3>
+                        <p className="text-xs sm:text-sm text-[var(--color-tami-text-muted)] leading-relaxed">
+                          {t("safeStatusDesc")}
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="pt-3 border-t border-[var(--color-tami-line)]/40 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                      <p className="text-xs text-[var(--color-tami-text-muted)] leading-relaxed flex-1">
+                        {t("practiceCtaDesc")}
+                      </p>
+                      <Link href="/practice" className="shrink-0">
+                        <Button
+                          variant="secondary"
+                          size="base"
+                          className="rounded-full ring-1 ring-[var(--color-tami-line)]/50 bg-[var(--color-tami-surface)] text-[var(--color-tami-text)] hover:bg-[var(--color-tami-surface-muted)] text-xs font-semibold min-h-[40px] px-4 cursor-pointer w-full sm:w-auto"
+                          icon={<ArrowRight size={14} weight="bold" />}
+                        >
+                          {t("practiceCtaAction")}
+                        </Button>
+                      </Link>
+                    </div>
+                  </div>
+                )}
+
+                {/* Exploit Impact Sandbox Trigger Card (Spacious Stacked Layout) */}
+                {result.exploitSimulation && (
+                  <div className="p-5 rounded-2xl bg-[var(--color-tami-surface-subdued)] ring-1 ring-[var(--color-tami-line)]/50 space-y-3.5">
+                    <div className="flex items-start gap-3.5">
+                      <div className="w-10 h-10 rounded-xl bg-[var(--color-tami-red)]/15 text-[var(--color-tami-red)] flex items-center justify-center shrink-0 mt-0.5">
+                        <Skull size={22} weight="bold" />
+                      </div>
+                      <div className="space-y-1 flex-1 min-w-0">
                         <h3 className="text-sm font-bold text-[var(--color-tami-text)]">
                           {t("sandboxTitle")}
                         </h3>
@@ -568,70 +716,18 @@ export function DetectorWorkspace() {
                         </p>
                       </div>
                     </div>
-                    <Button
-                      variant="secondary"
-                      size="base"
-                      onClick={() => setIsSandboxOpen(true)}
-                      className="rounded-full ring-1 ring-[var(--color-tami-line)]/50 bg-[var(--color-tami-surface)] text-[var(--color-tami-text)] hover:bg-[var(--color-tami-surface-muted)] text-sm font-semibold min-h-[44px] px-5 cursor-pointer shrink-0"
-                      icon={<Skull size={16} weight="bold" className="text-[var(--color-tami-red)]" />}
-                    >
-                      {t("openSandbox")}
-                    </Button>
-                  </div>
-                )}
 
-                {/* Socratic Reflection Prompts Card */}
-                {result.reflectionQuestions && result.reflectionQuestions.length > 0 && (
-                  <div className="p-5 rounded-2xl bg-[var(--color-tami-orange)]/10 ring-1 ring-[var(--color-tami-orange)]/30 space-y-3">
-                    <div className="flex items-center gap-3.5">
-                      <Image
-                        src="/mascot/tami-thinking.webp"
-                        alt="tami"
-                        width={64}
-                        height={64}
-                        className="w-14 h-14 sm:w-16 sm:h-16 object-contain shrink-0 drop-shadow-xs"
-                      />
-                      <h3 className="font-bold text-base text-[var(--color-tami-text)]">
-                        {t("reflectionTitle")}
-                      </h3>
-                    </div>
-                    <ul className="space-y-2 text-sm text-[var(--color-tami-text)] list-disc list-inside leading-relaxed">
-                      {result.reflectionQuestions.map((q, idx) => (
-                        <li key={idx} className="font-medium">
-                          {q}
-                        </li>
-                      ))}
-                    </ul>
                     <div className="pt-2 flex justify-end">
-                      <Link href={`/chat?topic=detector&scenario=${encodeURIComponent(result.headline)}`}>
-                        <Button
-                          variant="primary"
-                          size="base"
-                          className="rounded-full font-semibold text-sm px-6 min-h-[44px] cursor-pointer"
-                          icon={<ChatCircleDots size={16} weight="bold" />}
-                        >
-                          {t("askTami")}
-                        </Button>
-                      </Link>
+                      <Button
+                        variant="secondary"
+                        size="base"
+                        onClick={() => setIsSandboxOpen(true)}
+                        className="rounded-full ring-1 ring-[var(--color-tami-line)]/50 bg-[var(--color-tami-surface)] text-[var(--color-tami-text)] hover:bg-[var(--color-tami-surface-muted)] text-xs font-semibold min-h-[40px] px-5 cursor-pointer w-full sm:w-auto"
+                        icon={<Skull size={15} weight="bold" className="text-[var(--color-tami-red)]" />}
+                      >
+                        {t("openSandbox")}
+                      </Button>
                     </div>
-                  </div>
-                )}
-
-                {/* Recommended Defense Actions */}
-                {result.safetyTips && result.safetyTips.length > 0 && (
-                  <div className="p-5 rounded-2xl bg-[var(--color-tami-surface-subdued)] ring-1 ring-[var(--color-tami-line)]/40 space-y-2.5">
-                    <span className="font-bold text-sm text-[var(--color-tami-text)] flex items-center gap-2">
-                      <Lightbulb size={18} weight="fill" className="text-[var(--color-tami-yellow)]" />
-                      <span>{t("tipsTitle")}</span>
-                    </span>
-                    <ul className="space-y-2 text-sm text-[var(--color-tami-text-muted)]">
-                      {result.safetyTips.map((tip, idx) => (
-                        <li key={idx} className="flex items-start gap-2.5">
-                          <CheckCircle size={16} weight="bold" className="text-[var(--color-tami-green)] shrink-0 mt-0.5" />
-                          <span className="leading-relaxed">{tip}</span>
-                        </li>
-                      ))}
-                    </ul>
                   </div>
                 )}
               </div>

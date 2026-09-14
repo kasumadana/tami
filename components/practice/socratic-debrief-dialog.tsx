@@ -24,7 +24,7 @@ import {
 interface SocraticDebriefDialogProps {
   isOpen: boolean;
   onClose: () => void;
-  topic: "phishing" | "password" | "firewall";
+  topic: "phishing" | "password" | "firewall" | "arena";
   scenarioTitle: string;
   socraticQuestion: string;
   onReplay?: () => void;
@@ -49,6 +49,11 @@ const THOUGHT_CHIPS: Record<string, Record<string, string[]>> = {
       "Bagaimana peretas bisa menyusup lewat port 4444?",
       "Apa bedanya firewall jaringan dengan antivirus di komputer?",
     ],
+    arena: [
+      "Mengapa penipu sering memanfaatkan rasa panik atau iming-iming hadiah?",
+      "Apa yang harus dilakukan jika terlanjur memberikan info rahasia?",
+      "Bagaimana cara mengonfirmasi identitas asli orang di media sosial?",
+    ],
   },
   en: {
     phishing: [
@@ -65,6 +70,11 @@ const THOUGHT_CHIPS: Record<string, Record<string, string[]>> = {
       "Why must port 443 always remain open for web browsing?",
       "How can hackers exploit port 4444 backdoor tunnels?",
       "What is the difference between a network firewall and antivirus?",
+    ],
+    arena: [
+      "Why do scammers frequently exploit panic or reward incentives?",
+      "What should I do if I accidentally disclosed confidential info?",
+      "How can I verify someone's true identity on social networks?",
     ],
   },
 };
@@ -161,7 +171,7 @@ export function SocraticDebriefDialog({
               alt="tami"
               width={64}
               height={64}
-              className="w-14 h-14 sm:w-16 sm:h-16 object-contain drop-shadow-xs"
+              className="w-14 h-14 sm:w-16 sm:h-16 object-contain "
             />
           </div>
           <div>

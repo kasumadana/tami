@@ -274,7 +274,7 @@ export function CertificateCard({ initialName, isUnlocked }: CertificateCardProp
               alt="tami Mascot"
               width={64}
               height={64}
-              className="w-14 h-14 sm:w-16 sm:h-16 object-contain shrink-0 drop-shadow-xs"
+              className="w-14 h-14 sm:w-16 sm:h-16 object-contain shrink-0 "
             />
             <div className="text-right space-y-0.5">
               <span className="font-bold text-[var(--color-tami-text)] block text-xs">{t("mascotSign")}</span>

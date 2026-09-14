@@ -58,7 +58,7 @@ export function LoginDialog({ isOpen, onClose }: LoginDialogProps) {
             alt="tami"
             width={64}
             height={64}
-            className="w-14 h-14 sm:w-16 sm:h-16 object-contain shrink-0 drop-shadow-xs"
+            className="w-14 h-14 sm:w-16 sm:h-16 object-contain shrink-0 "
           />
           <div className="space-y-1">
             <DialogTitle className="font-bold text-base text-[var(--color-tami-text)]">

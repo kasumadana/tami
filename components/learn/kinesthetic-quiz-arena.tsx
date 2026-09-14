@@ -379,7 +379,7 @@ export function KinestheticQuizArena({
             alt="tami"
             width={160}
             height={160}
-            className="w-full h-full object-contain drop-shadow-sm"
+            className="w-full h-full object-contain "
           />
         </div>
 

@@ -14,7 +14,6 @@ import {
   ShieldWarning,
   ShieldCheck,
   GraduationCap,
-  Sparkle,
   ArrowRight,
   EyeSlash,
   Brain,
@@ -132,7 +131,7 @@ function HomeContent() {
                 alt={t("mascot.name")}
                 width={176}
                 height={176}
-                className="w-32 h-32 sm:w-40 sm:h-40 md:w-44 md:h-44 object-contain shrink-0 drop-shadow-sm"
+                className="w-32 h-32 sm:w-40 sm:h-40 md:w-44 md:h-44 object-contain shrink-0"
                 priority
               />
             </div>
@@ -143,9 +142,6 @@ function HomeContent() {
                 <span className="font-bold text-base text-[var(--color-tami-text)]">
                   {t("mascot.name")}
                 </span>
-                <Badge variant="warning" appearance="dot" className="text-xs w-fit mx-auto sm:mx-0">
-                  {t("mascot.role")}
-                </Badge>
               </div>
 
               {/* Bubble Body */}
