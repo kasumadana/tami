@@ -120,7 +120,7 @@ export function ProfileWorkspace() {
       <LayerCard className="rounded-2xl p-5 sm:p-6 bg-[var(--color-tami-surface-subdued)] border-none ring-1 ring-[var(--color-tami-line)]/40 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 print:hidden">
         <div className="flex items-center gap-4">
           <Image
-            src={session?.user?.image || "/icon.svg"}
+            src={session?.user?.image || "/mascot/tami-wave.webp"}
             alt={displayName}
             width={48}
             height={48}

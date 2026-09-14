@@ -8,7 +8,7 @@ product
 
 - **Name:** tami (selalu ditulis huruf kecil — *teman aman media internet*)
 - **Tagline:** Teman Aman Media Internet | AI Smart Tutor & Cyber Defense Lab
-- **Mascot Persona:** tami si Panda Merah — cerdas, ramah, teliti, dan mengayomi. Hadir melalui aset grafis resmi [`/public/shai-wave.png`](file:///d:/Development/Lomba/tami/public/shai-wave.png) dan logo [`/public/icon.svg`](file:///d:/Development/Lomba/tami/public/icon.svg).
+- **Mascot Persona:** tami si Panda Merah — cerdas, ramah, teliti, dan mengayomi. Hadir melalui aset grafis resmi [`/public/mascot/`](file:///d:/Development/Lomba/tami/public/mascot/) dan logo [`/public/icon.svg`](file:///d:/Development/Lomba/tami/public/icon.svg).
 - **Core Purpose:** Melatih nalar kritis dan naluri pertahanan siber mandiri pada siswa (usia 8–15 tahun) dan keluarga melalui dialog Sokratik, laboratorium simulasi interaktif, dan inspeksi bukti visual multimodal secara aman (*100% in-memory*).
 
 ## Target Users
@@ -29,7 +29,7 @@ product
 - 🚫 **Penomoran Dekoratif Klise (01 / 02 / 03):** Jangan menyisipkan nomor dekoratif pada kartu yang bukan langkah sekuensial.
 - 🚫 **Klise Peretas Gelap & Neon Matrix:** Tidak ada grafis tengkorak, efek hacker hijau-hitam, atau taktik menakut-nakuti yang mengintimidasi anak-anak.
 - 🚫 **Dasbor Korporat SaaS yang Kaku:** Hindari tabel enterprise yang dingin dan kotak-kotak kaku tanpa jiwa.
-- 🚫 **Ilustrasi Coretan Kasar (Sketchy SVG):** Selalu gunakan aset resmi ([`/public/icon.svg`](file:///d:/Development/Lomba/tami/public/icon.svg) dan [`/public/shai-wave.png`](file:///d:/Development/Lomba/tami/public/shai-wave.png)).
+- 🚫 **Ilustrasi Coretan Kasar (Sketchy SVG):** Selalu gunakan aset resmi ([`/public/icon.svg`](file:///d:/Development/Lomba/tami/public/icon.svg) dan [`/public/mascot/`](file:///d:/Development/Lomba/tami/public/mascot/)).
 
 ## Design Principles
 

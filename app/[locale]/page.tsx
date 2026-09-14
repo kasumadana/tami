@@ -120,7 +120,7 @@ function HomeContent() {
             {/* Real Mascot Image (Rendered Freely without Artificial Box) */}
             <div className="relative shrink-0 flex items-center justify-center">
               <Image
-                src="/shai-wave.png"
+                src="/mascot/tami-wave.webp"
                 alt={t("mascot.name")}
                 width={96}
                 height={96}
@@ -179,7 +179,7 @@ function HomeContent() {
           <LayerCard className="md:col-span-7 rounded-2xl p-6 sm:p-7 bg-[var(--color-tami-surface-subdued)] border-none ring-1 ring-[var(--color-tami-line)]/40 flex flex-col justify-between space-y-5">
             <div className="space-y-4">
               <div className="flex items-center justify-between">
-                <div className="w-10 h-10 rounded-xl bg-[var(--color-tami-orange)]/10 text-[var(--color-tami-orange)] ring-1 ring-[var(--color-tami-orange)]/25 flex items-center justify-center">
+                <div className="w-10 h-10 rounded-xl bg-[var(--color-tami-orange)]/15 text-[var(--color-tami-orange)] flex items-center justify-center">
                   <ChatCircleDots size={22} weight="bold" />
                 </div>
                 <Badge variant="warning" appearance="filled" className="text-xs">
@@ -394,7 +394,7 @@ function HomeContent() {
             </div>
 
             <div className="space-y-1.5">
-              <div className="w-10 h-10 rounded-xl bg-[var(--color-tami-orange)]/10 text-[var(--color-tami-orange)] ring-1 ring-[var(--color-tami-orange)]/25 flex items-center justify-center mx-auto md:mx-0">
+              <div className="w-10 h-10 rounded-xl bg-[var(--color-tami-orange)]/15 text-[var(--color-tami-orange)] flex items-center justify-center mx-auto md:mx-0">
                 <Brain size={22} weight="bold" />
               </div>
               <h4 className="font-semibold text-sm text-[var(--color-tami-text)]">

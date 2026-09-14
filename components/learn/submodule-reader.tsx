@@ -315,7 +315,7 @@ export function SubmoduleReader({
         <div className="p-4 sm:p-5 rounded-2xl bg-[var(--color-tami-orange)]/10 ring-1 ring-[var(--color-tami-orange)]/30 flex items-start gap-4">
           <div className="relative w-12 h-12 shrink-0">
             <Image
-              src="/shai-wave.png"
+              src="/mascot/tami-mentor.webp"
               alt="tami"
               width={48}
               height={48}

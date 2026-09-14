@@ -25,7 +25,7 @@ tami is an AI Smart Tutor and interactive cybersecurity education web platform f
 - **AI Orchestration:** `@langchain/google-genai`, `@langchain/core`, Gemini 3.7 Flash.
 - **Database & ORM:** Neon DB (Serverless PostgreSQL) + Drizzle ORM.
 - **Internationalization (i18n):** `next-intl` (Sub-path routing: Default `/` for ID, `/en` for EN).
-- **Static Assets:** Real mascot and brand assets located in `/public/icon.svg` and `/public/shai-wave.png`.
+- **Static Assets:** Real mascot and brand assets located in `/public/icon.svg` and `/public/mascot/`.
 
 ---
 
@@ -178,7 +178,7 @@ export function AppProviders({ children }: { children: React.ReactNode }) {
 - 🚫 **Banned: Gradient text (`background-clip: text`)**. Use single solid, high-contrast colors.
 - 🚫 **Banned: Cream/sand/beige/parchment background monoculture**. Always use Pure White (`#ffffff`) or Pure Black (`#000000`).
 - 🚫 **Banned: Repetitive identical card grids**. Use varied layouts and real interactive simulators.
-- 🚫 **Banned: Sketchy SVG doodle illustrations**. Always use real assets (`/public/icon.svg`, `/public/shai-wave.png`).
+- 🚫 **Banned: Sketchy SVG doodle illustrations**. Always use real assets (`/public/icon.svg`, `/public/mascot/`).
 - 🚫 **Banned: "Ghost-card" syndrome (1px light border + 16px+ blurry drop shadow)**. Pick crisp `ring-1 ring-kumo-line` or defined background steps.
 - 🚫 **Banned: ALL-CAPS screaming headings**. Always use **sentence-case** ("Detektor ancaman siber").
 - **Universal 14px Text:** All content text—body, buttons, data—must be 14px in size (`text-sm`). 16px and above are restricted to headings.

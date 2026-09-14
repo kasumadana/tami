@@ -5,8 +5,6 @@ import { useRouter } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 import { LayerCard } from "@cloudflare/kumo/components/layer-card";
 import {
-  BookOpen,
-  Lightning,
   Clock,
   ArrowUUpLeft,
   Key,
@@ -55,35 +53,6 @@ export function ModuleStudyRoom({ moduleData }: ModuleStudyRoomProps) {
           <ArrowUUpLeft size={16} weight="bold" />
           <span>{t("backToOverview")}</span>
         </button>
-
-        {/* Tab switcher: Reading vs Quiz */}
-        <div className="p-1 rounded-full bg-[var(--color-tami-surface-subdued)] ring-1 ring-[var(--color-tami-line)]/50 inline-flex items-center self-start sm:self-auto">
-          <button
-            type="button"
-            onClick={() => setActiveTab("reading")}
-            className={`flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold cursor-pointer transition-none ${
-              activeTab === "reading"
-                ? "bg-[var(--color-tami-surface)] text-[var(--color-tami-text)] shadow-sm ring-1 ring-[var(--color-tami-line)]/40"
-                : "text-[var(--color-tami-text-muted)] hover:text-[var(--color-tami-text)]"
-            }`}
-          >
-            <BookOpen size={15} weight={activeTab === "reading" ? "bold" : "regular"} />
-            <span>{t("tabSubmodules")}</span>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => setActiveTab("quiz")}
-            className={`flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold cursor-pointer transition-none ${
-              activeTab === "quiz"
-                ? "bg-[var(--color-tami-orange)] text-white shadow-sm"
-                : "text-[var(--color-tami-text-muted)] hover:text-[var(--color-tami-text)]"
-            }`}
-          >
-            <Lightning size={15} weight={activeTab === "quiz" ? "fill" : "regular"} />
-            <span>{t("tabQuiz")}</span>
-          </button>
-        </div>
       </div>
 
       {/* Module Overview Banner */}

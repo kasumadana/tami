@@ -351,7 +351,7 @@ export function DetectorWorkspace() {
             {/* Mascot Warm Inquisitive Card */}
             <div className="p-5 rounded-2xl bg-[var(--color-tami-surface)] ring-1 ring-[var(--color-tami-line)]/40 flex items-start gap-3.5">
               <Image
-                src="/shai-wave.png"
+                src="/mascot/tami-detective.webp"
                 alt="tami"
                 width={48}
                 height={48}
@@ -451,7 +451,7 @@ export function DetectorWorkspace() {
             {!isLoading && !result && (
               <LayerCard className="rounded-2xl p-8 bg-[var(--color-tami-surface-subdued)] border-none ring-1 ring-[var(--color-tami-line)]/40 flex flex-col items-center justify-center text-center space-y-4 min-h-[340px]">
                 <Image
-                  src="/shai-wave.png"
+                  src="/mascot/tami-detective.webp"
                   alt="tami"
                   width={64}
                   height={64}
@@ -483,13 +483,28 @@ export function DetectorWorkspace() {
                 {/* Hero Verdict Card */}
                 <LayerCard className="rounded-2xl p-5 sm:p-6 bg-[var(--color-tami-surface-subdued)] border-none ring-1 ring-[var(--color-tami-line)]/40 space-y-4">
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[var(--color-tami-line)]/50">
-                    <div className="space-y-1">
-                      <span className="text-xs font-semibold text-[var(--color-tami-text-muted)]">
-                        {t("statusEvaluation")}
-                      </span>
-                      <h2 className="text-lg font-bold text-[var(--color-tami-text)]">
-                        {result.headline}
-                      </h2>
+                    <div className="flex items-center gap-3">
+                      <Image
+                        src={
+                          result.riskLevel === "DANGEROUS" || result.riskLevel === "SUSPICIOUS"
+                            ? "/mascot/tami-warning.webp"
+                            : result.riskLevel === "SAFE"
+                            ? "/mascot/tami-shield.webp"
+                            : "/mascot/tami-detective.webp"
+                        }
+                        alt="tami"
+                        width={44}
+                        height={44}
+                        className="w-11 h-11 object-contain shrink-0"
+                      />
+                      <div className="space-y-0.5">
+                        <span className="text-xs font-semibold text-[var(--color-tami-text-muted)]">
+                          {t("statusEvaluation")}
+                        </span>
+                        <h2 className="text-lg font-bold text-[var(--color-tami-text)] leading-tight">
+                          {result.headline}
+                        </h2>
+                      </div>
                     </div>
                     <div className="flex items-center gap-2.5 shrink-0">
                       {getRiskBadge(result.riskLevel)}
@@ -540,7 +555,7 @@ export function DetectorWorkspace() {
                 {result.exploitSimulation && (
                   <div className="p-4 sm:p-5 rounded-2xl bg-[var(--color-tami-surface-subdued)] ring-1 ring-[var(--color-tami-line)]/50 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                     <div className="flex items-start gap-3">
-                      <div className="w-10 h-10 rounded-xl bg-[var(--color-tami-red)]/10 text-[var(--color-tami-red)] ring-1 ring-[var(--color-tami-red)]/25 flex items-center justify-center shrink-0">
+                      <div className="w-10 h-10 rounded-xl bg-[var(--color-tami-red)]/15 text-[var(--color-tami-red)] flex items-center justify-center shrink-0">
                         <Skull size={20} weight="bold" />
                       </div>
                       <div className="space-y-0.5">
@@ -569,7 +584,7 @@ export function DetectorWorkspace() {
                   <div className="p-5 rounded-2xl bg-[var(--color-tami-orange)]/10 ring-1 ring-[var(--color-tami-orange)]/30 space-y-3">
                     <div className="flex items-center gap-2.5">
                       <Image
-                        src="/shai-wave.png"
+                        src="/mascot/tami-thinking.webp"
                         alt="tami"
                         width={32}
                         height={32}

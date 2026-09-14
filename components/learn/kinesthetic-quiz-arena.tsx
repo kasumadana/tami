@@ -351,7 +351,7 @@ export function KinestheticQuizArena({
       <div className="p-6 sm:p-8 rounded-2xl bg-[var(--color-tami-surface)] ring-1 ring-[var(--color-tami-line)]/50 space-y-6 text-center max-w-lg mx-auto">
         <div className="relative w-20 h-20 mx-auto">
           <Image
-            src="/shai-wave.png"
+            src={isPassed ? "/mascot/tami-celebrate.webp" : "/mascot/tami-thinking.webp"}
             alt="tami"
             width={80}
             height={80}

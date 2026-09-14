@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef, useEffect, useCallback } from "react";
+import React, { useState, useRef, useEffect, useCallback, useMemo } from "react";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { useSession } from "next-auth/react";
@@ -62,6 +62,19 @@ export function ChatWorkspace({
   const isAuthenticated = initialIsAuthenticated || !!session?.user?.id;
 
   const [messages, setMessages] = useState<ChatMessageItem[]>(() => {
+    if (typeof window !== "undefined" && !initialIsAuthenticated) {
+      const guestRaw = localStorage.getItem("tami_guest_chat");
+      if (guestRaw) {
+        try {
+          const parsed = JSON.parse(guestRaw);
+          if (Array.isArray(parsed) && parsed.length > 1) {
+            return parsed;
+          }
+        } catch {
+          // ignore parsing error
+        }
+      }
+    }
     if (initialScenario) {
       return [
         {
@@ -87,9 +100,38 @@ export function ChatWorkspace({
   const [isLoginOpen, setIsLoginOpen] = useState(false);
 
   // Session & Sidebar States
-  const [sessions, setSessions] = useState<ChatSessionMetadata[]>([]);
+  const [dbSessions, setDbSessions] = useState<ChatSessionMetadata[]>([]);
   const [currentSessionId, setCurrentSessionId] = useState<string | null>(null);
   const { surface, toggleChatHistory, registerChatHandlers } = useChatSidebar();
+
+  // Derive sessions: for authenticated users use dbSessions, for guest synthesize active session
+  const sessions = useMemo<ChatSessionMetadata[]>(() => {
+    if (isAuthenticated) {
+      return dbSessions;
+    }
+    if (messages.length > 1) {
+      const firstUserMsg = messages.find((m) => m.role === "user");
+      const title = firstUserMsg?.content.slice(0, 36).trim() || t("newChat");
+      return [
+        {
+          id: "guest-local-session",
+          userId: "guest",
+          title,
+          topic: "general",
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+      ];
+    }
+    return [];
+  }, [isAuthenticated, dbSessions, messages, t]);
+
+  const activeSessionId = useMemo(() => {
+    if (!isAuthenticated) {
+      return messages.length > 1 ? "guest-local-session" : null;
+    }
+    return currentSessionId;
+  }, [isAuthenticated, messages.length, currentSessionId]);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -109,14 +151,14 @@ export function ChatWorkspace({
       const res = await fetch("/api/chat/sessions");
       if (res.ok) {
         const data = await res.json();
-        setSessions(data.sessions || []);
+        setDbSessions(data.sessions || []);
       }
     } catch (err) {
       console.error("Failed to load sessions:", err);
     }
   }, [isAuthenticated]);
 
-  // Initial load and sync guest history on sign in
+  // Initial load, restore guest chat on mount, and sync guest history on sign in
   useEffect(() => {
     let isCancelled = false;
     if (isAuthenticated) {
@@ -124,7 +166,7 @@ export function ChatWorkspace({
         .then((res) => (res.ok ? res.json() : null))
         .then((data) => {
           if (!isCancelled && data?.sessions) {
-            setSessions(data.sessions);
+            setDbSessions(data.sessions);
           }
         })
         .catch(console.error);
@@ -162,11 +204,15 @@ export function ChatWorkspace({
 
   // Save guest chat to local storage for guests
   useEffect(() => {
-    if (!isAuthenticated && messages.length > 1) {
-      try {
-        localStorage.setItem("tami_guest_chat", JSON.stringify(messages));
-      } catch {
-        // Ignore localStorage quota errors
+    if (!isAuthenticated) {
+      if (messages.length > 1) {
+        try {
+          localStorage.setItem("tami_guest_chat", JSON.stringify(messages));
+        } catch {
+          // Ignore localStorage quota errors
+        }
+      } else {
+        localStorage.removeItem("tami_guest_chat");
       }
     }
   }, [isAuthenticated, messages]);
@@ -174,6 +220,23 @@ export function ChatWorkspace({
   // Switch to selected session
   const handleSelectSession = useCallback(async (sessionId: string) => {
     if (sessionId === currentSessionId || isLoading) return;
+    if (!isAuthenticated) {
+      // Guest mode
+      const guestRaw = localStorage.getItem("tami_guest_chat");
+      if (guestRaw) {
+        try {
+          const parsed = JSON.parse(guestRaw);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            setMessages(parsed);
+            setCurrentSessionId(sessionId);
+          }
+        } catch {
+          // ignore
+        }
+      }
+      return;
+    }
+
     try {
       setIsLoading(true);
       const res = await fetch(`/api/chat/sessions?sessionId=${sessionId}`);
@@ -213,11 +276,14 @@ export function ChatWorkspace({
     } finally {
       setIsLoading(false);
     }
-  }, [currentSessionId, isLoading, t]);
+  }, [currentSessionId, isLoading, isAuthenticated, t]);
 
   // Create new session
   const handleCreateNewSession = useCallback(() => {
     setCurrentSessionId(null);
+    if (!isAuthenticated) {
+      localStorage.removeItem("tami_guest_chat");
+    }
     setMessages([
       {
         id: createMessageId("welcome"),
@@ -226,10 +292,13 @@ export function ChatWorkspace({
       },
     ]);
     textareaRef.current?.focus();
-  }, [t]);
+  }, [isAuthenticated, t]);
 
   // Rename session
   const handleRenameSession = useCallback(async (sessionId: string, newTitle: string) => {
+    if (!isAuthenticated) {
+      return;
+    }
     try {
       const res = await fetch("/api/chat/sessions", {
         method: "PATCH",
@@ -242,10 +311,15 @@ export function ChatWorkspace({
     } catch (err) {
       console.error("Failed to rename session:", err);
     }
-  }, [refreshSessions]);
+  }, [isAuthenticated, refreshSessions]);
 
   // Delete session
   const handleDeleteSession = useCallback(async (sessionId: string) => {
+    if (!isAuthenticated) {
+      localStorage.removeItem("tami_guest_chat");
+      handleCreateNewSession();
+      return;
+    }
     try {
       const res = await fetch(`/api/chat/sessions?sessionId=${sessionId}`, {
         method: "DELETE",
@@ -259,13 +333,13 @@ export function ChatWorkspace({
     } catch (err) {
       console.error("Failed to delete session:", err);
     }
-  }, [currentSessionId, handleCreateNewSession, refreshSessions]);
+  }, [isAuthenticated, currentSessionId, handleCreateNewSession, refreshSessions]);
 
   // Register session handlers with sidebar
   useEffect(() => {
     registerChatHandlers({
       sessions,
-      currentSessionId,
+      currentSessionId: activeSessionId,
       onSelectSession: handleSelectSession,
       onCreateNewSession: handleCreateNewSession,
       onDeleteSession: handleDeleteSession,
@@ -275,7 +349,7 @@ export function ChatWorkspace({
     });
   }, [
     sessions,
-    currentSessionId,
+    activeSessionId,
     handleSelectSession,
     handleCreateNewSession,
     handleDeleteSession,
@@ -579,7 +653,11 @@ export function ChatWorkspace({
                   </div>
                 ) : (
                   <Image
-                    src="/icon.svg"
+                    src={
+                      message.content === "" && !message.widgetType
+                        ? "/mascot/tami-thinking.webp"
+                        : "/mascot/tami-mentor.webp"
+                    }
                     alt="tami"
                     width={32}
                     height={32}

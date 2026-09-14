@@ -308,6 +308,114 @@ export async function POST(req: NextRequest) {
             }
           }
 
+          // Resilient Fallback: If no tool call was made, but the text explicitly prompts the child to choose options
+          if (!finalWidgetType && accumulatedText) {
+            const lowerText = accumulatedText.toLowerCase();
+            const hasChoicePrompt =
+              lowerText.includes("pilih tindakan") ||
+              lowerText.includes("pilih salah satu") ||
+              lowerText.includes("coba pilih") ||
+              lowerText.includes("di bawah ini") ||
+              lowerText.includes("which one would you choose") ||
+              lowerText.includes("choose one");
+
+            // 1. Checklist fallback: When assistant suggests action protection steps
+            const hasChecklistPrompt =
+              lowerText.includes("langkah perlindungan") ||
+              lowerText.includes("langkah-langkah perlindungan") ||
+              lowerText.includes("langkah pengamanan") ||
+              lowerText.includes("lakukan langkah") ||
+              lowerText.includes("perlindungan penting") ||
+              lowerText.includes("action steps") ||
+              lowerText.includes("protection steps");
+
+            // Look for bulleted or numbered items like "1. ... 2. ..." or "- ... - ..."
+            const listMatches = Array.from(
+              accumulatedText.matchAll(/(?:^|\n)(?:[1-4]\.|\*|-|[A-D]\.)\s+([^\n]+)/g)
+            ).map((m) => m[1].trim()).filter((opt) => opt.length > 3 && opt.length < 160);
+
+            if (hasChecklistPrompt && listMatches.length >= 2) {
+              finalWidgetType = "action_checklist";
+              finalWidgetData = {
+                title: lowerText.includes("langkah")
+                  ? "Langkah Perlindungan Akun"
+                  : "Account Protection Steps",
+                items: listMatches.slice(0, 4).map((task, idx) => ({
+                  id: `action-${idx + 1}`,
+                  task,
+                  description: "Lakukan langkah ini untuk menjaga keamanan akun dan datamu.",
+                })),
+              };
+
+              controller.enqueue(
+                encoder.encode(
+                  JSON.stringify({
+                    type: "ui-widget",
+                    widgetType: finalWidgetType,
+                    data: finalWidgetData,
+                  }) + "\n"
+                )
+              );
+            } else if (hasChoicePrompt && listMatches.length >= 2) {
+              const slicedOptions = listMatches.slice(0, 4);
+              finalWidgetType = "interactive_choice";
+              finalWidgetData = {
+                prompt:
+                  lowerText.includes("pilih")
+                    ? "Pilih tindakan yang menurutmu paling aman:"
+                    : "Choose the action you think is safest:",
+                choices: slicedOptions.map((label, idx) => ({
+                  id: `fallback-choice-${idx + 1}`,
+                  label,
+                  isSafeOption: idx === 0, // Heuristic default
+                })),
+              };
+
+              controller.enqueue(
+                encoder.encode(
+                  JSON.stringify({
+                    type: "ui-widget",
+                    widgetType: finalWidgetType,
+                    data: finalWidgetData,
+                  }) + "\n"
+                )
+              );
+            } else if (hasChecklistPrompt && listMatches.length === 0) {
+              // Synthesize default high-impact gaming protection checklist
+              finalWidgetType = "action_checklist";
+              finalWidgetData = {
+                title: "Langkah Perlindungan Akun & Skin",
+                items: [
+                  {
+                    id: "action-1",
+                    task: "Aktifkan Verifikasi 2 Langkah (2FA/OTP)",
+                    description: "Supaya tidak ada yang bisa login meski mereka tahu passwordmu.",
+                  },
+                  {
+                    id: "action-2",
+                    task: "Ganti Password dengan Passphrase yang Kuat",
+                    description: "Gunakan gabungan 3-4 kata acak yang mudah kamu ingat tapi susah ditebak.",
+                  },
+                  {
+                    id: "action-3",
+                    task: "Jangan Pernah Klik Link Hadiah/Diamond Gratis",
+                    description: "Event resmi game tidak pernah meminta kamu memasukkan password di website lain.",
+                  },
+                ],
+              };
+
+              controller.enqueue(
+                encoder.encode(
+                  JSON.stringify({
+                    type: "ui-widget",
+                    widgetType: finalWidgetType,
+                    data: finalWidgetData,
+                  }) + "\n"
+                )
+              );
+            }
+          }
+
           // Save assistant message to DB if authenticated
           if (sessionId && isAuthenticated) {
             await saveChatMessage(

@@ -6,6 +6,7 @@ import React, {
   useContext,
   useCallback,
   useMemo,
+  useSyncExternalStore,
 } from "react";
 import Image from "next/image";
 import { usePathname } from "@/i18n/navigation";
@@ -101,17 +102,29 @@ function AppSidebarInner({ children }: AppSidebarLayoutProps) {
   const tAuth = useTranslations("auth");
   const tChat = useTranslations("chat");
 
-  const [surface, setSurface] = useState<"nav" | "chat-history">("nav");
+  const isChatRoute = pathname.startsWith("/chat");
+  const [navSurface, setNavSurface] = useState<"nav" | "chat-history">("nav");
   const [chatHandlers, setChatHandlers] = useState<ChatSessionHandlers | null>(null);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editTitle, setEditTitle] = useState("");
   const [isLoginOpen, setIsLoginOpen] = useState(false);
 
-  const isChatRoute = pathname.startsWith("/chat");
-  const activeSurface = isChatRoute ? surface : "nav";
+  const mounted = useSyncExternalStore(
+    () => () => {},
+    () => true,
+    () => false
+  );
+
+  // Derive active surface: On /chat route, default to "chat-history" once mounted, unless user toggles back to "nav"
+  const [chatHistoryClosed, setChatHistoryClosed] = useState(false);
+
+  // If path is chat and user hasn't explicitly closed it, show chat-history (only after mount to prevent hydration mismatch)
+  const activeSurface: "nav" | "chat-history" =
+    mounted && isChatRoute && !chatHistoryClosed ? "chat-history" : navSurface;
 
   const openChatHistory = useCallback(() => {
-    setSurface("chat-history");
+    setChatHistoryClosed(false);
+    setNavSurface("chat-history");
     if (!open) {
       setOpen(true);
     }
@@ -119,16 +132,17 @@ function AppSidebarInner({ children }: AppSidebarLayoutProps) {
   }, [open, setOpen, setOpenMobile]);
 
   const closeChatHistory = useCallback(() => {
-    setSurface("nav");
+    setChatHistoryClosed(true);
+    setNavSurface("nav");
   }, []);
 
   const toggleChatHistory = useCallback(() => {
     if (activeSurface === "chat-history") {
-      setSurface("nav");
+      closeChatHistory();
     } else {
       openChatHistory();
     }
-  }, [activeSurface, openChatHistory]);
+  }, [activeSurface, openChatHistory, closeChatHistory]);
 
   const registerChatHandlers = useCallback((handlers: ChatSessionHandlers | null) => {
     setChatHandlers(handlers);
@@ -137,7 +151,7 @@ function AppSidebarInner({ children }: AppSidebarLayoutProps) {
   const contextValue = useMemo(
     () => ({
       surface: activeSurface,
-      setSurface,
+      setSurface: setNavSurface,
       openChatHistory,
       closeChatHistory,
       toggleChatHistory,
@@ -420,31 +434,7 @@ function AppSidebarInner({ children }: AppSidebarLayoutProps) {
                 </Button>
 
                 {/* Session list or guest card */}
-                {!chatHandlers?.isAuthenticated ? (
-                  <div className="group-data-[state=collapsed]/sidebar:hidden p-3.5 rounded-2xl bg-[var(--color-tami-surface-subdued)] ring-1 ring-[var(--color-tami-line)]/40 space-y-2.5 text-center">
-                    <Clock size={22} weight="duotone" className="mx-auto text-[var(--color-tami-orange)]" />
-                    <span className="text-xs font-bold text-[var(--color-tami-text)] block">
-                      {tChat("saveChatTitle")}
-                    </span>
-                    <p className="text-xs text-[var(--color-tami-text-muted)] leading-relaxed">
-                      {tChat("saveChatDesc")}
-                    </p>
-                    <Button
-                      variant="secondary"
-                      size="sm"
-                      onClick={() => chatHandlers?.onOpenLogin()}
-                      className="w-full rounded-full text-xs font-semibold min-h-[40px] cursor-pointer ring-1 ring-[var(--color-tami-line)]/50"
-                      icon={<GoogleLogo size={14} weight="bold" />}
-                    >
-                      {tChat("signInAccount")}
-                    </Button>
-                  </div>
-                ) : !chatHandlers?.sessions || chatHandlers.sessions.length === 0 ? (
-                  <div className="group-data-[state=collapsed]/sidebar:hidden text-center py-8 text-xs text-[var(--color-tami-text-muted)] space-y-2">
-                    <ChatCircleText size={28} className="mx-auto opacity-40 text-[var(--color-tami-orange)]" />
-                    <p>{tChat("emptySessions")}</p>
-                  </div>
-                ) : (
+                {chatHandlers?.sessions && chatHandlers.sessions.length > 0 && (
                   <div className="space-y-3 group-data-[state=collapsed]/sidebar:hidden">
                     {todaySessions.length > 0 && (
                       <div className="space-y-1">
@@ -467,6 +457,36 @@ function AppSidebarInner({ children }: AppSidebarLayoutProps) {
                         </div>
                       </div>
                     )}
+                  </div>
+                )}
+
+                {/* Guest Save Chat Banner */}
+                {!chatHandlers?.isAuthenticated && (
+                  <div className="group-data-[state=collapsed]/sidebar:hidden p-3.5 rounded-2xl bg-[var(--color-tami-surface-subdued)] ring-1 ring-[var(--color-tami-line)]/40 space-y-2.5 text-center">
+                    <Clock size={22} weight="duotone" className="mx-auto text-[var(--color-tami-orange)]" />
+                    <span className="text-xs font-bold text-[var(--color-tami-text)] block">
+                      {tChat("saveChatTitle")}
+                    </span>
+                    <p className="text-xs text-[var(--color-tami-text-muted)] leading-relaxed">
+                      {tChat("saveChatDesc")}
+                    </p>
+                    <Button
+                      variant="secondary"
+                      size="sm"
+                      onClick={() => chatHandlers?.onOpenLogin()}
+                      className="w-full rounded-full text-xs font-semibold min-h-[40px] cursor-pointer ring-1 ring-[var(--color-tami-line)]/50"
+                      icon={<GoogleLogo size={14} weight="bold" />}
+                    >
+                      {tChat("signInAccount")}
+                    </Button>
+                  </div>
+                )}
+
+                {/* Empty State for Authenticated user with no sessions */}
+                {chatHandlers?.isAuthenticated && (!chatHandlers?.sessions || chatHandlers.sessions.length === 0) && (
+                  <div className="group-data-[state=collapsed]/sidebar:hidden text-center py-8 text-xs text-[var(--color-tami-text-muted)] space-y-2">
+                    <ChatCircleText size={28} className="mx-auto opacity-40 text-[var(--color-tami-orange)]" />
+                    <p>{tChat("emptySessions")}</p>
                   </div>
                 )}
               </Sidebar.Content>

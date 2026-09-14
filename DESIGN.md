@@ -88,7 +88,7 @@ tami adalah laboratorium keamanan siber interaktif dan AI Smart Tutor yang diran
 
 1. **Energi & Kehangatan Visual Fictional:**
    - Stiker decal taktil penuh warna (*punchy decal stickers*), balon kata (*speech bubbles*), dan lencana aksen cerah.
-   - Kehadiran hangat maskot **tami si Panda Merah** ([`/public/shai-wave.png`](file:///d:/Development/Lomba/tami/public/shai-wave.png)) sebagai pendamping belajar Sokratik yang suportif.
+   - Kehadiran hangat maskot **tami si Panda Merah** ([`/public/mascot/`](file:///d:/Development/Lomba/tami/public/mascot/): `tami-wave`, `tami-detective`, `tami-mentor`, `tami-shield`, `tami-thinking`, `tami-celebrate`, `tami-warning`) sebagai pendamping belajar Sokratik yang suportif.
    - Cincin elevasi kuning taktil (*Sunburst Yellow* `ring-2 ring-[#ffd80c]`) yang menggantikan efek bayangan buram kotor.
 2. **Presisi & Kelapangan Tata Letak Osmo:**
    - Tata letak lapang dengan hierarki yang sangat disiplin: **setiap komponen di halaman harus memiliki tujuan nyata (anti-clutter & purposeful)**.

@@ -268,7 +268,7 @@ export function CertificateCard({ initialName, isUnlocked }: CertificateCardProp
 
           <div className="flex items-center gap-3 self-end">
             <Image
-              src="/icon.svg"
+              src="/mascot/tami-shield.webp"
               alt="tami Mascot"
               width={36}
               height={36}

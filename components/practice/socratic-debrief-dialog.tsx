@@ -5,7 +5,6 @@ import Image from "next/image";
 import { Link } from "@/i18n/navigation";
 import { useTranslations, useLocale } from "next-intl";
 import { Button } from "@cloudflare/kumo/components/button";
-import { Badge } from "@cloudflare/kumo/components/badge";
 import { Loader } from "@cloudflare/kumo/components/loader";
 import {
   DialogRoot,
@@ -16,7 +15,6 @@ import {
 } from "@cloudflare/kumo/components/dialog";
 import {
   X,
-  Sparkle,
   ChatCircleDots,
   ArrowClockwise,
   PaperPlaneTilt,
@@ -159,7 +157,7 @@ export function SocraticDebriefDialog({
         <div className="flex items-center gap-3">
           <div className="relative w-12 h-12 shrink-0 rounded-2xl bg-[var(--color-tami-orange)]/15 flex items-center justify-center p-1.5">
             <Image
-              src="/shai-wave.png"
+              src="/mascot/tami-thinking.webp"
               alt="tami"
               width={40}
               height={40}
@@ -171,10 +169,6 @@ export function SocraticDebriefDialog({
               <DialogTitle className="font-bold text-base text-[var(--color-tami-text)] tracking-tight">
                 {tDebrief("title")}
               </DialogTitle>
-              <Badge variant="warning" appearance="filled" className="text-xs bg-[var(--color-tami-yellow)] text-black font-bold">
-                <Sparkle size={12} weight="fill" className="inline mr-1" />
-                {tDebrief("socraticBadge")}
-              </Badge>
             </div>
             <DialogDescription className="text-xs text-[var(--color-tami-text-muted)] mt-0.5">
               {scenarioTitle}
@@ -217,7 +211,7 @@ export function SocraticDebriefDialog({
 
         {/* Interactive Response Stream Box */}
         {(assistantReply || isLoading) && (
-          <div className="p-4 rounded-2xl bg-[var(--color-tami-orange)]/10 border border-[var(--color-tami-orange)]/20 space-y-2">
+          <div className="p-4 rounded-2xl bg-[var(--color-tami-surface-subdued)] ring-1 ring-[var(--color-tami-line)]/50 space-y-2">
             <div className="flex items-center gap-2 text-xs font-bold text-[var(--color-tami-orange)]">
               <ChatCircleDots size={16} weight="fill" />
               <span>{tDebrief("responseLead")}</span>

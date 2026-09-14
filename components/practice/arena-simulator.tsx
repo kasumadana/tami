@@ -354,7 +354,7 @@ export function ArenaSimulator() {
               className="p-3.5 rounded-2xl bg-[var(--color-tami-surface-subdued)] ring-1 ring-[var(--color-tami-line)]/50 text-xs flex items-start gap-3 my-2"
             >
               <Image
-                src="/shai-wave.png"
+                src="/mascot/tami-shield.webp"
                 alt="tami"
                 width={28}
                 height={28}
