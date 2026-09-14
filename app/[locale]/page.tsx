@@ -7,13 +7,10 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
 import { Button } from "@cloudflare/kumo/components/button";
-import { Badge } from "@cloudflare/kumo/components/badge";
 import { LayerCard } from "@cloudflare/kumo/components/layer-card";
 import {
-  ChatCircleDots,
   ShieldWarning,
   ShieldCheck,
-  GraduationCap,
   ArrowRight,
   EyeSlash,
   Brain,
@@ -21,6 +18,7 @@ import {
   LockKey,
   CheckCircle,
 } from "@phosphor-icons/react/dist/ssr";
+import { InteractiveMissionPreview } from "@/components/home/interactive-mission-preview";
 
 interface HomePageProps {
   params: Promise<{ locale: string }>;
@@ -55,7 +53,6 @@ export default async function HomePage({ params }: HomePageProps) {
 
 function HomeContent() {
   const t = useTranslations("home");
-  const tCommon = useTranslations("common");
 
   return (
     <>
@@ -166,220 +163,8 @@ function HomeContent() {
         </LayerCard>
       </section>
 
-      {/* Asymmetric Showcase Tiles (Anti-AI-Slop Layout) */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full space-y-7">
-        <div className="text-center max-w-2xl mx-auto space-y-1.5">
-          <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-[var(--color-tami-text)]">
-            {t("features.sectionTitle")}
-          </h2>
-          <p className="text-sm text-[var(--color-tami-text-muted)]">
-            {t("features.sectionSubtitle")}
-          </p>
-        </div>
-
-        {/* 4 Varied Layout Blocks */}
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-5">
-          {/* Tile 1: Socratic AI Tutor (Col 7) */}
-          <LayerCard className="md:col-span-7 rounded-2xl p-6 sm:p-7 bg-[var(--color-tami-surface-subdued)] border-none ring-1 ring-[var(--color-tami-line)]/40 flex flex-col justify-between space-y-5">
-            <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <div className="w-10 h-10 rounded-xl bg-[var(--color-tami-orange)]/15 text-[var(--color-tami-orange)] flex items-center justify-center">
-                  <ChatCircleDots size={22} weight="bold" />
-                </div>
-                <Badge variant="warning" appearance="filled" className="text-xs">
-                  {tCommon("socraticBadge")}
-                </Badge>
-              </div>
-              <div className="space-y-1">
-                <h3 className="text-lg font-bold text-[var(--color-tami-text)]">
-                  {t("features.chat.title")}
-                </h3>
-                <p className="text-sm text-[var(--color-tami-text-muted)] leading-relaxed">
-                  {t("features.chat.description")}
-                </p>
-              </div>
-
-              {/* Socratic Chat Simulation Bubble */}
-              <div className="space-y-2.5 p-3.5 rounded-xl bg-[var(--color-tami-surface)] ring-1 ring-[var(--color-tami-line)]/30 text-xs">
-                <div className="flex items-start gap-2">
-                  <div className="w-6 h-6 rounded-full bg-[var(--color-tami-surface-subdued)] text-[var(--color-tami-text)] flex items-center justify-center font-bold text-xs shrink-0 ring-1 ring-[var(--color-tami-line)]/40">
-                    U
-                  </div>
-                  <div className="p-2.5 rounded-xl bg-[var(--color-tami-surface-subdued)] text-[var(--color-tami-text)]">
-                    &ldquo;{t("features.demo.chatUserSample")}&rdquo;
-                  </div>
-                </div>
-                <div className="flex items-start gap-2">
-                  <div className="w-6 h-6 rounded-full bg-[var(--color-tami-orange)] text-white flex items-center justify-center font-bold text-xs shrink-0">
-                    T
-                  </div>
-                  <div className="p-2.5 rounded-xl bg-[var(--color-tami-orange)]/10 text-[var(--color-tami-text)]">
-                    &ldquo;{t("features.demo.chatTamiSample")}&rdquo;
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <Link href="/chat" className="w-full sm:w-auto rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-tami-orange)]">
-              <Button
-                variant="secondary"
-                size="base"
-                className="w-full sm:w-auto rounded-full bg-[var(--color-tami-surface)] hover:bg-[var(--color-tami-surface-subdued)] text-[var(--color-tami-text)] ring-1 ring-[var(--color-tami-line)]/50 text-sm font-semibold min-h-[44px] px-6 transition-none cursor-pointer"
-                icon={<ArrowRight size={16} weight="bold" />}
-              >
-                {t("features.chat.action")}
-              </Button>
-            </Link>
-          </LayerCard>
-
-          {/* Tile 2: Visual Multimodal Threat Inspector (Col 5) */}
-          <LayerCard className="md:col-span-5 rounded-2xl p-6 sm:p-7 bg-[var(--color-tami-surface-subdued)] border-none ring-1 ring-[var(--color-tami-line)]/40 flex flex-col justify-between space-y-5">
-            <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <div className="w-10 h-10 rounded-xl bg-[var(--color-tami-green)]/15 text-[var(--color-tami-green)] flex items-center justify-center">
-                  <ShieldWarning size={22} weight="bold" />
-                </div>
-                <Badge variant="success" appearance="filled" className="text-xs">
-                  {tCommon("visionBadge")}
-                </Badge>
-              </div>
-              <div className="space-y-1">
-                <h3 className="text-lg font-bold text-[var(--color-tami-text)]">
-                  {t("features.detector.title")}
-                </h3>
-                <p className="text-sm text-[var(--color-tami-text-muted)] leading-relaxed">
-                  {t("features.detector.description")}
-                </p>
-              </div>
-
-              {/* Visual Threat Inspector Dropzone Preview */}
-              <div className="p-4 rounded-xl bg-[var(--color-tami-surface)] ring-1 ring-[var(--color-tami-line)]/30 text-center space-y-1.5">
-                <div className="flex justify-center text-[var(--color-tami-orange)]">
-                  <ShieldWarning size={26} weight="duotone" />
-                </div>
-                <div className="text-xs font-semibold text-[var(--color-tami-text)]">
-                  {t("features.demo.dropScreenshot")}
-                </div>
-                <div className="text-xs text-[var(--color-tami-text-muted)]">
-                  {t("features.demo.dropScreenshotHint")}
-                </div>
-              </div>
-            </div>
-
-            <Link href="/detector" className="w-full sm:w-auto rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-tami-green)]">
-              <Button
-                variant="secondary"
-                size="base"
-                className="w-full sm:w-auto rounded-full bg-[var(--color-tami-surface)] hover:bg-[var(--color-tami-surface-subdued)] text-[var(--color-tami-text)] ring-1 ring-[var(--color-tami-line)]/50 text-sm font-semibold min-h-[44px] px-6 transition-none cursor-pointer"
-                icon={<ArrowRight size={16} weight="bold" />}
-              >
-                {t("features.detector.action")}
-              </Button>
-            </Link>
-          </LayerCard>
-
-          {/* Tile 3: Cyber Defense Lab (Col 5) */}
-          <LayerCard className="md:col-span-5 rounded-2xl p-6 sm:p-7 bg-[var(--color-tami-surface-subdued)] border-none ring-1 ring-[var(--color-tami-line)]/40 flex flex-col justify-between space-y-5">
-            <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <div className="w-10 h-10 rounded-xl bg-[var(--color-tami-yellow)]/15 text-[var(--color-tami-yellow)] flex items-center justify-center">
-                  <ShieldCheck size={22} weight="bold" />
-                </div>
-                <Badge variant="warning" appearance="filled" className="text-xs">
-                  {tCommon("interactiveBadge")}
-                </Badge>
-              </div>
-              <div className="space-y-1">
-                <h3 className="text-lg font-bold text-[var(--color-tami-text)]">
-                  {t("features.practice.title")}
-                </h3>
-                <p className="text-sm text-[var(--color-tami-text-muted)] leading-relaxed">
-                  {t("features.practice.description")}
-                </p>
-              </div>
-
-              {/* Tactile Segmented Password Entropy Preview */}
-              <div className="p-3.5 rounded-xl bg-[var(--color-tami-surface)] ring-1 ring-[var(--color-tami-line)]/30 space-y-2.5 text-xs">
-                <div className="flex justify-between items-center">
-                  <span className="font-semibold text-[var(--color-tami-text)] flex items-center gap-1.5">
-                    <LockKey size={14} weight="bold" className="text-[var(--color-tami-green)]" />
-                    <span>{t("features.demo.passwordStrength")}</span>
-                  </span>
-                  <span className="text-[var(--color-tami-green)] font-mono font-bold px-2 py-0.5 rounded-md bg-[var(--color-tami-green)]/10 ring-1 ring-[var(--color-tami-green)]/30">
-                    {t("features.demo.passwordStrengthValue")}
-                  </span>
-                </div>
-                <div className="grid grid-cols-4 gap-1.5 w-full">
-                  <div className="h-2 rounded-full bg-[var(--color-tami-green)]" />
-                  <div className="h-2 rounded-full bg-[var(--color-tami-green)]" />
-                  <div className="h-2 rounded-full bg-[var(--color-tami-green)]" />
-                  <div className="h-2 rounded-full bg-[var(--color-tami-green)] animate-pulse" />
-                </div>
-              </div>
-            </div>
-
-            <Link href="/practice" className="w-full sm:w-auto rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-tami-orange)]">
-              <Button
-                variant="secondary"
-                size="base"
-                className="w-full sm:w-auto rounded-full bg-[var(--color-tami-surface)] hover:bg-[var(--color-tami-surface-subdued)] text-[var(--color-tami-text)] ring-1 ring-[var(--color-tami-line)]/50 text-sm font-semibold min-h-[44px] px-6 transition-none cursor-pointer"
-                icon={<ArrowRight size={16} weight="bold" />}
-              >
-                {t("features.practice.action")}
-              </Button>
-            </Link>
-          </LayerCard>
-
-          {/* Tile 4: Curriculum & Family Guide (Col 7) */}
-          <LayerCard className="md:col-span-7 rounded-2xl p-6 sm:p-7 bg-[var(--color-tami-surface-subdued)] border-none ring-1 ring-[var(--color-tami-line)]/40 flex flex-col justify-between space-y-5">
-            <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <div className="w-10 h-10 rounded-xl bg-[var(--color-tami-violet)]/15 text-[var(--color-tami-violet)] flex items-center justify-center">
-                  <GraduationCap size={22} weight="bold" />
-                </div>
-                <Badge variant="neutral" appearance="filled" className="text-xs">
-                  {tCommon("curriculumBadge")}
-                </Badge>
-              </div>
-              <div className="space-y-1">
-                <h3 className="text-lg font-bold text-[var(--color-tami-text)]">
-                  {t("features.learn.title")}
-                </h3>
-                <p className="text-sm text-[var(--color-tami-text-muted)] leading-relaxed">
-                  {t("features.learn.description")}
-                </p>
-              </div>
-
-              {/* Curriculum Topics Tags */}
-              <div className="flex flex-wrap gap-2 pt-0.5 text-xs">
-                <span className="px-3 py-1.5 rounded-xl bg-[var(--color-tami-surface)] ring-1 ring-[var(--color-tami-line)]/30 font-medium text-[var(--color-tami-text)]">
-                  {t("features.demo.topicPasswords")}
-                </span>
-                <span className="px-3 py-1.5 rounded-xl bg-[var(--color-tami-surface)] ring-1 ring-[var(--color-tami-line)]/30 font-medium text-[var(--color-tami-text)]">
-                  {t("features.demo.topicPhishing")}
-                </span>
-                <span className="px-3 py-1.5 rounded-xl bg-[var(--color-tami-surface)] ring-1 ring-[var(--color-tami-line)]/30 font-medium text-[var(--color-tami-text)]">
-                  {t("features.demo.topicPrivacy")}
-                </span>
-                <span className="px-3 py-1.5 rounded-xl bg-[var(--color-tami-surface)] ring-1 ring-[var(--color-tami-line)]/30 font-medium text-[var(--color-tami-text)]">
-                  {t("features.demo.topicBullying")}
-                </span>
-              </div>
-            </div>
-
-            <Link href="/learn" className="w-full sm:w-auto rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-tami-violet)]">
-              <Button
-                variant="secondary"
-                size="base"
-                className="w-full sm:w-auto rounded-full bg-[var(--color-tami-surface)] hover:bg-[var(--color-tami-surface-subdued)] text-[var(--color-tami-text)] ring-1 ring-[var(--color-tami-line)]/50 text-sm font-semibold min-h-[44px] px-6 transition-none cursor-pointer"
-                icon={<ArrowRight size={16} weight="bold" />}
-              >
-                {t("features.learn.action")}
-              </Button>
-            </Link>
-          </LayerCard>
-        </div>
-      </section>
+      {/* Interactive Core Capabilities Showcase (Tactile & Purposeful) */}
+      <InteractiveMissionPreview />
 
       {/* Trust & Safety Highlights */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
