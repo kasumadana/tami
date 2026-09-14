@@ -41,8 +41,12 @@ export function ModuleStudyRoom({ moduleData }: ModuleStudyRoomProps) {
     }
   };
 
+  const handleExitToCatalog = () => {
+    router.push("/learn");
+  };
+
   return (
-    <div className="flex flex-col w-full max-w-4xl mx-auto p-4 sm:p-6 space-y-6">
+    <div className={`flex flex-col w-full mx-auto p-4 sm:p-6 space-y-6 ${activeTab === "quiz" ? "max-w-5xl" : "max-w-4xl"}`}>
       {/* Top Breadcrumb Header Bar */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <button
@@ -113,6 +117,7 @@ export function ModuleStudyRoom({ moduleData }: ModuleStudyRoomProps) {
           moduleTitle={moduleData.title}
           questions={moduleData.quizzes}
           onFinish={handleFinishQuiz}
+          onExit={handleExitToCatalog}
           onRetake={() => {
             window.scrollTo({ top: 0, behavior: "smooth" });
           }}

@@ -31,6 +31,7 @@ interface KinestheticQuizArenaProps {
   moduleTitle: string;
   questions: QuizQuestionItem[];
   onFinish: (scorePercent: number, passed: boolean) => void;
+  onExit?: () => void;
   onRetake: () => void;
 }
 
@@ -38,6 +39,7 @@ export function KinestheticQuizArena({
   moduleTitle,
   questions,
   onFinish,
+  onExit,
   onRetake,
 }: KinestheticQuizArenaProps) {
   const t = useTranslations("learn");
@@ -67,12 +69,16 @@ export function KinestheticQuizArena({
     detail: string;
   } | null>(null);
 
+  // Auto-advance 3-second countdown timer after answering
+  const [autoAdvanceSeconds, setAutoAdvanceSeconds] = useState<number | null>(null);
+
   // Voice recognition states
   const [voiceHeard, setVoiceHeard] = useState<string>("");
   const speechServiceRef = useRef<SpeechRecognizerService | null>(null);
 
   const activeQuestion = questions[currentIdx];
   const isClickMode = modality === "click";
+  const isCameraMode = modality === "hover" || modality === "pinch";
   const isFallbackVisible =
     showFallbackChip &&
     modality !== "click" &&
@@ -111,6 +117,9 @@ export function KinestheticQuizArena({
         explanation: activeQuestion.explanation,
         detail: activeQuestion.justifications[optionKey] || "",
       });
+
+      // Start 3-second countdown to automatically advance to next question
+      setAutoAdvanceSeconds(3);
     },
     [activeQuestion, currentIdx, justification]
   );
@@ -171,6 +180,7 @@ export function KinestheticQuizArena({
   // Advance to next question or conclude quiz
   const handleNextQuestion = useCallback(() => {
     setJustification(null);
+    setAutoAdvanceSeconds(null);
     setVoiceHeard("");
     setModalityNudge(null);
     setShowFallbackChip(false);
@@ -200,6 +210,22 @@ export function KinestheticQuizArena({
       onFinish(finalScore, passed);
     }
   }, [correctCount, currentIdx, onFinish, questions.length, stopVoice]);
+
+  // 3-second auto-advance timer ticker
+  useEffect(() => {
+    if (autoAdvanceSeconds === null) return;
+
+    if (autoAdvanceSeconds <= 0) {
+      handleNextQuestion();
+      return;
+    }
+
+    const timer = setTimeout(() => {
+      setAutoAdvanceSeconds((prev) => (prev !== null ? prev - 1 : null));
+    }, 1000);
+
+    return () => clearTimeout(timer);
+  }, [autoAdvanceSeconds, handleNextQuestion]);
 
   // Keyboard navigation for Click mode
   useEffect(() => {
@@ -277,6 +303,7 @@ export function KinestheticQuizArena({
     setCorrectCount(0);
     setIsFinished(false);
     setJustification(null);
+    setAutoAdvanceSeconds(null);
     setVoiceHeard("");
     setModalityNudge(null);
     setShowFallbackChip(false);
@@ -432,7 +459,12 @@ export function KinestheticQuizArena({
           <Button
             variant="primary"
             size="base"
-            onClick={() => onFinish(scorePercent, isPassed)}
+            onClick={() => {
+              onFinish(scorePercent, isPassed);
+              if (onExit) {
+                onExit();
+              }
+            }}
             className="rounded-full font-semibold text-xs px-6 min-h-[44px] cursor-pointer"
             icon={<CheckCircle size={16} weight="bold" />}
           >
@@ -443,9 +475,111 @@ export function KinestheticQuizArena({
     );
   }
 
+  // Question and options subcomponent to reuse cleanly
+  const QuestionContent = (
+    <div className="space-y-4">
+      <LayerCard className="rounded-2xl p-5 bg-[var(--color-tami-surface)] border-none ring-1 ring-[var(--color-tami-line)]/50 space-y-4">
+        <h3 className="font-bold text-sm sm:text-base text-[var(--color-tami-text)] leading-snug">
+          {activeQuestion.question}
+        </h3>
+
+        {/* Options Grid */}
+        <div className={`grid gap-2.5 ${isCameraMode ? "grid-cols-1" : "grid-cols-1 sm:grid-cols-2"}`}>
+          {(["A", "B", "C", "D"] as const).map((key) => {
+            const isSelected = selectedAnswers[currentIdx] === key;
+            const isAnswered = Boolean(selectedAnswers[currentIdx]);
+            const isCorrectTarget = key === activeQuestion.correct_option;
+
+            let borderStyle = "ring-1 ring-[var(--color-tami-line)]/50 bg-[var(--color-tami-surface-subdued)]";
+            if (isAnswered) {
+              if (isCorrectTarget) {
+                borderStyle = "ring-2 ring-[var(--color-tami-green)] bg-[var(--color-tami-green)]/15 font-bold";
+              } else if (isSelected) {
+                borderStyle = "ring-2 ring-[var(--color-tami-red)] bg-[var(--color-tami-red)]/15 font-bold";
+              }
+            }
+
+            return (
+              <button
+                key={key}
+                type="button"
+                disabled={Boolean(justification)}
+                onClick={() => handleCardClick(key)}
+                className={`w-full text-left p-3.5 rounded-2xl ${borderStyle} ${
+                  isClickMode
+                    ? "cursor-pointer hover:ring-[var(--color-tami-orange)]"
+                    : "cursor-default"
+                } transition-none disabled:cursor-default flex items-start gap-3 min-h-[54px] group`}
+              >
+                <span className="w-7 h-7 rounded-xl bg-[var(--color-tami-surface)] text-[var(--color-tami-text)] ring-1 ring-[var(--color-tami-line)]/50 flex items-center justify-center font-mono font-bold text-xs shrink-0 mt-0.5 group-hover:bg-[var(--color-tami-orange)] group-hover:text-white transition-colors">
+                  {key}
+                </span>
+                <div className="flex flex-col flex-1 min-w-0">
+                  <span className="text-xs text-[var(--color-tami-text)] leading-relaxed mt-0.5">
+                    {activeQuestion.options[key]}
+                  </span>
+                </div>
+              </button>
+            );
+          })}
+        </div>
+      </LayerCard>
+
+      {/* Socratic Justification Drawer / Feedback Panel with Auto-Advance Indicator */}
+      {justification && (
+        <div
+          className={`p-4 sm:p-5 rounded-2xl ring-1 space-y-3 animate-in fade-in slide-in-from-bottom-2 ${
+            justification.isCorrect
+              ? "bg-[var(--color-tami-green)]/10 ring-[var(--color-tami-green)]/30"
+              : "bg-[var(--color-tami-orange)]/10 ring-[var(--color-tami-orange)]/30"
+          }`}
+        >
+          <div className="flex items-center justify-between gap-3">
+            <div className="flex items-center gap-2">
+              {justification.isCorrect ? (
+                <CheckCircle size={22} weight="fill" className="text-[var(--color-tami-green)] shrink-0" />
+              ) : (
+                <Lightbulb size={22} weight="fill" className="text-[var(--color-tami-orange)] shrink-0" />
+              )}
+              <h4 className="font-bold text-sm text-[var(--color-tami-text)]">
+                {justification.isCorrect ? t("correctFeedback") : t("wrongFeedback")}
+              </h4>
+            </div>
+
+            <Button
+              variant="primary"
+              size="base"
+              onClick={handleNextQuestion}
+              className="rounded-full text-xs font-semibold min-h-[44px] px-5 cursor-pointer shrink-0"
+              icon={<ArrowRight size={16} weight="bold" />}
+            >
+              {autoAdvanceSeconds !== null && autoAdvanceSeconds > 0
+                ? t("nextQuestionCountdown", { seconds: autoAdvanceSeconds })
+                : currentIdx + 1 < questions.length
+                ? t("nextQuestion")
+                : t("seeResults")}
+            </Button>
+          </div>
+
+          <div className="space-y-1 text-xs text-[var(--color-tami-text)] leading-relaxed">
+            <p className="font-semibold text-[var(--color-tami-orange)]">
+              {t("tamiReflection")}
+            </p>
+            <p>{justification.explanation}</p>
+            {justification.detail && (
+              <p className="text-[var(--color-tami-text-muted)] pt-0.5">
+                {justification.detail}
+              </p>
+            )}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+
   // 3. ACTIVE QUIZ HUD & QUESTIONS
   return (
-    <div className="space-y-4 max-w-2xl mx-auto">
+    <div className={`space-y-4 mx-auto w-full ${isCameraMode ? "max-w-5xl" : "max-w-2xl"}`}>
       {/* Mid-Quiz Modality Handoff Bar */}
       <div className="p-3 rounded-2xl bg-[var(--color-tami-surface-subdued)] ring-1 ring-[var(--color-tami-line)]/50 flex flex-wrap items-center justify-between gap-2 text-xs">
         <div className="flex items-center gap-2">
@@ -520,17 +654,6 @@ export function KinestheticQuizArena({
         </div>
       </div>
 
-      {/* MediaPipe Camera Viewport if Active */}
-      {(modality === "hover" || modality === "pinch") && (
-        <MediaPipeTracker
-          technique={modality}
-          options={["A", "B", "C", "D"]}
-          activeQuestionKey={activeQuestion.id}
-          onAnswerSelected={(key) => handleSelectOption(key as "A" | "B" | "C" | "D")}
-          onFallbackToClick={() => handleSwitchModality("click")}
-        />
-      )}
-
       {/* Voice Recognition Live Indicator Banner */}
       {modality === "voice" && (
         <div className="p-3.5 rounded-2xl bg-[var(--color-tami-violet)]/10 ring-1 ring-[var(--color-tami-violet)]/30 flex items-center justify-between gap-3 text-xs">
@@ -579,113 +702,28 @@ export function KinestheticQuizArena({
         </div>
       )}
 
-      {/* Question Card */}
-      <LayerCard className="rounded-2xl p-5 sm:p-6 bg-[var(--color-tami-surface)] border-none ring-1 ring-[var(--color-tami-line)]/50 space-y-4">
-        <h3 className="font-bold text-sm sm:text-base text-[var(--color-tami-text)] leading-snug">
-          {activeQuestion.question}
-        </h3>
-
-        {/* Options Grid with Exclusive Modality Controls */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-          {(["A", "B", "C", "D"] as const).map((key) => {
-            const isSelected = selectedAnswers[currentIdx] === key;
-            const isAnswered = Boolean(selectedAnswers[currentIdx]);
-            const isCorrectTarget = key === activeQuestion.correct_option;
-
-            let borderStyle = "ring-1 ring-[var(--color-tami-line)]/50 bg-[var(--color-tami-surface-subdued)]";
-            if (isAnswered) {
-              if (isCorrectTarget) {
-                borderStyle = "ring-2 ring-[var(--color-tami-green)] bg-[var(--color-tami-green)]/15 font-bold";
-              } else if (isSelected) {
-                borderStyle = "ring-2 ring-[var(--color-tami-red)] bg-[var(--color-tami-red)]/15 font-bold";
-              }
-            }
-
-            return (
-              <button
-                key={key}
-                type="button"
-                disabled={Boolean(justification)}
-                onClick={() => handleCardClick(key)}
-                className={`w-full text-left p-3.5 rounded-2xl ${borderStyle} ${
-                  isClickMode
-                    ? "cursor-pointer hover:ring-[var(--color-tami-orange)]"
-                    : "cursor-default"
-                } transition-none disabled:cursor-default flex items-start gap-3 min-h-[58px] group`}
-              >
-                <span className="w-7 h-7 rounded-xl bg-[var(--color-tami-surface)] text-[var(--color-tami-text)] ring-1 ring-[var(--color-tami-line)]/50 flex items-center justify-center font-mono font-bold text-xs shrink-0 mt-0.5 group-hover:bg-[var(--color-tami-orange)] group-hover:text-white transition-colors">
-                  {key}
-                </span>
-                <div className="flex flex-col flex-1 min-w-0">
-                  <span className="text-xs text-[var(--color-tami-text)] leading-relaxed mt-0.5">
-                    {activeQuestion.options[key]}
-                  </span>
-                  <span className="text-xs text-[var(--color-tami-text-muted)] font-medium mt-1 inline-flex items-center gap-1">
-                    {modality === "hover" && <Hand size={11} className="text-[var(--color-tami-orange)]" />}
-                    {modality === "pinch" && <Hand size={11} className="text-[var(--color-tami-orange)]" />}
-                    {modality === "voice" && <Microphone size={11} className="text-[var(--color-tami-violet)]" />}
-                    {modality === "click" && <MouseSimple size={11} className="text-[var(--color-tami-green)]" />}
-                    <span className="truncate">
-                      {modality === "hover"
-                        ? t("hintHoverMode")
-                        : modality === "pinch"
-                        ? t("hintPinchMode")
-                        : modality === "voice"
-                        ? t("hintVoiceMode")
-                        : t("hintClickMode")}
-                    </span>
-                  </span>
-                </div>
-              </button>
-            );
-          })}
-        </div>
-      </LayerCard>
-
-      {/* Socratic Justification Drawer / Feedback Panel */}
-      {justification && (
-        <div
-          className={`p-4 sm:p-5 rounded-2xl ring-1 space-y-3 animate-in fade-in slide-in-from-bottom-2 ${
-            justification.isCorrect
-              ? "bg-[var(--color-tami-green)]/10 ring-[var(--color-tami-green)]/30"
-              : "bg-[var(--color-tami-orange)]/10 ring-[var(--color-tami-orange)]/30"
-          }`}
-        >
-          <div className="flex items-center justify-between gap-3">
-            <div className="flex items-center gap-2">
-              {justification.isCorrect ? (
-                <CheckCircle size={22} weight="fill" className="text-[var(--color-tami-green)] shrink-0" />
-              ) : (
-                <Lightbulb size={22} weight="fill" className="text-[var(--color-tami-orange)] shrink-0" />
-              )}
-              <h4 className="font-bold text-sm text-[var(--color-tami-text)]">
-                {justification.isCorrect ? t("correctFeedback") : t("wrongFeedback")}
-              </h4>
-            </div>
-
-            <Button
-              variant="primary"
-              size="base"
-              onClick={handleNextQuestion}
-              className="rounded-full text-xs font-semibold min-h-[44px] px-5 cursor-pointer shrink-0"
-              icon={<ArrowRight size={16} weight="bold" />}
-            >
-              {currentIdx + 1 < questions.length ? t("nextQuestion") : t("seeResults")}
-            </Button>
+      {/* MAIN SURFACE: Side-by-Side in Camera Mode, Stacked in Click/Voice Mode */}
+      {isCameraMode ? (
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+          {/* Left Column: Question, Options & Socratic Feedback (Col 6) */}
+          <div className="lg:col-span-6">
+            {QuestionContent}
           </div>
 
-          <div className="space-y-1 text-xs text-[var(--color-tami-text)] leading-relaxed">
-            <p className="font-semibold text-[var(--color-tami-orange)]">
-              {t("tamiReflection")}
-            </p>
-            <p>{justification.explanation}</p>
-            {justification.detail && (
-              <p className="text-[var(--color-tami-text-muted)] pt-0.5">
-                {justification.detail}
-              </p>
-            )}
+          {/* Right Column: Sticky MediaPipe Camera Viewport (Col 6) */}
+          <div className="lg:col-span-6 lg:sticky lg:top-6 self-start">
+            <MediaPipeTracker
+              technique={modality}
+              options={["A", "B", "C", "D"]}
+              activeQuestionKey={activeQuestion.id}
+              onAnswerSelected={(key) => handleSelectOption(key as "A" | "B" | "C" | "D")}
+              onFallbackToClick={() => handleSwitchModality("click")}
+            />
           </div>
         </div>
+      ) : (
+        /* Regular Stacked View for Click & Voice */
+        QuestionContent
       )}
     </div>
   );
