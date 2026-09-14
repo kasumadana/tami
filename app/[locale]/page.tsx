@@ -1,8 +1,9 @@
 import React from "react";
+import type { Metadata } from "next";
 import Image from "next/image";
 import { Link } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
-import { setRequestLocale } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
 import { Button } from "@cloudflare/kumo/components/button";
@@ -24,6 +25,18 @@ import {
 
 interface HomePageProps {
   params: Promise<{ locale: string }>;
+}
+
+export async function generateMetadata({ params }: HomePageProps): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "home" });
+
+  return {
+    title: {
+      absolute: "tami — Teman Aman Media Internet | AI Smart Tutor",
+    },
+    description: t("hero.subtitle"),
+  };
 }
 
 export default async function HomePage({ params }: HomePageProps) {
@@ -50,11 +63,6 @@ function HomeContent() {
       {/* Hero Section */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
         <div className="flex flex-col items-center text-center max-w-3xl mx-auto space-y-6">
-          {/* Die-Cut Event Sticker */}
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[var(--color-tami-surface-subdued)] ring-1 ring-[var(--color-tami-line)]/50 text-xs font-semibold text-[var(--color-tami-text)]">
-            <Sparkle size={14} weight="fill" className="text-[var(--color-tami-orange)]" />
-            <span>{t("hero.badge")}</span>
-          </div>
 
           {/* Bold Display Heading (Sentence-Case with Inline Contrast) */}
           <h1 className="text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-[var(--color-tami-text)] leading-[1.15]">
@@ -115,16 +123,16 @@ function HomeContent() {
 
       {/* Mascot Speech Bubble Card (Unboxed Organic Mascot Illustration) */}
       <section className="max-w-4xl mx-auto px-4 sm:px-6 w-full">
-        <LayerCard className="rounded-2xl p-6 sm:p-7 bg-[var(--color-tami-surface-subdued)] border-none ring-1 ring-[var(--color-tami-line)]/40">
-          <div className="flex flex-col sm:flex-row items-center gap-5 sm:gap-7">
+        <LayerCard className="rounded-2xl p-6 sm:p-8 bg-[var(--color-tami-surface-subdued)] border-none ring-1 ring-[var(--color-tami-line)]/40">
+          <div className="flex flex-col sm:flex-row items-center gap-6 sm:gap-8">
             {/* Real Mascot Image (Rendered Freely without Artificial Box) */}
             <div className="relative shrink-0 flex items-center justify-center">
               <Image
                 src="/mascot/tami-wave.webp"
                 alt={t("mascot.name")}
-                width={96}
-                height={96}
-                className="w-20 h-20 sm:w-24 sm:h-24 object-contain shrink-0 drop-shadow-xs"
+                width={176}
+                height={176}
+                className="w-32 h-32 sm:w-40 sm:h-40 md:w-44 md:h-44 object-contain shrink-0 drop-shadow-sm"
                 priority
               />
             </div>

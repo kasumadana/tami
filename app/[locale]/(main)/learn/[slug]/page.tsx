@@ -1,4 +1,5 @@
 import React from "react";
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { redirect } from "@/i18n/navigation";
 import { setRequestLocale } from "next-intl/server";
@@ -10,6 +11,22 @@ import { ModuleStudyRoom } from "./module-study-room";
 
 interface ModuleDetailPageProps {
   params: Promise<{ locale: string; slug: string }>;
+}
+
+export async function generateMetadata({ params }: ModuleDetailPageProps): Promise<Metadata> {
+  const { locale, slug } = await params;
+  const currentModule = getModuleBySlugOrId(slug, locale);
+
+  if (!currentModule) {
+    return {
+      title: "Modul Belajar",
+    };
+  }
+
+  return {
+    title: currentModule.title,
+    description: currentModule.description,
+  };
 }
 
 export function generateStaticParams() {

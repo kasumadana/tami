@@ -1,5 +1,6 @@
 import React from "react";
-import { setRequestLocale } from "next-intl/server";
+import type { Metadata } from "next";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import { cookies } from "next/headers";
 import { auth } from "@/auth";
 import { decodeGuestCookie, getQuotaStatus, GUEST_COOKIE_NAME } from "@/lib/guest-quota";
@@ -8,6 +9,17 @@ import { ChatWorkspace } from "./chat-workspace";
 interface ChatPageProps {
   params: Promise<{ locale: string }>;
   searchParams: Promise<{ topic?: string; scenario?: string }>;
+}
+
+export async function generateMetadata({ params }: ChatPageProps): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "nav" });
+  const tChat = await getTranslations({ locale, namespace: "chat" });
+
+  return {
+    title: t("chat"),
+    description: tChat("subtitle"),
+  };
 }
 
 export default async function ChatPage({ params, searchParams }: ChatPageProps) {

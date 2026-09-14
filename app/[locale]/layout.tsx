@@ -20,9 +20,17 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "tami — Teman Aman Media Internet | AI Smart Tutor",
+  title: {
+    template: "%s | tami",
+    default: "tami — Teman Aman Media Internet | AI Smart Tutor",
+  },
   description:
     "AI Smart Tutor and interactive cybersecurity defense platform for students and families.",
+  icons: {
+    icon: "/icon.svg",
+    shortcut: "/icon.svg",
+    apple: "/icon.svg",
+  },
 };
 
 export function generateStaticParams() {
