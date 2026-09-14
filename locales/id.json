@@ -86,6 +86,11 @@
     "subdomain": "Subdomain",
     "rootDomain": "Domain Utama",
     "tld": "TLD",
+    "inspectDomainTitle": "Inspeksi Anatomi Domain",
+    "deceptiveDomainBadge": "Waspada: Domain Tiruan",
+    "officialDomainBadge": "Domain Resmi",
+    "threatScore": "Skor Bahaya: {score}/100",
+    "evaluatedIndicators": "Indikator yang Dievaluasi:",
     "choiceWidget": {
       "selectAction": "Pilih satu tindakan yang menurutmu paling tepat:",
       "riskyOption": "Berisiko",
@@ -217,6 +222,7 @@
     "hintVoiceMode": "Ucapkan huruf jawabanmu ke mikrofon",
     "hintClickMode": "Klik untuk memilih jawaban",
     "speechNotSupported": "Peramban ini tidak mendukung pengenalan suara. Silakan gunakan Mode Klik atau Lambaian Tangan.",
+    "fallbackToClickChip": "Kesulitan dengan sensor? Beralih ke Klik Layar",
     "soundOn": "Suara Nyala",
     "soundOff": "Suara Mati",
     "modules": {
@@ -334,7 +340,8 @@
       "emailSign": "Departemen Keamanan & Perlindungan Komunitas Valve Corp.",
       "clueSender": "Domain Tiruan",
       "clueUrgency": "Desakan Waktu Panik",
-      "clueLink": "Tautan Berbahaya"
+      "clueLink": "Tautan Berbahaya",
+      "cluesTrackerTitle": "Jejak Indikator Kejahatan Siber Terdeteksi:"
     },
     "password": {
       "toolTitle": "Laboratorium Brankas Rahasia Digital",
@@ -345,6 +352,9 @@
       "crackTimeLabel": "Estimasi Waktu Retas Komputer",
       "passphraseHint": "Target Tantangan: Capai minimal 80 bit entropi menggunakan frasa sandi panjang (misal: 4 kata acak).",
       "generatorBtn": "Buat Contoh Frasa Kuat",
+      "aiChallengePrefix": "Tantangan AI: {hint}",
+      "testYourPassword": "Uji Ketahanan Sandimu:",
+      "vaultStatusTitle": "Status Perlindungan Brankas",
       "statusWeak": "Sangat Rentan (< 40 bit)",
       "statusModerate": "Sedang (40 - 79 bit)",
       "statusStrong": "Sangat Kuat (>= 80 bit)",
@@ -363,6 +373,16 @@
     "firewall": {
       "guardTitle": "Simulator Gerbang Kastil Digital",
       "guardDesc": "Konfigurasikan aturan pintu gerbang untuk memblokir penyusup jahat dan meloloskan lalu lintas siswa yang aman.",
+      "gateConfigTitle": "Konfigurasi Pintu Gerbang Kastil:",
+      "port443Badge": "Tamu Resmi",
+      "port443Title": "Pintu Tamu Resmi Web",
+      "port443Desc": "Lalu lintas web HTTPS aman untuk belajar siswa.",
+      "port4444Badge": "Bahaya",
+      "port4444Title": "Pintu Rahasia Penyusup",
+      "port4444Desc": "Trojan Backdoor RAT yang membajak kamera & data.",
+      "port22Badge": "Kunci Rapat",
+      "port22Title": "Pintu Kunci Ruang Server",
+      "port22Desc": "Serangan tebak sandi paksa (Brute Force Probe).",
       "rulePort443": "Port 443 — Pintu Tamu Resmi (Jalur Web Aman)",
       "rulePort4444": "Port 4444 — Pintu Rahasia Penyusup (Trojan Backdoor RAT)",
       "rulePort22": "Port 22 — Pintu Kunci Server (Serangan Brute Force)",

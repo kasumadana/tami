@@ -7,7 +7,6 @@ import { Button } from "@cloudflare/kumo/components/button";
 import { Badge } from "@cloudflare/kumo/components/badge";
 import { LayerCard } from "@cloudflare/kumo/components/layer-card";
 import { SensitiveInput } from "@cloudflare/kumo/components/sensitive-input";
-import { Meter } from "@cloudflare/kumo/components/meter";
 import { Loader } from "@cloudflare/kumo/components/loader";
 import {
   Key,
@@ -201,14 +200,14 @@ export function PasswordSimulator() {
         {aiChallengeHint && (
           <div className="p-3.5 rounded-xl bg-[var(--color-tami-violet)]/10 text-[var(--color-tami-violet)] text-xs flex items-center gap-2">
             <Sparkle size={16} weight="fill" className="shrink-0" />
-            <span>Tantangan AI: {aiChallengeHint}</span>
+            <span>{tPwd("aiChallengePrefix", { hint: aiChallengeHint })}</span>
           </div>
         )}
 
         {/* Sensitive Password Input Field */}
         <div className="space-y-2">
           <label htmlFor="passphrase-input" className="text-xs font-semibold text-[var(--color-tami-text-muted)] block">
-            Uji Ketahanan Sandimu:
+            {tPwd("testYourPassword")}
           </label>
           <SensitiveInput
             id="passphrase-input"
@@ -220,24 +219,19 @@ export function PasswordSimulator() {
           />
         </div>
 
-        {/* Vault Strength Meter (Kumo Meter) */}
+        {/* Vault Strength Meter*/}
         <div className="space-y-2">
           <div className="flex items-center justify-between text-xs">
             <span className="text-[var(--color-tami-text-muted)] font-medium">{tPwd("meterLabel")}</span>
             <span className="font-mono font-bold text-[var(--color-tami-text)]">{entropy} / 100 Bit</span>
           </div>
-          <Meter
-            label={tPwd("meterLabel")}
-            value={Math.min(100, entropy)}
-            className="h-3 rounded-full bg-[var(--color-tami-surface-subdued)]"
-          />
         </div>
 
         {/* High-Contrast Vault Status & Crack Time Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="p-4 rounded-xl bg-[var(--color-tami-surface-subdued)] space-y-2">
             <span className="text-xs text-[var(--color-tami-text-muted)] block font-medium">
-              Status Perlindungan Brankas
+              {tPwd("vaultStatusTitle")}
             </span>
             <div className="flex items-center gap-2">
               <span className={`px-2.5 py-1 rounded-lg text-xs flex items-center gap-1.5 ${vaultStatus.badgeClass}`}>

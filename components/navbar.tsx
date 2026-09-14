@@ -51,7 +51,7 @@ export function Navbar() {
                 alt={session.user.name || "User"}
                 width={20}
                 height={20}
-                className="w-5 h-5 object-contain shrink-0"
+                className="w-8 h-8 object-contain rounded-full"
               />
               <span className="font-semibold text-[var(--color-tami-text)] max-w-[100px] truncate">
                 {session.user.name}

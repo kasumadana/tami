@@ -20,7 +20,7 @@ export function InspectDomainSnippet({ data }: InspectDomainSnippetProps) {
             <LinkSimple size={16} weight="bold" />
           </div>
           <span className="text-xs font-bold text-[var(--color-tami-text)]">
-            Inspeksi Anatomi Domain
+            {t("inspectDomainTitle")}
           </span>
         </div>
 
@@ -32,12 +32,12 @@ export function InspectDomainSnippet({ data }: InspectDomainSnippetProps) {
           {data.isDeceptive ? (
             <>
               <ShieldWarning size={14} weight="fill" />
-              Waspada: Domain Tiruan
+              {t("deceptiveDomainBadge")}
             </>
           ) : (
             <>
               <ShieldCheck size={14} weight="fill" />
-              Domain Resmi
+              {t("officialDomainBadge")}
             </>
           )}
         </span>

@@ -269,7 +269,7 @@ export function FirewallSimulator() {
         {/* Castle Gate Control Rules (Sentence-case & Min 44px Touch Targets) */}
         <div className="space-y-3">
           <span className="text-xs font-bold text-[var(--color-tami-text)] block">
-            Konfigurasi Pintu Gerbang Kastil:
+            {tFw("gateConfigTitle")}
           </span>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
@@ -277,18 +277,19 @@ export function FirewallSimulator() {
             <div className="p-4 rounded-xl bg-[var(--color-tami-surface-subdued)] space-y-3 flex flex-col justify-between">
               <div>
                 <div className="flex items-center justify-between">
+                  {/* i18n-ignore */}
                   <span className="font-mono font-bold text-xs text-[var(--color-tami-green)]">
                     PORT 443
                   </span>
                   <Badge variant="success" appearance="filled" className="text-xs">
-                    Tamu Resmi
+                    {tFw("port443Badge")}
                   </Badge>
                 </div>
                 <h3 className="font-bold text-xs text-[var(--color-tami-text)] mt-1.5">
-                  Pintu Tamu Resmi Web
+                  {tFw("port443Title")}
                 </h3>
                 <p className="text-xs text-[var(--color-tami-text-muted)] mt-1">
-                  Lalu lintas web HTTPS aman untuk belajar siswa.
+                  {tFw("port443Desc")}
                 </p>
               </div>
 
@@ -324,18 +325,19 @@ export function FirewallSimulator() {
             <div className="p-4 rounded-xl bg-[var(--color-tami-surface-subdued)] space-y-3 flex flex-col justify-between">
               <div>
                 <div className="flex items-center justify-between">
+                  {/* i18n-ignore */}
                   <span className="font-mono font-bold text-xs text-[var(--color-tami-red)]">
                     PORT 4444
                   </span>
                   <Badge variant="error" appearance="filled" className="text-xs">
-                    Bahaya
+                    {tFw("port4444Badge")}
                   </Badge>
                 </div>
                 <h3 className="font-bold text-xs text-[var(--color-tami-text)] mt-1.5">
-                  Pintu Rahasia Penyusup
+                  {tFw("port4444Title")}
                 </h3>
                 <p className="text-xs text-[var(--color-tami-text-muted)] mt-1">
-                  Trojan Backdoor RAT yang membajak kamera & data.
+                  {tFw("port4444Desc")}
                 </p>
               </div>
 
@@ -371,18 +373,19 @@ export function FirewallSimulator() {
             <div className="p-4 rounded-xl bg-[var(--color-tami-surface-subdued)] space-y-3 flex flex-col justify-between">
               <div>
                 <div className="flex items-center justify-between">
+                  {/* i18n-ignore */}
                   <span className="font-mono font-bold text-xs text-[var(--color-tami-red)]">
                     PORT 22
                   </span>
                   <Badge variant="error" appearance="filled" className="text-xs">
-                    Kunci Rapat
+                    {tFw("port22Badge")}
                   </Badge>
                 </div>
                 <h3 className="font-bold text-xs text-[var(--color-tami-text)] mt-1.5">
-                  Pintu Kunci Ruang Server
+                  {tFw("port22Title")}
                 </h3>
                 <p className="text-xs text-[var(--color-tami-text-muted)] mt-1">
-                  Serangan tebak sandi paksa (Brute Force Probe).
+                  {tFw("port22Desc")}
                 </p>
               </div>
 
@@ -457,6 +460,7 @@ export function FirewallSimulator() {
                     <span className="font-semibold text-[var(--color-tami-text)] truncate">
                       {p.label}
                     </span>
+                    {/* i18n-ignore */}
                     <span className="font-mono text-xs text-[var(--color-tami-text-muted)] shrink-0">
                       (Port {p.port})
                     </span>

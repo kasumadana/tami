@@ -36,10 +36,10 @@ const HAND_CONNECTIONS = [
 ];
 
 export const OPTION_COLOR_PALETTE: Record<string, { bg: string; border: string; text: string }> = {
-  A: { bg: "rgba(59, 130, 246, 0.25)", border: "#3b82f6", text: "#60a5fa" },
-  B: { bg: "rgba(34, 197, 94, 0.25)", border: "#22c55e", text: "#4ade80" },
-  C: { bg: "rgba(255, 90, 0, 0.25)", border: "#ff5a00", text: "#ff8038" },
-  D: { bg: "rgba(139, 92, 246, 0.25)", border: "#8b5cf6", text: "#a78bfa" },
+  A: { bg: "rgba(71, 139, 255, 0.25)", border: "#478bff", text: "#478bff" },
+  B: { bg: "rgba(22, 163, 74, 0.25)", border: "#16a34a", text: "#16a34a" },
+  C: { bg: "rgba(255, 90, 0, 0.25)", border: "#ff5a00", text: "#ff5a00" },
+  D: { bg: "rgba(138, 83, 255, 0.25)", border: "#8a53ff", text: "#8a53ff" },
 };
 
 export function MediaPipeTracker({
@@ -68,18 +68,18 @@ export function MediaPipeTracker({
 
   // Quadrant Targets for Hover Mode
   const targetsRef = useRef<QuadrantTarget[]>([
-    { key: "A", color: "#3b82f6", pos: { x: 160, y: 120, vx: 1.2, vy: 1.0 } },
-    { key: "B", color: "#22c55e", pos: { x: 480, y: 120, vx: -1.0, vy: 1.2 } },
+    { key: "A", color: "#478bff", pos: { x: 160, y: 120, vx: 1.2, vy: 1.0 } },
+    { key: "B", color: "#16a34a", pos: { x: 480, y: 120, vx: -1.0, vy: 1.2 } },
     { key: "C", color: "#ff5a00", pos: { x: 160, y: 360, vx: 1.0, vy: -1.2 } },
-    { key: "D", color: "#8b5cf6", pos: { x: 480, y: 360, vx: -1.2, vy: -1.0 } },
+    { key: "D", color: "#8a53ff", pos: { x: 480, y: 360, vx: -1.2, vy: -1.0 } },
   ]);
 
   // Bubbles for Pinch Mode
   const shapesRef = useRef<Shape[]>([
-    { x: 160, y: 160, vx: 1.5, vy: 1.4, radius: 52, color: "#3b82f6", type: "A" },
-    { x: 480, y: 160, vx: -1.4, vy: 1.6, radius: 52, color: "#22c55e", type: "B" },
+    { x: 160, y: 160, vx: 1.5, vy: 1.4, radius: 52, color: "#478bff", type: "A" },
+    { x: 480, y: 160, vx: -1.4, vy: 1.6, radius: 52, color: "#16a34a", type: "B" },
     { x: 160, y: 320, vx: 1.6, vy: -1.4, radius: 52, color: "#ff5a00", type: "C" },
-    { x: 480, y: 320, vx: -1.5, vy: -1.5, radius: 52, color: "#8b5cf6", type: "D" },
+    { x: 480, y: 320, vx: -1.5, vy: -1.5, radius: 52, color: "#8a53ff", type: "D" },
   ]);
 
   // Reset positions on question switch

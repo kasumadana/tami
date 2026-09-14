@@ -82,7 +82,12 @@ function auditSourceFiles(): boolean {
 
     for (let i = 0; i < lines.length; i++) {
       const line = lines[i];
-      if (line.includes("// i18n-ignore") || line.includes("/* i18n-ignore */")) {
+      const prevLine = i > 0 ? lines[i - 1].trim() : "";
+      const hasIgnore =
+        line.includes("i18n-ignore") ||
+        (i > 0 && lines[i - 1].includes("i18n-ignore")) ||
+        (i > 1 && lines[i - 2].includes("i18n-ignore"));
+      if (hasIgnore) {
         continue;
       }
 
@@ -93,7 +98,7 @@ function auditSourceFiles(): boolean {
         // Ignore empty, purely punctuation, or numeric strings
         if (
           text.length > 2 &&
-          !/^[0-9\s.,/\\#!$%^&*;:{}=\-_`~()]+$/.test(text) &&
+          !/^[0-9\s.,/\\#!$%^&*;:{}=\-_`~()|@+<>?"'\[\]]+$/.test(text) &&
           !text.startsWith("{") &&
           !text.endsWith("}")
         ) {
@@ -102,6 +107,46 @@ function auditSourceFiles(): boolean {
           );
           violations++;
         }
+      }
+
+      // Check for standalone multiline JSX text (e.g. <tag>\n  Text here\n</tag>)
+      const trimmed = line.trim();
+      const nextLine = i < lines.length - 1 ? lines[i + 1].trim() : "";
+      if (
+        !trimmed.startsWith("<") &&
+        !trimmed.endsWith(">") &&
+        !trimmed.startsWith("{") &&
+        !trimmed.endsWith("}") &&
+        !trimmed.startsWith("//") &&
+        !trimmed.startsWith("/*") &&
+        !trimmed.startsWith("*") &&
+        !trimmed.startsWith("import ") &&
+        !trimmed.startsWith("export ") &&
+        !trimmed.startsWith("const ") &&
+        !trimmed.startsWith("let ") &&
+        !trimmed.startsWith("var ") &&
+        !trimmed.startsWith("return ") &&
+        !trimmed.startsWith("type ") &&
+        !trimmed.startsWith("interface ") &&
+        !trimmed.startsWith("className=") &&
+        !trimmed.includes("? (") &&
+        !trimmed.includes(") :") &&
+        !trimmed.includes("&&") &&
+        !trimmed.includes("===") &&
+        !trimmed.includes("!==") &&
+        !trimmed.startsWith("&ldquo;{") &&
+        !trimmed.endsWith("}&rdquo;") &&
+        !trimmed.startsWith(")") &&
+        !trimmed.endsWith("(") &&
+        prevLine.endsWith(">") &&
+        nextLine.startsWith("<") &&
+        trimmed.length > 2 &&
+        !/^[0-9\s.,/\\#!$%^&*;:{}=\-_`~()|@+<>?"'\[\]]+$/.test(trimmed)
+      ) {
+        console.error(
+          `❌ [i18n violation] ${path.relative(process.cwd(), file)}:${i + 1} -> "${trimmed}"`
+        );
+        violations++;
       }
     }
   }

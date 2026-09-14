@@ -228,29 +228,30 @@ function AppSidebarInner({ children }: AppSidebarLayoutProps) {
             }
             setEditingId(null);
           }}
-          className="flex items-center gap-1.5 p-1 rounded-full bg-[var(--color-tami-surface-subdued)] ring-1 ring-[var(--color-tami-orange)]"
+          className="flex items-center gap-1.5 p-1 rounded-full bg-[var(--color-tami-surface-subdued)] ring-1 ring-[var(--color-tami-orange)] min-h-[44px]"
         >
           <input
             type="text"
             value={editTitle}
             onChange={(e) => setEditTitle(e.target.value)}
             autoFocus
+            aria-label={tChat("rename")}
             className="flex-1 bg-transparent px-2.5 py-1 text-xs text-[var(--color-tami-text)] focus:outline-none"
           />
           <button
             type="submit"
             aria-label={tChat("rename")}
-            className="p-1 rounded-full hover:bg-[var(--color-tami-green)]/20 text-[var(--color-tami-green)] cursor-pointer"
+            className="w-8 h-8 min-w-[32px] min-h-[32px] flex items-center justify-center rounded-full hover:bg-[var(--color-tami-green)]/20 text-[var(--color-tami-green)] cursor-pointer"
           >
-            <Check size={13} weight="bold" />
+            <Check size={14} weight="bold" />
           </button>
           <button
             type="button"
             onClick={() => setEditingId(null)}
             aria-label={tChat("cancel")}
-            className="p-1 rounded-full hover:bg-[var(--color-tami-red)]/20 text-[var(--color-tami-red)] cursor-pointer"
+            className="w-8 h-8 min-w-[32px] min-h-[32px] flex items-center justify-center rounded-full hover:bg-[var(--color-tami-red)]/20 text-[var(--color-tami-red)] cursor-pointer"
           >
-            <X size={13} weight="bold" />
+            <X size={14} weight="bold" />
           </button>
         </form>
       );
@@ -272,7 +273,7 @@ function AppSidebarInner({ children }: AppSidebarLayoutProps) {
             setOpenMobile(false);
           }
         }}
-        className={`group w-full text-left px-3 py-2 rounded-full text-xs flex items-center justify-between gap-2 cursor-pointer transition-none min-h-[40px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-tami-orange)] ${
+        className={`group w-full text-left px-3 py-2 rounded-full text-xs flex items-center justify-between gap-2 cursor-pointer transition-none min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-tami-orange)] ${
           isSelected
             ? "bg-[var(--color-tami-orange)]/10 text-[var(--color-tami-text)] font-bold ring-1 ring-[var(--color-tami-orange)]/40"
             : "text-[var(--color-tami-text)] hover:bg-[var(--color-tami-surface-subdued)]"
@@ -290,7 +291,7 @@ function AppSidebarInner({ children }: AppSidebarLayoutProps) {
             }}
             aria-label={tChat("rename")}
             title={tChat("rename")}
-            className="w-7 h-7 flex items-center justify-center rounded-full text-[var(--color-tami-text-muted)] hover:text-[var(--color-tami-text)] hover:bg-[var(--color-tami-surface)] cursor-pointer focus:outline-none focus-visible:ring-1 focus-visible:ring-[var(--color-tami-orange)]"
+            className="w-8 h-8 min-w-[32px] min-h-[32px] flex items-center justify-center rounded-full text-[var(--color-tami-text-muted)] hover:text-[var(--color-tami-text)] hover:bg-[var(--color-tami-surface)] cursor-pointer focus:outline-none focus-visible:ring-1 focus-visible:ring-[var(--color-tami-orange)]"
           >
             <PencilSimple size={14} weight="bold" />
           </button>
@@ -302,7 +303,7 @@ function AppSidebarInner({ children }: AppSidebarLayoutProps) {
             }}
             aria-label={tChat("delete")}
             title={tChat("delete")}
-            className="w-7 h-7 flex items-center justify-center rounded-full text-[var(--color-tami-text-muted)] hover:text-[var(--color-tami-red)] hover:bg-[var(--color-tami-surface)] cursor-pointer focus:outline-none focus-visible:ring-1 focus-visible:ring-[var(--color-tami-red)]"
+            className="w-8 h-8 min-w-[32px] min-h-[32px] flex items-center justify-center rounded-full text-[var(--color-tami-text-muted)] hover:text-[var(--color-tami-red)] hover:bg-[var(--color-tami-surface)] cursor-pointer focus:outline-none focus-visible:ring-1 focus-visible:ring-[var(--color-tami-red)]"
           >
             <Trash size={14} weight="bold" />
           </button>
@@ -337,7 +338,7 @@ function AppSidebarInner({ children }: AppSidebarLayoutProps) {
                   onClick={closeChatHistory}
                   aria-label={tChat("backToMenu")}
                   title={tChat("backToMenu")}
-                  className="hidden group-data-[state=collapsed]/sidebar:flex items-center justify-center w-8 h-8 rounded-full hover:bg-[var(--color-tami-surface-subdued)] cursor-pointer mx-auto text-[var(--color-tami-orange)]"
+                  className="hidden group-data-[state=collapsed]/sidebar:flex items-center justify-center w-10 h-10 min-w-[40px] min-h-[40px] rounded-full hover:bg-[var(--color-tami-surface-subdued)] cursor-pointer mx-auto text-[var(--color-tami-orange)]"
                 >
                   <ArrowLeft size={16} weight="bold" />
                 </button>
@@ -438,7 +439,7 @@ function AppSidebarInner({ children }: AppSidebarLayoutProps) {
                   <div className="space-y-3 group-data-[state=collapsed]/sidebar:hidden">
                     {todaySessions.length > 0 && (
                       <div className="space-y-1">
-                        <span className="text-[11px] font-bold text-[var(--color-tami-text-muted)] px-2">
+                        <span className="text-xs font-bold text-[var(--color-tami-text-muted)] px-2">
                           {tChat("today")}
                         </span>
                         <div className="space-y-1">
@@ -449,7 +450,7 @@ function AppSidebarInner({ children }: AppSidebarLayoutProps) {
 
                     {earlierSessions.length > 0 && (
                       <div className="space-y-1">
-                        <span className="text-[11px] font-bold text-[var(--color-tami-text-muted)] px-2">
+                        <span className="text-xs font-bold text-[var(--color-tami-text-muted)] px-2">
                           {tChat("earlier")}
                         </span>
                         <div className="space-y-1">
@@ -474,7 +475,7 @@ function AppSidebarInner({ children }: AppSidebarLayoutProps) {
                       variant="secondary"
                       size="sm"
                       onClick={() => chatHandlers?.onOpenLogin()}
-                      className="w-full rounded-full text-xs font-semibold min-h-[40px] cursor-pointer ring-1 ring-[var(--color-tami-line)]/50"
+                      className="w-full rounded-full text-xs font-semibold min-h-[44px] cursor-pointer ring-1 ring-[var(--color-tami-line)]/50"
                       icon={<GoogleLogo size={14} weight="bold" />}
                     >
                       {tChat("signInAccount")}
@@ -539,7 +540,7 @@ function AppSidebarInner({ children }: AppSidebarLayoutProps) {
                     variant="secondary"
                     size="base"
                     onClick={() => signOut()}
-                    className="rounded-full ring-1 ring-[var(--color-tami-line)]/50 bg-[var(--color-tami-surface)] text-[var(--color-tami-text)] hover:bg-[var(--color-tami-surface-muted)] w-9 h-9 min-w-[36px] min-h-[36px] p-0 shrink-0 flex items-center justify-center cursor-pointer"
+                    className="rounded-full ring-1 ring-[var(--color-tami-line)]/50 bg-[var(--color-tami-surface)] text-[var(--color-tami-text)] hover:bg-[var(--color-tami-surface-muted)] w-10 h-10 min-w-[40px] min-h-[40px] p-0 shrink-0 flex items-center justify-center cursor-pointer"
                     icon={<SignOut size={16} />}
                     aria-label={tAuth("signOut")}
                   />
@@ -574,7 +575,7 @@ function AppSidebarInner({ children }: AppSidebarLayoutProps) {
                     variant="primary"
                     size="base"
                     onClick={() => setIsLoginOpen(true)}
-                    className="w-full rounded-full font-semibold text-xs min-h-[38px] flex items-center justify-center gap-2 mt-1 cursor-pointer"
+                    className="w-full rounded-full font-semibold text-xs min-h-[44px] flex items-center justify-center gap-2 mt-1 cursor-pointer"
                     icon={<SignIn size={16} weight="bold" />}
                   >
                     <span>{tAuth("signIn")}</span>

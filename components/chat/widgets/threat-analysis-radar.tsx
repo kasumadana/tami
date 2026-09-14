@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { useTranslations } from "next-intl";
 import { ThreatRadarData } from "@/lib/generative-ui-schema";
 import { ShieldWarning, ShieldCheck, WarningCircle, CheckCircle } from "@phosphor-icons/react";
 
@@ -9,6 +10,7 @@ interface ThreatAnalysisRadarProps {
 }
 
 export function ThreatAnalysisRadar({ data }: ThreatAnalysisRadarProps) {
+  const t = useTranslations("chat");
   const isDangerous = data.riskLevel === "DANGEROUS";
   const isSuspicious = data.riskLevel === "SUSPICIOUS";
 
@@ -41,7 +43,7 @@ export function ThreatAnalysisRadar({ data }: ThreatAnalysisRadarProps) {
               {data.riskLevel}
             </span>
             <span className="text-xs font-mono font-bold text-[var(--color-tami-text-muted)]">
-              Skor Bahaya: {data.score}/100
+              {t("threatScore", { score: data.score })}
             </span>
           </div>
           <h4 className="text-sm font-bold text-[var(--color-tami-text)] leading-snug">
@@ -67,8 +69,8 @@ export function ThreatAnalysisRadar({ data }: ThreatAnalysisRadarProps) {
 
       {/* Evaluated Indicators */}
       <div className="pt-1 space-y-1.5">
-        <span className="text-[11px] font-bold text-[var(--color-tami-text-muted)]">
-          Indikator yang Dievaluasi:
+        <span className="text-xs font-bold text-[var(--color-tami-text-muted)]">
+          {t("evaluatedIndicators")}
         </span>
         <div className="space-y-1.5">
           {data.indicators.map((ind, idx) => (

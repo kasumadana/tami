@@ -352,7 +352,7 @@ export function PhishingSimulator() {
         {/* Detective Clue Tagging Tracker */}
         <div className="p-4 rounded-xl bg-[var(--color-tami-surface-subdued)] space-y-2">
           <span className="text-xs font-bold text-[var(--color-tami-text)] block">
-            Jejak Indikator Kejahatan Siber Terdeteksi:
+            {tPhishing("cluesTrackerTitle")}
           </span>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
             <div
