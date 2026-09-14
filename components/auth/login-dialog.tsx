@@ -13,7 +13,6 @@ import {
 } from "@cloudflare/kumo/components/dialog";
 import {
   X,
-  Sparkle,
   GoogleLogo,
 } from "@phosphor-icons/react";
 import { signIn } from "next-auth/react";
@@ -28,10 +27,6 @@ export function LoginDialog({ isOpen, onClose }: LoginDialogProps) {
 
   const handleGoogleSignIn = () => {
     signIn("google", { callbackUrl: window.location.href });
-  };
-
-  const handleDemoSignIn = () => {
-    signIn("demo-student", { callbackUrl: window.location.href });
   };
 
   return (
@@ -70,28 +65,17 @@ export function LoginDialog({ isOpen, onClose }: LoginDialogProps) {
           </div>
         </div>
 
-        {/* Login Action Buttons */}
+        {/* Login Action Area */}
         <div className="space-y-3 pt-2">
-          {/* Google Sign In */}
-          <Button
-            variant="secondary"
-            size="base"
-            onClick={handleGoogleSignIn}
-            className="w-full rounded-full ring-1 ring-[var(--color-tami-line)]/50 bg-[var(--color-tami-surface-subdued)] text-[var(--color-tami-text)] hover:bg-[var(--color-tami-surface-muted)] text-sm h-11 min-h-[44px] font-semibold flex items-center justify-center gap-2 cursor-pointer"
-            icon={<GoogleLogo size={16} weight="bold" className="text-[var(--color-tami-orange)]" />}
-          >
-            {t("googleSignIn")}
-          </Button>
-
-          {/* Quick Demo Student Sign In */}
+          {/* Google Sign In (Primary Single Action) */}
           <Button
             variant="primary"
             size="base"
-            onClick={handleDemoSignIn}
-            className="w-full rounded-full text-sm h-11 min-h-[44px] font-semibold flex items-center justify-center gap-2 cursor-pointer"
-            icon={<Sparkle size={16} weight="fill" />}
+            onClick={handleGoogleSignIn}
+            className="w-full rounded-full bg-[var(--color-tami-orange)] hover:bg-[var(--color-tami-orange-hover)] text-white text-sm h-11 min-h-[44px] font-semibold flex items-center justify-center gap-2 cursor-pointer transition-none"
+            icon={<GoogleLogo size={16} weight="bold" />}
           >
-            {t("demoSignIn")}
+            {t("googleSignIn")}
           </Button>
         </div>
 

@@ -9,6 +9,7 @@ import { LocaleSwitcher } from "./locale-switcher";
 import { useSession } from "next-auth/react";
 import { Button } from "@cloudflare/kumo/components/button";
 import { ArrowRight } from "@phosphor-icons/react";
+import { UserAvatar } from "./auth/user-avatar";
 
 export function Navbar() {
   const tCommon = useTranslations("common");
@@ -46,12 +47,10 @@ export function Navbar() {
               href="/profile"
               className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-[var(--color-tami-surface-subdued)] ring-1 ring-[var(--color-tami-line)]/50 hover:bg-[var(--color-tami-surface-muted)] text-xs min-h-[44px] transition-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-tami-orange)]"
             >
-              <Image
-                src={session.user.image || "/mascot/tami-headshot.webp"}
-                alt={session.user.name || "User"}
-                width={20}
-                height={20}
-                className="w-8 h-8 object-contain rounded-full"
+              <UserAvatar
+                src={session.user.image}
+                name={session.user.name}
+                size="md"
               />
               <span className="font-semibold text-[var(--color-tami-text)] max-w-[100px] truncate">
                 {session.user.name}

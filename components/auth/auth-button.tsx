@@ -1,11 +1,11 @@
 "use client";
 
 import React, { useState } from "react";
-import Image from "next/image";
 import { useSession, signOut } from "next-auth/react";
 import { useTranslations } from "next-intl";
 import { Button } from "@cloudflare/kumo/components/button";
-import { UserCircle, SignOut, SignIn } from "@phosphor-icons/react";
+import { SignOut, SignIn } from "@phosphor-icons/react";
+import { UserAvatar } from "./user-avatar";
 import { LoginDialog } from "./login-dialog";
 
 export function AuthButton() {
@@ -23,17 +23,11 @@ export function AuthButton() {
     return (
       <div className="flex items-center gap-2">
         <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-[var(--color-tami-surface-subdued)] ring-1 ring-[var(--color-tami-line)]/50 text-xs min-h-[44px]">
-          {session.user.image ? (
-            <Image
-              src={session.user.image}
-              alt={session.user.name || "User"}
-              width={20}
-              height={20}
-              className="w-5 h-5 rounded-full object-cover"
-            />
-          ) : (
-            <UserCircle size={18} className="text-[var(--color-tami-orange)]" />
-          )}
+          <UserAvatar
+            src={session.user.image}
+            name={session.user.name}
+            size="md"
+          />
           <span className="font-semibold text-[var(--color-tami-text)] max-w-[100px] truncate">
             {session.user.name || t("defaultStudent")}
           </span>

@@ -18,9 +18,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       credentials: {},
       async authorize() {
         return {
-          id: "demo-student-01",
-          name: "Siswa Perintis (Demo)",
-          email: "student@tami.dev",
+          id: "student-01",
+          name: "Siswa tami",
+          email: "siswa@tami.id",
           image: "/mascot/tami-headshot.webp",
         };
       },
