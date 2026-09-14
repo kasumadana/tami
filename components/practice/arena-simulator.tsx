@@ -351,21 +351,21 @@ export function ArenaSimulator() {
           return (
             <div
               key={msg.id}
-              className="p-3.5 rounded-2xl bg-[var(--color-tami-surface-subdued)] ring-1 ring-[var(--color-tami-line)]/50 text-xs flex items-start gap-3 my-2"
+              className="p-4 rounded-2xl bg-[var(--color-tami-surface-subdued)] ring-1 ring-[var(--color-tami-line)]/50 text-xs flex items-start gap-3.5 my-2"
             >
               <Image
                 src="/mascot/tami-shield.webp"
                 alt="tami"
-                width={28}
-                height={28}
-                className="w-7 h-7 object-contain shrink-0 mt-0.5"
+                width={56}
+                height={56}
+                className="w-12 h-12 sm:w-14 sm:h-14 object-contain shrink-0 drop-shadow-xs"
               />
-              <div className="space-y-0.5">
+              <div className="space-y-1 flex-1">
                 <span className="font-bold text-[var(--color-tami-orange)] text-xs flex items-center gap-1">
-                  <Sparkle size={12} weight="fill" />
+                  <Sparkle size={13} weight="fill" />
                   {t("arena.coachWhisper")}
                 </span>
-                <p className="text-[var(--color-tami-text)] leading-relaxed">{msg.content}</p>
+                <p className="text-sm text-[var(--color-tami-text)] leading-relaxed">{msg.content}</p>
               </div>
             </div>
           );
@@ -450,6 +450,7 @@ export function ArenaSimulator() {
                   }
                 }}
                 disabled={isLoading}
+                aria-label={t("arena.inputPlaceholder")}
                 placeholder={t("arena.inputPlaceholder")}
                 className="flex-1 bg-transparent px-3 py-2 text-sm text-[var(--color-tami-text)] placeholder:text-[var(--color-tami-text-muted)] focus:outline-none min-h-[44px]"
               />

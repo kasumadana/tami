@@ -52,15 +52,15 @@ export function LoginDialog({ isOpen, onClose }: LoginDialogProps) {
         />
 
         {/* Dialog Header with Mascot */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3.5">
           <Image
             src="/mascot/tami-wave.webp"
             alt="tami"
-            width={36}
-            height={36}
-            className="w-9 h-9 object-contain shrink-0"
+            width={64}
+            height={64}
+            className="w-14 h-14 sm:w-16 sm:h-16 object-contain shrink-0 drop-shadow-xs"
           />
-          <div className="space-y-0.5">
+          <div className="space-y-1">
             <DialogTitle className="font-bold text-base text-[var(--color-tami-text)]">
               {t("dialogTitle")}
             </DialogTitle>

@@ -122,9 +122,9 @@ export function ProfileWorkspace() {
           <Image
             src={session?.user?.image || "/mascot/tami-wave.webp"}
             alt={displayName}
-            width={48}
-            height={48}
-            className="w-12 h-12 rounded-2xl bg-[var(--color-tami-surface)] ring-1 ring-[var(--color-tami-line)]/40 p-1 object-contain"
+            width={80}
+            height={80}
+            className="w-18 h-18 sm:w-20 sm:h-20 rounded-2xl object-contain shrink-0"
           />
           <div className="space-y-1">
             <div className="flex items-center gap-2">
@@ -153,7 +153,7 @@ export function ProfileWorkspace() {
 
       {/* 4 Stats Grid */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 print:hidden">
-        <LayerCard className="p-4 rounded-xl bg-[var(--color-tami-surface-subdued)] border-none ring-1 ring-[var(--color-tami-line)]/40 space-y-1.5">
+        <LayerCard className="p-4 rounded-2xl bg-[var(--color-tami-surface-subdued)] border-none ring-1 ring-[var(--color-tami-line)]/40 space-y-1.5">
           <div className="flex items-center justify-between">
             <span className="text-xs text-[var(--color-tami-text-muted)] block font-semibold">
               {t("stats.modulesCompleted")}
@@ -165,19 +165,19 @@ export function ProfileWorkspace() {
           </span>
         </LayerCard>
 
-        <LayerCard className="p-4 rounded-xl bg-[var(--color-tami-surface-subdued)] border-none ring-1 ring-[var(--color-tami-line)]/40 space-y-1.5">
+        <LayerCard className="p-4 rounded-2xl bg-[var(--color-tami-surface-subdued)] border-none ring-1 ring-[var(--color-tami-line)]/40 space-y-1.5">
           <div className="flex items-center justify-between">
             <span className="text-xs text-[var(--color-tami-text-muted)] block font-semibold">
               {t("stats.curriculumProgress")}
             </span>
             <Sparkle size={18} weight="fill" className="text-[var(--color-tami-yellow)]" />
           </div>
-          <span className="text-xl font-mono font-bold text-[var(--color-tami-yellow)] block">
+          <span className="text-xl font-mono font-bold text-[var(--color-tami-text)] block">
             {curriculumPercent}%
           </span>
         </LayerCard>
 
-        <LayerCard className="p-4 rounded-xl bg-[var(--color-tami-surface-subdued)] border-none ring-1 ring-[var(--color-tami-line)]/40 space-y-1.5">
+        <LayerCard className="p-4 rounded-2xl bg-[var(--color-tami-surface-subdued)] border-none ring-1 ring-[var(--color-tami-line)]/40 space-y-1.5">
           <div className="flex items-center justify-between">
             <span className="text-xs text-[var(--color-tami-text-muted)] block font-semibold">
               {t("stats.badgesCount")}
@@ -189,7 +189,7 @@ export function ProfileWorkspace() {
           </span>
         </LayerCard>
 
-        <LayerCard className="p-4 rounded-xl bg-[var(--color-tami-surface-subdued)] border-none ring-1 ring-[var(--color-tami-line)]/40 space-y-1.5">
+        <LayerCard className="p-4 rounded-2xl bg-[var(--color-tami-surface-subdued)] border-none ring-1 ring-[var(--color-tami-line)]/40 space-y-1.5">
           <div className="flex items-center justify-between">
             <span className="text-xs text-[var(--color-tami-text-muted)] block font-semibold">
               {t("stats.totalXp")}

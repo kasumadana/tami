@@ -48,6 +48,7 @@ export function KinestheticQuizArena({
   const [isFinished, setIsFinished] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
   const [modalityNudge, setModalityNudge] = useState<string | null>(null);
+  const [showFallbackChip, setShowFallbackChip] = useState(false);
 
   // Check speech recognition support safely without triggering cascading renders
   const [isSpeechSupported] = useState(() => {
@@ -72,6 +73,12 @@ export function KinestheticQuizArena({
 
   const activeQuestion = questions[currentIdx];
   const isClickMode = modality === "click";
+  const isFallbackVisible =
+    showFallbackChip &&
+    modality !== "click" &&
+    !!modality &&
+    !justification &&
+    !isFinished;
 
   // Stop speech recognition helper
   const stopVoice = useCallback(() => {
@@ -85,6 +92,7 @@ export function KinestheticQuizArena({
   const handleSelectOption = useCallback(
     (optionKey: "A" | "B" | "C" | "D") => {
       if (justification) return; // Prevent double trigger
+      setShowFallbackChip(false);
 
       const isCorrect = optionKey === activeQuestion.correct_option;
       setSelectedAnswers((prev) => ({ ...prev, [currentIdx]: optionKey }));
@@ -133,6 +141,7 @@ export function KinestheticQuizArena({
   const handleSwitchModality = (newModality: QuizModality) => {
     if (newModality === modality) return;
     setModalityNudge(null);
+    setShowFallbackChip(false);
 
     if (modality === "voice") {
       stopVoice();
@@ -164,6 +173,7 @@ export function KinestheticQuizArena({
     setJustification(null);
     setVoiceHeard("");
     setModalityNudge(null);
+    setShowFallbackChip(false);
 
     if (currentIdx + 1 < questions.length) {
       setCurrentIdx((prev) => prev + 1);
@@ -246,6 +256,19 @@ export function KinestheticQuizArena({
     }
   };
 
+  // 5-second automatic fallback trigger when touchless or voice mode doesn't receive input
+  useEffect(() => {
+    if (modality === "click" || !modality || justification || isFinished) {
+      return;
+    }
+
+    const timer = setTimeout(() => {
+      setShowFallbackChip(true);
+    }, 5000);
+
+    return () => clearTimeout(timer);
+  }, [modality, currentIdx, justification, isFinished]);
+
   // Restart quiz
   const handleRestartQuiz = () => {
     stopVoice();
@@ -256,6 +279,7 @@ export function KinestheticQuizArena({
     setJustification(null);
     setVoiceHeard("");
     setModalityNudge(null);
+    setShowFallbackChip(false);
     onRetake();
   };
 
@@ -288,7 +312,7 @@ export function KinestheticQuizArena({
             </div>
             <div>
               <h4 className="font-bold text-xs text-[var(--color-tami-text)]">{t("modalityHoverTitle")}</h4>
-              <p className="text-[11px] text-[var(--color-tami-text-muted)] mt-0.5">
+              <p className="text-xs text-[var(--color-tami-text-muted)] mt-0.5">
                 {t("modalityHoverDesc")}
               </p>
             </div>
@@ -311,7 +335,7 @@ export function KinestheticQuizArena({
             </div>
             <div>
               <h4 className="font-bold text-xs text-[var(--color-tami-text)]">{t("modalityVoiceTitle")}</h4>
-              <p className="text-[11px] text-[var(--color-tami-text-muted)] mt-0.5">
+              <p className="text-xs text-[var(--color-tami-text-muted)] mt-0.5">
                 {t("modalityVoiceDesc")}
               </p>
             </div>
@@ -328,14 +352,14 @@ export function KinestheticQuizArena({
             </div>
             <div>
               <h4 className="font-bold text-xs text-[var(--color-tami-text)]">{t("modalityClickTitle")}</h4>
-              <p className="text-[11px] text-[var(--color-tami-text-muted)] mt-0.5">
+              <p className="text-xs text-[var(--color-tami-text-muted)] mt-0.5">
                 {t("modalityClickDesc")}
               </p>
             </div>
           </button>
         </div>
 
-        <p className="text-[11px] text-[var(--color-tami-text-muted)]">
+        <p className="text-xs text-[var(--color-tami-text-muted)]">
           {t("privacyNotice")}
         </p>
       </div>
@@ -349,13 +373,13 @@ export function KinestheticQuizArena({
 
     return (
       <div className="p-6 sm:p-8 rounded-2xl bg-[var(--color-tami-surface)] ring-1 ring-[var(--color-tami-line)]/50 space-y-6 text-center max-w-lg mx-auto">
-        <div className="relative w-20 h-20 mx-auto">
+        <div className="relative w-32 h-32 sm:w-40 sm:h-40 mx-auto">
           <Image
             src={isPassed ? "/mascot/tami-celebrate.webp" : "/mascot/tami-thinking.webp"}
             alt="tami"
-            width={80}
-            height={80}
-            className="w-full h-full object-contain"
+            width={160}
+            height={160}
+            className="w-full h-full object-contain drop-shadow-sm"
           />
         </div>
 
@@ -380,14 +404,14 @@ export function KinestheticQuizArena({
 
         <div className="p-4 rounded-xl bg-[var(--color-tami-surface-subdued)] ring-1 ring-[var(--color-tami-line)]/40 flex items-center justify-around text-center">
           <div>
-            <span className="text-[11px] text-[var(--color-tami-text-muted)] block">{t("yourScore")}</span>
+            <span className="text-xs text-[var(--color-tami-text-muted)] block">{t("yourScore")}</span>
             <span className="font-mono font-bold text-base text-[var(--color-tami-text)]">
               {scorePercent}%
             </span>
           </div>
           <div className="w-px h-8 bg-[var(--color-tami-line)]" />
           <div>
-            <span className="text-[11px] text-[var(--color-tami-text-muted)] block">{t("passingGrade")}</span>
+            <span className="text-xs text-[var(--color-tami-text-muted)] block">{t("passingGrade")}</span>
             <span className="font-mono font-bold text-base text-[var(--color-tami-green)]">
               60%
             </span>
@@ -445,7 +469,7 @@ export function KinestheticQuizArena({
             {isMuted ? <SpeakerSlash size={14} /> : <SpeakerHigh size={14} />}
           </button>
 
-          <span className="text-[11px] text-[var(--color-tami-text-muted)] hidden sm:inline">
+          <span className="text-xs text-[var(--color-tami-text-muted)] hidden sm:inline">
             {t("methodLabel")}
           </span>
 
@@ -538,6 +562,23 @@ export function KinestheticQuizArena({
         </div>
       )}
 
+      {/* 5-second Inactivity Fallback to Click Mode */}
+      {isFallbackVisible && !modalityNudge && (
+        <div className="p-3 rounded-2xl bg-[var(--color-tami-surface)] ring-1 ring-[var(--color-tami-line)] text-xs font-medium text-[var(--color-tami-text)] flex items-center justify-between gap-3 animate-in fade-in shadow-sm">
+          <div className="flex items-center gap-2">
+            <MouseSimple size={16} className="text-[var(--color-tami-green)] shrink-0" />
+            <span>{t("fallbackToClickChip")}</span>
+          </div>
+          <button
+            type="button"
+            onClick={() => handleSwitchModality("click")}
+            className="px-4 py-2 rounded-full bg-[var(--color-tami-green)] text-white text-xs font-semibold cursor-pointer shrink-0 min-h-[44px] flex items-center justify-center transition-none"
+          >
+            {t("methodClick")}
+          </button>
+        </div>
+      )}
+
       {/* Question Card */}
       <LayerCard className="rounded-2xl p-5 sm:p-6 bg-[var(--color-tami-surface)] border-none ring-1 ring-[var(--color-tami-line)]/50 space-y-4">
         <h3 className="font-bold text-sm sm:text-base text-[var(--color-tami-text)] leading-snug">
@@ -579,7 +620,7 @@ export function KinestheticQuizArena({
                   <span className="text-xs text-[var(--color-tami-text)] leading-relaxed mt-0.5">
                     {activeQuestion.options[key]}
                   </span>
-                  <span className="text-[10px] text-[var(--color-tami-text-muted)] font-medium mt-1 inline-flex items-center gap-1">
+                  <span className="text-xs text-[var(--color-tami-text-muted)] font-medium mt-1 inline-flex items-center gap-1">
                     {modality === "hover" && <Hand size={11} className="text-[var(--color-tami-orange)]" />}
                     {modality === "pinch" && <Hand size={11} className="text-[var(--color-tami-orange)]" />}
                     {modality === "voice" && <Microphone size={11} className="text-[var(--color-tami-violet)]" />}

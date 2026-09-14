@@ -653,11 +653,7 @@ export function ChatWorkspace({
                   </div>
                 ) : (
                   <Image
-                    src={
-                      message.content === "" && !message.widgetType
-                        ? "/mascot/tami-thinking.webp"
-                        : "/mascot/tami-mentor.webp"
-                    }
+                    src="/icon.svg"
                     alt="tami"
                     width={32}
                     height={32}
@@ -742,13 +738,14 @@ export function ChatWorkspace({
                   onChange={handleInputChange}
                   onKeyDown={handleKeyDown}
                   disabled={isLoading || turnsRemaining <= 0}
+                  aria-label={t("placeholder")}
                   placeholder={
                     turnsRemaining <= 0
                       ? t("quotaExceededTitle")
                       : t("placeholder")
                   }
                   rows={1}
-                  className="flex-1 max-h-32 min-h-[42px] p-2 bg-transparent text-sm text-[var(--color-tami-text)] placeholder:text-[var(--color-tami-text-muted)] resize-none focus:outline-none"
+                  className="flex-1 max-h-32 min-h-[44px] p-2 bg-transparent text-sm text-[var(--color-tami-text)] placeholder:text-[var(--color-tami-text-muted)] resize-none focus:outline-none"
                 />
                 <Button
                   variant="primary"

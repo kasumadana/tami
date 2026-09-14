@@ -42,19 +42,21 @@ export function GuideWorkspace() {
       {activeTab === "parents" && (
         <div className="space-y-6">
           {/* Reassurance Banner */}
-          <div className="p-5 sm:p-6 rounded-2xl bg-[var(--color-tami-surface)] ring-1 ring-[var(--color-tami-line)]/50 flex flex-col sm:flex-row items-start sm:items-center gap-4">
-            <Image
-              src="/mascot/tami-mentor.webp"
-              alt="tami"
-              width={48}
-              height={48}
-              className="w-12 h-12 object-contain shrink-0"
-            />
-            <div className="space-y-1">
-              <h2 className="font-bold text-base text-[var(--color-tami-text)]">
+          <div className="p-5 sm:p-6 rounded-2xl bg-[var(--color-tami-surface)] ring-1 ring-[var(--color-tami-line)]/50 flex flex-col sm:flex-row items-center sm:items-center gap-4 sm:gap-6 text-center sm:text-left">
+            <div className="relative w-20 h-20 sm:w-24 sm:h-24 shrink-0">
+              <Image
+                src="/mascot/tami-mentor.webp"
+                alt="tami"
+                width={96}
+                height={96}
+                className="w-full h-full object-contain drop-shadow-xs"
+              />
+            </div>
+            <div className="space-y-1.5 flex-1">
+              <h2 className="font-bold text-base sm:text-lg text-[var(--color-tami-text)]">
                 {t("parentsTitle")}
               </h2>
-              <p className="text-xs text-[var(--color-tami-text-muted)] leading-relaxed">
+              <p className="text-xs sm:text-sm text-[var(--color-tami-text-muted)] leading-relaxed">
                 {t("parentsDesc")}
               </p>
             </div>

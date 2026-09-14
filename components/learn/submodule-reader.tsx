@@ -204,6 +204,7 @@ export function SubmoduleReader({
                   : "text-[var(--color-tami-orange)]"
               }`}
             >
+              {/* i18n-ignore */}
               QUIZ
             </span>
             {isQuizLocked ? (
@@ -312,18 +313,18 @@ export function SubmoduleReader({
         </div>
 
         {/* Mascot Whisper Callout */}
-        <div className="p-4 sm:p-5 rounded-2xl bg-[var(--color-tami-orange)]/10 ring-1 ring-[var(--color-tami-orange)]/30 flex items-start gap-4">
-          <div className="relative w-12 h-12 shrink-0">
+        <div className="p-5 sm:p-6 rounded-2xl bg-[var(--color-tami-orange)]/10 ring-1 ring-[var(--color-tami-orange)]/30 flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-5 text-center sm:text-left">
+          <div className="relative w-20 h-20 sm:w-24 sm:h-24 shrink-0">
             <Image
               src="/mascot/tami-mentor.webp"
               alt="tami"
-              width={48}
-              height={48}
-              className="w-full h-full object-contain"
+              width={96}
+              height={96}
+              className="w-full h-full object-contain drop-shadow-xs"
             />
           </div>
-          <div className="space-y-1 text-xs">
-            <h4 className="font-bold text-[var(--color-tami-orange)]">
+          <div className="space-y-1.5 text-xs flex-1">
+            <h4 className="font-bold text-sm text-[var(--color-tami-orange)]">
               {t("tamiWhisper")}
             </h4>
             <p className="text-sm text-[var(--color-tami-text)] leading-relaxed">

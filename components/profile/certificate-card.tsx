@@ -204,9 +204,11 @@ export function CertificateCard({ initialName, isUnlocked }: CertificateCardProp
               className="w-9 h-9 object-contain"
             />
             <div className="space-y-0.5">
+              {/* i18n-ignore */}
               <span className="font-bold text-lg text-[var(--color-tami-text)] tracking-tight block">
                 tami
               </span>
+              {/* i18n-ignore */}
               <span className="text-xs font-semibold text-[var(--color-tami-orange)] block">
                 Teman Aman Media Internet
               </span>
@@ -270,9 +272,9 @@ export function CertificateCard({ initialName, isUnlocked }: CertificateCardProp
             <Image
               src="/mascot/tami-shield.webp"
               alt="tami Mascot"
-              width={36}
-              height={36}
-              className="w-9 h-9 object-contain shrink-0"
+              width={64}
+              height={64}
+              className="w-14 h-14 sm:w-16 sm:h-16 object-contain shrink-0 drop-shadow-xs"
             />
             <div className="text-right space-y-0.5">
               <span className="font-bold text-[var(--color-tami-text)] block text-xs">{t("mascotSign")}</span>

@@ -154,14 +154,14 @@ export function SocraticDebriefDialog({
         />
 
         {/* Dialog Header with Mascot tami */}
-        <div className="flex items-center gap-3">
-          <div className="relative w-12 h-12 shrink-0 rounded-2xl bg-[var(--color-tami-orange)]/15 flex items-center justify-center p-1.5">
+        <div className="flex items-center gap-3.5">
+          <div className="relative w-16 h-16 sm:w-20 sm:h-20 shrink-0 rounded-2xl bg-[var(--color-tami-orange)]/15 flex items-center justify-center p-2">
             <Image
               src="/mascot/tami-thinking.webp"
               alt="tami"
-              width={40}
-              height={40}
-              className="w-10 h-10 object-contain"
+              width={64}
+              height={64}
+              className="w-14 h-14 sm:w-16 sm:h-16 object-contain drop-shadow-xs"
             />
           </div>
           <div>
@@ -200,7 +200,7 @@ export function SocraticDebriefDialog({
                   setReflectionInput(chip);
                   handleAskQuestion(chip);
                 }}
-                className="px-4 py-2.5 rounded-full text-xs font-medium bg-[var(--color-tami-surface-subdued)] hover:bg-[var(--color-tami-surface-muted)] text-[var(--color-tami-text)] text-left min-h-[44px] transition-none focus-visible:ring-2 focus-visible:ring-[var(--color-tami-yellow)] flex items-center gap-2 cursor-pointer"
+                className="px-4 py-2.5 rounded-full text-xs font-medium bg-[var(--color-tami-surface-subdued)] hover:bg-[var(--color-tami-surface-muted)] text-[var(--color-tami-text)] text-left min-h-[44px] transition-none focus-visible:ring-2 focus-visible:ring-[var(--color-tami-orange)] flex items-center gap-2 cursor-pointer"
               >
                 <Lightbulb size={16} weight="fill" className="text-[var(--color-tami-yellow)] shrink-0" />
                 <span>{chip}</span>
@@ -242,6 +242,7 @@ export function SocraticDebriefDialog({
               }
             }}
             placeholder={tChat("placeholder")}
+            aria-label={tChat("placeholder")}
             className="flex-1 px-4 py-2.5 rounded-xl bg-[var(--color-tami-surface-subdued)] border border-[var(--color-tami-line)] text-sm text-[var(--color-tami-text)] focus:outline-none focus:ring-2 focus:ring-[var(--color-tami-orange)]"
           />
           <Button

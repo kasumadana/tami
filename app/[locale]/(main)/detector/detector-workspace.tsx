@@ -286,6 +286,7 @@ export function DetectorWorkspace() {
                 type="file"
                 accept="image/png,image/jpeg,image/webp"
                 onChange={handleFileSelect}
+                aria-label={t("dropzoneTitle")}
                 className="hidden"
               />
               <div className="icon-box-hero w-14 h-14 rounded-2xl mb-4">
@@ -349,15 +350,15 @@ export function DetectorWorkspace() {
             </LayerCard>
 
             {/* Mascot Warm Inquisitive Card */}
-            <div className="p-5 rounded-2xl bg-[var(--color-tami-surface)] ring-1 ring-[var(--color-tami-line)]/40 flex items-start gap-3.5">
+            <div className="p-5 rounded-2xl bg-[var(--color-tami-surface)] ring-1 ring-[var(--color-tami-line)]/40 flex items-start gap-4">
               <Image
                 src="/mascot/tami-detective.webp"
                 alt="tami"
-                width={48}
-                height={48}
-                className="w-12 h-12 object-contain shrink-0"
+                width={80}
+                height={80}
+                className="w-18 h-18 sm:w-20 sm:h-20 object-contain shrink-0 drop-shadow-xs"
               />
-              <div className="space-y-1">
+              <div className="space-y-1.5 flex-1">
                 <h4 className="font-bold text-sm text-[var(--color-tami-text)]">
                   {t("selfInvestigationTitle")}
                 </h4>
@@ -414,14 +415,14 @@ export function DetectorWorkspace() {
               <span className="text-xs font-semibold text-[var(--color-tami-text-muted)] block">
                 {t("samplesTitle")}
               </span>
-              <div className="grid grid-cols-3 gap-2">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
                 {SAMPLE_PRESETS.map((sample) => (
                   <button
                     key={sample.id}
                     type="button"
                     onClick={() => handleSampleSelect(sample)}
                     disabled={isLoading}
-                    className="px-2 py-2 rounded-lg bg-[var(--color-tami-surface-subdued)] hover:bg-[var(--color-tami-surface-muted)] text-[11px] font-medium text-[var(--color-tami-text)] truncate text-center cursor-pointer min-h-[36px]"
+                    className="px-3 py-2.5 rounded-full bg-[var(--color-tami-surface-subdued)] hover:bg-[var(--color-tami-surface-muted)] text-xs font-medium text-[var(--color-tami-text)] truncate text-center cursor-pointer min-h-[44px] ring-1 ring-[var(--color-tami-line)]/40 transition-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-tami-orange)]"
                   >
                     {t(sample.titleKey as "sample1" | "sample2" | "sample3")}
                   </button>
@@ -449,13 +450,13 @@ export function DetectorWorkspace() {
 
             {/* Ready to Analyze Waiting State */}
             {!isLoading && !result && (
-              <LayerCard className="rounded-2xl p-8 bg-[var(--color-tami-surface-subdued)] border-none ring-1 ring-[var(--color-tami-line)]/40 flex flex-col items-center justify-center text-center space-y-4 min-h-[340px]">
+              <LayerCard className="rounded-2xl p-8 bg-[var(--color-tami-surface-subdued)] border-none ring-1 ring-[var(--color-tami-line)]/40 flex flex-col items-center justify-center text-center space-y-4 min-h-[360px]">
                 <Image
                   src="/mascot/tami-detective.webp"
                   alt="tami"
-                  width={64}
-                  height={64}
-                  className="w-16 h-16 object-contain mb-1"
+                  width={144}
+                  height={144}
+                  className="w-28 h-28 sm:w-36 sm:h-36 object-contain mb-1 drop-shadow-sm"
                 />
                 <div className="space-y-1.5 max-w-sm">
                   <h3 className="font-bold text-base text-[var(--color-tami-text)]">
@@ -483,7 +484,7 @@ export function DetectorWorkspace() {
                 {/* Hero Verdict Card */}
                 <LayerCard className="rounded-2xl p-5 sm:p-6 bg-[var(--color-tami-surface-subdued)] border-none ring-1 ring-[var(--color-tami-line)]/40 space-y-4">
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[var(--color-tami-line)]/50">
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-3.5">
                       <Image
                         src={
                           result.riskLevel === "DANGEROUS" || result.riskLevel === "SUSPICIOUS"
@@ -493,9 +494,9 @@ export function DetectorWorkspace() {
                             : "/mascot/tami-detective.webp"
                         }
                         alt="tami"
-                        width={44}
-                        height={44}
-                        className="w-11 h-11 object-contain shrink-0"
+                        width={64}
+                        height={64}
+                        className="w-14 h-14 sm:w-16 sm:h-16 object-contain shrink-0 drop-shadow-xs"
                       />
                       <div className="space-y-0.5">
                         <span className="text-xs font-semibold text-[var(--color-tami-text-muted)]">
@@ -582,15 +583,15 @@ export function DetectorWorkspace() {
                 {/* Socratic Reflection Prompts Card */}
                 {result.reflectionQuestions && result.reflectionQuestions.length > 0 && (
                   <div className="p-5 rounded-2xl bg-[var(--color-tami-orange)]/10 ring-1 ring-[var(--color-tami-orange)]/30 space-y-3">
-                    <div className="flex items-center gap-2.5">
+                    <div className="flex items-center gap-3.5">
                       <Image
                         src="/mascot/tami-thinking.webp"
                         alt="tami"
-                        width={32}
-                        height={32}
-                        className="w-8 h-8 object-contain shrink-0"
+                        width={64}
+                        height={64}
+                        className="w-14 h-14 sm:w-16 sm:h-16 object-contain shrink-0 drop-shadow-xs"
                       />
-                      <h3 className="font-bold text-sm text-[var(--color-tami-text)]">
+                      <h3 className="font-bold text-base text-[var(--color-tami-text)]">
                         {t("reflectionTitle")}
                       </h3>
                     </div>
