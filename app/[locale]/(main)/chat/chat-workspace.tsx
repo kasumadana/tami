@@ -26,10 +26,12 @@ import {
   GoogleLogo,
   SidebarSimple,
   Plus,
+  Sparkle,
 } from "@phosphor-icons/react";
 import { WidgetRenderer } from "@/components/chat/widgets/widget-renderer";
 import { useChatSidebar } from "@/components/app-sidebar";
 import { ChatSessionMetadata } from "@/lib/chat-store";
+import { UserAvatar } from "@/components/auth/user-avatar";
 
 export interface ChatMessageItem {
   id: string;
@@ -50,6 +52,55 @@ let messageCounter = 0;
 function createMessageId(prefix: string): string {
   messageCounter += 1;
   return `${prefix}-${Date.now()}-${messageCounter}`;
+}
+
+function TamiTypingIndicator() {
+  const t = useTranslations("chat");
+  const [phaseIndex, setPhaseIndex] = useState(0);
+
+  const phases = useMemo(
+    () => [
+      t("thinkingPhase1"),
+      t("thinkingPhase2"),
+      t("thinkingPhase3"),
+    ],
+    [t]
+  );
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setPhaseIndex((prev) => (prev + 1) % phases.length);
+    }, 2200);
+    return () => clearInterval(interval);
+  }, [phases.length]);
+
+  return (
+    <div className="flex items-center gap-2.5 py-1 px-1">
+      {/* Animated spinning sparkle icon */}
+      <span className="relative flex items-center justify-center w-5 h-5 shrink-0 text-[var(--color-tami-orange)]">
+        <Sparkle
+          weight="fill"
+          className="w-4 h-4 animate-spin [animation-duration:3s]"
+        />
+        <span className="absolute inset-0 rounded-full bg-[var(--color-tami-orange)]/20 animate-ping opacity-75 [animation-duration:2.5s]" />
+      </span>
+
+      {/* Dynamic reasoning text with smooth transition */}
+      <div className="flex items-center gap-1.5 text-xs font-medium text-[var(--color-tami-text-muted)] tracking-tight">
+        <span
+          key={phaseIndex}
+          className="animate-in fade-in slide-in-from-bottom-1 duration-300 inline-block"
+        >
+          {phases[phaseIndex]}
+        </span>
+        {/* Blinking typing terminal cursor */}
+        <span
+          className="inline-block w-1.5 h-3.5 bg-[var(--color-tami-orange)] rounded-xs animate-pulse align-middle"
+          aria-hidden="true"
+        />
+      </div>
+    </div>
+  );
 }
 
 export function ChatWorkspace({
@@ -636,8 +687,11 @@ export function ChatWorkspace({
 
         {/* Messages Stream Container */}
         <div className="flex-1 overflow-y-auto space-y-4 pr-1 sm:pr-2 min-h-0 py-3 scroll-smooth">
-          {messages.map((message) => {
+          {messages.map((message, index) => {
             const isUser = message.role === "user";
+            const isLastMessage = index === messages.length - 1;
+            const isTypingEmpty = !isUser && message.content === "" && !message.widgetType;
+            const isActivelyStreaming = !isUser && isLastMessage && isLoading && message.content !== "";
 
             return (
               <div
@@ -648,35 +702,42 @@ export function ChatWorkspace({
               >
                 {/* Avatar */}
                 {isUser ? (
-                  <div className="w-8 h-8 rounded-full bg-[var(--color-tami-surface-muted)] text-[var(--color-tami-text)] flex items-center justify-center font-bold text-xs shrink-0 ring-1 ring-[var(--color-tami-line)]/50">
-                    U
-                  </div>
-                ) : (
-                  <Image
-                    src="/icon.svg"
-                    alt="tami"
-                    width={32}
-                    height={32}
-                    className="w-8 h-8 object-contain shrink-0"
+                  <UserAvatar
+                    src={session?.user?.image}
+                    name={session?.user?.name || "User"}
+                    size="md"
+                    className="ring-1 ring-[var(--color-tami-line)]"
                   />
+                ) : (
+                  <div className="relative shrink-0">
+                    <Image
+                      src="/icon.svg"
+                      alt="tami"
+                      width={32}
+                      height={32}
+                      className="w-8 h-8 object-contain"
+                    />
+                    {isLoading && isLastMessage && (
+                      <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-[var(--color-tami-orange)] ring-2 ring-[var(--color-tami-surface)] animate-pulse" />
+                    )}
+                  </div>
                 )}
 
                 {/* Message Bubble & Generative UI */}
                 <div className="max-w-[90%] sm:max-w-[80%] flex flex-col space-y-2">
                   <div
-                    className={`rounded-2xl p-4 text-sm leading-relaxed overflow-hidden break-words ${
+                    className={`rounded-2xl p-4 text-sm leading-relaxed overflow-hidden break-words transition-all duration-200 ${
                       isUser
                         ? "bg-[var(--color-tami-orange)] text-white font-medium rounded-tr-xs"
+                        : isTypingEmpty
+                        ? "bg-[var(--color-tami-surface-subdued)] text-[var(--color-tami-text)] ring-1 ring-[var(--color-tami-orange)]/40 shadow-[0_0_15px_-3px_rgba(255,90,0,0.15)] rounded-tl-xs"
                         : "bg-[var(--color-tami-surface-subdued)] text-[var(--color-tami-text)] ring-1 ring-[var(--color-tami-line)]/40 rounded-tl-xs"
                     }`}
                   >
                     {isUser ? (
                       <p className="whitespace-pre-wrap">{message.content}</p>
-                    ) : message.content === "" && !message.widgetType ? (
-                      <div className="flex items-center gap-1.5 py-1 text-xs text-[var(--color-tami-text-muted)]">
-                        <span className="w-2 h-2 rounded-full bg-[var(--color-tami-orange)] animate-ping" />
-                        <span>{t("thinking")}</span>
-                      </div>
+                    ) : isTypingEmpty ? (
+                      <TamiTypingIndicator />
                     ) : (
                       <div className="prose prose-sm dark:prose-invert max-w-none space-y-2 text-[var(--color-tami-text)] overflow-hidden break-words">
                         <ReactMarkdown
@@ -685,6 +746,12 @@ export function ChatWorkspace({
                         >
                           {message.content}
                         </ReactMarkdown>
+                        {isActivelyStreaming && (
+                          <span
+                            className="inline-block w-1.5 h-4 ml-1 bg-[var(--color-tami-orange)] rounded-xs animate-pulse align-middle"
+                            aria-hidden="true"
+                          />
+                        )}
                       </div>
                     )}
                   </div>

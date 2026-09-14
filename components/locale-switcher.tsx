@@ -27,10 +27,10 @@ export function LocaleSwitcher({ className }: { className?: string }) {
       disabled={isPending}
       aria-label={t("switchLanguage")}
       title={t("switchLanguage")}
-      className={`min-h-[44px] px-3.5 flex items-center justify-center gap-1.5 rounded-full ring-1 ring-[var(--color-tami-line)]/50 bg-[var(--color-tami-surface)] text-[var(--color-tami-text)] hover:ring-[var(--color-tami-orange)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-tami-orange)] font-mono text-xs font-semibold cursor-pointer disabled:opacity-60 ${className || ""}`}
+      className={`min-h-[44px] flex items-center justify-center gap-1.5 rounded-full ring-1 ring-[var(--color-tami-line)]/50 bg-[var(--color-tami-surface)] text-[var(--color-tami-text)] hover:ring-[var(--color-tami-orange)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-tami-orange)] font-mono text-xs font-semibold cursor-pointer disabled:opacity-60 transition-none ${className || "px-3.5"}`}
     >
       <Globe size={16} weight="bold" className="text-[var(--color-tami-orange)] shrink-0" />
-      <span className="uppercase">{locale}</span>
+      <span className="uppercase group-data-[state=collapsed]/sidebar:hidden">{locale}</span>
     </button>
   );
 }

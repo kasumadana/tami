@@ -29,7 +29,6 @@ import {
   ShieldCheck,
   GraduationCap,
   Users,
-  Sparkle,
   SignOut,
   SignIn,
   ArrowLeft,
@@ -39,10 +38,9 @@ import {
   Check,
   X,
   ChatCircleText,
-  Clock,
-  GoogleLogo,
 } from "@phosphor-icons/react";
 import { useSession, signOut } from "next-auth/react";
+import { UserAvatar } from "./auth/user-avatar";
 import { ChatSessionMetadata } from "@/lib/chat-store";
 
 export interface ChatSessionHandlers {
@@ -418,8 +416,8 @@ function AppSidebarInner({ children }: AppSidebarLayoutProps) {
             </Sidebar.SlidingView>
 
             {/* View 2: Integrated Chat History Surface */}
-            <Sidebar.SlidingView value="chat-history">
-              <Sidebar.Content className="flex-1 overflow-y-auto min-h-0 p-3 group-data-[state=collapsed]/sidebar:px-0 group-data-[state=collapsed]/sidebar:py-2 space-y-3">
+            <Sidebar.SlidingView value="chat-history" className="w-full max-w-full min-w-0 overflow-hidden">
+              <Sidebar.Content className="flex-1 overflow-y-auto overflow-x-hidden min-h-0 w-full max-w-full p-3 group-data-[state=collapsed]/sidebar:px-0 group-data-[state=collapsed]/sidebar:py-2 space-y-3">
                 {/* New Chat Action Button */}
                 <Button
                   variant="primary"
@@ -461,30 +459,8 @@ function AppSidebarInner({ children }: AppSidebarLayoutProps) {
                   </div>
                 )}
 
-                {/* Guest Save Chat Banner */}
-                {!chatHandlers?.isAuthenticated && (
-                  <div className="group-data-[state=collapsed]/sidebar:hidden p-3.5 rounded-2xl bg-[var(--color-tami-surface-subdued)] ring-1 ring-[var(--color-tami-line)]/40 space-y-2.5 text-center">
-                    <Clock size={22} weight="duotone" className="mx-auto text-[var(--color-tami-orange)]" />
-                    <span className="text-xs font-bold text-[var(--color-tami-text)] block">
-                      {tChat("saveChatTitle")}
-                    </span>
-                    <p className="text-xs text-[var(--color-tami-text-muted)] leading-relaxed">
-                      {tChat("saveChatDesc")}
-                    </p>
-                    <Button
-                      variant="secondary"
-                      size="sm"
-                      onClick={() => chatHandlers?.onOpenLogin()}
-                      className="w-full rounded-full text-xs font-semibold min-h-[44px] cursor-pointer ring-1 ring-[var(--color-tami-line)]/50"
-                      icon={<GoogleLogo size={14} weight="bold" />}
-                    >
-                      {tChat("signInAccount")}
-                    </Button>
-                  </div>
-                )}
-
-                {/* Empty State for Authenticated user with no sessions */}
-                {chatHandlers?.isAuthenticated && (!chatHandlers?.sessions || chatHandlers.sessions.length === 0) && (
+                {/* Empty State when no sessions */}
+                {(!chatHandlers?.sessions || chatHandlers.sessions.length === 0) && (
                   <div className="group-data-[state=collapsed]/sidebar:hidden text-center py-8 text-xs text-[var(--color-tami-text-muted)] space-y-2">
                     <ChatCircleText size={28} className="mx-auto opacity-40 text-[var(--color-tami-orange)]" />
                     <p>{tChat("emptySessions")}</p>
@@ -503,28 +479,25 @@ function AppSidebarInner({ children }: AppSidebarLayoutProps) {
                 <div className="hidden group-data-[state=collapsed]/sidebar:flex justify-center w-full">
                   <Link
                     href="/profile"
-                    className="w-10 h-10 min-w-[40px] min-h-[40px] rounded-full hover:bg-[var(--color-tami-surface-subdued)] ring-1 ring-[var(--color-tami-line)]/50 flex items-center justify-center transition-none overflow-hidden"
+                    className="w-10 h-10 min-w-[40px] min-h-[40px] rounded-full hover:bg-[var(--color-tami-surface-subdued)] ring-1 ring-[var(--color-tami-line)]/50 flex items-center justify-center transition-none overflow-hidden focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-tami-orange)]"
                     title={session.user.name || tAuth("defaultStudent")}
+                    aria-label={session.user.name || tAuth("defaultStudent")}
                   >
-                    <Image
-                      src={session.user.image || "/mascot/tami-headshot.webp"}
-                      alt={session.user.name || "User"}
-                      width={32}
-                      height={32}
-                      className="w-8 h-8 object-contain rounded-full"
+                    <UserAvatar
+                      src={session.user.image}
+                      name={session.user.name}
+                      size="md"
                     />
                   </Link>
                 </div>
 
                 {/* Expanded state: profile card with sign-out */}
                 <div className="group-data-[state=collapsed]/sidebar:hidden p-2 rounded-2xl bg-[var(--color-tami-surface-subdued)] ring-1 ring-[var(--color-tami-line)]/40 flex items-center justify-between gap-2">
-                  <Link href="/profile" className="flex items-center gap-2.5 min-w-0 flex-1 hover:opacity-85 transition-none">
-                    <Image
-                      src={session.user.image || "/mascot/tami-headshot.webp"}
-                      alt={session.user.name || "User"}
-                      width={32}
-                      height={32}
-                      className="w-8 h-8 object-contain shrink-0 rounded-full"
+                  <Link href="/profile" className="flex items-center gap-2.5 min-w-0 flex-1 hover:opacity-85 transition-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-tami-orange)] rounded-xl">
+                    <UserAvatar
+                      src={session.user.image}
+                      name={session.user.name}
+                      size="md"
                     />
                     <div className="min-w-0 flex-1">
                       <p className="text-xs font-semibold text-[var(--color-tami-text)] truncate">
@@ -548,35 +521,39 @@ function AppSidebarInner({ children }: AppSidebarLayoutProps) {
               </div>
             ) : (
               <div className="w-full">
-                {/* Collapsed state: sign-in circular icon button */}
+                {/* Collapsed state: neutral circular avatar button opening sign in */}
                 <div className="hidden group-data-[state=collapsed]/sidebar:flex justify-center w-full">
-                  <Button
-                    variant="primary"
-                    size="base"
+                  <button
+                    type="button"
                     onClick={() => setIsLoginOpen(true)}
-                    className="w-10 h-10 min-w-[40px] min-h-[40px] p-0 rounded-full flex items-center justify-center cursor-pointer"
-                    aria-label={tAuth("signIn")}
+                    className="w-10 h-10 min-w-[40px] min-h-[40px] rounded-full hover:bg-[var(--color-tami-surface-subdued)] ring-1 ring-[var(--color-tami-line)]/50 flex items-center justify-center transition-none overflow-hidden cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-tami-orange)]"
                     title={tAuth("signIn")}
-                    icon={<SignIn size={18} weight="bold" />}
-                  />
+                    aria-label={tAuth("signIn")}
+                  >
+                    <UserAvatar size="md" />
+                  </button>
                 </div>
 
-                {/* Expanded state: guest info card */}
-                <div className="group-data-[state=collapsed]/sidebar:hidden p-3 rounded-2xl bg-[var(--color-tami-surface-subdued)] ring-1 ring-[var(--color-tami-line)]/40 space-y-2 w-full max-w-full overflow-hidden">
-                  <div className="flex items-center gap-1.5 text-xs font-semibold text-[var(--color-tami-text)]">
-                    <Sparkle size={14} className="text-[var(--color-tami-orange)] shrink-0" weight="fill" />
-                    <span className="truncate">{t("guestTurnsRemaining")}</span>
+                {/* Expanded state: unified guest profile card */}
+                <div className="group-data-[state=collapsed]/sidebar:hidden p-2 rounded-2xl bg-[var(--color-tami-surface-subdued)] ring-1 ring-[var(--color-tami-line)]/40 flex items-center justify-between gap-2">
+                  <div className="flex items-center gap-2.5 min-w-0 flex-1">
+                    <UserAvatar size="md" />
+                    <div className="min-w-0 flex-1">
+                      <p className="text-xs font-semibold text-[var(--color-tami-text)] truncate">
+                        {tCommon("guestMode")}
+                      </p>
+                      <p className="text-xs text-[var(--color-tami-text-muted)] truncate">
+                        {t("guestTurnsRemaining")}
+                      </p>
+                    </div>
                   </div>
-                  <p className="text-xs text-[var(--color-tami-text-muted)] leading-relaxed whitespace-normal break-words line-clamp-2">
-                    {t("guestDescription")}
-                  </p>
 
                   <Button
                     variant="primary"
-                    size="base"
+                    size="sm"
                     onClick={() => setIsLoginOpen(true)}
-                    className="w-full rounded-full font-semibold text-xs min-h-[44px] flex items-center justify-center gap-2 mt-1 cursor-pointer"
-                    icon={<SignIn size={16} weight="bold" />}
+                    className="rounded-full font-semibold text-xs px-3 h-8 min-h-[32px] shrink-0 flex items-center justify-center gap-1.5 cursor-pointer"
+                    icon={<SignIn size={14} weight="bold" />}
                   >
                     <span>{tAuth("signIn")}</span>
                   </Button>
@@ -585,9 +562,9 @@ function AppSidebarInner({ children }: AppSidebarLayoutProps) {
             )}
 
             {/* Bottom Controls: Locale Switcher & Theme Toggle */}
-            <div className="flex items-center justify-between group-data-[state=collapsed]/sidebar:flex-col group-data-[state=collapsed]/sidebar:items-center group-data-[state=collapsed]/sidebar:justify-center gap-1.5 pt-1 border-t border-[var(--color-tami-line)]/50">
-              <LocaleSwitcher className="group-data-[state=collapsed]/sidebar:w-10 group-data-[state=collapsed]/sidebar:h-10 group-data-[state=collapsed]/sidebar:min-w-[40px] group-data-[state=collapsed]/sidebar:min-h-[40px] group-data-[state=collapsed]/sidebar:p-0 group-data-[state=collapsed]/sidebar:gap-0" />
-              <ThemeToggle className="group-data-[state=collapsed]/sidebar:w-10 group-data-[state=collapsed]/sidebar:h-10 group-data-[state=collapsed]/sidebar:min-w-[40px] group-data-[state=collapsed]/sidebar:min-h-[40px] group-data-[state=collapsed]/sidebar:p-0" />
+            <div className="grid grid-cols-2 gap-2 w-full pt-1 border-t border-[var(--color-tami-line)]/50 group-data-[state=collapsed]/sidebar:flex group-data-[state=collapsed]/sidebar:flex-col group-data-[state=collapsed]/sidebar:items-center group-data-[state=collapsed]/sidebar:gap-1.5">
+              <LocaleSwitcher className="w-full px-2 group-data-[state=collapsed]/sidebar:w-10 group-data-[state=collapsed]/sidebar:h-10 group-data-[state=collapsed]/sidebar:min-w-[40px] group-data-[state=collapsed]/sidebar:min-h-[40px] group-data-[state=collapsed]/sidebar:p-0 group-data-[state=collapsed]/sidebar:gap-0" />
+              <ThemeToggle className="w-full group-data-[state=collapsed]/sidebar:w-10 group-data-[state=collapsed]/sidebar:h-10 group-data-[state=collapsed]/sidebar:min-w-[40px] group-data-[state=collapsed]/sidebar:min-h-[40px] group-data-[state=collapsed]/sidebar:p-0" />
             </div>
           </Sidebar.Footer>
         </Sidebar>
