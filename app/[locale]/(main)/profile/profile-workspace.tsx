@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useSyncExternalStore } from "react";
-import Image from "next/image";
 import { useSession } from "next-auth/react";
 import { useTranslations } from "next-intl";
 import { Button } from "@cloudflare/kumo/components/button";
@@ -16,7 +15,9 @@ import {
   ShieldWarning,
   Key,
   Sparkle,
+  ChatCircleDots,
 } from "@phosphor-icons/react";
+import { UserAvatar } from "@/components/auth/user-avatar";
 import {
   subscribePractice,
   getPracticeSnapshot,
@@ -81,7 +82,16 @@ export function ProfileWorkspace() {
   const isPhishingUnlocked = practiceProgress.completedChallenges.includes("phishing");
   const isPasswordUnlocked = practiceProgress.completedChallenges.includes("password");
   const isFirewallUnlocked = practiceProgress.completedChallenges.includes("firewall");
+  const isArenaUnlocked = practiceProgress.completedChallenges.includes("arena");
   const isCurriculumUnlocked = completedModulesCount === totalModules;
+
+  const unlockedBadgesCount =
+    (isPhishingUnlocked ? 1 : 0) +
+    (isPasswordUnlocked ? 1 : 0) +
+    (isFirewallUnlocked ? 1 : 0) +
+    (isArenaUnlocked ? 1 : 0) +
+    (isCurriculumUnlocked ? 1 : 0);
+
   const totalPoints = practiceProgress.totalScore + completedModulesCount * 50;
 
   const displayName = session?.user?.name || t("guestStudent");
@@ -119,12 +129,10 @@ export function ProfileWorkspace() {
       {/* Hero Profile Card */}
       <LayerCard className="rounded-2xl p-5 sm:p-6 bg-[var(--color-tami-surface-subdued)] border-none ring-1 ring-[var(--color-tami-line)]/40 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 print:hidden">
         <div className="flex items-center gap-4">
-          <Image
-            src={session?.user?.image || "/mascot/tami-wave.webp"}
-            alt={displayName}
-            width={80}
-            height={80}
-            className="w-18 h-18 sm:w-20 sm:h-20 rounded-2xl object-contain shrink-0"
+          <UserAvatar
+            src={session?.user?.image}
+            name={displayName}
+            size="xl"
           />
           <div className="space-y-1">
             <div className="flex items-center gap-2">
@@ -185,7 +193,7 @@ export function ProfileWorkspace() {
             <ShieldCheck size={18} weight="fill" className="text-[var(--color-tami-green)]" />
           </div>
           <span className="text-xl font-mono font-bold text-[var(--color-tami-green)] block">
-            {practiceProgress.unlockedBadges.length}/3
+            {unlockedBadgesCount}/5
           </span>
         </LayerCard>
 
@@ -209,7 +217,7 @@ export function ProfileWorkspace() {
           <span>{t("badgesSection")}</span>
         </h3>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
           {/* Badge 1: Phishing */}
           <div
             className={`p-4 rounded-2xl border-none ring-1 flex flex-col justify-between space-y-3 ${
@@ -300,7 +308,37 @@ export function ProfileWorkspace() {
             </div>
           </div>
 
-          {/* Badge 4: Curriculum */}
+          {/* Badge 4: Social Engineering Arena */}
+          <div
+            className={`p-4 rounded-2xl border-none ring-1 flex flex-col justify-between space-y-3 ${
+              isArenaUnlocked
+                ? "bg-[var(--color-tami-surface-subdued)] ring-[var(--color-tami-orange)]/40"
+                : "bg-[var(--color-tami-surface-subdued)]/50 ring-[var(--color-tami-line)]/40 opacity-70"
+            }`}
+          >
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <div className="w-9 h-9 rounded-xl bg-[var(--color-tami-orange)]/15 text-[var(--color-tami-orange)] flex items-center justify-center">
+                  <ChatCircleDots size={18} weight="bold" />
+                </div>
+                <Badge
+                  variant={isArenaUnlocked ? "success" : "neutral"}
+                  appearance="filled"
+                  className="text-xs"
+                >
+                  {isArenaUnlocked ? t("badges.unlocked") : t("badges.locked")}
+                </Badge>
+              </div>
+              <h4 className="font-bold text-sm text-[var(--color-tami-text)]">
+                {t("badges.arenaTitle")}
+              </h4>
+              <p className="text-xs text-[var(--color-tami-text-muted)] leading-relaxed">
+                {t("badges.arenaDesc")}
+              </p>
+            </div>
+          </div>
+
+          {/* Badge 5: Curriculum */}
           <div
             className={`p-4 rounded-2xl border-none ring-1 flex flex-col justify-between space-y-3 ${
               isCurriculumUnlocked
