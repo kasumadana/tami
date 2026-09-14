@@ -215,13 +215,13 @@ export function KinestheticQuizArena({
   useEffect(() => {
     if (autoAdvanceSeconds === null) return;
 
-    if (autoAdvanceSeconds <= 0) {
-      handleNextQuestion();
-      return;
-    }
-
     const timer = setTimeout(() => {
-      setAutoAdvanceSeconds((prev) => (prev !== null ? prev - 1 : null));
+      if (autoAdvanceSeconds <= 1) {
+        setAutoAdvanceSeconds(null);
+        handleNextQuestion();
+      } else {
+        setAutoAdvanceSeconds((prev) => (prev !== null ? prev - 1 : null));
+      }
     }, 1000);
 
     return () => clearTimeout(timer);
