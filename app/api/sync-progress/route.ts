@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/auth";
 import { db } from "@/lib/db";
-import { learningProgress, practiceRecords, threatScans, users } from "@/lib/db/schema";
+import { learningProgress, practiceRecords, threatScans } from "@/lib/db/schema";
+import { ensureDbUser } from "@/lib/db/users";
 import { eq, and } from "drizzle-orm";
 
 export async function POST(req: NextRequest) {
@@ -36,22 +37,8 @@ export async function POST(req: NextRequest) {
       });
     }
 
-    const userId = session.user.id;
-
-    // Ensure user row exists in DB
-    try {
-      await db
-        .insert(users)
-        .values({
-          id: userId,
-          name: session.user.name || "Siswa tami",
-          email: session.user.email || "guest@tami.local",
-          image: session.user.image || "/mascot/tami-headshot.webp",
-        })
-        .onConflictDoNothing();
-    } catch {
-      // Ignore user insert conflict
-    }
+    // Ensure canonical user row exists in DB
+    const userId = (await ensureDbUser(session.user)) || session.user.id;
 
     // Sync Learning Modules
     for (const modId of guestModules) {

@@ -12,6 +12,7 @@ import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
 import { HumanMessage, AIMessage, SystemMessage, AIMessageChunk } from "@langchain/core/messages";
 import { TAMI_CHAT_TOOLS } from "@/lib/generative-ui-schema";
 import { createChatSession, saveChatMessage } from "@/lib/chat-store";
+import { ensureDbUser } from "@/lib/db/users";
 
 interface ChatMessageInput {
   role: "user" | "assistant" | "system";
@@ -43,7 +44,7 @@ export async function POST(req: NextRequest) {
     // 1. Verify authentication and guest quota
     const session = await auth();
     const isAuthenticated = !!session?.user?.id;
-    const userId = session?.user?.id;
+    const userId = session?.user ? ((await ensureDbUser(session.user)) || session.user.id) : undefined;
 
     let turnsRemaining = 999;
     let newCookieValue = "";

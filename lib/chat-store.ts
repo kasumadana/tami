@@ -1,5 +1,6 @@
 import { db } from "./db";
 import { chatSessions, chatMessages } from "./db/schema";
+import { ensureDbUser } from "./db/users";
 import { eq, and, desc, asc } from "drizzle-orm";
 import { encryptChatPayload, decryptChatPayload } from "./crypto";
 import crypto from "node:crypto";
@@ -54,6 +55,7 @@ export async function createChatSession(
 ): Promise<ChatSessionMetadata | null> {
   if (!db) return null;
   try {
+    const resolvedUserId = (await ensureDbUser({ id: userId })) || userId;
     const id = `session-${crypto.randomUUID()}`;
     const now = new Date();
 
@@ -61,7 +63,7 @@ export async function createChatSession(
       .insert(chatSessions)
       .values({
         id,
-        userId,
+        userId: resolvedUserId,
         title,
         topic,
         createdAt: now,

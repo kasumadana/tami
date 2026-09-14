@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/auth";
 import { syncGuestChatToAccount } from "@/lib/chat-store";
+import { ensureDbUser } from "@/lib/db/users";
 
 export const runtime = "nodejs";
 
@@ -19,7 +20,8 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "NO_MESSAGES_TO_SYNC" }, { status: 400 });
     }
 
-    const newSessionId = await syncGuestChatToAccount(session.user.id, messages);
+    const userId = (await ensureDbUser(session.user)) || session.user.id;
+    const newSessionId = await syncGuestChatToAccount(userId, messages);
     if (!newSessionId) {
       return NextResponse.json({ error: "SYNC_FAILED" }, { status: 500 });
     }

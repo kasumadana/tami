@@ -7,6 +7,7 @@ import {
   deleteChatSession,
   renameChatSession,
 } from "@/lib/chat-store";
+import { ensureDbUser } from "@/lib/db/users";
 
 export const runtime = "nodejs";
 
@@ -18,15 +19,16 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ error: "UNAUTHORIZED" }, { status: 401 });
     }
 
+    const userId = (await ensureDbUser(session.user)) || session.user.id;
     const { searchParams } = new URL(req.url);
     const sessionId = searchParams.get("sessionId");
 
     if (sessionId) {
-      const messages = await getChatSessionMessages(sessionId, session.user.id);
+      const messages = await getChatSessionMessages(sessionId, userId);
       return NextResponse.json({ sessionId, messages });
     }
 
-    const sessions = await getUserChatSessions(session.user.id);
+    const sessions = await getUserChatSessions(userId);
     return NextResponse.json({ sessions });
   } catch (error) {
     console.error("Error fetching sessions:", error);
@@ -42,10 +44,11 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "UNAUTHORIZED" }, { status: 401 });
     }
 
+    const userId = (await ensureDbUser(session.user)) || session.user.id;
     const body = await req.json().catch(() => ({}));
     const title = typeof body.title === "string" && body.title.trim() ? body.title.trim() : "Obrolan Baru";
 
-    const newSession = await createChatSession(session.user.id, title);
+    const newSession = await createChatSession(userId, title);
     if (!newSession) {
       return NextResponse.json({ error: "CREATION_FAILED" }, { status: 500 });
     }
@@ -65,6 +68,7 @@ export async function DELETE(req: NextRequest) {
       return NextResponse.json({ error: "UNAUTHORIZED" }, { status: 401 });
     }
 
+    const userId = (await ensureDbUser(session.user)) || session.user.id;
     const { searchParams } = new URL(req.url);
     const sessionId = searchParams.get("sessionId");
 
@@ -72,7 +76,7 @@ export async function DELETE(req: NextRequest) {
       return NextResponse.json({ error: "MISSING_SESSION_ID" }, { status: 400 });
     }
 
-    const success = await deleteChatSession(sessionId, session.user.id);
+    const success = await deleteChatSession(sessionId, userId);
     return NextResponse.json({ success });
   } catch (error) {
     console.error("Error deleting session:", error);
@@ -88,6 +92,7 @@ export async function PATCH(req: NextRequest) {
       return NextResponse.json({ error: "UNAUTHORIZED" }, { status: 401 });
     }
 
+    const userId = (await ensureDbUser(session.user)) || session.user.id;
     const body = await req.json();
     const { sessionId, title } = body;
 
@@ -95,7 +100,7 @@ export async function PATCH(req: NextRequest) {
       return NextResponse.json({ error: "INVALID_PAYLOAD" }, { status: 400 });
     }
 
-    const success = await renameChatSession(sessionId, session.user.id, title);
+    const success = await renameChatSession(sessionId, userId, title);
     return NextResponse.json({ success });
   } catch (error) {
     console.error("Error renaming session:", error);

@@ -1,6 +1,7 @@
 import NextAuth from "next-auth";
 import Google from "next-auth/providers/google";
 import Credentials from "next-auth/providers/credentials";
+import { ensureDbUser } from "@/lib/db/users";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [
@@ -18,24 +19,49 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       credentials: {},
       async authorize() {
         return {
-          id: "student-01",
-          name: "Siswa tami",
-          email: "siswa@tami.id",
+          id: "demo-student-01",
+          name: "Siswa Perintis (Demo)",
+          email: "student@tami.dev",
           image: "/mascot/tami-headshot.webp",
         };
       },
     }),
   ],
   callbacks: {
-    jwt({ token, user }) {
+    async jwt({ token, user }) {
       if (user?.id) {
         token.id = user.id;
       }
+      if (token.email) {
+        const canonicalId = await ensureDbUser({
+          id: (token.id as string) || (token.sub as string),
+          name: (token.name as string) || (user?.name as string),
+          email: token.email as string,
+          image: (token.picture as string) || (user?.image as string),
+        });
+        if (canonicalId) {
+          token.id = canonicalId;
+          token.sub = canonicalId;
+        }
+      }
       return token;
     },
-    session({ session, token }) {
-      if (session.user && token.id) {
-        session.user.id = token.id as string;
+    async session({ session, token }) {
+      if (session.user) {
+        session.user.id = (token.id as string) || (token.sub as string);
+
+        // Guarantee canonical user ID matching Neon DB users table
+        if (session.user.email) {
+          const canonicalId = await ensureDbUser({
+            id: session.user.id,
+            name: session.user.name,
+            email: session.user.email,
+            image: session.user.image,
+          });
+          if (canonicalId) {
+            session.user.id = canonicalId;
+          }
+        }
       }
       return session;
     },
