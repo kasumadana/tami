@@ -239,17 +239,17 @@ function AppSidebarInner({ children }: AppSidebarLayoutProps) {
           <button
             type="submit"
             aria-label={tChat("rename")}
-            className="w-8 h-8 min-w-[32px] min-h-[32px] flex items-center justify-center rounded-full hover:bg-[var(--color-tami-green)]/20 text-[var(--color-tami-green)] cursor-pointer"
+            className="w-9 h-9 min-w-[36px] min-h-[36px] flex items-center justify-center rounded-full hover:bg-[var(--color-tami-green)]/20 text-[var(--color-tami-green)] cursor-pointer"
           >
-            <Check size={14} weight="bold" />
+            <Check size={16} weight="bold" />
           </button>
           <button
             type="button"
             onClick={() => setEditingId(null)}
             aria-label={tChat("cancel")}
-            className="w-8 h-8 min-w-[32px] min-h-[32px] flex items-center justify-center rounded-full hover:bg-[var(--color-tami-red)]/20 text-[var(--color-tami-red)] cursor-pointer"
+            className="w-9 h-9 min-w-[36px] min-h-[36px] flex items-center justify-center rounded-full hover:bg-[var(--color-tami-red)]/20 text-[var(--color-tami-red)] cursor-pointer"
           >
-            <X size={14} weight="bold" />
+            <X size={16} weight="bold" />
           </button>
         </form>
       );
@@ -289,9 +289,9 @@ function AppSidebarInner({ children }: AppSidebarLayoutProps) {
             }}
             aria-label={tChat("rename")}
             title={tChat("rename")}
-            className="w-8 h-8 min-w-[32px] min-h-[32px] flex items-center justify-center rounded-full text-[var(--color-tami-text-muted)] hover:text-[var(--color-tami-text)] hover:bg-[var(--color-tami-surface)] cursor-pointer focus:outline-none focus-visible:ring-1 focus-visible:ring-[var(--color-tami-orange)]"
+            className="w-9 h-9 min-w-[36px] min-h-[36px] flex items-center justify-center rounded-full text-[var(--color-tami-text-muted)] hover:text-[var(--color-tami-text)] hover:bg-[var(--color-tami-surface)] cursor-pointer focus:outline-none focus-visible:ring-1 focus-visible:ring-[var(--color-tami-orange)]"
           >
-            <PencilSimple size={14} weight="bold" />
+            <PencilSimple size={15} weight="bold" />
           </button>
           <button
             type="button"
@@ -301,9 +301,9 @@ function AppSidebarInner({ children }: AppSidebarLayoutProps) {
             }}
             aria-label={tChat("delete")}
             title={tChat("delete")}
-            className="w-8 h-8 min-w-[32px] min-h-[32px] flex items-center justify-center rounded-full text-[var(--color-tami-text-muted)] hover:text-[var(--color-tami-red)] hover:bg-[var(--color-tami-surface)] cursor-pointer focus:outline-none focus-visible:ring-1 focus-visible:ring-[var(--color-tami-red)]"
+            className="w-9 h-9 min-w-[36px] min-h-[36px] flex items-center justify-center rounded-full text-[var(--color-tami-text-muted)] hover:text-[var(--color-tami-red)] hover:bg-[var(--color-tami-surface)] cursor-pointer focus:outline-none focus-visible:ring-1 focus-visible:ring-[var(--color-tami-red)]"
           >
-            <Trash size={14} weight="bold" />
+            <Trash size={15} weight="bold" />
           </button>
         </div>
       </div>
