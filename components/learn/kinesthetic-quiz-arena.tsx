@@ -23,6 +23,7 @@ import confetti from "canvas-confetti";
 import { MediaPipeTracker } from "./mediapipe-tracker";
 import { SpeechRecognizerService } from "@/lib/audio/speech-recognizer";
 import { soundEffects } from "@/utils/sound-effects";
+import { MarkdownRenderer } from "@/components/markdown-renderer";
 import type { QuizQuestionItem } from "@/lib/learn-content";
 
 export type QuizModality = "hover" | "pinch" | "voice" | "click";
@@ -480,7 +481,7 @@ export function KinestheticQuizArena({
     <div className="space-y-4">
       <LayerCard className="rounded-2xl p-5 bg-[var(--color-tami-surface)] border-none ring-1 ring-[var(--color-tami-line)]/50 space-y-4">
         <h3 className="font-bold text-sm sm:text-base text-[var(--color-tami-text)] leading-snug">
-          {activeQuestion.question}
+          <MarkdownRenderer content={activeQuestion.question} inline />
         </h3>
 
         {/* Options Grid */}
@@ -516,7 +517,7 @@ export function KinestheticQuizArena({
                 </span>
                 <div className="flex flex-col flex-1 min-w-0">
                   <span className="text-xs text-[var(--color-tami-text)] leading-relaxed mt-0.5">
-                    {activeQuestion.options[key]}
+                    <MarkdownRenderer content={activeQuestion.options[key]} inline />
                   </span>
                 </div>
               </button>
@@ -565,11 +566,13 @@ export function KinestheticQuizArena({
             <p className="font-semibold text-[var(--color-tami-orange)]">
               {t("tamiReflection")}
             </p>
-            <p>{justification.explanation}</p>
+            <div className="text-xs text-[var(--color-tami-text)] leading-relaxed">
+              <MarkdownRenderer content={justification.explanation} />
+            </div>
             {justification.detail && (
-              <p className="text-[var(--color-tami-text-muted)] pt-0.5">
-                {justification.detail}
-              </p>
+              <div className="text-xs text-[var(--color-tami-text-muted)] pt-0.5 leading-relaxed">
+                <MarkdownRenderer content={justification.detail} />
+              </div>
             )}
           </div>
         </div>

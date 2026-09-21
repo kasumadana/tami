@@ -83,21 +83,21 @@ export function PasswordSimulator() {
     if (entropy < 40) {
       return {
         label: tPwd("vaultWood"),
-        badgeClass: "bg-[var(--color-tami-red)]/15 text-[var(--color-tami-red)] font-bold",
+        badgeClass: "bg-[var(--color-tami-red)]/15 text-[var(--color-tami-red)] ring-1 ring-[var(--color-tami-red)]/40 font-bold",
         icon: <LockSimple size={16} weight="bold" className="text-[var(--color-tami-red)]" />,
       };
     }
     if (entropy < 80) {
       return {
         label: tPwd("vaultIron"),
-        badgeClass: "bg-[var(--color-tami-yellow)] text-black font-bold",
-        icon: <ShieldWarning size={16} weight="fill" className="text-black" />,
+        badgeClass: "bg-[var(--color-tami-yellow)]/20 text-[var(--color-tami-text)] ring-1 ring-[var(--color-tami-yellow)]/50 font-bold",
+        icon: <ShieldWarning size={16} weight="fill" className="text-[var(--color-tami-orange)]" />,
       };
     }
     return {
       label: tPwd("vaultTitanium"),
-      badgeClass: "bg-[var(--color-tami-green)] text-white font-bold",
-      icon: <ShieldCheck size={16} weight="fill" className="text-white" />,
+      badgeClass: "bg-[var(--color-tami-green)]/15 text-[var(--color-tami-green)] ring-1 ring-[var(--color-tami-green)]/40 font-bold",
+      icon: <ShieldCheck size={16} weight="fill" className="text-[var(--color-tami-green)]" />,
     };
   }, [entropy, tPwd]);
 

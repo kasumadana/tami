@@ -16,6 +16,7 @@ import {
   ArrowUUpLeft,
   LockSimple,
 } from "@phosphor-icons/react";
+import { MarkdownRenderer } from "@/components/markdown-renderer";
 import type { SubmoduleItem } from "@/lib/learn-content";
 
 interface SubmoduleReaderProps {
@@ -264,7 +265,7 @@ export function SubmoduleReader({
             <span>{t("storyHook")}</span>
           </div>
           <p className="text-sm text-[var(--color-tami-text)] leading-relaxed italic">
-            &ldquo;{currentSub.storyHook}&rdquo;
+            {"\u201C"}<MarkdownRenderer content={currentSub.storyHook} inline />{"\u201D"}
           </p>
         </div>
 
@@ -283,7 +284,9 @@ export function SubmoduleReader({
                 <span className="w-6 h-6 rounded-lg bg-[var(--color-tami-surface)] text-[var(--color-tami-orange)] ring-1 ring-[var(--color-tami-line)]/40 flex items-center justify-center font-mono font-bold text-xs shrink-0 mt-0.5">
                   {cIdx + 1}
                 </span>
-                <p className="flex-1">{paragraph}</p>
+                <div className="flex-1">
+                  <MarkdownRenderer content={paragraph} />
+                </div>
               </div>
             ))}
           </div>
@@ -306,7 +309,9 @@ export function SubmoduleReader({
                   weight="fill"
                   className="text-[var(--color-tami-green)] shrink-0 mt-0.5"
                 />
-                <p className="flex-1 text-xs">{step}</p>
+                <div className="flex-1 text-xs">
+                  <MarkdownRenderer content={step} />
+                </div>
               </div>
             ))}
           </div>
@@ -327,9 +332,9 @@ export function SubmoduleReader({
             <h4 className="font-bold text-sm text-[var(--color-tami-orange)]">
               {t("tamiWhisper")}
             </h4>
-            <p className="text-sm text-[var(--color-tami-text)] leading-relaxed">
-              {currentSub.tamiWhisper}
-            </p>
+            <div className="text-sm text-[var(--color-tami-text)] leading-relaxed">
+              <MarkdownRenderer content={currentSub.tamiWhisper} />
+            </div>
           </div>
         </div>
 

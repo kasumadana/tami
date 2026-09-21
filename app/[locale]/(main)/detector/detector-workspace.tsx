@@ -30,6 +30,7 @@ import {
 import type { DetectorResult } from "@/lib/detector-schema";
 import { SAMPLE_PRESET_RESULTS } from "@/lib/detector-presets";
 import { ExploitSandboxModal } from "@/components/detector/exploit-sandbox-modal";
+import { MarkdownRenderer } from "@/components/markdown-renderer";
 
 // Built-in Sample Image Data URIs for Instant Testing
 const SAMPLE_PRESETS = [
@@ -480,7 +481,7 @@ export function DetectorWorkspace() {
                 <ul className="space-y-2.5 text-sm text-[var(--color-tami-text)] list-disc list-inside leading-relaxed pl-1">
                   {result.reflectionQuestions.map((q, idx) => (
                     <li key={idx} className="font-medium">
-                      {q}
+                      <MarkdownRenderer content={q} inline />
                     </li>
                   ))}
                 </ul>
@@ -510,7 +511,9 @@ export function DetectorWorkspace() {
                   {result.safetyTips.map((tip, idx) => (
                     <li key={idx} className="flex items-start gap-2.5">
                       <CheckCircle size={16} weight="bold" className="text-[var(--color-tami-green)] shrink-0 mt-0.5" />
-                      <span className="leading-relaxed">{tip}</span>
+                      <span className="leading-relaxed">
+                        <MarkdownRenderer content={tip} inline />
+                      </span>
                     </li>
                   ))}
                 </ul>
@@ -623,14 +626,12 @@ export function DetectorWorkspace() {
                     />
                     <div className="space-y-1 flex-1 min-w-0">
                       <h2 className="text-lg sm:text-xl font-bold text-[var(--color-tami-text)] leading-snug">
-                        {result.headline}
+                        <MarkdownRenderer content={result.headline} inline />
                       </h2>
                     </div>
                   </div>
 
-                  <p className="text-sm text-[var(--color-tami-text)] leading-relaxed">
-                    {result.summary}
-                  </p>
+                  <MarkdownRenderer content={result.summary} />
 
                   {/* Detected Anomalies List */}
                   {result.anomaliesFound && result.anomaliesFound.length > 0 && (
@@ -646,7 +647,9 @@ export function DetectorWorkspace() {
                             className="p-3.5 rounded-xl bg-[var(--color-tami-surface)] ring-1 ring-[var(--color-tami-line)]/30 space-y-1 text-xs"
                           >
                             <div className="flex items-center justify-between font-semibold text-sm text-[var(--color-tami-text)]">
-                              <span>{item.category}</span>
+                              <span>
+                                <MarkdownRenderer content={item.category} inline />
+                              </span>
                               <Badge
                                 variant={item.severity === "high" ? "error" : "warning"}
                                 appearance="filled"
@@ -655,9 +658,7 @@ export function DetectorWorkspace() {
                                 {item.severity}
                               </Badge>
                             </div>
-                            <p className="text-sm text-[var(--color-tami-text-muted)] leading-relaxed">
-                              {item.description}
-                            </p>
+                            <MarkdownRenderer content={item.description} className="text-xs text-[var(--color-tami-text-muted)]" />
                           </div>
                         ))}
                       </div>

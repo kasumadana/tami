@@ -298,9 +298,9 @@ export function FirewallSimulator() {
                   type="button"
                   onClick={() => handleRuleChange(443, "ALLOW")}
                   aria-pressed={rules[443] === "ALLOW"}
-                  className={`flex-1 py-2.5 rounded-full text-xs font-bold transition-none min-h-[44px] cursor-pointer ${
+                  className={`flex-1 py-2.5 rounded-full text-xs font-bold transition-none min-h-[44px] cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-tami-orange)] ${
                     rules[443] === "ALLOW"
-                      ? "bg-[var(--color-tami-green)] text-white"
+                      ? "bg-[var(--color-tami-green)] text-white shadow-xs"
                       : "bg-[var(--color-tami-surface)] text-[var(--color-tami-text-muted)] hover:bg-[var(--color-tami-surface-muted)]"
                   }`}
                 >
@@ -310,9 +310,9 @@ export function FirewallSimulator() {
                   type="button"
                   onClick={() => handleRuleChange(443, "BLOCK")}
                   aria-pressed={rules[443] === "BLOCK"}
-                  className={`flex-1 py-2.5 rounded-full text-xs font-bold transition-none min-h-[44px] cursor-pointer ${
+                  className={`flex-1 py-2.5 rounded-full text-xs font-bold transition-none min-h-[44px] cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-tami-orange)] ${
                     rules[443] === "BLOCK"
-                      ? "bg-[var(--color-tami-red)] text-white"
+                      ? "bg-[var(--color-tami-red)] text-white shadow-xs"
                       : "bg-[var(--color-tami-surface)] text-[var(--color-tami-text-muted)] hover:bg-[var(--color-tami-surface-muted)]"
                   }`}
                 >
@@ -346,9 +346,9 @@ export function FirewallSimulator() {
                   type="button"
                   onClick={() => handleRuleChange(4444, "ALLOW")}
                   aria-pressed={rules[4444] === "ALLOW"}
-                  className={`flex-1 py-2.5 rounded-full text-xs font-bold transition-none min-h-[44px] cursor-pointer ${
+                  className={`flex-1 py-2.5 rounded-full text-xs font-bold transition-none min-h-[44px] cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-tami-orange)] ${
                     rules[4444] === "ALLOW"
-                      ? "bg-[var(--color-tami-green)] text-white"
+                      ? "bg-[var(--color-tami-green)] text-white shadow-xs"
                       : "bg-[var(--color-tami-surface)] text-[var(--color-tami-text-muted)] hover:bg-[var(--color-tami-surface-muted)]"
                   }`}
                 >
@@ -358,9 +358,9 @@ export function FirewallSimulator() {
                   type="button"
                   onClick={() => handleRuleChange(4444, "BLOCK")}
                   aria-pressed={rules[4444] === "BLOCK"}
-                  className={`flex-1 py-2.5 rounded-full text-xs font-bold transition-none min-h-[44px] cursor-pointer ${
+                  className={`flex-1 py-2.5 rounded-full text-xs font-bold transition-none min-h-[44px] cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-tami-orange)] ${
                     rules[4444] === "BLOCK"
-                      ? "bg-[var(--color-tami-red)] text-white"
+                      ? "bg-[var(--color-tami-red)] text-white shadow-xs"
                       : "bg-[var(--color-tami-surface)] text-[var(--color-tami-text-muted)] hover:bg-[var(--color-tami-surface-muted)]"
                   }`}
                 >
@@ -394,9 +394,9 @@ export function FirewallSimulator() {
                   type="button"
                   onClick={() => handleRuleChange(22, "ALLOW")}
                   aria-pressed={rules[22] === "ALLOW"}
-                  className={`flex-1 py-2.5 rounded-full text-xs font-bold transition-none min-h-[44px] cursor-pointer ${
+                  className={`flex-1 py-2.5 rounded-full text-xs font-bold transition-none min-h-[44px] cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-tami-orange)] ${
                     rules[22] === "ALLOW"
-                      ? "bg-[var(--color-tami-green)] text-white"
+                      ? "bg-[var(--color-tami-green)] text-white shadow-xs"
                       : "bg-[var(--color-tami-surface)] text-[var(--color-tami-text-muted)] hover:bg-[var(--color-tami-surface-muted)]"
                   }`}
                 >
@@ -406,9 +406,9 @@ export function FirewallSimulator() {
                   type="button"
                   onClick={() => handleRuleChange(22, "BLOCK")}
                   aria-pressed={rules[22] === "BLOCK"}
-                  className={`flex-1 py-2.5 rounded-full text-xs font-bold transition-none min-h-[44px] cursor-pointer ${
+                  className={`flex-1 py-2.5 rounded-full text-xs font-bold transition-none min-h-[44px] cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-tami-orange)] ${
                     rules[22] === "BLOCK"
-                      ? "bg-[var(--color-tami-red)] text-white"
+                      ? "bg-[var(--color-tami-red)] text-white shadow-xs"
                       : "bg-[var(--color-tami-surface)] text-[var(--color-tami-text-muted)] hover:bg-[var(--color-tami-surface-muted)]"
                   }`}
                 >
@@ -484,7 +484,7 @@ export function FirewallSimulator() {
           <div
             role="alert"
             aria-live="polite"
-            className="p-4 rounded-xl bg-red-500/10 ring-1 ring-red-500/25 text-xs text-[var(--color-tami-red)] flex items-center gap-2.5"
+            className="p-4 rounded-xl bg-[var(--color-tami-red)]/10 ring-1 ring-[var(--color-tami-red)]/25 text-xs text-[var(--color-tami-red)] flex items-center gap-2.5"
           >
             <ShieldWarning size={18} weight="fill" className="shrink-0" />
             <span>{feedbackMsg}</span>
