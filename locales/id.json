@@ -20,7 +20,10 @@
     "curriculumBadge": "Kurikulum",
     "familyBadge": "Pendidik & Keluarga",
     "heroBadge": "Status Pahlawan",
-    "profileBadge": "Profil Pahlawan"
+    "profileBadge": "Profil Pahlawan",
+    "close": "Tutup",
+    "copyCode": "Salin Kode",
+    "copiedCode": "Tersalin!"
   },
   "nav": {
     "home": "Beranda",

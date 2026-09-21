@@ -20,7 +20,10 @@
     "curriculumBadge": "Curriculum",
     "familyBadge": "Educators & Families",
     "heroBadge": "Hero Status",
-    "profileBadge": "Hero Profile"
+    "profileBadge": "Hero Profile",
+    "close": "Close",
+    "copyCode": "Copy Code",
+    "copiedCode": "Copied!"
   },
   "nav": {
     "home": "Home",

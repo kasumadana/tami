@@ -3,10 +3,7 @@
 import React, { useState, useRef, useEffect, useCallback, useMemo } from "react";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
-import { useSession } from "next-auth/react";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
-import rehypeSanitize from "rehype-sanitize";
+import { MarkdownRenderer } from "@/components/markdown-renderer";
 import { Button } from "@cloudflare/kumo/components/button";
 import { Banner } from "@cloudflare/kumo/components/banner";
 import { LayerCard } from "@cloudflare/kumo/components/layer-card";
@@ -32,6 +29,7 @@ import { WidgetRenderer } from "@/components/chat/widgets/widget-renderer";
 import { useChatSidebar } from "@/components/app-sidebar";
 import { ChatSessionMetadata } from "@/lib/chat-store";
 import { UserAvatar } from "@/components/auth/user-avatar";
+import { useSession } from "next-auth/react";
 
 export interface ChatMessageItem {
   id: string;
@@ -739,20 +737,10 @@ export function ChatWorkspace({
                     ) : isTypingEmpty ? (
                       <TamiTypingIndicator />
                     ) : (
-                      <div className="prose prose-sm dark:prose-invert max-w-none space-y-2 text-[var(--color-tami-text)] overflow-hidden break-words">
-                        <ReactMarkdown
-                          remarkPlugins={[remarkGfm]}
-                          rehypePlugins={[rehypeSanitize]}
-                        >
-                          {message.content}
-                        </ReactMarkdown>
-                        {isActivelyStreaming && (
-                          <span
-                            className="inline-block w-1.5 h-4 ml-1 bg-[var(--color-tami-orange)] rounded-xs animate-pulse align-middle"
-                            aria-hidden="true"
-                          />
-                        )}
-                      </div>
+                      <MarkdownRenderer
+                        content={message.content}
+                        isStreaming={isActivelyStreaming}
+                      />
                     )}
                   </div>
 
