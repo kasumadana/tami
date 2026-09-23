@@ -119,10 +119,14 @@ export function KinestheticQuizArena({
         detail: activeQuestion.justifications[optionKey] || "",
       });
 
-      // Start 3-second countdown to automatically advance to next question
-      setAutoAdvanceSeconds(3);
+      // Only auto-advance in touchless mode when correct (8s window), otherwise let child advance manually
+      if (!isClickMode && isCorrect) {
+        setAutoAdvanceSeconds(8);
+      } else {
+        setAutoAdvanceSeconds(null);
+      }
     },
-    [activeQuestion, currentIdx, justification]
+    [activeQuestion, currentIdx, isClickMode, justification]
   );
 
   // Start speech recognition helper
@@ -516,7 +520,7 @@ export function KinestheticQuizArena({
                   {key}
                 </span>
                 <div className="flex flex-col flex-1 min-w-0">
-                  <span className="text-xs text-[var(--color-tami-text)] leading-relaxed mt-0.5">
+                  <span className="text-sm text-[var(--color-tami-text)] leading-relaxed mt-0.5">
                     <MarkdownRenderer content={activeQuestion.options[key]} inline />
                   </span>
                 </div>
@@ -551,7 +555,7 @@ export function KinestheticQuizArena({
               variant="primary"
               size="base"
               onClick={handleNextQuestion}
-              className="rounded-full text-xs font-semibold min-h-[44px] px-5 cursor-pointer shrink-0"
+              className="rounded-full text-sm font-semibold min-h-[44px] px-5 cursor-pointer shrink-0"
               icon={<ArrowRight size={16} weight="bold" />}
             >
               {autoAdvanceSeconds !== null && autoAdvanceSeconds > 0
@@ -562,15 +566,15 @@ export function KinestheticQuizArena({
             </Button>
           </div>
 
-          <div className="space-y-1 text-xs text-[var(--color-tami-text)] leading-relaxed">
+          <div className="space-y-1.5 text-sm text-[var(--color-tami-text)] leading-relaxed">
             <p className="font-semibold text-[var(--color-tami-orange)]">
               {t("tamiReflection")}
             </p>
-            <div className="text-xs text-[var(--color-tami-text)] leading-relaxed">
+            <div className="text-sm text-[var(--color-tami-text)] leading-relaxed">
               <MarkdownRenderer content={justification.explanation} />
             </div>
             {justification.detail && (
-              <div className="text-xs text-[var(--color-tami-text-muted)] pt-0.5 leading-relaxed">
+              <div className="text-sm text-[var(--color-tami-text-muted)] pt-0.5 leading-relaxed">
                 <MarkdownRenderer content={justification.detail} />
               </div>
             )}

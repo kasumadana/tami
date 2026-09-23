@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useSyncExternalStore, useCallback } from "react";
+import React, { useSyncExternalStore } from "react";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { Button } from "@cloudflare/kumo/components/button";
@@ -23,13 +23,12 @@ import {
   subscribeLearn,
   getLearnSnapshot,
   SERVER_LEARN_SNAPSHOT,
-  toggleLearnModule,
 } from "@/lib/learn-store";
 
 const MODULES_DATA = [
   {
-    id: "module1",
-    slug: "password-security",
+    id: "module1", // i18n-ignore
+    slug: "password-security", // i18n-ignore
     icon: Key,
     colorClass: "text-[var(--color-tami-yellow)]",
     bgClass: "bg-[var(--color-tami-yellow)]/15",
@@ -38,8 +37,8 @@ const MODULES_DATA = [
     practiceLabelKey: "takePractice",
   },
   {
-    id: "module2",
-    slug: "phishing-detection",
+    id: "module2", // i18n-ignore
+    slug: "phishing-detection", // i18n-ignore
     icon: ShieldWarning,
     colorClass: "text-[var(--color-tami-red)]",
     bgClass: "bg-[var(--color-tami-red)]/15",
@@ -48,8 +47,8 @@ const MODULES_DATA = [
     practiceLabelKey: "takePractice",
   },
   {
-    id: "module3",
-    slug: "data-privacy",
+    id: "module3", // i18n-ignore
+    slug: "data-privacy", // i18n-ignore
     icon: EyeSlash,
     colorClass: "text-[var(--color-tami-green)]",
     bgClass: "bg-[var(--color-tami-green)]/15",
@@ -58,8 +57,8 @@ const MODULES_DATA = [
     practiceLabelKey: "takePractice",
   },
   {
-    id: "module4",
-    slug: "cyber-ethics",
+    id: "module4", // i18n-ignore
+    slug: "cyber-ethics", // i18n-ignore
     icon: ChatCircleDots,
     colorClass: "text-[var(--color-tami-violet)]",
     bgClass: "bg-[var(--color-tami-violet)]/15",
@@ -84,13 +83,6 @@ export function LearnWorkspace() {
   } catch {
     completedModules = [];
   }
-
-  const toggleModuleComplete = useCallback(
-    (moduleId: string) => {
-      toggleLearnModule(moduleId);
-    },
-    []
-  );
 
   const totalModules = MODULES_DATA.length;
   const completedCount = completedModules.length;
@@ -195,10 +187,9 @@ export function LearnWorkspace() {
                     </div>
                   </div>
 
-                  <button
-                    type="button"
-                    onClick={() => toggleModuleComplete(mod.slug)}
-                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold cursor-pointer transition-none shrink-0 min-h-[36px] ${
+                  <Link
+                    href={`/learn/${mod.slug}`}
+                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold transition-none shrink-0 min-h-[36px] ${
                       isDone
                         ? "bg-[var(--color-tami-green)]/15 text-[var(--color-tami-green)] ring-1 ring-[var(--color-tami-green)]/30"
                         : "bg-[var(--color-tami-surface-subdued)] text-[var(--color-tami-text-muted)] hover:text-[var(--color-tami-text)] ring-1 ring-[var(--color-tami-line)]/40"
@@ -208,8 +199,8 @@ export function LearnWorkspace() {
                       size={15}
                       weight={isDone ? "fill" : "regular"}
                     />
-                    <span>{isDone ? t("completed") : t("markCompleted")}</span>
-                  </button>
+                    <span>{isDone ? t("completed") : t("completeViaStudyRoom")}</span>
+                  </Link>
                 </div>
 
                 {/* Module Description */}

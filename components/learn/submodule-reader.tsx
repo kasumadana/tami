@@ -13,26 +13,23 @@ import {
   CheckCircle,
   Lightning,
   ShieldCheck,
-  ArrowUUpLeft,
   LockSimple,
 } from "@phosphor-icons/react";
 import { MarkdownRenderer } from "@/components/markdown-renderer";
 import type { SubmoduleItem } from "@/lib/learn-content";
 
 interface SubmoduleReaderProps {
-  moduleTitle: string;
+  moduleTitle?: string;
   moduleSlug?: string;
   submodules: SubmoduleItem[];
   onStartQuiz: () => void;
-  onBackToCatalog: () => void;
+  onBackToCatalog?: () => void;
 }
 
 export function SubmoduleReader({
-  moduleTitle,
   moduleSlug,
   submodules,
   onStartQuiz,
-  onBackToCatalog,
 }: SubmoduleReaderProps) {
   const t = useTranslations("learn");
   const [activeIdx, setActiveIdx] = useState(0);
@@ -92,30 +89,14 @@ export function SubmoduleReader({
     }
   };
 
-  const isQuizLocked = maxUnlockedIdx < submodules.length;
+  const isQuizLocked = false;
 
   return (
     <div className="space-y-6 w-full max-w-3xl mx-auto">
-      {/* Top Bar: Back button & Module title */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-2 border-b border-[var(--color-tami-line)]/40">
-        <button
-          type="button"
-          onClick={onBackToCatalog}
-          className="inline-flex items-center gap-2 text-xs font-semibold text-[var(--color-tami-text-muted)] hover:text-[var(--color-tami-text)] cursor-pointer transition-colors"
-        >
-          <ArrowUUpLeft size={16} weight="bold" />
-          <span>{t("backToOverview")}</span>
-        </button>
-
-        <span className="text-xs font-medium text-[var(--color-tami-text-muted)]">
-          {moduleTitle}
-        </span>
-      </div>
-
-      {/* Stepper Navigation with Sequential Gating */}
+      {/* Stepper Navigation with Progress Checkmarks */}
       <div className="p-2 rounded-2xl bg-[var(--color-tami-surface-subdued)] ring-1 ring-[var(--color-tami-line)]/50 grid grid-cols-4 gap-1.5">
         {submodules.map((sub, idx) => {
-          const isLocked = idx > maxUnlockedIdx;
+          const isLocked = false;
           const isActive = idx === activeIdx;
           const isDone = idx < activeIdx || (idx < maxUnlockedIdx && !isActive);
 
@@ -142,7 +123,7 @@ export function SubmoduleReader({
             >
               <div className="flex items-center justify-between w-full">
                 <span
-                  className={`font-mono text-[11px] font-bold ${
+                  className={`font-mono text-xs font-bold ${
                     isLocked
                       ? "text-[var(--color-tami-text-muted)]"
                       : isActive
@@ -169,7 +150,7 @@ export function SubmoduleReader({
                 ) : null}
               </div>
               <span
-                className={`text-[11px] truncate block ${
+                className={`text-xs truncate block ${
                   isActive
                     ? "font-bold text-[var(--color-tami-text)]"
                     : "text-[var(--color-tami-text-muted)] font-medium"
@@ -199,7 +180,7 @@ export function SubmoduleReader({
         >
           <div className="flex items-center justify-between w-full">
             <span
-              className={`font-mono text-[11px] font-bold ${
+              className={`font-mono text-xs font-bold ${
                 isQuizLocked
                   ? "text-[var(--color-tami-text-muted)]"
                   : "text-[var(--color-tami-orange)]"
@@ -223,7 +204,7 @@ export function SubmoduleReader({
             )}
           </div>
           <span
-            className={`text-[11px] font-bold truncate block ${
+            className={`text-xs font-bold truncate block ${
               isQuizLocked
                 ? "text-[var(--color-tami-text-muted)]"
                 : "text-[var(--color-tami-orange)]"
