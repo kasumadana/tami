@@ -24,7 +24,6 @@ import {
   XCircle,
   Image as ImageIcon,
   CaretDown,
-  Skull,
   ArrowRight,
 } from "@phosphor-icons/react";
 import type { DetectorResult } from "@/lib/detector-schema";
@@ -67,6 +66,8 @@ export function DetectorWorkspace() {
   const [isLoading, setIsLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [result, setResult] = useState<DetectorResult | null>(null);
+  const [pendingPreset, setPendingPreset] = useState<DetectorResult | null>(null);
+  const [userHypothesis, setUserHypothesis] = useState<"SAFE" | "SUSPICIOUS" | "DANGEROUS" | null>(null);
   const [isSandboxOpen, setIsSandboxOpen] = useState(false);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -75,6 +76,8 @@ export function DetectorWorkspace() {
     (file: File) => {
       setErrorMsg(null);
       setResult(null);
+      setPendingPreset(null);
+      setUserHypothesis(null);
       setSelectedSampleId(null);
 
       // Validate format
@@ -150,14 +153,12 @@ export function DetectorWorkspace() {
     setFileName(`${sample.id}.svg`);
     setMimeType("image/svg+xml");
     setImagePreview(sample.dataUrl);
+    setResult(null);
+    setUserHypothesis(null);
 
-    // Pre-load static pre-computed result instantly for built-in sample test cases
-    const preset = SAMPLE_PRESET_RESULTS[activeLocale]?.[sample.id];
-    if (preset) {
-      setResult(preset);
-    } else {
-      setResult(null);
-    }
+    // Hold pre-computed result until child/mentor makes their 1-click Socratic hypothesis
+    const preset = SAMPLE_PRESET_RESULTS[activeLocale]?.[sample.id] || null;
+    setPendingPreset(preset);
   };
 
   const handleReset = () => {
@@ -165,12 +166,19 @@ export function DetectorWorkspace() {
     setSelectedSampleId(null);
     setFileName("");
     setResult(null);
+    setPendingPreset(null);
+    setUserHypothesis(null);
     setErrorMsg(null);
     if (fileInputRef.current) fileInputRef.current.value = "";
   };
 
   const handleAnalyze = async () => {
     if (!imagePreview) return;
+
+    if (pendingPreset) {
+      setResult(pendingPreset);
+      return;
+    }
 
     // If already pre-computed sample, analysis is already active
     if (selectedSampleId && SAMPLE_PRESET_RESULTS[activeLocale]?.[selectedSampleId]) {
@@ -559,30 +567,70 @@ export function DetectorWorkspace() {
               </LayerCard>
             )}
 
-            {/* Ready to Analyze Waiting State */}
+            {/* Ready to Analyze / Socratic Hypothesis Step */}
             {!isLoading && !result && (
-              <LayerCard className="rounded-2xl p-8 bg-[var(--color-tami-surface-subdued)] border-none ring-1 ring-[var(--color-tami-line)]/40 flex flex-col items-center justify-center text-center space-y-4 min-h-[360px]">
+              <LayerCard className="rounded-2xl p-6 sm:p-8 bg-[var(--color-tami-surface-subdued)] border-none ring-1 ring-[var(--color-tami-line)]/40 flex flex-col items-center justify-center text-center space-y-5 min-h-[360px]">
                 <Image
                   src="/mascot/tami-detective.webp"
                   alt="tami"
-                  width={144}
-                  height={144}
-                  className="w-28 h-28 sm:w-36 sm:h-36 object-contain mb-1"
+                  width={120}
+                  height={120}
+                  className="w-24 h-24 sm:w-28 sm:h-28 object-contain"
                 />
-                <div className="space-y-1.5 max-w-sm">
-                  <h3 className="font-bold text-base text-[var(--color-tami-text)]">
-                    {t("readyTitle")}
+                <div className="space-y-1.5 max-w-md">
+                  <h3 className="font-bold text-base sm:text-lg text-[var(--color-tami-text)]">
+                    {t("hypothesisTitle")}
                   </h3>
                   <p className="text-sm text-[var(--color-tami-text-muted)] leading-relaxed">
-                    {t("readyDesc")}
+                    {t("hypothesisDesc")}
                   </p>
                 </div>
+
+                {/* 1-Click Socratic Hypothesis Buttons */}
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 w-full">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setUserHypothesis("SAFE");
+                      handleAnalyze();
+                    }}
+                    className="p-3 rounded-full bg-[var(--color-tami-surface)] hover:bg-[var(--color-tami-green)]/10 ring-1 ring-[var(--color-tami-line)]/50 hover:ring-[var(--color-tami-green)] text-sm font-semibold text-[var(--color-tami-text)] flex items-center justify-center gap-2 min-h-[48px] cursor-pointer transition-none"
+                  >
+                    <ShieldCheck size={18} weight="fill" className="text-[var(--color-tami-green)] shrink-0" />
+                    <span>{t("guessSafeBtn")}</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setUserHypothesis("SUSPICIOUS");
+                      handleAnalyze();
+                    }}
+                    className="p-3 rounded-full bg-[var(--color-tami-surface)] hover:bg-[var(--color-tami-yellow)]/15 ring-1 ring-[var(--color-tami-line)]/50 hover:ring-[var(--color-tami-orange)] text-sm font-semibold text-[var(--color-tami-text)] flex items-center justify-center gap-2 min-h-[48px] cursor-pointer transition-none"
+                  >
+                    <ShieldWarning size={18} weight="fill" className="text-[var(--color-tami-orange)] shrink-0" />
+                    <span>{t("guessSuspiciousBtn")}</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setUserHypothesis("DANGEROUS");
+                      handleAnalyze();
+                    }}
+                    className="p-3 rounded-full bg-[var(--color-tami-surface)] hover:bg-[var(--color-tami-red)]/10 ring-1 ring-[var(--color-tami-line)]/50 hover:ring-[var(--color-tami-red)] text-sm font-semibold text-[var(--color-tami-text)] flex items-center justify-center gap-2 min-h-[48px] cursor-pointer transition-none"
+                  >
+                    <WarningCircle size={18} weight="fill" className="text-[var(--color-tami-red)] shrink-0" />
+                    <span>{t("guessDangerousBtn")}</span>
+                  </button>
+                </div>
+
                 <Button
-                  variant="primary"
+                  variant="secondary"
                   size="base"
                   onClick={handleAnalyze}
-                  className="rounded-full font-semibold text-sm min-h-[44px] px-6 cursor-pointer mt-2"
-                  icon={<ShieldWarning size={18} weight="bold" />}
+                  className="rounded-full ring-1 ring-[var(--color-tami-line)]/50 bg-[var(--color-tami-surface)] text-[var(--color-tami-text-muted)] hover:text-[var(--color-tami-text)] font-semibold text-sm min-h-[42px] px-5 cursor-pointer"
+                  icon={<ShieldWarning size={16} weight="bold" />}
                 >
                   {t("analyzeAction")}
                 </Button>
@@ -592,6 +640,34 @@ export function DetectorWorkspace() {
             {/* Forensic Result Dashboard */}
             {!isLoading && result && (
               <div className="space-y-4">
+                {/* Socratic Hypothesis Feedback Banner */}
+                {userHypothesis && (
+                  <div
+                    className={`p-4 rounded-2xl ring-1 flex items-start gap-3 text-sm ${
+                      userHypothesis === result.riskLevel ||
+                      (userHypothesis !== "SAFE" &&
+                        (result.riskLevel === "DANGEROUS" || result.riskLevel === "SUSPICIOUS"))
+                        ? "bg-[var(--color-tami-green)]/10 ring-[var(--color-tami-green)]/30 text-[var(--color-tami-text)]"
+                        : "bg-[var(--color-tami-orange)]/10 ring-[var(--color-tami-orange)]/30 text-[var(--color-tami-text)]"
+                    }`}
+                  >
+                    {userHypothesis === result.riskLevel ||
+                    (userHypothesis !== "SAFE" &&
+                      (result.riskLevel === "DANGEROUS" || result.riskLevel === "SUSPICIOUS")) ? (
+                      <CheckCircle size={20} weight="fill" className="text-[var(--color-tami-green)] shrink-0 mt-0.5" />
+                    ) : (
+                      <Lightbulb size={20} weight="fill" className="text-[var(--color-tami-orange)] shrink-0 mt-0.5" />
+                    )}
+                    <p className="font-medium leading-relaxed">
+                      {userHypothesis === result.riskLevel ||
+                      (userHypothesis !== "SAFE" &&
+                        (result.riskLevel === "DANGEROUS" || result.riskLevel === "SUSPICIOUS"))
+                        ? t("hypothesisSpotOn")
+                        : t("hypothesisLearning")}
+                    </p>
+                  </div>
+                )}
+
                 {/* Hero Verdict Card */}
                 <LayerCard className="rounded-2xl p-5 sm:p-6 bg-[var(--color-tami-surface-subdued)] border-none ring-1 ring-[var(--color-tami-line)]/40 space-y-4">
                   {/* Dedicated Status & Confidence Row */}
@@ -706,7 +782,7 @@ export function DetectorWorkspace() {
                   <div className="p-5 rounded-2xl bg-[var(--color-tami-surface-subdued)] ring-1 ring-[var(--color-tami-line)]/50 space-y-3.5">
                     <div className="flex items-start gap-3.5">
                       <div className="w-10 h-10 rounded-xl bg-[var(--color-tami-red)]/15 text-[var(--color-tami-red)] flex items-center justify-center shrink-0 mt-0.5">
-                        <Skull size={22} weight="bold" />
+                        <ShieldWarning size={22} weight="bold" />
                       </div>
                       <div className="space-y-1 flex-1 min-w-0">
                         <h3 className="text-sm font-bold text-[var(--color-tami-text)]">
@@ -724,7 +800,7 @@ export function DetectorWorkspace() {
                         size="base"
                         onClick={() => setIsSandboxOpen(true)}
                         className="rounded-full ring-1 ring-[var(--color-tami-line)]/50 bg-[var(--color-tami-surface)] text-[var(--color-tami-text)] hover:bg-[var(--color-tami-surface-muted)] text-xs font-semibold min-h-[40px] px-5 cursor-pointer w-full sm:w-auto"
-                        icon={<Skull size={15} weight="bold" className="text-[var(--color-tami-red)]" />}
+                        icon={<ShieldWarning size={15} weight="bold" className="text-[var(--color-tami-red)]" />}
                       >
                         {t("openSandbox")}
                       </Button>
