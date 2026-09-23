@@ -31,7 +31,6 @@ import {
   Users,
   SignOut,
   SignIn,
-  ArrowLeft,
   Plus,
   Trash,
   PencilSimple,
@@ -52,6 +51,7 @@ export interface ChatSessionHandlers {
   onRenameSession: (id: string, newTitle: string) => void;
   onOpenLogin: () => void;
   isAuthenticated: boolean;
+  turnsRemaining?: number;
 }
 
 interface ChatSidebarContextType {
@@ -113,15 +113,38 @@ function AppSidebarInner({ children }: AppSidebarLayoutProps) {
     () => false
   );
 
-  // Derive active surface: On /chat route, default to "chat-history" once mounted, unless user toggles back to "nav"
-  const [chatHistoryClosed, setChatHistoryClosed] = useState(false);
-
-  // If path is chat and user hasn't explicitly closed it, show chat-history (only after mount to prevent hydration mismatch)
+  // Keep "nav" as the default sidebar surface so kids & mentors never lose sight of the Lab menu when entering /chat.
+  // They can switch to "chat-history" via the top segmented toggle or the "Riwayat" button in the chat workspace.
   const activeSurface: "nav" | "chat-history" =
-    mounted && isChatRoute && !chatHistoryClosed ? "chat-history" : navSurface;
+    mounted && isChatRoute ? navSurface : "nav";
+
+  const dynamicGuestTurns = useMemo(() => {
+    if (typeof chatHandlers?.turnsRemaining === "number") {
+      return chatHandlers.turnsRemaining;
+    }
+    if (!mounted) return 3;
+    try {
+      const savedRemaining = localStorage.getItem("tami_guest_turns_remaining");
+      if (savedRemaining !== null) {
+        const num = Number(savedRemaining);
+        if (!Number.isNaN(num)) {
+          return Math.max(0, Math.min(3, num));
+        }
+      }
+      const raw = localStorage.getItem("tami_guest_chat");
+      if (!raw) return 3;
+      const parsed = JSON.parse(raw);
+      if (Array.isArray(parsed)) {
+        const userTurns = parsed.filter((m: { role?: string }) => m.role === "user").length;
+        return Math.max(0, 3 - userTurns);
+      }
+    } catch {
+      // ignore
+    }
+    return 3;
+  }, [chatHandlers, mounted]);
 
   const openChatHistory = useCallback(() => {
-    setChatHistoryClosed(false);
     setNavSurface("chat-history");
     if (!open) {
       setOpen(true);
@@ -130,7 +153,6 @@ function AppSidebarInner({ children }: AppSidebarLayoutProps) {
   }, [open, setOpen, setOpenMobile]);
 
   const closeChatHistory = useCallback(() => {
-    setChatHistoryClosed(true);
     setNavSurface("nav");
   }, []);
 
@@ -279,7 +301,7 @@ function AppSidebarInner({ children }: AppSidebarLayoutProps) {
       >
         <span className="truncate flex-1 font-medium">{s.title}</span>
 
-        <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity shrink-0">
+        <div className="flex items-center gap-1 opacity-100 md:opacity-0 md:group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity shrink-0">
           <button
             type="button"
             onClick={(e) => {
@@ -315,54 +337,59 @@ function AppSidebarInner({ children }: AppSidebarLayoutProps) {
       <div className="flex h-dvh w-full overflow-hidden bg-[var(--color-tami-canvas)] text-[var(--color-tami-text)]">
         {/* Full-Height Sticky Kumo Sidebar */}
         <Sidebar className="bg-[var(--color-tami-surface)]">
-          {/* Header: Clean Brand Lockup OR Back-To-Menu Header */}
-          <Sidebar.Header className="p-3.5 group-data-[state=collapsed]/sidebar:p-2 border-b border-[var(--color-tami-line)] shrink-0 flex items-center justify-between group-data-[state=collapsed]/sidebar:justify-center gap-2 overflow-hidden">
-            {activeSurface === "chat-history" ? (
-              <div className="flex items-center justify-between w-full gap-2 overflow-hidden group-data-[state=collapsed]/sidebar:justify-center">
+          {/* Header: Clean Brand Lockup */}
+          <Sidebar.Header className="p-3.5 group-data-[state=collapsed]/sidebar:p-2 border-b border-[var(--color-tami-line)] shrink-0 flex flex-col gap-2.5 overflow-hidden">
+            <div className="flex items-center justify-between w-full gap-2 group-data-[state=collapsed]/sidebar:justify-center">
+              <Link
+                href="/"
+                className="flex items-center gap-2.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-tami-orange)] rounded-full min-w-0 flex-1 overflow-hidden group-data-[state=collapsed]/sidebar:hidden"
+              >
+                <Image
+                  src="/icon.svg"
+                  alt="tami"
+                  width={26}
+                  height={26}
+                  className="w-6.5 h-6.5 shrink-0 object-contain"
+                  priority
+                />
+                <span className="font-bold text-lg tracking-tight text-[var(--color-tami-text)] truncate">
+                  {tCommon("appName")}
+                </span>
+              </Link>
+              <SidebarTrigger className="cursor-pointer group-data-[state=collapsed]/sidebar:mx-auto" />
+            </div>
+
+            {/* Segmented Switcher on /chat so kids never lose Menu Lab */}
+            {isChatRoute && (
+              <div className="grid grid-cols-2 gap-1 p-1 rounded-full bg-[var(--color-tami-surface-subdued)] ring-1 ring-[var(--color-tami-line)]/50 group-data-[state=collapsed]/sidebar:hidden">
                 <button
                   type="button"
                   onClick={closeChatHistory}
-                  aria-label={tChat("backToMenu")}
-                  title={tChat("backToMenu")}
-                  className="flex items-center gap-1.5 text-xs font-semibold text-[var(--color-tami-text-muted)] hover:text-[var(--color-tami-text)] px-2 py-1.5 rounded-full hover:bg-[var(--color-tami-surface-subdued)] cursor-pointer truncate group-data-[state=collapsed]/sidebar:hidden"
+                  className={`px-2.5 py-1.5 rounded-full text-xs font-semibold flex items-center justify-center gap-1.5 cursor-pointer transition-none ${
+                    activeSurface === "nav"
+                      ? "bg-[var(--color-tami-surface)] text-[var(--color-tami-text)] ring-1 ring-[var(--color-tami-line)]"
+                      : "text-[var(--color-tami-text-muted)] hover:text-[var(--color-tami-text)]"
+                  }`}
                 >
-                  <ArrowLeft size={16} weight="bold" className="shrink-0 text-[var(--color-tami-orange)]" />
-                  <span className="truncate">{tChat("backToMenu")}</span>
+                  <span>{t("tabMenu")}</span>
                 </button>
-
-                {/* Collapsed Back Button */}
                 <button
                   type="button"
-                  onClick={closeChatHistory}
-                  aria-label={tChat("backToMenu")}
-                  title={tChat("backToMenu")}
-                  className="hidden group-data-[state=collapsed]/sidebar:flex items-center justify-center w-10 h-10 min-w-[40px] min-h-[40px] rounded-full hover:bg-[var(--color-tami-surface-subdued)] cursor-pointer mx-auto text-[var(--color-tami-orange)]"
+                  onClick={openChatHistory}
+                  className={`px-2.5 py-1.5 rounded-full text-xs font-semibold flex items-center justify-center gap-1.5 cursor-pointer transition-none ${
+                    activeSurface === "chat-history"
+                      ? "bg-[var(--color-tami-surface)] text-[var(--color-tami-text)] ring-1 ring-[var(--color-tami-line)]"
+                      : "text-[var(--color-tami-text-muted)] hover:text-[var(--color-tami-text)]"
+                  }`}
                 >
-                  <ArrowLeft size={16} weight="bold" />
+                  <span>{t("tabHistory")}</span>
+                  {chatHandlers && chatHandlers.sessions.length > 0 && (
+                    <span className="px-1.5 py-0.5 rounded-full bg-[var(--color-tami-orange)]/15 text-[var(--color-tami-orange)] text-[10px] font-bold leading-none">
+                      {chatHandlers.sessions.length}
+                    </span>
+                  )}
                 </button>
-
-                <SidebarTrigger className="cursor-pointer shrink-0 group-data-[state=collapsed]/sidebar:hidden" />
               </div>
-            ) : (
-              <>
-                <Link
-                  href="/"
-                  className="flex items-center gap-2.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-tami-orange)] rounded-full min-w-0 flex-1 overflow-hidden group-data-[state=collapsed]/sidebar:hidden"
-                >
-                  <Image
-                    src="/icon.svg"
-                    alt="tami"
-                    width={26}
-                    height={26}
-                    className="w-6.5 h-6.5 shrink-0 object-contain"
-                    priority
-                  />
-                  <span className="font-bold text-lg tracking-tight text-[var(--color-tami-text)] truncate">
-                    {tCommon("appName")}
-                  </span>
-                </Link>
-                <SidebarTrigger className="cursor-pointer group-data-[state=collapsed]/sidebar:mx-auto" />
-              </>
             )}
           </Sidebar.Header>
 
@@ -543,7 +570,7 @@ function AppSidebarInner({ children }: AppSidebarLayoutProps) {
                         {tCommon("guestMode")}
                       </p>
                       <p className="text-xs text-[var(--color-tami-text-muted)] truncate">
-                        {t("guestTurnsRemaining")}
+                        {t("guestTurnsDynamic", { count: dynamicGuestTurns })}
                       </p>
                     </div>
                   </div>

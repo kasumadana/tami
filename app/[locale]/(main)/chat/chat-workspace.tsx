@@ -104,6 +104,7 @@ function TamiTypingIndicator() {
 export function ChatWorkspace({
   initialTurnsRemaining,
   initialIsAuthenticated = false,
+  initialTopic,
   initialScenario,
 }: ChatWorkspaceProps) {
   const t = useTranslations("chat");
@@ -124,7 +125,7 @@ export function ChatWorkspace({
         }
       }
     }
-    if (initialScenario) {
+    if (initialScenario && initialTopic !== "family") {
       return [
         {
           id: "welcome-msg",
@@ -142,9 +143,22 @@ export function ChatWorkspace({
     ];
   });
 
-  const [input, setInput] = useState("");
+  const [input, setInput] = useState(() =>
+    initialTopic === "family" && initialScenario ? initialScenario : ""
+  );
   const [isLoading, setIsLoading] = useState(false);
   const [turnsRemaining, setTurnsRemaining] = useState(initialTurnsRemaining);
+
+  // Sync authoritative guest turnsRemaining to localStorage so sidebar stays accurate across routes even if chat history is cleared
+  useEffect(() => {
+    if (!isAuthenticated && typeof window !== "undefined") {
+      try {
+        localStorage.setItem("tami_guest_turns_remaining", String(turnsRemaining));
+      } catch {
+        // ignore storage write errors
+      }
+    }
+  }, [isAuthenticated, turnsRemaining]);
   const [isConfirmClearOpen, setIsConfirmClearOpen] = useState(false);
   const [isLoginOpen, setIsLoginOpen] = useState(false);
 
@@ -395,6 +409,7 @@ export function ChatWorkspace({
       onRenameSession: handleRenameSession,
       onOpenLogin: () => setIsLoginOpen(true),
       isAuthenticated,
+      turnsRemaining,
     });
   }, [
     sessions,
@@ -404,6 +419,7 @@ export function ChatWorkspace({
     handleDeleteSession,
     handleRenameSession,
     isAuthenticated,
+    turnsRemaining,
     registerChatHandlers,
   ]);
 
@@ -684,7 +700,11 @@ export function ChatWorkspace({
         )}
 
         {/* Messages Stream Container */}
-        <div className="flex-1 overflow-y-auto space-y-4 pr-1 sm:pr-2 min-h-0 py-3 scroll-smooth">
+        <div
+          role="log"
+          aria-live="polite"
+          className="flex-1 overflow-y-auto space-y-4 pr-1 sm:pr-2 min-h-0 py-3 scroll-smooth"
+        >
           {messages.map((message, index) => {
             const isUser = message.role === "user";
             const isLastMessage = index === messages.length - 1;
@@ -774,9 +794,9 @@ export function ChatWorkspace({
                     type="button"
                     onClick={() => handleSendMessage(starter)}
                     disabled={isLoading || turnsRemaining <= 0}
-                    className="text-left px-4 py-2.5 rounded-full ring-1 ring-[var(--color-tami-line)]/40 bg-[var(--color-tami-surface)] hover:bg-[var(--color-tami-surface-subdued)] hover:ring-[var(--color-tami-orange)] text-xs text-[var(--color-tami-text)] transition-none cursor-pointer disabled:opacity-60 truncate min-h-[44px] flex items-center"
+                    className="text-left px-4 py-2.5 rounded-2xl ring-1 ring-[var(--color-tami-line)]/50 bg-[var(--color-tami-surface)] hover:bg-[var(--color-tami-surface-subdued)] hover:ring-[var(--color-tami-orange)] text-sm text-[var(--color-tami-text)] transition-none cursor-pointer disabled:opacity-60 min-h-[48px] flex items-center"
                   >
-                    &ldquo;{starter}&rdquo;
+                    <span className="line-clamp-2">&ldquo;{starter}&rdquo;</span>
                   </button>
                 ))}
               </div>

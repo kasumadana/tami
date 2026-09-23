@@ -212,7 +212,7 @@ export function MarkdownRenderer({
 
         // Blockquote
         blockquote: ({ children }) => (
-          <blockquote className="border-l-3 border-[var(--color-tami-orange)] bg-[var(--color-tami-surface)]/60 px-3.5 py-2 my-2.5 rounded-r-xl text-sm italic text-[var(--color-tami-text)] ring-1 ring-[var(--color-tami-line)]/30">
+          <blockquote className="bg-[var(--color-tami-orange)]/5 px-4 py-2.5 my-2.5 rounded-xl text-sm italic text-[var(--color-tami-text)] ring-1 ring-[var(--color-tami-orange)]/40">
             {children}
           </blockquote>
         ),
