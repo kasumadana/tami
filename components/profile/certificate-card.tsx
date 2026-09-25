@@ -17,9 +17,16 @@ import {
 interface CertificateCardProps {
   initialName?: string;
   isUnlocked: boolean;
+  totalPoints?: number;
+  completedModulesCount?: number;
 }
 
-export function CertificateCard({ initialName, isUnlocked }: CertificateCardProps) {
+export function CertificateCard({
+  initialName,
+  isUnlocked,
+  totalPoints = 0,
+  completedModulesCount = 0,
+}: CertificateCardProps) {
   const t = useTranslations("certificate");
   const locale = useLocale();
 
@@ -35,7 +42,18 @@ export function CertificateCard({ initialName, isUnlocked }: CertificateCardProp
     day: "numeric",
   });
 
-  const verificationId = "TAMI-2026-HERO-9821"; // i18n-ignore
+  // Deterministic unique verification ID based on student name and learning milestones
+  const verificationHash = React.useMemo(() => {
+    const seed = `${studentName.trim().toLowerCase()}-${totalPoints}-${completedModulesCount}`;
+    let hash = 2166136261;
+    for (let i = 0; i < seed.length; i++) {
+      hash ^= seed.charCodeAt(i);
+      hash = Math.imul(hash, 16777619);
+    }
+    return Math.abs(hash).toString(36).toUpperCase().slice(0, 6).padStart(6, "0");
+  }, [studentName, totalPoints, completedModulesCount]);
+
+  const verificationId = `TAMI-2026-${verificationHash}`; // i18n-ignore
 
   const [isDownloading, setIsDownloading] = useState(false);
 
@@ -380,7 +398,8 @@ export function CertificateCard({ initialName, isUnlocked }: CertificateCardProp
               variant="secondary"
               size="base"
               onClick={handlePrint}
-              className="rounded-full bg-[var(--color-tami-surface)] hover:bg-[var(--color-tami-surface-muted)] text-[var(--color-tami-text)] ring-1 ring-[var(--color-tami-line)]/50 text-sm min-h-[44px] px-5 font-semibold transition-none cursor-pointer"
+              disabled={!isUnlocked || isDownloading}
+              className="rounded-full bg-[var(--color-tami-surface)] hover:bg-[var(--color-tami-surface-muted)] text-[var(--color-tami-text)] ring-1 ring-[var(--color-tami-line)]/50 text-sm min-h-[44px] px-5 font-semibold transition-none cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
               icon={<Printer size={16} weight="bold" />}
             >
               {t("printPdfBtn")}
@@ -389,7 +408,7 @@ export function CertificateCard({ initialName, isUnlocked }: CertificateCardProp
               variant="primary"
               size="base"
               onClick={handleDownloadPng}
-              disabled={isDownloading}
+              disabled={!isUnlocked || isDownloading}
               className="rounded-full bg-[var(--color-tami-orange)] hover:bg-[var(--color-tami-orange-hover)] text-white font-semibold text-sm min-h-[44px] px-5 transition-none cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
               icon={<DownloadSimple size={16} weight="bold" />}
             >

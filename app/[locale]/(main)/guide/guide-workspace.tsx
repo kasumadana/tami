@@ -242,6 +242,8 @@ export function GuideWorkspace() {
                 return (
                   <button
                     type="button"
+                    role="checkbox"
+                    aria-checked={isChecked}
                     key={item.key}
                     onClick={() => toggleAgreement(item.key)}
                     className={`text-left p-3.5 rounded-xl border transition-none flex items-start gap-3 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-tami-orange)] ${
@@ -296,6 +298,7 @@ export function GuideWorkspace() {
                   <button
                     type="button"
                     key={sc.id}
+                    aria-pressed={isSelected}
                     onClick={() => setActiveScenario(idx)}
                     className={`text-xs font-semibold px-3.5 py-2 rounded-full min-h-[40px] flex items-center gap-2 cursor-pointer transition-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-tami-orange)] ${
                       isSelected
@@ -363,11 +366,11 @@ export function GuideWorkspace() {
                   <p className="text-xs sm:text-sm font-medium text-[var(--color-tami-text)] leading-relaxed">
                     &ldquo;{starter}&rdquo;
                   </p>
-                  <Link href="/chat">
+                  <Link href={`/chat?topic=family&scenario=${encodeURIComponent(starter)}`}>
                     <Button
                       variant="secondary"
                       size="sm"
-                      className="rounded-full text-xs font-semibold px-3 h-8 min-h-[32px] w-full flex items-center justify-center gap-1.5 cursor-pointer ring-1 ring-[var(--color-tami-line)]/50 transition-none"
+                      className="rounded-full text-xs font-semibold px-3 h-9 min-h-[36px] w-full flex items-center justify-center gap-1.5 cursor-pointer ring-1 ring-[var(--color-tami-line)]/50 transition-none"
                       icon={<ArrowRight size={13} weight="bold" />}
                     >
                       <span>{t("parentStarters.discussBtn")}</span>

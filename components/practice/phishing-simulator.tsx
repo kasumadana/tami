@@ -167,6 +167,11 @@ export function PhishingSimulator() {
 
   const handleVerdictSubmit = (verdict: "phishing" | "safe") => {
     if (verdict === "phishing") {
+      if (taggedHotspots.length < 2) {
+        setFeedbackMsg(tPhishing("clueGateWarning", { found: taggedHotspots.length }));
+        return;
+      }
+
       setIsCompleted(true);
       setFeedbackMsg(null);
       recordChallengeSuccess("phishing", "Phishing Sleuth", 100);
@@ -212,8 +217,9 @@ export function PhishingSimulator() {
               <button
                 key={p.id}
                 type="button"
+                aria-pressed={currentScenario.id === p.id}
                 onClick={() => handleSelectScenario(p)}
-                className={`px-3.5 py-1.5 rounded-full text-xs font-medium transition-none min-h-[36px] cursor-pointer ${
+                className={`px-3.5 py-2 rounded-full text-xs font-medium transition-none min-h-[44px] cursor-pointer ${
                   currentScenario.id === p.id
                     ? "bg-[var(--color-tami-orange)] text-white shadow-xs font-bold"
                     : "bg-[var(--color-tami-surface)] text-[var(--color-tami-text)] hover:bg-[var(--color-tami-surface-muted)]"
@@ -275,9 +281,9 @@ export function PhishingSimulator() {
               type="button"
               onClick={() => toggleHotspot("sender")}
               aria-pressed={isSenderTagged}
-              className={`px-3 py-2 rounded-xl text-xs text-left font-medium transition-none min-h-[44px] flex items-center gap-2 ${
+              className={`px-3 py-2 rounded-xl text-sm text-left font-medium transition-none min-h-[44px] flex items-center gap-2 ${
                 isSenderTagged
-                  ? "bg-red-500/15 text-[var(--color-tami-red)] ring-2 ring-[var(--color-tami-red)]"
+                  ? "bg-[var(--color-tami-red)]/15 text-[var(--color-tami-red)] ring-2 ring-[var(--color-tami-red)]"
                   : "bg-[var(--color-tami-surface)] text-[var(--color-tami-text)] hover:bg-[var(--color-tami-surface-muted)]"
               }`}
             >
@@ -293,14 +299,14 @@ export function PhishingSimulator() {
             <span className="font-bold text-[var(--color-tami-text-muted)] min-w-[70px] text-xs">
               {tPhishing("subjectLabel")}:
             </span>
-            <span className="font-semibold text-[var(--color-tami-text)] text-xs">
+            <span className="font-semibold text-[var(--color-tami-text)] text-sm">
               {currentScenario.subject}
             </span>
           </div>
 
           {/* Email Body & Urgency Clue (Hotspot 2) */}
           <div className="pt-2 border-t border-[var(--color-tami-line)]/50 space-y-3">
-            <p className="text-xs text-[var(--color-tami-text-muted)]">
+            <p className="text-sm text-[var(--color-tami-text-muted)]">
               {currentScenario.greeting}
             </p>
 
@@ -309,10 +315,10 @@ export function PhishingSimulator() {
               type="button"
               onClick={() => toggleHotspot("urgency")}
               aria-pressed={isUrgencyTagged}
-              className={`w-full p-3 rounded-xl text-xs text-left font-semibold transition-none min-h-[44px] flex items-center justify-between gap-3 ${
+              className={`w-full p-3 rounded-xl text-sm text-left font-semibold transition-none min-h-[44px] flex items-center justify-between gap-3 ${
                 isUrgencyTagged
-                  ? "bg-red-500/15 text-[var(--color-tami-red)] ring-2 ring-[var(--color-tami-red)]"
-                  : "bg-amber-500/10 text-amber-700 dark:text-amber-300 hover:bg-amber-500/15"
+                  ? "bg-[var(--color-tami-red)]/15 text-[var(--color-tami-red)] ring-2 ring-[var(--color-tami-red)]"
+                  : "bg-[var(--color-tami-yellow)]/15 text-[var(--color-tami-orange)] hover:bg-[var(--color-tami-yellow)]/25"
               }`}
             >
               <span>{tPhishing("hotspotUrgencyText")}</span>
@@ -321,7 +327,7 @@ export function PhishingSimulator() {
               )}
             </button>
 
-            <p className="text-xs text-[var(--color-tami-text)] leading-relaxed">
+            <p className="text-sm text-[var(--color-tami-text)] leading-relaxed">
               {currentScenario.body}
             </p>
 
@@ -331,10 +337,10 @@ export function PhishingSimulator() {
                 type="button"
                 onClick={() => toggleHotspot("link")}
                 aria-pressed={isLinkTagged}
-                className={`px-4 py-2.5 rounded-xl text-xs font-semibold text-left transition-none min-h-[44px] flex items-center gap-2 ${
+                className={`px-4 py-2.5 rounded-xl text-sm font-semibold text-left transition-none min-h-[44px] flex items-center gap-2 ${
                   isLinkTagged
-                    ? "bg-red-500/15 text-[var(--color-tami-red)] ring-2 ring-[var(--color-tami-red)]"
-                    : "bg-blue-600/10 text-blue-600 dark:text-blue-400 hover:bg-blue-600/15 underline"
+                    ? "bg-[var(--color-tami-red)]/15 text-[var(--color-tami-red)] ring-2 ring-[var(--color-tami-red)]"
+                    : "bg-[var(--color-tami-blue)]/10 text-[var(--color-tami-blue)] hover:bg-[var(--color-tami-blue)]/20 underline"
                 }`}
               >
                 <span className="flex items-center gap-1.5">
@@ -358,7 +364,7 @@ export function PhishingSimulator() {
             <div
               className={`p-2.5 rounded-xl text-xs flex items-center gap-2 ${
                 isSenderTagged
-                  ? "bg-green-500/15 text-[var(--color-tami-green)] font-bold"
+                  ? "bg-[var(--color-tami-green)]/15 text-[var(--color-tami-green)] font-bold"
                   : "bg-[var(--color-tami-surface)] text-[var(--color-tami-text-muted)]"
               }`}
             >
@@ -368,7 +374,7 @@ export function PhishingSimulator() {
             <div
               className={`p-2.5 rounded-xl text-xs flex items-center gap-2 ${
                 isUrgencyTagged
-                  ? "bg-green-500/15 text-[var(--color-tami-green)] font-bold"
+                  ? "bg-[var(--color-tami-green)]/15 text-[var(--color-tami-green)] font-bold"
                   : "bg-[var(--color-tami-surface)] text-[var(--color-tami-text-muted)]"
               }`}
             >
@@ -378,7 +384,7 @@ export function PhishingSimulator() {
             <div
               className={`p-2.5 rounded-xl text-xs flex items-center gap-2 ${
                 isLinkTagged
-                  ? "bg-green-500/15 text-[var(--color-tami-green)] font-bold"
+                  ? "bg-[var(--color-tami-green)]/15 text-[var(--color-tami-green)] font-bold"
                   : "bg-[var(--color-tami-surface)] text-[var(--color-tami-text-muted)]"
               }`}
             >

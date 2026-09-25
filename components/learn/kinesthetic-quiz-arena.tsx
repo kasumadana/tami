@@ -23,6 +23,7 @@ import confetti from "canvas-confetti";
 import { MediaPipeTracker } from "./mediapipe-tracker";
 import { SpeechRecognizerService } from "@/lib/audio/speech-recognizer";
 import { soundEffects } from "@/utils/sound-effects";
+import { MarkdownRenderer } from "@/components/markdown-renderer";
 import type { QuizQuestionItem } from "@/lib/learn-content";
 
 export type QuizModality = "hover" | "pinch" | "voice" | "click";
@@ -118,10 +119,14 @@ export function KinestheticQuizArena({
         detail: activeQuestion.justifications[optionKey] || "",
       });
 
-      // Start 3-second countdown to automatically advance to next question
-      setAutoAdvanceSeconds(3);
+      // Only auto-advance in touchless mode when correct (8s window), otherwise let child advance manually
+      if (!isClickMode && isCorrect) {
+        setAutoAdvanceSeconds(8);
+      } else {
+        setAutoAdvanceSeconds(null);
+      }
     },
-    [activeQuestion, currentIdx, justification]
+    [activeQuestion, currentIdx, isClickMode, justification]
   );
 
   // Start speech recognition helper
@@ -480,7 +485,7 @@ export function KinestheticQuizArena({
     <div className="space-y-4">
       <LayerCard className="rounded-2xl p-5 bg-[var(--color-tami-surface)] border-none ring-1 ring-[var(--color-tami-line)]/50 space-y-4">
         <h3 className="font-bold text-sm sm:text-base text-[var(--color-tami-text)] leading-snug">
-          {activeQuestion.question}
+          <MarkdownRenderer content={activeQuestion.question} inline />
         </h3>
 
         {/* Options Grid */}
@@ -515,8 +520,8 @@ export function KinestheticQuizArena({
                   {key}
                 </span>
                 <div className="flex flex-col flex-1 min-w-0">
-                  <span className="text-xs text-[var(--color-tami-text)] leading-relaxed mt-0.5">
-                    {activeQuestion.options[key]}
+                  <span className="text-sm text-[var(--color-tami-text)] leading-relaxed mt-0.5">
+                    <MarkdownRenderer content={activeQuestion.options[key]} inline />
                   </span>
                 </div>
               </button>
@@ -550,7 +555,7 @@ export function KinestheticQuizArena({
               variant="primary"
               size="base"
               onClick={handleNextQuestion}
-              className="rounded-full text-xs font-semibold min-h-[44px] px-5 cursor-pointer shrink-0"
+              className="rounded-full text-sm font-semibold min-h-[44px] px-5 cursor-pointer shrink-0"
               icon={<ArrowRight size={16} weight="bold" />}
             >
               {autoAdvanceSeconds !== null && autoAdvanceSeconds > 0
@@ -561,15 +566,17 @@ export function KinestheticQuizArena({
             </Button>
           </div>
 
-          <div className="space-y-1 text-xs text-[var(--color-tami-text)] leading-relaxed">
+          <div className="space-y-1.5 text-sm text-[var(--color-tami-text)] leading-relaxed">
             <p className="font-semibold text-[var(--color-tami-orange)]">
               {t("tamiReflection")}
             </p>
-            <p>{justification.explanation}</p>
+            <div className="text-sm text-[var(--color-tami-text)] leading-relaxed">
+              <MarkdownRenderer content={justification.explanation} />
+            </div>
             {justification.detail && (
-              <p className="text-[var(--color-tami-text-muted)] pt-0.5">
-                {justification.detail}
-              </p>
+              <div className="text-sm text-[var(--color-tami-text-muted)] pt-0.5 leading-relaxed">
+                <MarkdownRenderer content={justification.detail} />
+              </div>
             )}
           </div>
         </div>

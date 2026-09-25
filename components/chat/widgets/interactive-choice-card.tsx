@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { useTranslations } from "next-intl";
 import { InteractiveChoiceData } from "@/lib/generative-ui-schema";
 import { CheckCircle, WarningCircle, CursorClick } from "@phosphor-icons/react";
+import { MarkdownRenderer } from "@/components/markdown-renderer";
 
 interface InteractiveChoiceCardProps {
   data: InteractiveChoiceData;
@@ -34,7 +35,7 @@ export function InteractiveChoiceCard({
         </div>
         <div>
           <h4 className="text-sm font-bold text-[var(--color-tami-text)] leading-snug">
-            {data.prompt}
+            <MarkdownRenderer content={data.prompt} inline />
           </h4>
           <p className="text-xs text-[var(--color-tami-text-muted)] mt-0.5">
             {t("choiceWidget.selectAction")}
@@ -65,10 +66,12 @@ export function InteractiveChoiceCard({
               }`}
             >
               <div className="space-y-0.5 flex-1 pr-2">
-                <div className="font-semibold">{choice.label}</div>
+                <div className="font-semibold leading-relaxed">
+                  <MarkdownRenderer content={choice.label} inline />
+                </div>
                 {choice.hint && (
-                  <div className="text-xs text-[var(--color-tami-text-muted)]">
-                    {choice.hint}
+                  <div className="text-xs text-[var(--color-tami-text-muted)] mt-0.5 leading-normal">
+                    <MarkdownRenderer content={choice.hint} inline />
                   </div>
                 )}
               </div>

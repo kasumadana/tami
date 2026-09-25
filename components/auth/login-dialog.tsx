@@ -24,6 +24,7 @@ interface LoginDialogProps {
 
 export function LoginDialog({ isOpen, onClose }: LoginDialogProps) {
   const t = useTranslations("auth");
+  const tCommon = useTranslations("common");
 
   const handleGoogleSignIn = () => {
     signIn("google", { callbackUrl: window.location.href });
@@ -38,10 +39,10 @@ export function LoginDialog({ isOpen, onClose }: LoginDialogProps) {
             <button
               {...props}
               type="button"
-              className="absolute top-4 right-4 w-9 h-9 rounded-full text-[var(--color-tami-text-muted)] hover:text-[var(--color-tami-text)] hover:bg-[var(--color-tami-surface-subdued)] cursor-pointer flex items-center justify-center"
-              aria-label="Close"
+              className="absolute top-3 right-3 w-11 h-11 min-w-[44px] min-h-[44px] rounded-full text-[var(--color-tami-text-muted)] hover:text-[var(--color-tami-text)] hover:bg-[var(--color-tami-surface-subdued)] cursor-pointer flex items-center justify-center"
+              aria-label={tCommon("close")}
             >
-              <X size={16} weight="bold" />
+              <X size={18} weight="bold" />
             </button>
           )}
         />

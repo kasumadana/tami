@@ -19,29 +19,29 @@ colors:
   cobalt-blue: "#478bff"
 typography:
   display:
-    fontFamily: "var(--font-geist-sans), system-ui, -apple-system, sans-serif"
+    fontFamily: "'Geist', var(--font-geist-sans), system-ui, -apple-system, sans-serif"
     fontSize: "clamp(2rem, 5vw, 3.25rem)"
     fontWeight: 800
     lineHeight: 0.95
     letterSpacing: "-0.03em"
   headline:
-    fontFamily: "var(--font-geist-sans), system-ui, -apple-system, sans-serif"
+    fontFamily: "'Geist', var(--font-geist-sans), system-ui, -apple-system, sans-serif"
     fontSize: "clamp(1.25rem, 3vw, 1.75rem)"
     fontWeight: 700
     lineHeight: 1.2
     letterSpacing: "-0.02em"
   title:
-    fontFamily: "var(--font-geist-sans), system-ui, -apple-system, sans-serif"
+    fontFamily: "'Geist', var(--font-geist-sans), system-ui, -apple-system, sans-serif"
     fontSize: "1rem"
     fontWeight: 600
     lineHeight: 1.35
   body:
-    fontFamily: "var(--font-geist-sans), system-ui, -apple-system, sans-serif"
+    fontFamily: "'Geist', var(--font-geist-sans), system-ui, -apple-system, sans-serif"
     fontSize: "14px"
     fontWeight: 400
     lineHeight: 1.5
   label:
-    fontFamily: "var(--font-geist-sans), system-ui, -apple-system, sans-serif"
+    fontFamily: "'Geist Mono', var(--font-geist-mono), monospace"
     fontSize: "12px"
     fontWeight: 600
     letterSpacing: "0.01em"

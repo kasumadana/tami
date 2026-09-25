@@ -4,6 +4,7 @@ import React from "react";
 import { useTranslations } from "next-intl";
 import { DomainInspectorData } from "@/lib/generative-ui-schema";
 import { LinkSimple, ShieldWarning, ShieldCheck } from "@phosphor-icons/react";
+import { MarkdownRenderer } from "@/components/markdown-renderer";
 
 interface InspectDomainSnippetProps {
   data: DomainInspectorData;
@@ -83,9 +84,9 @@ export function InspectDomainSnippet({ data }: InspectDomainSnippetProps) {
       </div>
 
       {/* Explanation */}
-      <p className="text-xs text-[var(--color-tami-text-muted)] leading-relaxed">
-        {data.explanation}
-      </p>
+      <div className="text-xs text-[var(--color-tami-text-muted)] leading-relaxed">
+        <MarkdownRenderer content={data.explanation} />
+      </div>
     </div>
   );
 }

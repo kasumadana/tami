@@ -8,7 +8,7 @@ import { LayerCard } from "@cloudflare/kumo/components/layer-card";
 import {
   Sword,
   ShieldCheck,
-  Skull,
+  ShieldWarning,
   PaperPlaneRight,
   ArrowClockwise,
   WarningCircle,
@@ -20,6 +20,7 @@ import confetti from "canvas-confetti";
 import { Badge } from "@cloudflare/kumo/components/badge";
 import { recordChallengeSuccess } from "@/lib/practice-store";
 import { SocraticDebriefDialog } from "./socratic-debrief-dialog";
+import { MarkdownRenderer } from "@/components/markdown-renderer";
 
 let arenaMessageCounter = 0;
 function createArenaMsgId(prefix: string): string {
@@ -329,7 +330,8 @@ export function ArenaSimulator() {
               type="button"
               disabled={isLoading}
               onClick={() => handleSelectScenario(idx)}
-              className={`px-4 py-2 rounded-full text-xs font-semibold min-h-[40px] cursor-pointer transition-none ${
+              aria-pressed={idx === selectedScenarioIdx}
+              className={`px-4 py-2.5 rounded-full text-xs font-semibold min-h-[44px] cursor-pointer transition-none ${
                 idx === selectedScenarioIdx
                   ? "bg-[var(--color-tami-orange)] text-white shadow-xs"
                   : "bg-[var(--color-tami-surface-subdued)] text-[var(--color-tami-text)] hover:bg-[var(--color-tami-surface-muted)] ring-1 ring-[var(--color-tami-line)]/50"
@@ -347,13 +349,13 @@ export function ArenaSimulator() {
               return (
                 <div key={msg.id} className="flex items-start gap-3">
                   <div className="w-8 h-8 rounded-full bg-[var(--color-tami-red)]/15 text-[var(--color-tami-red)] ring-1 ring-[var(--color-tami-red)]/30 flex items-center justify-center shrink-0 mt-0.5">
-                    <Skull size={17} weight="bold" />
+                    <ShieldWarning size={17} weight="bold" />
                   </div>
                   <div className="max-w-[85%] sm:max-w-[75%] rounded-2xl p-3.5 sm:p-4 bg-[var(--color-tami-surface)] text-[var(--color-tami-text)] ring-1 ring-[var(--color-tami-line)]/60 text-sm leading-relaxed space-y-1">
                     <span className="text-xs font-bold text-[var(--color-tami-red)] block font-mono">
                       {t("arena.adversaryTag", { name: activeScenario.adversaryName })}
                     </span>
-                    <p>{msg.content}</p>
+                    <MarkdownRenderer content={msg.content} />
                   </div>
                 </div>
               );
@@ -366,7 +368,7 @@ export function ArenaSimulator() {
                     <User size={16} weight="bold" />
                   </div>
                   <div className="max-w-[85%] sm:max-w-[75%] rounded-2xl p-3.5 sm:p-4 bg-[var(--color-tami-orange)] text-white font-medium text-sm leading-relaxed">
-                    <p>{msg.content}</p>
+                    <p className="whitespace-pre-wrap">{msg.content}</p>
                   </div>
                 </div>
               );
@@ -386,9 +388,7 @@ export function ArenaSimulator() {
                   className="w-10 h-10 sm:w-11 sm:h-11 object-contain shrink-0 "
                 />
                 <div className="space-y-0.5 flex-1 min-w-0">
-                  <p className="text-xs sm:text-sm text-[var(--color-tami-text)] leading-relaxed">
-                    {msg.content}
-                  </p>
+                  <MarkdownRenderer content={msg.content} />
                 </div>
               </div>
             );
@@ -412,7 +412,7 @@ export function ArenaSimulator() {
                     onClick={() => handleSendMove(tactic)}
                     className="text-left px-4 py-2.5 rounded-full ring-1 ring-[var(--color-tami-line)]/60 bg-[var(--color-tami-surface)] hover:bg-[var(--color-tami-surface-subdued)] hover:ring-[var(--color-tami-orange)] text-xs text-[var(--color-tami-text)] transition-none cursor-pointer disabled:opacity-50 min-h-[44px] flex items-center leading-snug"
                   >
-                    &ldquo;{tactic}&rdquo;
+                    {"\u201C"}<MarkdownRenderer content={tactic} inline />{"\u201D"}
                   </button>
                 ))}
               </div>
@@ -478,9 +478,9 @@ export function ArenaSimulator() {
               )}
             </div>
 
-            <p className="text-xs sm:text-sm text-[var(--color-tami-text)] leading-relaxed">
-              {educationalSummary || (verdict === "VICTORY" ? t("arena.successMsg") : t("arena.defeatTitle"))}
-            </p>
+            <MarkdownRenderer
+              content={educationalSummary || (verdict === "VICTORY" ? t("arena.successMsg") : t("arena.defeatTitle"))}
+            />
 
             <div className="flex flex-wrap items-center justify-between gap-3 pt-2">
               <span className="text-xs font-mono font-bold text-[var(--color-tami-text)]">

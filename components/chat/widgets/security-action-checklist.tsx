@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { ActionChecklistData } from "@/lib/generative-ui-schema";
 import { CheckSquare, Square, ListChecks } from "@phosphor-icons/react";
 import confetti from "canvas-confetti";
+import { MarkdownRenderer } from "@/components/markdown-renderer";
 
 interface SecurityActionChecklistProps {
   data: ActionChecklistData;
@@ -46,7 +47,7 @@ export function SecurityActionChecklist({ data }: SecurityActionChecklistProps) 
             <ListChecks size={16} weight="bold" />
           </div>
           <h4 className="text-sm font-bold text-[var(--color-tami-text)] leading-snug">
-            {data.title}
+            <MarkdownRenderer content={data.title} inline />
           </h4>
         </div>
 
@@ -84,13 +85,13 @@ export function SecurityActionChecklist({ data }: SecurityActionChecklistProps) 
               </div>
 
               <div className="space-y-0.5 flex-1">
-                <span className={`text-xs font-semibold block ${
+                <span className={`text-xs font-semibold block leading-relaxed ${
                   isChecked ? "line-through text-[var(--color-tami-text-muted)]" : "text-[var(--color-tami-text)]"
                 }`}>
-                  {item.task}
+                  <MarkdownRenderer content={item.task} inline />
                 </span>
-                <span className="text-[11px] text-[var(--color-tami-text-muted)] block leading-normal">
-                  {item.description}
+                <span className="text-[11px] text-[var(--color-tami-text-muted)] block leading-normal mt-0.5">
+                  <MarkdownRenderer content={item.description} inline />
                 </span>
               </div>
             </button>

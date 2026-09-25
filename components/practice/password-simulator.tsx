@@ -6,6 +6,7 @@ import { useTranslations, useLocale } from "next-intl";
 import { Button } from "@cloudflare/kumo/components/button";
 import { Badge } from "@cloudflare/kumo/components/badge";
 import { LayerCard } from "@cloudflare/kumo/components/layer-card";
+import { Meter } from "@cloudflare/kumo/components/meter";
 import { SensitiveInput } from "@cloudflare/kumo/components/sensitive-input";
 import { Loader } from "@cloudflare/kumo/components/loader";
 import {
@@ -83,21 +84,21 @@ export function PasswordSimulator() {
     if (entropy < 40) {
       return {
         label: tPwd("vaultWood"),
-        badgeClass: "bg-[var(--color-tami-red)]/15 text-[var(--color-tami-red)] font-bold",
+        badgeClass: "bg-[var(--color-tami-red)]/15 text-[var(--color-tami-red)] ring-1 ring-[var(--color-tami-red)]/40 font-bold",
         icon: <LockSimple size={16} weight="bold" className="text-[var(--color-tami-red)]" />,
       };
     }
     if (entropy < 80) {
       return {
         label: tPwd("vaultIron"),
-        badgeClass: "bg-[var(--color-tami-yellow)] text-black font-bold",
-        icon: <ShieldWarning size={16} weight="fill" className="text-black" />,
+        badgeClass: "bg-[var(--color-tami-yellow)]/20 text-[var(--color-tami-text)] ring-1 ring-[var(--color-tami-yellow)]/50 font-bold",
+        icon: <ShieldWarning size={16} weight="fill" className="text-[var(--color-tami-orange)]" />,
       };
     }
     return {
       label: tPwd("vaultTitanium"),
-      badgeClass: "bg-[var(--color-tami-green)] text-white font-bold",
-      icon: <ShieldCheck size={16} weight="fill" className="text-white" />,
+      badgeClass: "bg-[var(--color-tami-green)]/15 text-[var(--color-tami-green)] ring-1 ring-[var(--color-tami-green)]/40 font-bold",
+      icon: <ShieldCheck size={16} weight="fill" className="text-[var(--color-tami-green)]" />,
     };
   }, [entropy, tPwd]);
 
@@ -221,9 +222,29 @@ export function PasswordSimulator() {
 
         {/* Vault Strength Meter*/}
         <div className="space-y-2">
-          <div className="flex items-center justify-between text-xs">
-            <span className="text-[var(--color-tami-text-muted)] font-medium">{tPwd("meterLabel")}</span>
-            <span className="font-mono font-bold text-[var(--color-tami-text)]">{entropy} / 100 Bit</span>
+          <Meter
+            label={tPwd("meterLabel")}
+            value={Math.min(entropy, 100)}
+            max={100}
+          />
+          <div
+            role="progressbar"
+            aria-valuenow={Math.min(entropy, 100)}
+            aria-valuemin={0}
+            aria-valuemax={100}
+            aria-label={tPwd("meterLabel")}
+            className="w-full h-2 rounded-full bg-[var(--color-tami-surface-subdued)] ring-1 ring-[var(--color-tami-line)]/40 overflow-hidden"
+          >
+            <div
+              className={`h-full rounded-full transition-all duration-300 ${
+                entropy >= 75
+                  ? "bg-[var(--color-tami-green)]"
+                  : entropy >= 45
+                  ? "bg-[var(--color-tami-orange)]"
+                  : "bg-[var(--color-tami-red)]"
+              }`}
+              style={{ width: `${Math.min(Math.max(entropy, 4), 100)}%` }}
+            />
           </div>
         </div>
 

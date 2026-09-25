@@ -4,6 +4,7 @@ import React from "react";
 import { useTranslations } from "next-intl";
 import { ThreatRadarData } from "@/lib/generative-ui-schema";
 import { ShieldWarning, ShieldCheck, WarningCircle, CheckCircle } from "@phosphor-icons/react";
+import { MarkdownRenderer } from "@/components/markdown-renderer";
 
 interface ThreatAnalysisRadarProps {
   data: ThreatRadarData;
@@ -47,7 +48,7 @@ export function ThreatAnalysisRadar({ data }: ThreatAnalysisRadarProps) {
             </span>
           </div>
           <h4 className="text-sm font-bold text-[var(--color-tami-text)] leading-snug">
-            {data.headline}
+            <MarkdownRenderer content={data.headline} inline />
           </h4>
         </div>
       </div>
@@ -63,9 +64,9 @@ export function ThreatAnalysisRadar({ data }: ThreatAnalysisRadarProps) {
       </div>
 
       {/* Summary Narrative */}
-      <p className="text-xs text-[var(--color-tami-text-muted)] leading-relaxed">
-        {data.summary}
-      </p>
+      <div className="text-xs text-[var(--color-tami-text-muted)] leading-relaxed">
+        <MarkdownRenderer content={data.summary} />
+      </div>
 
       {/* Evaluated Indicators */}
       <div className="pt-1 space-y-1.5">
@@ -85,10 +86,12 @@ export function ThreatAnalysisRadar({ data }: ThreatAnalysisRadarProps) {
                   <CheckCircle size={14} weight="fill" className="text-[var(--color-tami-green)]" />
                 )}
               </div>
-              <div className="space-y-0.5">
-                <span className="font-semibold block">{ind.label}</span>
+              <div className="space-y-0.5 flex-1">
+                <span className="font-semibold block">
+                  <MarkdownRenderer content={ind.label} inline />
+                </span>
                 <span className="text-[11px] text-[var(--color-tami-text-muted)] block">
-                  {ind.note}
+                  <MarkdownRenderer content={ind.note} inline />
                 </span>
               </div>
             </div>

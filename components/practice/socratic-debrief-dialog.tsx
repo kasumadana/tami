@@ -20,6 +20,7 @@ import {
   PaperPlaneTilt,
   Lightbulb,
 } from "@phosphor-icons/react";
+import { MarkdownRenderer } from "@/components/markdown-renderer";
 
 interface SocraticDebriefDialogProps {
   isOpen: boolean;
@@ -181,7 +182,7 @@ export function SocraticDebriefDialog({
               </DialogTitle>
             </div>
             <DialogDescription className="text-xs text-[var(--color-tami-text-muted)] mt-0.5">
-              {scenarioTitle}
+              <MarkdownRenderer content={scenarioTitle} inline />
             </DialogDescription>
           </div>
         </div>
@@ -192,7 +193,7 @@ export function SocraticDebriefDialog({
             {tDebrief("promptLead")}
           </span>
           <p className="text-sm font-medium text-[var(--color-tami-text)] leading-relaxed italic">
-            &ldquo;{socraticQuestion}&rdquo;
+            {"\u201C"}<MarkdownRenderer content={socraticQuestion} inline />{"\u201D"}
           </p>
         </div>
 
@@ -231,11 +232,12 @@ export function SocraticDebriefDialog({
                 <Loader size="sm" />
                 <span>{tDebrief("thinking")}</span>
               </div>
-            ) : (
-              <p className="text-sm text-[var(--color-tami-text)] leading-relaxed whitespace-pre-line">
-                {assistantReply}
-              </p>
-            )}
+            ) : assistantReply ? (
+              <MarkdownRenderer
+                content={assistantReply}
+                isStreaming={isLoading}
+              />
+            ) : null}
           </div>
         )}
 

@@ -81,15 +81,23 @@ export function InteractiveMissionPreview() {
 
       {/* Interactive Feature Switcher Tabs (Fluid Capsule Pills) */}
       <div className="flex justify-center overflow-x-auto py-1 scrollbar-none">
-        <div className="inline-flex items-center gap-1.5 p-1.5 rounded-full bg-[var(--color-tami-surface-subdued)] ring-1 ring-[var(--color-tami-line)]/50">
+        <div
+          role="tablist"
+          aria-label={t("features.sectionTitle")}
+          className="inline-flex items-center gap-1.5 p-1.5 rounded-full bg-[var(--color-tami-surface-subdued)] ring-1 ring-[var(--color-tami-line)]/50"
+        >
           {tabs.map((tab) => {
             const isActive = activeTab === tab.key;
             return (
               <button
                 key={tab.key}
+                id={`tab-${tab.key}`}
+                role="tab"
                 type="button"
+                aria-selected={isActive}
+                aria-controls={`tabpanel-${tab.key}`}
                 onClick={() => setActiveTab(tab.key)}
-                className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-semibold cursor-pointer transition-all duration-200 min-h-[38px] ${
+                className={`inline-flex items-center gap-2 px-4 py-2.5 rounded-full text-xs font-semibold cursor-pointer transition-all duration-200 min-h-[44px] ${
                   isActive
                     ? "bg-[var(--color-tami-surface)] text-[var(--color-tami-text)] ring-1 ring-[var(--color-tami-line)] shadow-xs"
                     : "text-[var(--color-tami-text-muted)] hover:text-[var(--color-tami-text)]"
@@ -109,7 +117,12 @@ export function InteractiveMissionPreview() {
       </div>
 
       {/* Main Interactive Showcase Stage */}
-      <LayerCard className="rounded-2xl p-6 sm:p-8 md:p-10 bg-[var(--color-tami-surface-subdued)] border-none ring-1 ring-[var(--color-tami-line)]/40 overflow-hidden">
+      <LayerCard
+        id={`tabpanel-${activeTab}`}
+        role="tabpanel"
+        aria-labelledby={`tab-${activeTab}`}
+        className="rounded-2xl p-6 sm:p-8 md:p-10 bg-[var(--color-tami-surface-subdued)] border-none ring-1 ring-[var(--color-tami-line)]/40 overflow-hidden"
+      >
         {/* TAB 1: SOCRATIC AI TUTOR */}
         {activeTab === "chat" && (
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
@@ -317,7 +330,7 @@ export function InteractiveMissionPreview() {
                 <div className="p-4 rounded-xl bg-[var(--color-tami-surface-subdued)] ring-1 ring-[var(--color-tami-line)]/40 space-y-3">
                   <div className="flex items-center justify-between text-xs text-[var(--color-tami-text-muted)] font-mono">
                     <span>SMS / WhatsApp</span>
-                    <span className="text-red-500 font-semibold">{t("features.detector.unknownSender")}</span>
+                    <span className="text-[var(--color-tami-red)] font-semibold">{t("features.detector.unknownSender")}</span>
                   </div>
 
                   {/* Message Bubble with Interactive Clues */}
@@ -329,10 +342,10 @@ export function InteractiveMissionPreview() {
                       <button
                         type="button"
                         onClick={() => setInspectedHotspot("domain")}
-                        className={`px-2.5 py-1 rounded-md font-mono text-[11px] font-bold cursor-pointer transition-all ${
+                        className={`px-3 py-2 rounded-lg font-mono text-[11px] font-bold cursor-pointer transition-all min-h-[44px] inline-flex items-center ${
                           inspectedHotspot === "domain"
-                            ? "bg-red-500 text-white ring-2 ring-red-400 animate-pulse"
-                            : "bg-red-500/10 text-red-500 ring-1 ring-red-500/30 hover:bg-red-500/20"
+                            ? "bg-[var(--color-tami-red)] text-white ring-2 ring-[var(--color-tami-red)]/70 animate-pulse"
+                            : "bg-[var(--color-tami-red)]/10 text-[var(--color-tami-red)] ring-1 ring-[var(--color-tami-red)]/30 hover:bg-[var(--color-tami-red)]/20"
                         }`}
                       >
                         {/* i18n-ignore */}
@@ -341,10 +354,10 @@ export function InteractiveMissionPreview() {
                       <button
                         type="button"
                         onClick={() => setInspectedHotspot("urgency")}
-                        className={`px-2 py-1 rounded-md text-[11px] font-bold cursor-pointer transition-all ${
+                        className={`px-3 py-2 rounded-lg text-[11px] font-bold cursor-pointer transition-all min-h-[44px] inline-flex items-center ${
                           inspectedHotspot === "urgency"
-                            ? "bg-amber-500 text-white ring-2 ring-amber-400"
-                            : "bg-amber-500/10 text-amber-500 ring-1 ring-amber-500/30 hover:bg-amber-500/20"
+                            ? "bg-[var(--color-tami-yellow)] text-[var(--color-tami-text)] ring-2 ring-[var(--color-tami-yellow)]"
+                            : "bg-[var(--color-tami-yellow)]/15 text-[var(--color-tami-orange)] ring-1 ring-[var(--color-tami-yellow)]/40 hover:bg-[var(--color-tami-yellow)]/25"
                         }`}
                       >
                         {t("features.detector.urgencyTag")}
@@ -562,7 +575,7 @@ export function InteractiveMissionPreview() {
                     <button
                       type="button"
                       onClick={() => setQuizSelected(1)}
-                      className={`w-full p-2.5 text-left rounded-xl text-xs font-medium cursor-pointer transition-all flex items-center justify-between ${
+                      className={`w-full p-3 text-left rounded-xl text-xs font-medium cursor-pointer transition-all min-h-[44px] flex items-center justify-between ${
                         quizSelected === 1
                           ? "bg-[var(--color-tami-green)]/15 text-[var(--color-tami-green)] ring-1 ring-[var(--color-tami-green)]"
                           : "bg-[var(--color-tami-surface)] text-[var(--color-tami-text)] ring-1 ring-[var(--color-tami-line)]/40 hover:ring-[var(--color-tami-violet)]/40"
@@ -575,14 +588,14 @@ export function InteractiveMissionPreview() {
                     <button
                       type="button"
                       onClick={() => setQuizSelected(2)}
-                      className={`w-full p-2.5 text-left rounded-xl text-xs font-medium cursor-pointer transition-all flex items-center justify-between ${
+                      className={`w-full p-3 text-left rounded-xl text-xs font-medium cursor-pointer transition-all min-h-[44px] flex items-center justify-between ${
                         quizSelected === 2
-                          ? "bg-red-500/15 text-red-500 ring-1 ring-red-500"
+                          ? "bg-[var(--color-tami-red)]/15 text-[var(--color-tami-red)] ring-1 ring-[var(--color-tami-red)]"
                           : "bg-[var(--color-tami-surface)] text-[var(--color-tami-text)] ring-1 ring-[var(--color-tami-line)]/40 hover:ring-[var(--color-tami-violet)]/40"
                       }`}
                     >
                       <span>{t("features.learn.quizOpt2")}</span>
-                      {quizSelected === 2 && <WarningCircle size={16} weight="bold" className="text-red-500 shrink-0" />}
+                      {quizSelected === 2 && <WarningCircle size={16} weight="bold" className="text-[var(--color-tami-red)] shrink-0" />}
                     </button>
                   </div>
 
@@ -594,8 +607,8 @@ export function InteractiveMissionPreview() {
                     </div>
                   )}
                   {quizSelected === 2 && (
-                    <div className="p-3 rounded-xl bg-amber-500/10 ring-1 ring-amber-500/30 text-[var(--color-tami-text)] text-xs flex items-center gap-2">
-                      <WarningCircle size={16} weight="bold" className="text-amber-500 shrink-0" />
+                    <div className="p-3 rounded-xl bg-[var(--color-tami-yellow)]/15 ring-1 ring-[var(--color-tami-yellow)]/40 text-[var(--color-tami-text)] text-xs flex items-center gap-2">
+                      <WarningCircle size={16} weight="bold" className="text-[var(--color-tami-orange)] shrink-0" />
                       <span>{t("features.learn.quizWrong")}</span>
                     </div>
                   )}

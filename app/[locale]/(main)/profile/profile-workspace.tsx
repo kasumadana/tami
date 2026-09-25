@@ -374,7 +374,9 @@ export function ProfileWorkspace() {
       <CertificateCard
         key={session?.user?.name || "guest"}
         initialName={session?.user?.name || undefined}
-        isUnlocked={isCurriculumUnlocked || practiceProgress.totalScore >= 100}
+        isUnlocked={isCurriculumUnlocked || (completedModules.length >= 2 && practiceProgress.totalScore >= 100)}
+        totalPoints={totalPoints}
+        completedModulesCount={completedModules.length}
       />
 
       <LoginDialog isOpen={isLoginOpen} onClose={() => setIsLoginOpen(false)} />
